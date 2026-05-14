@@ -12,6 +12,7 @@ SKIP_PACKAGE_REMOVAL=0
 REMOVE_DMS_PACKAGES=0
 INSTALL_GREETER=0
 INSTALL_METHOD="source"
+REMOVE_SDDM_PACKAGE=0
 REPO_URL="$DEFAULT_REPO_URL"
 BRANCH="main"
 PREFIX="/usr/local"
@@ -40,6 +41,7 @@ Options:
                         package  install the distro Dank/DMS package
   --install-greeter     Install/configure DankGreeter via "dms greeter install --yes".
                         This replaces SDDM/GDM/LightDM with greetd.
+  --remove-sddm-package Remove the sddm package after DankGreeter setup succeeds.
   --repo URL            Hype git repository to install from.
                         Default: $DEFAULT_REPO_URL
   --branch NAME         Branch to clone when --source is not used. Default: main.
@@ -79,6 +81,9 @@ while [ "$#" -gt 0 ]; do
             ;;
         --install-greeter)
             INSTALL_GREETER=1
+            ;;
+        --remove-sddm-package)
+            REMOVE_SDDM_PACKAGE=1
             ;;
         --repo)
             REPO_URL="${2:-}"
@@ -499,6 +504,33 @@ install_greeter() {
     run dms greeter status || true
 }
 
+remove_sddm_package() {
+    if [ "$REMOVE_SDDM_PACKAGE" -eq 0 ]; then
+        return 0
+    fi
+
+    if [ "$INSTALL_GREETER" -eq 0 ]; then
+        echo "Error: --remove-sddm-package requires --install-greeter so greetd is configured first." >&2
+        exit 1
+    fi
+
+    if have pacman && pacman -Q sddm >/dev/null 2>&1; then
+        sudo_run pacman -Rns --noconfirm sddm
+    elif have rpm && rpm -q sddm >/dev/null 2>&1; then
+        if have dnf; then
+            sudo_run dnf remove -y sddm
+        elif have zypper; then
+            sudo_run zypper --non-interactive remove sddm
+        else
+            sudo_run rpm -e sddm
+        fi
+    elif have dpkg-query && dpkg-query -W -f='${Status}' sddm 2>/dev/null | grep -q "install ok installed"; then
+        sudo_run apt-get remove -y sddm
+    else
+        echo "sddm package not installed or no supported package manager found."
+    fi
+}
+
 main() {
     if [ "$YES" -eq 0 ]; then
         cat <<EOF
@@ -517,6 +549,8 @@ This will:
     $INSTALL_METHOD
   - install DankGreeter / replace SDDM with greetd:
     $INSTALL_GREETER
+  - remove sddm package after greeter setup:
+    $REMOVE_SDDM_PACKAGE
 
 EOF
     else
@@ -530,6 +564,7 @@ EOF
     remove_legacy_system_artifacts
     install_hype
     install_greeter
+    remove_sddm_package
 
     if [ "$YES" -eq 1 ]; then
         echo
