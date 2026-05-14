@@ -24,6 +24,7 @@ BACKUP_ROOT="${XDG_DATA_HOME:-$HOME/.local/share}/Hype/install-backups"
 TIMESTAMP="$(date +%Y%m%d-%H%M%S)"
 BACKUP_DIR="$BACKUP_ROOT/$TIMESTAMP"
 WORK_DIR="${TMPDIR:-/tmp}/hypeshell-install-$TIMESTAMP"
+FINGERPRINT_PATH="$PREFIX/share/hypeshell/install-fingerprint"
 
 usage() {
     cat <<EOF
@@ -148,6 +149,8 @@ while [ "$#" -gt 0 ]; do
     esac
     shift
 done
+
+FINGERPRINT_PATH="$PREFIX/share/hypeshell/install-fingerprint"
 
 case "$INSTALL_METHOD" in
     source|package)
@@ -623,6 +626,66 @@ install_terminal_dependency() {
     install_package_if_available kitty
 }
 
+source_fingerprint() {
+    if [ -n "$SOURCE_DIR" ] && [ -d "$SOURCE_DIR/.git" ] && have git; then
+        git -C "$SOURCE_DIR" rev-parse --short=12 HEAD 2>/dev/null && return 0
+    fi
+    echo "unknown"
+}
+
+source_remote() {
+    if [ -n "$SOURCE_DIR" ] && [ -d "$SOURCE_DIR/.git" ] && have git; then
+        git -C "$SOURCE_DIR" config --get remote.origin.url 2>/dev/null && return 0
+    fi
+    echo "$REPO_URL"
+}
+
+file_sha256() {
+    file="$1"
+    if [ -f "$file" ] && have sha256sum; then
+        sha256sum "$file" | awk '{print $1}'
+        return 0
+    fi
+    echo "missing"
+}
+
+greetd_command_line() {
+    if [ -r /etc/greetd/config.toml ]; then
+        grep -E '^[[:space:]]*command[[:space:]]*=' /etc/greetd/config.toml | tail -n 1 || true
+    fi
+}
+
+write_install_fingerprint() {
+    fingerprint="$(source_fingerprint)"
+    remote="$(source_remote)"
+    greetd_command="$(greetd_command_line)"
+    tmp_file="$(mktemp)"
+
+    {
+        echo "HypeShell install fingerprint"
+        echo "installed_at_utc=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+        echo "source_remote=$remote"
+        echo "source_branch=$BRANCH"
+        echo "source_commit=$fingerprint"
+        echo "source_dir=${SOURCE_DIR:-}"
+        echo "prefix=$PREFIX"
+        echo "hype_binary=$(command -v hype 2>/dev/null || true)"
+        echo "shell_path=$PREFIX/share/quickshell/hype"
+        echo "greeter_wrapper_local=/usr/local/bin/dms-greeter sha256=$(file_sha256 /usr/local/bin/dms-greeter)"
+        echo "greeter_wrapper_compat=/usr/bin/dms-greeter sha256=$(file_sha256 /usr/bin/dms-greeter)"
+        echo "greetd_command=${greetd_command:-missing}"
+    } > "$tmp_file"
+
+    sudo_run install -D -m 644 "$tmp_file" "$FINGERPRINT_PATH"
+    rm -f "$tmp_file"
+
+    echo
+    echo "HypeShell install fingerprint:"
+    echo "  commit: $fingerprint"
+    echo "  file:   $FINGERPRINT_PATH"
+    echo "  greetd: ${greetd_command:-missing}"
+}
+
 install_greetd_if_needed() {
     if have greetd || [ -x /usr/sbin/greetd ] || [ -x /sbin/greetd ]; then
         return 0
@@ -978,6 +1041,7 @@ EOF
     ensure_hyprland_shell_startup
     install_greeter
     clean_display_manager
+    write_install_fingerprint
 
     if [ "$YES" -eq 1 ]; then
         echo
