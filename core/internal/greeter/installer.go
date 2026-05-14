@@ -234,7 +234,7 @@ func resolveGreeterWrapperPath() string {
 		return packagedWrapper
 	}
 
-	for _, candidate := range []string{"/usr/bin/dms-greeter", "/usr/local/bin/dms-greeter"} {
+	for _, candidate := range []string{"/usr/local/bin/dms-greeter", "/usr/bin/dms-greeter"} {
 		if info, err := os.Stat(candidate); err == nil && !info.IsDir() && (info.Mode()&0o111) != 0 {
 			return candidate
 		}

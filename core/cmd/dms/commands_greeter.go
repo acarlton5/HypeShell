@@ -1055,6 +1055,24 @@ func enableGreeter(nonInteractive bool) error {
 		if err := greeter.SetupDMSGroup(logFunc, ""); err != nil {
 			return err
 		}
+		if !greeter.IsGreeterPackaged() {
+			dmsPath, err := greeter.DetectDMSPath()
+			if err != nil {
+				return fmt.Errorf("failed to detect DMS path for manual greeter configuration: %w", err)
+			}
+			if err := greeter.CopyGreeterFiles(dmsPath, configuredCompositor, logFunc, ""); err != nil {
+				return fmt.Errorf("failed to install local greeter wrapper: %w", err)
+			}
+			if strings.Contains(readDefaultSessionCommand(configPath), "/usr/bin/dms-greeter") {
+				compositor := configuredCompositor
+				if compositor == "" {
+					compositor = "hyprland"
+				}
+				if err := greeter.ConfigureGreetd(dmsPath, compositor, logFunc, ""); err != nil {
+					return fmt.Errorf("failed to repair greetd greeter path: %w", err)
+				}
+			}
+		}
 		if err := greeter.EnsureGreeterCacheDir(logFunc, ""); err != nil {
 			fmt.Printf("⚠ Could not ensure cache directory: %v\n  Run: sudo mkdir -p %s && sudo chown root:%s %s && sudo chmod 2770 %s\n", err, greeter.GreeterCacheDir, greeterGroup, greeter.GreeterCacheDir, greeter.GreeterCacheDir)
 		}
@@ -1120,6 +1138,9 @@ func enableGreeter(nonInteractive bool) error {
 		dmsPath, err := greeter.DetectDMSPath()
 		if err != nil {
 			return fmt.Errorf("failed to detect DMS path for manual greeter configuration: %w", err)
+		}
+		if err := greeter.CopyGreeterFiles(dmsPath, selectedCompositor, logFunc, ""); err != nil {
+			return fmt.Errorf("failed to install local greeter wrapper: %w", err)
 		}
 		greeterPathForConfig = dmsPath
 	}

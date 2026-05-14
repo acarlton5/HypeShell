@@ -594,6 +594,34 @@ install_hype() {
     run systemctl --user daemon-reload || true
 }
 
+install_greeter_wrapper_from_source() {
+    [ "$INSTALL_METHOD" = "source" ] || return 0
+
+    if [ "$YES" -eq 0 ]; then
+        run sudo install -D -m 755 "$PREFIX/share/quickshell/dms/Modules/Greetd/assets/dms-greeter" /usr/local/bin/dms-greeter
+        return 0
+    fi
+
+    wrapper_src=""
+    for candidate in \
+        "$PREFIX/share/quickshell/dms/Modules/Greetd/assets/dms-greeter" \
+        "$SOURCE_DIR/quickshell/Modules/Greetd/assets/dms-greeter"
+    do
+        if [ -f "$candidate" ]; then
+            wrapper_src="$candidate"
+            break
+        fi
+    done
+
+    if [ -z "$wrapper_src" ]; then
+        echo "Error: dms-greeter wrapper not found after source install." >&2
+        echo "Expected it at $PREFIX/share/quickshell/dms/Modules/Greetd/assets/dms-greeter" >&2
+        exit 1
+    fi
+
+    sudo_run install -D -m 755 "$wrapper_src" /usr/local/bin/dms-greeter
+}
+
 install_greeter() {
     if [ "$INSTALL_GREETER" -eq 0 ]; then
         return 0
@@ -603,6 +631,7 @@ install_greeter() {
         echo "Would install/configure HypeShell greeter for Hyprland. This replaces SDDM/GDM/LightDM with greetd."
         if [ "$INSTALL_METHOD" = "source" ]; then
             run sudo install-package greetd
+            install_greeter_wrapper_from_source
             run dms greeter enable --yes
             run dms greeter sync --yes --local
         else
@@ -614,7 +643,7 @@ install_greeter() {
     fi
 
     if ! have dms; then
-        echo "Error: dms command is not available; cannot install DankGreeter." >&2
+        echo "Error: dms command is not available; cannot install HypeShell greeter." >&2
         echo "Install Hype/DMS first, then rerun with --skip-install --install-greeter." >&2
         exit 1
     fi
@@ -622,6 +651,7 @@ install_greeter() {
     echo "Installing/configuring HypeShell greeter for Hyprland. This replaces SDDM/GDM/LightDM with greetd."
     if [ "$INSTALL_METHOD" = "source" ]; then
         install_greetd_if_needed
+        install_greeter_wrapper_from_source
         run dms greeter enable --yes
         run dms greeter sync --yes --local
     else
