@@ -9,10 +9,12 @@ import (
 
 func LocateDMSConfig() (string, error) {
 	var primaryPaths []string
+	var legacyPaths []string
 
 	configHome, err := os.UserConfigDir()
 	if err == nil && configHome != "" {
-		primaryPaths = append(primaryPaths, filepath.Join(configHome, "quickshell", "dms"))
+		primaryPaths = append(primaryPaths, filepath.Join(configHome, "quickshell", "hype"))
+		legacyPaths = append(legacyPaths, filepath.Join(configHome, "quickshell", "dms"))
 	}
 
 	// System data directories
@@ -23,7 +25,8 @@ func LocateDMSConfig() (string, error) {
 
 	for dir := range strings.SplitSeq(dataDirs, ":") {
 		if dir != "" {
-			primaryPaths = append(primaryPaths, filepath.Join(dir, "quickshell", "dms"))
+			primaryPaths = append(primaryPaths, filepath.Join(dir, "quickshell", "hype"))
+			legacyPaths = append(legacyPaths, filepath.Join(dir, "quickshell", "dms"))
 		}
 	}
 
@@ -35,13 +38,14 @@ func LocateDMSConfig() (string, error) {
 
 	for dir := range strings.SplitSeq(configDirs, ":") {
 		if dir != "" {
-			primaryPaths = append(primaryPaths, filepath.Join(dir, "quickshell", "dms"))
+			primaryPaths = append(primaryPaths, filepath.Join(dir, "quickshell", "hype"))
+			legacyPaths = append(legacyPaths, filepath.Join(dir, "quickshell", "dms"))
 		}
 	}
 
 	// Build search paths with secondary (monorepo) paths interleaved
 	var searchPaths []string
-	for _, path := range primaryPaths {
+	for _, path := range append(primaryPaths, legacyPaths...) {
 		searchPaths = append(searchPaths, path)
 		searchPaths = append(searchPaths, filepath.Join(path, "quickshell"))
 	}
@@ -53,5 +57,5 @@ func LocateDMSConfig() (string, error) {
 		}
 	}
 
-	return "", fmt.Errorf("could not find DMS config (shell.qml) in any valid config path")
+	return "", fmt.Errorf("could not find HypeShell config (shell.qml) in any valid config path")
 }

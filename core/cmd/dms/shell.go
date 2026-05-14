@@ -194,7 +194,12 @@ func runShellInteractive(session bool) {
 
 	log.Infof("Spawning quickshell with -p %s", configPath)
 
-	cmd := exec.CommandContext(ctx, "qs", "-p", configPath)
+	qsPath, err := exec.LookPath("qs")
+	if err != nil {
+		log.Fatalf("Error starting Quickshell: the 'qs' executable was not found in PATH. Install Quickshell, then rerun install.sh or start HypeShell again.")
+	}
+
+	cmd := exec.CommandContext(ctx, qsPath, "-p", configPath)
 	cmd.Env = append(os.Environ(), "HYPE_SOCKET="+socketPath, "DMS_SOCKET="+socketPath)
 	if os.Getenv("QT_LOGGING_RULES") == "" {
 		if qtRules := log.GetQtLoggingRules(); qtRules != "" {
@@ -436,7 +441,12 @@ func runShellDaemon(session bool) {
 
 	log.Infof("Spawning quickshell with -p %s", configPath)
 
-	cmd := exec.CommandContext(ctx, "qs", "-p", configPath)
+	qsPath, err := exec.LookPath("qs")
+	if err != nil {
+		log.Fatalf("Error starting Quickshell: the 'qs' executable was not found in PATH. Install Quickshell, then rerun install.sh or start HypeShell again.")
+	}
+
+	cmd := exec.CommandContext(ctx, qsPath, "-p", configPath)
 	cmd.Env = append(os.Environ(), "HYPE_SOCKET="+socketPath, "DMS_SOCKET="+socketPath)
 	if os.Getenv("QT_LOGGING_RULES") == "" {
 		if qtRules := log.GetQtLoggingRules(); qtRules != "" {

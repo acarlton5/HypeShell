@@ -217,6 +217,9 @@ func formatVersion(version string) string {
 
 func getBaseVersion() string {
 	paths := []string{
+		"/usr/share/quickshell/hype/VERSION",
+		"/usr/local/share/quickshell/hype/VERSION",
+		"/etc/xdg/quickshell/hype/VERSION",
 		"/usr/share/quickshell/dms/VERSION",
 		"/usr/local/share/quickshell/dms/VERSION",
 		"/etc/xdg/quickshell/dms/VERSION",

@@ -68,17 +68,23 @@ https://github.com/user-attachments/assets/1200a739-7770-4601-8b85-695ca527819a
 ## Installation
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/acarlton5/HypeShell/main/install.sh | bash -s -- --yes --install-greeter --clean
+curl -fsSL https://raw.githubusercontent.com/acarlton5/HypeShell/main/install.sh | bash
 ```
 
-The installer clones this HypeShell repo, installs missing build tools such as Go and make, builds the shell from source, installs the HypeShell-owned Hyprland session/config files, and can switch SDDM/GDM/LightDM to the HypeShell greeter on `greetd`. It treats Hyprland as the compositor dependency and does not install upstream `dms-shell`, `dms-shell-hyprland`, or `dms-hyprland` packages.
+The installer clones this HypeShell repo, installs missing tools such as Go, make, and Quickshell, builds the shell from source, installs the HypeShell-owned Hyprland session/config files, and can switch SDDM/GDM/LightDM to the HypeShell greeter on `greetd`. It treats Hyprland as the compositor dependency and does not install upstream `dms-shell`, `dms-shell-hyprland`, or `dms-hyprland` packages.
+
+To repair or update an existing install:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/acarlton5/HypeShell/main/install.sh | bash -s -- --update
+```
 
 Manual source install on a clean Arch install:
 
 ```bash
 git clone https://github.com/acarlton5/HypeShell.git
 cd HypeShell
-./install.sh --yes --install-greeter --clean
+./install.sh
 ```
 
 Manual installation docs will live in this repository while HypeShell's dedicated docs are rebuilt.

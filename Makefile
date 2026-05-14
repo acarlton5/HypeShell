@@ -15,7 +15,7 @@ USER_HOME := $(if $(SUDO_USER),$(shell getent passwd $(SUDO_USER) | cut -d: -f6)
 SYSTEMD_USER_DIR=$(USER_HOME)/.config/systemd/user
 
 SHELL_DIR=quickshell
-SHELL_INSTALL_DIR=$(DATA_DIR)/quickshell/dms
+SHELL_INSTALL_DIR=$(DATA_DIR)/quickshell/hype
 ASSETS_DIR=assets
 APPLICATIONS_DIR=$(DATA_DIR)/applications
 
