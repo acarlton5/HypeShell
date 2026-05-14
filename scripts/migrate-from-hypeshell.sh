@@ -566,6 +566,38 @@ install_hyprland_session() {
     sudo_run install -D -m 644 /dev/null "$defaults_dir/dms/windowrules.conf"
 }
 
+ensure_hyprland_shell_startup() {
+    [ "$INSTALL_HYPRLAND_SESSION" -eq 1 ] || return 0
+
+    config_dir="${XDG_CONFIG_HOME:-$HOME/.config}/hypr"
+    config_file="$config_dir/hyprland.conf"
+    startup_line="exec-once = systemctl --user start dms.service || dms run"
+
+    if [ "$YES" -eq 0 ]; then
+        run mkdir -p "$config_dir"
+        echo "[dry-run] ensure $config_file starts HypeShell with: $startup_line"
+        return 0
+    fi
+
+    mkdir -p "$config_dir"
+    if [ ! -s "$config_file" ]; then
+        default_config="$PREFIX/share/hypeshell/hyprland/hyprland.conf"
+        if [ -r "$default_config" ]; then
+            cp "$default_config" "$config_file"
+        elif [ -n "$SOURCE_DIR" ] && [ -r "$SOURCE_DIR/core/internal/config/embedded/hyprland.conf" ]; then
+            cp "$SOURCE_DIR/core/internal/config/embedded/hyprland.conf" "$config_file"
+        fi
+    fi
+
+    if [ -f "$config_file" ] && ! grep -Eq '(^|[[:space:]])(dms run|dms\.service)' "$config_file"; then
+        cp "$config_file" "$config_file.hypeshell-pre-startup.bak"
+        {
+            printf '\n# HypeShell startup\n'
+            printf '%s\n' "$startup_line"
+        } >> "$config_file"
+    fi
+}
+
 install_hype() {
     if [ "$SKIP_INSTALL" -eq 1 ]; then
         echo "Skipping Hype install."
@@ -729,6 +761,7 @@ EOF
     remove_legacy_system_artifacts
     install_hype
     install_hyprland_session
+    ensure_hyprland_shell_startup
     install_greeter
     clean_display_manager
 
