@@ -28,7 +28,9 @@ usage() {
     cat <<EOF
 Usage: $SCRIPT_NAME [options]
 
-Remove old HYPESHELL-era files and install the new Hyprland-only HypeShell system.
+Install the Hyprland-only HypeShell system from source.
+On machines with old HypeShell/DMS-era files, this can also back up or remove
+the old artifacts before installing the new system.
 
 Options:
   --yes                 Actually make changes. Without this, dry-run only.
