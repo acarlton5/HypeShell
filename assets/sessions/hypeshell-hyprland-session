@@ -1,0 +1,50 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+CONFIG_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/hypr"
+DMS_DIR="$CONFIG_DIR/dms"
+CONFIG_FILE="${HYPESHELL_HYPRLAND_CONFIG:-$CONFIG_DIR/hyprland.conf}"
+DEFAULT_DIR="${HYPESHELL_HYPRLAND_DEFAULTS:-/usr/local/share/hypeshell/hyprland}"
+
+seed_config() {
+    local source_file="$1"
+    local target_file="$2"
+
+    if [ -s "$target_file" ] || [ ! -r "$source_file" ]; then
+        return 0
+    fi
+
+    mkdir -p "$(dirname "$target_file")"
+    cp "$source_file" "$target_file"
+}
+
+mkdir -p "$CONFIG_DIR" "$DMS_DIR"
+seed_config "$DEFAULT_DIR/hyprland.conf" "$CONFIG_FILE"
+seed_config "$DEFAULT_DIR/dms/colors.conf" "$DMS_DIR/colors.conf"
+seed_config "$DEFAULT_DIR/dms/layout.conf" "$DMS_DIR/layout.conf"
+seed_config "$DEFAULT_DIR/dms/binds.conf" "$DMS_DIR/binds.conf"
+touch "$DMS_DIR/outputs.conf" "$DMS_DIR/cursor.conf" "$DMS_DIR/windowrules.conf"
+
+if command -v dbus-update-activation-environment >/dev/null 2>&1; then
+    dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP XDG_SESSION_DESKTOP XDG_SESSION_TYPE || true
+fi
+
+if command -v systemctl >/dev/null 2>&1; then
+    systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP XDG_SESSION_DESKTOP XDG_SESSION_TYPE || true
+fi
+
+export XDG_CURRENT_DESKTOP="${XDG_CURRENT_DESKTOP:-Hyprland}"
+export XDG_SESSION_DESKTOP="${XDG_SESSION_DESKTOP:-hypeshell-hyprland}"
+export XDG_SESSION_TYPE="${XDG_SESSION_TYPE:-wayland}"
+
+if command -v Hyprland >/dev/null 2>&1; then
+    exec Hyprland -c "$CONFIG_FILE"
+fi
+
+if command -v hyprland >/dev/null 2>&1; then
+    exec hyprland -c "$CONFIG_FILE"
+fi
+
+echo "Error: Hyprland is not installed or not in PATH." >&2
+exit 127

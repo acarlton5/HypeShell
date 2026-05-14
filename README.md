@@ -5,21 +5,19 @@
     <img src="assets/danklogo.svg" alt="HypeShell" width="200">
   </a>
 
-### A modern desktop shell for Wayland, rebased from DankMaterialShell
+### A modern Hyprland shell, rebased from DankMaterialShell
 
 Built with [Quickshell](https://quickshell.org/) and [Go](https://go.dev/)
 
 [![Documentation](https://img.shields.io/badge/docs-danklinux.com-9ccbfb?style=for-the-badge&labelColor=101418)](https://danklinux.com/docs)
 [![GitHub stars](https://img.shields.io/github/stars/acarlton5/HypeShell?style=for-the-badge&labelColor=101418&color=ffd700)](https://github.com/acarlton5/HypeShell/stargazers)
 [![GitHub License](https://img.shields.io/github/license/acarlton5/HypeShell?style=for-the-badge&labelColor=101418&color=b9c8da)](https://github.com/acarlton5/HypeShell/blob/main/LICENSE)
-[![GitHub release](https://img.shields.io/github/v/release/AvengeMedia/DankMaterialShell?style=for-the-badge&labelColor=101418&color=9ccbfb)](https://github.com/AvengeMedia/DankMaterialShell/releases)
-[![Arch version](https://img.shields.io/archlinux/v/extra/x86_64/dms-shell?style=for-the-badge&labelColor=101418&color=9ccbfb)](https://archlinux.org/packages/extra/x86_64/dms-shell/)
-[![AUR version (git)](<https://img.shields.io/aur/version/dms-shell-git?style=for-the-badge&labelColor=101418&color=9ccbfb&label=AUR%20(git)>)](https://aur.archlinux.org/packages/dms-shell-git)
+[![GitHub release](https://img.shields.io/github/v/release/acarlton5/HypeShell?style=for-the-badge&labelColor=101418&color=9ccbfb)](https://github.com/acarlton5/HypeShell/releases)
 [![Ko-Fi donate](https://img.shields.io/badge/donate-kofi?style=for-the-badge&logo=ko-fi&logoColor=ffffff&label=ko-fi&labelColor=101418&color=f16061&link=https%3A%2F%2Fko-fi.com%2Fdanklinux)](https://ko-fi.com/danklinux)
 
 </div>
 
-HypeShell is a complete desktop shell for [niri](https://github.com/YaLTeR/niri), [Hyprland](https://hyprland.org/), [MangoWC](https://github.com/DreamMaoMao/mangowc), [Sway](https://swaywm.org), [labwc](https://labwc.github.io/), [Scroll](https://github.com/dawsers/scroll), [Miracle WM](https://github.com/miracle-wm-org/miracle-wm), and other Wayland compositors. It is independently imported from DankMaterialShell and currently keeps the upstream `dms` command/service names internally while HypeShell branding is migrated.
+HypeShell is a complete desktop shell for [Hyprland](https://hyprland.org/). It is independently imported from DankMaterialShell and is being reshaped into a Hyprland-only OS shell. The codebase currently keeps the upstream `dms` command/service names internally while HypeShell branding is migrated.
 
 ## Repository Structure
 
@@ -70,12 +68,18 @@ https://github.com/user-attachments/assets/1200a739-7770-4601-8b85-695ca527819a
 ## Installation
 
 ```bash
-git clone https://github.com/acarlton5/HypeShell.git
-cd HypeShell
-./scripts/migrate-from-hypeshell.sh --yes --install-method package --install-greeter --clean
+curl -fsSL https://raw.githubusercontent.com/acarlton5/HypeShell/main/install.sh | bash
 ```
 
-The migration script removes old HYPESHELL-era files, installs the new DMS/HypeShell base, and can switch SDDM/GDM/LightDM to DankGreeter on `greetd`.
+The installer clones this HypeShell repo, builds the shell from source, installs the HypeShell-owned Hyprland session/config files, and can switch SDDM/GDM/LightDM to the HypeShell greeter on `greetd`. It treats Hyprland as the compositor dependency and does not install upstream `dms-shell`, `dms-shell-hyprland`, or `dms-hyprland` packages.
+
+Manual source install:
+
+```bash
+git clone https://github.com/acarlton5/HypeShell.git
+cd HypeShell
+./scripts/migrate-from-hypeshell.sh --yes --install-greeter --clean
+```
 
 **[Manual installation guide](https://danklinux.com/docs/dankmaterialshell/installation)**
 
@@ -105,11 +109,11 @@ Lock screen, idle detection, auto-lock/suspend with separate AC/battery settings
 **Plugin System**
 Extend functionality with the [plugin registry](https://plugins.danklinux.com).
 
-## Supported Compositors
+## Supported Compositor
 
-Works best with [niri](https://github.com/YaLTeR/niri), [Hyprland](https://hyprland.org/), [Sway](https://swaywm.org/), [MangoWC](https://github.com/DreamMaoMao/mangowc), [labwc](https://labwc.github.io/), [Scroll](https://github.com/dawsers/scroll), and [Miracle WM](https://github.com/miracle-wm-org/miracle-wm) with full workspace switching, overview integration, and monitor management. Other Wayland compositors work with reduced features.
+HypeShell targets [Hyprland](https://hyprland.org/) only, with workspace switching, overview integration, monitor management, Hyprland keybind parsing, and a HypeShell Hyprland login session installed from this repository.
 
-[Compositor configuration guide](https://danklinux.com/docs/dankmaterialshell/compositors)
+[Hyprland configuration guide](https://wiki.hypr.land/Configuring/)
 
 ## Command Line Interface
 

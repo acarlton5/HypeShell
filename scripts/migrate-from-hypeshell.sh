@@ -11,8 +11,10 @@ SKIP_INSTALL=0
 SKIP_PACKAGE_REMOVAL=0
 REMOVE_DMS_PACKAGES=0
 INSTALL_GREETER=0
+INSTALL_HYPRLAND_SESSION=1
 INSTALL_METHOD="source"
 CLEAN_DISPLAY_MANAGER=0
+ALLOW_UPSTREAM_PACKAGES=0
 REPO_URL="$DEFAULT_REPO_URL"
 BRANCH="main"
 PREFIX="/usr/local"
@@ -26,7 +28,7 @@ usage() {
     cat <<EOF
 Usage: $SCRIPT_NAME [options]
 
-Remove old HYPESHELL-era files and install the new Hype/DMS system.
+Remove old HYPESHELL-era files and install the new Hyprland-only HypeShell system.
 
 Options:
   --yes                 Actually make changes. Without this, dry-run only.
@@ -37,12 +39,19 @@ Options:
   --remove-dms-packages Remove installed dms/dms-shell packages too. Use this when
                         replacing an upstream Dank package with this source install.
   --install-method MODE Install method for the replacement system:
-                        source   build/install this Hype repo from source (default)
-                        package  install the distro Dank/DMS package
-  --install-greeter     Install/configure DankGreeter via "dms greeter install --yes".
+                        source   build/install this HypeShell repo from source (default)
+                        package  install upstream Dank/DMS distro packages.
+                                Requires --allow-upstream-packages and is not recommended.
+  --allow-upstream-packages
+                        Permit --install-method package. Not recommended for HypeShell.
+  --install-greeter     Install/configure greetd and the HypeShell greeter.
                         This replaces SDDM/GDM/LightDM with greetd.
-  --clean               Remove the sddm package after DankGreeter setup succeeds.
-  --repo URL            Hype git repository to install from.
+  --skip-hyprland-session
+                        Do not install the HypeShell-owned Hyprland session files.
+                        This is only for recovery/debugging; HypeShell targets Hyprland.
+  --clean               Remove upstream DMS/Dank packages and remove the sddm package
+                        after greeter setup succeeds.
+  --repo URL            HypeShell git repository to install from.
                         Default: $DEFAULT_REPO_URL
   --branch NAME         Branch to clone when --source is not used. Default: main.
   --source DIR          Install from an existing local Hype checkout.
@@ -52,8 +61,8 @@ Options:
 Examples:
   $SCRIPT_NAME
   $SCRIPT_NAME --yes
-  $SCRIPT_NAME --yes --source ~/src/Hype
-  $SCRIPT_NAME --yes --install-method package --install-greeter
+  $SCRIPT_NAME --yes --source ~/src/HypeShell
+  $SCRIPT_NAME --yes --install-greeter --clean
   $SCRIPT_NAME --yes --purge-user-data --skip-install
 EOF
 }
@@ -79,11 +88,18 @@ while [ "$#" -gt 0 ]; do
             INSTALL_METHOD="${2:-}"
             shift
             ;;
+        --allow-upstream-packages)
+            ALLOW_UPSTREAM_PACKAGES=1
+            ;;
         --install-greeter)
             INSTALL_GREETER=1
             ;;
+        --skip-hyprland-session)
+            INSTALL_HYPRLAND_SESSION=0
+            ;;
         --clean)
             CLEAN_DISPLAY_MANAGER=1
+            REMOVE_DMS_PACKAGES=1
             ;;
         --remove-sddm-package)
             CLEAN_DISPLAY_MANAGER=1
@@ -125,6 +141,12 @@ case "$INSTALL_METHOD" in
         exit 2
         ;;
 esac
+
+if [ "$INSTALL_METHOD" = "package" ] && [ "$ALLOW_UPSTREAM_PACKAGES" -ne 1 ]; then
+    echo "Error: --install-method package pulls upstream Dank/DMS packages." >&2
+    echo "For HypeShell, use the default source install. If you really want packages, add --allow-upstream-packages." >&2
+    exit 2
+fi
 
 if [ "$(uname -s)" != "Linux" ]; then
     echo "Error: this migration script is intended for Linux." >&2
@@ -262,8 +284,14 @@ remove_legacy_packages() {
             dms
             dms-cli
             dms-git
+            dms-greeter
+            dms-hyprland
+            dms-niri
             dms-shell
             dms-shell-git
+            dms-shell-hyprland
+            dms-shell-niri
+            greetd-dms-greeter-git
         )
     fi
 
@@ -408,8 +436,18 @@ install_package_if_available() {
     fi
 }
 
+install_greetd_if_needed() {
+    if have greetd || [ -x /usr/sbin/greetd ] || [ -x /sbin/greetd ]; then
+        return 0
+    fi
+
+    echo "Installing greetd only. No upstream dms-shell packages will be installed."
+    install_package_if_available greetd
+}
+
 install_dms_package() {
-    echo "Installing Dank/DMS from distro packages..."
+    echo "Installing upstream Dank/DMS from distro packages..."
+    echo "This is not the HypeShell-owned path and will pull upstream package names."
 
     if have pacman; then
         install_package_if_available dms-shell
@@ -438,7 +476,7 @@ prepare_source() {
             SOURCE_DIR="$(cd "$SOURCE_DIR" && pwd -P)"
         fi
         if [ ! -f "$SOURCE_DIR/quickshell/shell.qml" ] || [ ! -f "$SOURCE_DIR/core/Makefile" ]; then
-            echo "Error: --source does not look like a Hype checkout: $SOURCE_DIR" >&2
+            echo "Error: --source does not look like a HypeShell checkout: $SOURCE_DIR" >&2
             exit 1
         fi
         return 0
@@ -452,6 +490,80 @@ prepare_source() {
     SOURCE_DIR="$WORK_DIR/Hype"
     run mkdir -p "$WORK_DIR"
     run git clone --depth 1 --branch "$BRANCH" "$REPO_URL" "$SOURCE_DIR"
+}
+
+verify_hypeshell_source_payload() {
+    if [ "$YES" -eq 0 ] && [ ! -d "$SOURCE_DIR" ]; then
+        echo "Would verify HypeShell source payload before removing upstream packages."
+        return 0
+    fi
+
+    missing=0
+    for required in \
+        "$SOURCE_DIR/quickshell/shell.qml" \
+        "$SOURCE_DIR/core/Makefile" \
+        "$SOURCE_DIR/core/internal/config/embedded/hyprland.conf" \
+        "$SOURCE_DIR/core/internal/config/embedded/hypr-colors.conf" \
+        "$SOURCE_DIR/core/internal/config/embedded/hypr-layout.conf" \
+        "$SOURCE_DIR/core/internal/config/embedded/hypr-binds.conf" \
+        "$SOURCE_DIR/assets/sessions/hypeshell-hyprland.desktop" \
+        "$SOURCE_DIR/assets/sessions/hypeshell-hyprland-session"; do
+        if [ ! -f "$required" ]; then
+            echo "Missing required HypeShell payload: $required" >&2
+            missing=1
+        fi
+    done
+
+    if [ "$missing" -ne 0 ]; then
+        echo "Error: refusing to remove upstream DMS packages until the HypeShell replacement payload exists." >&2
+        exit 1
+    fi
+}
+
+install_hyprland_if_needed() {
+    if have Hyprland || have hyprland; then
+        return 0
+    fi
+
+    echo "Installing Hyprland compositor as an OS dependency."
+    install_package_if_available hyprland
+}
+
+protect_hyprland_dependency() {
+    if [ "$INSTALL_HYPRLAND_SESSION" -eq 0 ] || [ "$SKIP_PACKAGE_REMOVAL" -eq 1 ]; then
+        return 0
+    fi
+
+    if have pacman && pacman -Q hyprland >/dev/null 2>&1; then
+        sudo_run pacman -D --asexplicit hyprland
+    fi
+}
+
+install_hyprland_session() {
+    if [ "$INSTALL_HYPRLAND_SESSION" -eq 0 ] || [ "$SKIP_INSTALL" -eq 1 ]; then
+        return 0
+    fi
+
+    if [ "$INSTALL_METHOD" != "source" ]; then
+        echo "Skipping HypeShell Hyprland session because package install method was requested."
+        return 0
+    fi
+
+    prepare_source
+    verify_hypeshell_source_payload
+    install_hyprland_if_needed
+
+    defaults_dir="$PREFIX/share/hypeshell/hyprland"
+    sudo_run install -D -m 755 "$SOURCE_DIR/assets/sessions/hypeshell-hyprland-session" "$PREFIX/bin/hypeshell-hyprland-session"
+    sudo_run install -D -m 644 "$SOURCE_DIR/assets/sessions/hypeshell-hyprland.desktop" "$PREFIX/share/wayland-sessions/hypeshell-hyprland.desktop"
+    sudo_run install -D -m 644 "$SOURCE_DIR/core/internal/config/embedded/hyprland.conf" "$defaults_dir/hyprland.conf"
+    sudo_run install -D -m 644 "$SOURCE_DIR/core/internal/config/embedded/hypr-colors.conf" "$defaults_dir/dms/colors.conf"
+    sudo_run install -D -m 644 "$SOURCE_DIR/core/internal/config/embedded/hypr-layout.conf" "$defaults_dir/dms/layout.conf"
+    sudo_run install -D -m 644 "$SOURCE_DIR/core/internal/config/embedded/hypr-binds.conf" "$defaults_dir/dms/binds.conf"
+
+    sudo_run install -D -m 644 /dev/null "$defaults_dir/dms/outputs.conf"
+    sudo_run install -D -m 644 /dev/null "$defaults_dir/dms/cursor.conf"
+    sudo_run install -D -m 644 /dev/null "$defaults_dir/dms/windowrules.conf"
 }
 
 install_hype() {
@@ -488,9 +600,15 @@ install_greeter() {
     fi
 
     if [ "$YES" -eq 0 ]; then
-        echo "Would install/configure DankGreeter. This replaces SDDM/GDM/LightDM with greetd."
-        run dms greeter install --yes
-        run dms greeter sync --yes
+        echo "Would install/configure HypeShell greeter for Hyprland. This replaces SDDM/GDM/LightDM with greetd."
+        if [ "$INSTALL_METHOD" = "source" ]; then
+            run sudo install-package greetd
+            run dms greeter enable --yes
+            run dms greeter sync --yes --local
+        else
+            run dms greeter install --yes
+            run dms greeter sync --yes
+        fi
         run dms greeter status
         return 0
     fi
@@ -501,9 +619,15 @@ install_greeter() {
         exit 1
     fi
 
-    echo "Installing/configuring DankGreeter. This replaces SDDM/GDM/LightDM with greetd."
-    run dms greeter install --yes
-    run dms greeter sync --yes
+    echo "Installing/configuring HypeShell greeter for Hyprland. This replaces SDDM/GDM/LightDM with greetd."
+    if [ "$INSTALL_METHOD" = "source" ]; then
+        install_greetd_if_needed
+        run dms greeter enable --yes
+        run dms greeter sync --yes --local
+    else
+        run dms greeter install --yes
+        run dms greeter sync --yes
+    fi
     run dms greeter status || true
 }
 
@@ -550,8 +674,10 @@ This will:
     $PREFIX/bin/dms
   - install method:
     $INSTALL_METHOD
-  - install DankGreeter / replace SDDM with greetd:
+  - install HypeShell greeter / replace SDDM with greetd:
     $INSTALL_GREETER
+  - install HypeShell-owned Hyprland session/config:
+    $INSTALL_HYPRLAND_SESSION
   - remove sddm package after greeter setup:
     $CLEAN_DISPLAY_MANAGER
 
@@ -560,12 +686,19 @@ EOF
         mkdir -p "$BACKUP_DIR"
     fi
 
+    if [ "$INSTALL_METHOD" = "source" ] && { [ "$REMOVE_DMS_PACKAGES" -eq 1 ] || [ "$INSTALL_HYPRLAND_SESSION" -eq 1 ]; }; then
+        prepare_source
+        verify_hypeshell_source_payload
+    fi
+
     stop_disable_user_units
     kill_legacy_processes
+    protect_hyprland_dependency
     remove_legacy_packages
     remove_legacy_user_artifacts
     remove_legacy_system_artifacts
     install_hype
+    install_hyprland_session
     install_greeter
     clean_display_manager
 
