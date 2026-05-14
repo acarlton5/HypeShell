@@ -12,7 +12,7 @@ SKIP_PACKAGE_REMOVAL=0
 REMOVE_DMS_PACKAGES=0
 INSTALL_GREETER=0
 INSTALL_METHOD="source"
-REMOVE_SDDM_PACKAGE=0
+CLEAN_DISPLAY_MANAGER=0
 REPO_URL="$DEFAULT_REPO_URL"
 BRANCH="main"
 PREFIX="/usr/local"
@@ -41,7 +41,7 @@ Options:
                         package  install the distro Dank/DMS package
   --install-greeter     Install/configure DankGreeter via "dms greeter install --yes".
                         This replaces SDDM/GDM/LightDM with greetd.
-  --remove-sddm-package Remove the sddm package after DankGreeter setup succeeds.
+  --clean               Remove the sddm package after DankGreeter setup succeeds.
   --repo URL            Hype git repository to install from.
                         Default: $DEFAULT_REPO_URL
   --branch NAME         Branch to clone when --source is not used. Default: main.
@@ -82,8 +82,11 @@ while [ "$#" -gt 0 ]; do
         --install-greeter)
             INSTALL_GREETER=1
             ;;
+        --clean)
+            CLEAN_DISPLAY_MANAGER=1
+            ;;
         --remove-sddm-package)
-            REMOVE_SDDM_PACKAGE=1
+            CLEAN_DISPLAY_MANAGER=1
             ;;
         --repo)
             REPO_URL="${2:-}"
@@ -504,13 +507,13 @@ install_greeter() {
     run dms greeter status || true
 }
 
-remove_sddm_package() {
-    if [ "$REMOVE_SDDM_PACKAGE" -eq 0 ]; then
+clean_display_manager() {
+    if [ "$CLEAN_DISPLAY_MANAGER" -eq 0 ]; then
         return 0
     fi
 
     if [ "$INSTALL_GREETER" -eq 0 ]; then
-        echo "Error: --remove-sddm-package requires --install-greeter so greetd is configured first." >&2
+        echo "Error: --clean requires --install-greeter so greetd is configured first." >&2
         exit 1
     fi
 
@@ -550,7 +553,7 @@ This will:
   - install DankGreeter / replace SDDM with greetd:
     $INSTALL_GREETER
   - remove sddm package after greeter setup:
-    $REMOVE_SDDM_PACKAGE
+    $CLEAN_DISPLAY_MANAGER
 
 EOF
     else
@@ -564,7 +567,7 @@ EOF
     remove_legacy_system_artifacts
     install_hype
     install_greeter
-    remove_sddm_package
+    clean_display_manager
 
     if [ "$YES" -eq 1 ]; then
         echo
