@@ -4,6 +4,7 @@ set -euo pipefail
 
 SCRIPT_NAME="$(basename "$0")"
 DEFAULT_REPO_URL="https://github.com/acarlton5/HypeShell.git"
+INSTALLER_BUILD_ID="fingerprint-v2"
 
 YES=1
 PURGE_USER_DATA=0
@@ -656,6 +657,7 @@ greetd_command_line() {
 }
 
 write_install_fingerprint() {
+    install_status="${1:-complete}"
     fingerprint="$(source_fingerprint)"
     remote="$(source_remote)"
     greetd_command="$(greetd_command_line)"
@@ -663,6 +665,8 @@ write_install_fingerprint() {
 
     {
         echo "HypeShell install fingerprint"
+        echo "installer_build_id=$INSTALLER_BUILD_ID"
+        echo "install_status=$install_status"
         echo "installed_at_utc=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
         echo "source_remote=$remote"
         echo "source_branch=$BRANCH"
@@ -681,9 +685,17 @@ write_install_fingerprint() {
 
     echo
     echo "HypeShell install fingerprint:"
+    echo "  installer: $INSTALLER_BUILD_ID"
+    echo "  status: $install_status"
     echo "  commit: $fingerprint"
     echo "  file:   $FINGERPRINT_PATH"
     echo "  greetd: ${greetd_command:-missing}"
+}
+
+write_failure_fingerprint() {
+    exit_code="$?"
+    echo "Installer failed with exit code $exit_code; writing failure fingerprint..." >&2
+    write_install_fingerprint "failed:$exit_code" || true
 }
 
 install_greetd_if_needed() {
@@ -992,6 +1004,8 @@ clean_display_manager() {
 }
 
 main() {
+    trap write_failure_fingerprint ERR
+
     if [ "$YES" -eq 0 ]; then
         cat <<EOF
 Dry run only. Re-run without --dry-run to make changes.
@@ -1025,10 +1039,14 @@ EOF
         mkdir -p "$BACKUP_DIR"
     fi
 
+    write_install_fingerprint "started"
+
     if [ "$INSTALL_METHOD" = "source" ] && { [ "$REMOVE_DMS_PACKAGES" -eq 1 ] || [ "$INSTALL_HYPRLAND_SESSION" -eq 1 ]; }; then
         prepare_source
         verify_hypeshell_source_payload
     fi
+
+    write_install_fingerprint "source-ready"
 
     stop_disable_user_units
     kill_legacy_processes
@@ -1041,7 +1059,8 @@ EOF
     ensure_hyprland_shell_startup
     install_greeter
     clean_display_manager
-    write_install_fingerprint
+    write_install_fingerprint "complete"
+    trap - ERR
 
     if [ "$YES" -eq 1 ]; then
         echo
