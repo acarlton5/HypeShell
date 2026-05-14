@@ -536,6 +536,15 @@ func CopyGreeterFiles(dmsPath, compositor string, logFunc func(string), sudoPass
 			return fmt.Errorf("failed to make wrapper executable: %w", err)
 		}
 
+		compatWrapperDst := "/usr/bin/dms-greeter"
+		if err := privesc.Run(context.Background(), sudoPassword, "cp", wrapperSrc, compatWrapperDst); err != nil {
+			return fmt.Errorf("failed to copy dms-greeter compatibility wrapper: %w", err)
+		}
+		if err := privesc.Run(context.Background(), sudoPassword, "chmod", "+x", compatWrapperDst); err != nil {
+			return fmt.Errorf("failed to make compatibility wrapper executable: %w", err)
+		}
+		logFunc(fmt.Sprintf("âœ“ Installed dms-greeter compatibility wrapper at %s", compatWrapperDst))
+
 		osInfo, err := distros.GetOSInfo()
 		if err == nil {
 			if config, exists := distros.Registry[osInfo.Distribution.ID]; exists && (config.Family == distros.FamilyFedora || config.Family == distros.FamilySUSE) {

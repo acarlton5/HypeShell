@@ -614,6 +614,15 @@ install_qt_wayland_dependency() {
     fi
 }
 
+install_terminal_dependency() {
+    if have kitty; then
+        return 0
+    fi
+
+    echo "Installing kitty terminal dependency..."
+    install_package_if_available kitty
+}
+
 install_greetd_if_needed() {
     if have greetd || [ -x /usr/sbin/greetd ] || [ -x /sbin/greetd ]; then
         return 0
@@ -816,6 +825,7 @@ install_hype() {
     install_build_dependencies
     install_quickshell_dependency
     install_qt_wayland_dependency
+    install_terminal_dependency
 
     run make -C "$SOURCE_DIR" build
     sudo_run make -C "$SOURCE_DIR" PREFIX="$PREFIX" install
@@ -849,6 +859,7 @@ install_greeter_wrapper_from_source() {
     fi
 
     sudo_run install -D -m 755 "$wrapper_src" /usr/local/bin/dms-greeter
+    sudo_run install -D -m 755 "$wrapper_src" /usr/bin/dms-greeter
 }
 
 install_greeter() {
