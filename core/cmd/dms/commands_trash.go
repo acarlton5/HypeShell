@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/AvengeMedia/DankMaterialShell/core/internal/log"
-	"github.com/AvengeMedia/DankMaterialShell/core/internal/trash"
+	"github.com/acarlton5/HypeShell/core/internal/log"
+	"github.com/acarlton5/HypeShell/core/internal/trash"
 	"github.com/spf13/cobra"
 )
 

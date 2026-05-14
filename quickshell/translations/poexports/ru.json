@@ -281,8 +281,8 @@
   "90°": {
     "90°": "90°"
   },
-  "<a href=\"https://github.com/AvengeMedia/DankMaterialShell/blob/master/LICENSE\" style=\"text-decoration:none; color:%1;\">MIT License</a>": {
-    "<a href=\"https://github.com/AvengeMedia/DankMaterialShell/blob/master/LICENSE\" style=\"text-decoration:none; color:%1;\">MIT License</a>": ""
+  "<a href=\"https://github.com/acarlton5/HypeShell/blob/master/LICENSE\" style=\"text-decoration:none; color:%1;\">MIT License</a>": {
+    "<a href=\"https://github.com/acarlton5/HypeShell/blob/master/LICENSE\" style=\"text-decoration:none; color:%1;\">MIT License</a>": ""
   },
   "A file with this name already exists. Do you want to overwrite it?": {
     "A file with this name already exists. Do you want to overwrite it?": "Файл с таким именем уже существует. Хотите его перезаписать?"
@@ -341,8 +341,8 @@
   "Activate Greeter": {
     "Activate Greeter": ""
   },
-  "Activate the DMS greeter? A terminal will open for sudo authentication. Run Sync after activation to apply your settings.": {
-    "Activate the DMS greeter? A terminal will open for sudo authentication. Run Sync after activation to apply your settings.": ""
+  "Activate the HypeShell Greeter? A terminal will open for sudo authentication. Run Sync after activation to apply your settings.": {
+    "Activate the HypeShell Greeter? A terminal will open for sudo authentication. Run Sync after activation to apply your settings.": ""
   },
   "Activation": {
     "Activation": "Активация"
@@ -734,8 +734,8 @@
   "Automatically lock after": {
     "Automatically lock after": "Автоматическая блокировка после"
   },
-  "Automatically lock the screen when DMS starts": {
-    "Automatically lock the screen when DMS starts": "Автоматически блокировать экран при запуске DMS"
+  "Automatically lock the screen when HypeShell starts": {
+    "Automatically lock the screen when HypeShell starts": "Автоматически блокировать экран при запуске HypeShell"
   },
   "Automatically lock the screen when the system prepares to suspend": {
     "Automatically lock the screen when the system prepares to suspend": "Автоматически блокировать экран при подготовке системы к приостановке"
@@ -1073,8 +1073,8 @@
   "Change bar appearance": {
     "Change bar appearance": "Изменить панели внешний вид"
   },
-  "Change the locale used by the DMS interface.": {
-    "Change the locale used by the DMS interface.": ""
+  "Change the locale used by the HypeShell interface.": {
+    "Change the locale used by the HypeShell interface.": ""
   },
   "Change the locale used for date and time formatting, independent of the interface language.": {
     "Change the locale used for date and time formatting, independent of the interface language.": ""
@@ -1151,8 +1151,8 @@
   "Choose the border accent color": {
     "Choose the border accent color": "Выбрать акцентный цвет рамки"
   },
-  "Choose the logo displayed on the launcher button in DankBar": {
-    "Choose the logo displayed on the launcher button in DankBar": "Выбрать логотип, отображаемый на кнопке запуска приложений в DankBar"
+  "Choose the logo displayed on the launcher button in Hype Bar": {
+    "Choose the logo displayed on the launcher button in Hype Bar": "Выбрать логотип, отображаемый на кнопке запуска приложений в DankBar"
   },
   "Choose where notification popups appear on screen": {
     "Choose where notification popups appear on screen": "Выбрать, где на экране будут отображаться всплывающие уведомления"
@@ -1310,8 +1310,8 @@
   "Color theme for syntax highlighting. %1 themes available.": {
     "Color theme for syntax highlighting. %1 themes available.": "Цветовая тема для подсветки синтаксиса. Доступно тем: %1."
   },
-  "Color theme from DMS registry": {
-    "Color theme from DMS registry": "Цветовая тема из реестра DMS"
+  "Color theme from HypeShell registry": {
+    "Color theme from HypeShell registry": "Цветовая тема из реестра HypeShell"
   },
   "Colorful": {
     "Colorful": "По умолчанию"
@@ -1751,23 +1751,23 @@
   "DEMO MODE - Click anywhere to exit": {
     "DEMO MODE - Click anywhere to exit": "ДЕМОНСТРАЦИОННЫЙ РЕЖИМ - Нажмите в любом месте, чтобы выйти"
   },
-  "DMS Plugin Manager Unavailable": {
-    "DMS Plugin Manager Unavailable": "Менеджер Дополнений DMS Недоступен"
+  "HypeShell Plugin Manager Unavailable": {
+    "HypeShell Plugin Manager Unavailable": "Менеджер Дополнений HypeShell Недоступен"
   },
-  "DMS Shortcuts": {
-    "DMS Shortcuts": "Комбинации клавиш DMS"
+  "HypeShell Shortcuts": {
+    "HypeShell Shortcuts": "Комбинации клавиш HypeShell"
   },
-  "DMS greeter needs: greetd, dms-greeter. Fingerprint: fprintd, pam_fprintd. Security keys: pam_u2f. Add your user to the greeter group. Authentication changes apply automatically and may open a terminal when sudo authentication is required.": {
-    "DMS greeter needs: greetd, dms-greeter. Fingerprint: fprintd, pam_fprintd. Security keys: pam_u2f. Add your user to the greeter group. Authentication changes apply automatically and may open a terminal when sudo authentication is required.": ""
+  "HypeShell Greeter needs: greetd, dms-greeter. Fingerprint: fprintd, pam_fprintd. Security keys: pam_u2f. Add your user to the greeter group. Authentication changes apply automatically and may open a terminal when sudo authentication is required.": {
+    "HypeShell Greeter needs: greetd, dms-greeter. Fingerprint: fprintd, pam_fprintd. Security keys: pam_u2f. Add your user to the greeter group. Authentication changes apply automatically and may open a terminal when sudo authentication is required.": ""
   },
-  "DMS out of date": {
-    "DMS out of date": "DMS устарел"
+  "HypeShell out of date": {
+    "HypeShell out of date": "HypeShell устарел"
   },
-  "DMS service is not connected. Clipboard settings are unavailable.": {
-    "DMS service is not connected. Clipboard settings are unavailable.": "Служба DMS не подключена. Настройки буфера обмена недоступны."
+  "HypeShell service is not connected. Clipboard settings are unavailable.": {
+    "HypeShell service is not connected. Clipboard settings are unavailable.": "Служба HypeShell не подключена. Настройки буфера обмена недоступны."
   },
-  "DMS shell actions (launcher, clipboard, etc.)": {
-    "DMS shell actions (launcher, clipboard, etc.)": "Действия оболочки DMS (лаунчер, буфер обмена и т.д.)"
+  "HypeShell shell actions (launcher, clipboard, etc.)": {
+    "HypeShell shell actions (launcher, clipboard, etc.)": "Действия оболочки HypeShell (лаунчер, буфер обмена и т.д.)"
   },
   "DMS_SOCKET not available": {
     "DMS_SOCKET not available": "DMS_SOCKET не доступен"
@@ -1781,20 +1781,20 @@
   "Daily at:": {
     "Daily at:": "Ежедневно в:"
   },
-  "Dank": {
-    "Dank": "Dank"
+  "HypeShell": {
+    "HypeShell": "HypeShell"
   },
-  "Dank Bar": {
-    "Dank Bar": "Панель Dank"
+  "Hype Bar": {
+    "Hype Bar": "Панель Dank"
   },
-  "DankBar": {
-    "DankBar": "DankBar"
+  "Hype Bar": {
+    "Hype Bar": "Hype Bar"
   },
-  "DankMaterialShell is ready to use": {
-    "DankMaterialShell is ready to use": "DankMaterialShell готов к использованию"
+  "HypeShell is ready to use": {
+    "HypeShell is ready to use": "HypeShell готов к использованию"
   },
-  "DankShell & System Icons (requires restart)": {
-    "DankShell & System Icons (requires restart)": "DankShell и системные значки (требуется перезапуск)"
+  "HypeShell & System Icons (requires restart)": {
+    "HypeShell & System Icons (requires restart)": "DankShell и системные значки (требуется перезапуск)"
   },
   "Dark Mode": {
     "Dark Mode": "Тёмный режим"
@@ -2261,8 +2261,8 @@
   "Enable fingerprint authentication": {
     "Enable fingerprint authentication": "Включить аутентификацию по отпечатку пальца"
   },
-  "Enable fingerprint or security key for DMS Greeter. Authentication changes apply automatically.": {
-    "Enable fingerprint or security key for DMS Greeter. Authentication changes apply automatically.": ""
+  "Enable fingerprint or security key for HypeShell Greeter. Authentication changes apply automatically.": {
+    "Enable fingerprint or security key for HypeShell Greeter. Authentication changes apply automatically.": ""
   },
   "Enable loginctl lock integration": {
     "Enable loginctl lock integration": "Включить интеграцию блокировки loginctl"
@@ -2600,8 +2600,8 @@
   "Failed to ring device": {
     "Failed to ring device": "Не удалось вызвать устройство"
   },
-  "Failed to run 'dms greeter status'. Ensure DMS is installed and dms is in PATH.": {
-    "Failed to run 'dms greeter status'. Ensure DMS is installed and dms is in PATH.": ""
+  "Failed to run 'dms greeter status'. Ensure HypeShell is installed and dms is in PATH.": {
+    "Failed to run 'dms greeter status'. Ensure HypeShell is installed and dms is in PATH.": ""
   },
   "Failed to save audio config": {
     "Failed to save audio config": "Не удалось сохранить аудиоконфиг"
@@ -2819,8 +2819,8 @@
   "Folders": {
     "Folders": "Папки"
   },
-  "Follow DMS background color": {
-    "Follow DMS background color": ""
+  "Follow HypeShell background color": {
+    "Follow HypeShell background color": ""
   },
   "Follow Monitor Focus": {
     "Follow Monitor Focus": "Следовать за фокусом монитора"
@@ -2984,11 +2984,11 @@
   "Gamma Control": {
     "Gamma Control": "Настройка гаммы"
   },
-  "Gamma control not available. Requires DMS API v6+.": {
-    "Gamma control not available. Requires DMS API v6+.": "Управление Gamma недоступно. Требуется DMS API v6+."
+  "Gamma control not available. Requires HypeShell API v6+.": {
+    "Gamma control not available. Requires HypeShell API v6+.": "Управление Gamma недоступно. Требуется HypeShell API v6+."
   },
-  "Generate baseline GTK3/4 or QT5/QT6 (requires qt6ct-kde) configurations to follow DMS colors. Only needed once.<br /><br />It is recommended to configure <a href=\"https://github.com/AvengeMedia/DankMaterialShell/blob/master/README.md#Theming\" style=\"text-decoration:none; color:%1;\">adw-gtk3</a> prior to applying GTK themes.": {
-    "Generate baseline GTK3/4 or QT5/QT6 (requires qt6ct-kde) configurations to follow DMS colors. Only needed once.<br /><br />It is recommended to configure <a href=\"https://github.com/AvengeMedia/DankMaterialShell/blob/master/README.md#Theming\" style=\"text-decoration:none; color:%1;\">adw-gtk3</a> prior to applying GTK themes.": ""
+  "Generate baseline GTK3/4 or QT5/QT6 (requires qt6ct-kde) configurations to follow HypeShell colors. Only needed once.<br /><br />It is recommended to configure <a href=\"https://github.com/acarlton5/HypeShell/blob/master/README.md#Theming\" style=\"text-decoration:none; color:%1;\">adw-gtk3</a> prior to applying GTK themes.": {
+    "Generate baseline GTK3/4 or QT5/QT6 (requires qt6ct-kde) configurations to follow HypeShell colors. Only needed once.<br /><br />It is recommended to configure <a href=\"https://github.com/acarlton5/HypeShell/blob/master/README.md#Theming\" style=\"text-decoration:none; color:%1;\">adw-gtk3</a> prior to applying GTK themes.": ""
   },
   "Generic": {
     "Generic": "Общий"
@@ -3416,8 +3416,8 @@
   "Install Theme": {
     "Install Theme": "Установить тему"
   },
-  "Install color themes from the DMS theme registry": {
-    "Install color themes from the DMS theme registry": "Установить цветовые темы из реестра тем DMS"
+  "Install color themes from the HypeShell theme registry": {
+    "Install color themes from the HypeShell theme registry": "Установить цветовые темы из реестра тем HypeShell"
   },
   "Install complete. Greeter has been installed.": {
     "Install complete. Greeter has been installed.": ""
@@ -3428,17 +3428,17 @@
   "Install matugen package for dynamic theming": {
     "Install matugen package for dynamic theming": "Установите пакет matugen для динамического оформления"
   },
-  "Install plugin '%1' from the DMS registry?": {
-    "Install plugin '%1' from the DMS registry?": "Установить дополнение '%1' из реестра DMS?"
+  "Install plugin '%1' from the HypeShell registry?": {
+    "Install plugin '%1' from the HypeShell registry?": "Установить дополнение '%1' из реестра HypeShell?"
   },
-  "Install plugins from the DMS plugin registry": {
-    "Install plugins from the DMS plugin registry": "Установить дополнения из репозитория DMS"
+  "Install plugins from the HypeShell plugin registry": {
+    "Install plugins from the HypeShell plugin registry": "Установить дополнения из репозитория HypeShell"
   },
-  "Install the DMS greeter? A terminal will open for sudo authentication.": {
-    "Install the DMS greeter? A terminal will open for sudo authentication.": ""
+  "Install the HypeShell Greeter? A terminal will open for sudo authentication.": {
+    "Install the HypeShell Greeter? A terminal will open for sudo authentication.": ""
   },
-  "Install theme '%1' from the DMS registry?": {
-    "Install theme '%1' from the DMS registry?": "Установить тему '%1' из реестра DMS?"
+  "Install theme '%1' from the HypeShell registry?": {
+    "Install theme '%1' from the HypeShell registry?": "Установить тему '%1' из реестра HypeShell?"
   },
   "Installation and PAM setup: see the ": {
     "Installation and PAM setup: see the ": ""
@@ -3770,8 +3770,8 @@
   "Make sure KDE Connect or Valent is running on your other devices": {
     "Make sure KDE Connect or Valent is running on your other devices": "Убедитесь, что KDE Connect или Valent запущены на других устройствах"
   },
-  "Manage and configure plugins for extending DMS functionality": {
-    "Manage and configure plugins for extending DMS functionality": "Управление и настройка дополнений для расширения функционала DMS"
+  "Manage and configure plugins for extending HypeShell functionality": {
+    "Manage and configure plugins for extending HypeShell functionality": "Управление и настройка дополнений для расширения функционала HypeShell"
   },
   "Manage up to 4 independent bar configurations. Each bar has its own position, widgets, styling, and display assignment.": {
     "Manage up to 4 independent bar configurations. Each bar has its own position, widgets, styling, and display assignment.": "Управление до 4 независимыми конфигурациями панели. Каждая панель имеет собственную позицию, виджетов, стиль и назначение Display."
@@ -3842,8 +3842,8 @@
   "Material inspired shadows and elevation on modals, popouts, and dialogs": {
     "Material inspired shadows and elevation on modals, popouts, and dialogs": ""
   },
-  "Material: Material Design 3 Expressive bezier curves. The DMS default feel.": {
-    "Material: Material Design 3 Expressive bezier curves. The DMS default feel.": ""
+  "Material: Material Design 3 Expressive bezier curves. The HypeShell default feel.": {
+    "Material: Material Design 3 Expressive bezier curves. The HypeShell default feel.": ""
   },
   "Matugen Contrast": {
     "Matugen Contrast": ""
@@ -4268,8 +4268,8 @@
   "No Border": {
     "No Border": "Без границы"
   },
-  "No DMS shortcuts configured": {
-    "No DMS shortcuts configured": "Комбинации клавиш DMS не настроены"
+  "No HypeShell Shortcuts configured": {
+    "No HypeShell Shortcuts configured": "Комбинации клавиш HypeShell не настроены"
   },
   "No Dim": {
     "No Dim": "Без затемнения"
@@ -4658,8 +4658,8 @@
   "Only adjust gamma based on time or location rules.": {
     "Only adjust gamma based on time or location rules.": "Регулировать цветовую температуру только на основе правил времени или местоположения."
   },
-  "Only affects DMS-managed PAM. If greetd already includes pam_fprintd, fingerprint stays enabled.": {
-    "Only affects DMS-managed PAM. If greetd already includes pam_fprintd, fingerprint stays enabled.": ""
+  "Only affects HypeShell-managed PAM. If greetd already includes pam_fprintd, fingerprint stays enabled.": {
+    "Only affects HypeShell-managed PAM. If greetd already includes pam_fprintd, fingerprint stays enabled.": ""
   },
   "Only show windows from the current monitor on each dock": {
     "Only show windows from the current monitor on each dock": "Показывать только окна с текущего монитора на каждом доке"
@@ -5411,11 +5411,11 @@
   "Requires 'dgop' tool": {
     "Requires 'dgop' tool": "Требуется инструмент 'dgop'"
   },
-  "Requires DMS %1": {
-    "Requires DMS %1": "Требуется DMS %1"
+  "Requires HypeShell %1": {
+    "Requires HypeShell %1": "Требуется HypeShell %1"
   },
-  "Requires DMS server with sysupdate capability": {
-    "Requires DMS server with sysupdate capability": ""
+  "Requires HypeShell server with sysupdate capability": {
+    "Requires HypeShell server with sysupdate capability": ""
   },
   "Requires DWL compositor": {
     "Requires DWL compositor": "Требуется композитор DWL"
@@ -5447,11 +5447,11 @@
   "Resolution, position, scale": {
     "Resolution, position, scale": "Разрешение, позиция, масштаб"
   },
-  "Restart DMS": {
-    "Restart DMS": "Перезагрузить DMS"
+  "Restart HypeShell": {
+    "Restart HypeShell": "Перезагрузить HypeShell"
   },
-  "Restart the DankMaterialShell": {
-    "Restart the DankMaterialShell": "Перезагрузить DankMaterialShell"
+  "Restart the HypeShell": {
+    "Restart the HypeShell": "Перезагрузить HypeShell"
   },
   "Restarting audio system...": {
     "Restarting audio system...": "Перезапуск аудиосистемы..."
@@ -5528,8 +5528,8 @@
   "Run Again": {
     "Run Again": "Запустить ещё раз"
   },
-  "Run DMS Templates": {
-    "Run DMS Templates": "Запустить шаблоны DMS"
+  "Run HypeShell Templates": {
+    "Run HypeShell Templates": "Запустить шаблоны HypeShell"
   },
   "Run User Templates": {
     "Run User Templates": "Запустить пользовательский пример"
@@ -5609,11 +5609,11 @@
   "Scale": {
     "Scale": "Масштаб"
   },
-  "Scale DankBar font sizes independently": {
-    "Scale DankBar font sizes independently": "Изменять размер шрифта DankBar независимо"
+  "Scale Hype Bar font sizes independently": {
+    "Scale Hype Bar font sizes independently": "Изменять размер шрифта DankBar независимо"
   },
-  "Scale DankBar icon sizes independently": {
-    "Scale DankBar icon sizes independently": "Масштабировать размеры значков DankBar независимо"
+  "Scale Hype Bar icon sizes independently": {
+    "Scale Hype Bar icon sizes independently": "Масштабировать размеры значков DankBar независимо"
   },
   "Scale all font sizes throughout the shell": {
     "Scale all font sizes throughout the shell": "Масштабировать все размеры шрифтов во всей оболочке"
@@ -6074,8 +6074,8 @@
   "Show Reboot": {
     "Show Reboot": "Показать перезагрузку"
   },
-  "Show Restart DMS": {
-    "Show Restart DMS": "Показать перезапуск DMS"
+  "Show Restart HypeShell": {
+    "Show Restart HypeShell": "Показать перезапуск HypeShell"
   },
   "Show Saved Items": {
     "Show Saved Items": "Показать сохранённые элементы"
@@ -6293,8 +6293,8 @@
   "Snow": {
     "Snow": "Снег"
   },
-  "Some plugins require a newer version of DMS:": {
-    "Some plugins require a newer version of DMS:": "Некоторые плагины требуют более новую версию DMS:"
+  "Some plugins require a newer version of HypeShell:": {
+    "Some plugins require a newer version of HypeShell:": "Некоторые плагины требуют более новую версию HypeShell:"
   },
   "Sort Alphabetically": {
     "Sort Alphabetically": "Сортировать по алфавиту"
@@ -6344,8 +6344,8 @@
   "Standard": {
     "Standard": "Стандарт"
   },
-  "Standard: Classic Material Design 3 — panels rise from below with a subtle scale. The DMS default.": {
-    "Standard: Classic Material Design 3 — panels rise from below with a subtle scale. The DMS default.": ""
+  "Standard: Classic Material Design 3 — panels rise from below with a subtle scale. The HypeShell default.": {
+    "Standard: Classic Material Design 3 — panels rise from below with a subtle scale. The HypeShell default.": ""
   },
   "Start": {
     "Start": "Старт"
@@ -6542,8 +6542,8 @@
   "Terminal fallback failed. Install a supported terminal emulator or run 'dms auth sync' manually.": {
     "Terminal fallback failed. Install a supported terminal emulator or run 'dms auth sync' manually.": ""
   },
-  "Terminal fallback failed. Install one of the supported terminal emulators or run 'dms greeter sync' manually.": {
-    "Terminal fallback failed. Install one of the supported terminal emulators or run 'dms greeter sync' manually.": ""
+  "Terminal fallback failed. Install one of the supported terminal emulators or run 'HypeShell Greeter sync' manually.": {
+    "Terminal fallback failed. Install one of the supported terminal emulators or run 'HypeShell Greeter sync' manually.": ""
   },
   "Terminal fallback opened. Complete authentication setup there; it will close automatically when done.": {
     "Terminal fallback opened. Complete authentication setup there; it will close automatically when done.": ""
@@ -6617,8 +6617,8 @@
   "Third-Party Plugin Warning": {
     "Third-Party Plugin Warning": "Предупреждение о стороннем плагине"
   },
-  "Third-party plugins are created by the community and are not officially supported by DankMaterialShell.\n\nThese plugins may pose security and privacy risks - install at your own risk.": {
-    "Third-party plugins are created by the community and are not officially supported by DankMaterialShell.\n\nThese plugins may pose security and privacy risks - install at your own risk.": "Сторонние плагины созданы сообществом и официально не поддерживаются DankMaterialShell.\n\nЭти плагины могут представлять риски для безопасности и конфиденциальности — устанавливайте на свой страх и риск."
+  "Third-party plugins are created by the community and are not officially supported by HypeShell.\n\nThese plugins may pose security and privacy risks - install at your own risk.": {
+    "Third-party plugins are created by the community and are not officially supported by HypeShell.\n\nThese plugins may pose security and privacy risks - install at your own risk.": "Сторонние плагины созданы сообществом и официально не поддерживаются HypeShell.\n\nЭти плагины могут представлять риски для безопасности и конфиденциальности — устанавливайте на свой страх и риск."
   },
   "This bind is overridden by config.kdl": {
     "This bind is overridden by config.kdl": "Эта комбинация клавиш переопределена в config.kdl"
@@ -6722,8 +6722,8 @@
   "To update, run the following command:": {
     "To update, run the following command:": "Для обновления, запустите следующую команду:"
   },
-  "To use this DMS bind, remove or change the keybind in your config.kdl": {
-    "To use this DMS bind, remove or change the keybind in your config.kdl": "Для использования этой комбинации клавиш DMS, удалите или измените комбинацию в config.kdl"
+  "To use this HypeShell bind, remove or change the keybind in your config.kdl": {
+    "To use this HypeShell bind, remove or change the keybind in your config.kdl": "Для использования этой комбинации клавиш HypeShell, удалите или измените комбинацию в config.kdl"
   },
   "Toast Messages": {
     "Toast Messages": "Всплывающие сообщения"
@@ -6887,8 +6887,8 @@
   "Uninstall failed: %1": {
     "Uninstall failed: %1": "Ошибка удаления: %1"
   },
-  "Uninstall the DMS greeter? This will remove configuration and restore your previous display manager. A terminal will open for sudo authentication.": {
-    "Uninstall the DMS greeter? This will remove configuration and restore your previous display manager. A terminal will open for sudo authentication.": ""
+  "Uninstall the HypeShell Greeter? This will remove configuration and restore your previous display manager. A terminal will open for sudo authentication.": {
+    "Uninstall the HypeShell Greeter? This will remove configuration and restore your previous display manager. A terminal will open for sudo authentication.": ""
   },
   "Uninstalled: %1": {
     "Uninstalled: %1": "Удалено: %1"
@@ -7262,8 +7262,8 @@
   "Welcome": {
     "Welcome": "Добро пожаловать"
   },
-  "Welcome to DankMaterialShell": {
-    "Welcome to DankMaterialShell": "Добро пожаловать в DankMaterialShell"
+  "Welcome to HypeShell": {
+    "Welcome to HypeShell": "Добро пожаловать в HypeShell"
   },
   "When clicking a dock window in a Hyprland special workspace, bring that special workspace back before focusing the window": {
     "When clicking a dock window in a Hyprland special workspace, bring that special workspace back before focusing the window": ""
@@ -7487,8 +7487,8 @@
   "direct": {
     "direct": ""
   },
-  "dms is a highly customizable, modern desktop shell with a <a href=\"https://m3.material.io/\" style=\"text-decoration:none; color:%1;\">material 3 inspired</a> design.<br /><br/>It is built with <a href=\"https://quickshell.org\" style=\"text-decoration:none; color:%1;\">Quickshell</a>, a QT6 framework for building desktop shells, and <a href=\"https://go.dev\" style=\"text-decoration:none; color:%1;\">Go</a>, a statically typed, compiled programming language.": {
-    "dms is a highly customizable, modern desktop shell with a <a href=\"https://m3.material.io/\" style=\"text-decoration:none; color:%1;\">material 3 inspired</a> design.<br /><br/>It is built with <a href=\"https://quickshell.org\" style=\"text-decoration:none; color:%1;\">Quickshell</a>, a QT6 framework for building desktop shells, and <a href=\"https://go.dev\" style=\"text-decoration:none; color:%1;\">Go</a>, a statically typed, compiled programming language.": ""
+  "HypeShell is a highly customizable, modern desktop shell with a <a href=\"https://m3.material.io/\" style=\"text-decoration:none; color:%1;\">material 3 inspired</a> design.<br /><br/>It is built with <a href=\"https://quickshell.org\" style=\"text-decoration:none; color:%1;\">Quickshell</a>, a QT6 framework for building desktop shells, and <a href=\"https://go.dev\" style=\"text-decoration:none; color:%1;\">Go</a>, a statically typed, compiled programming language.": {
+    "HypeShell is a highly customizable, modern desktop shell with a <a href=\"https://m3.material.io/\" style=\"text-decoration:none; color:%1;\">material 3 inspired</a> design.<br /><br/>It is built with <a href=\"https://quickshell.org\" style=\"text-decoration:none; color:%1;\">Quickshell</a>, a QT6 framework for building desktop shells, and <a href=\"https://go.dev\" style=\"text-decoration:none; color:%1;\">Go</a>, a statically typed, compiled programming language.": ""
   },
   "dms/cursor config exists but is not included. Cursor settings won't apply.": {
     "dms/cursor config exists but is not included. Cursor settings won't apply.": "конфигурация dms/cursor существует но не включена. Настройки курсора не будут применены."
@@ -7523,8 +7523,8 @@
   "leave empty for default": {
     "leave empty for default": "оставьте пустым для значения по умолчанию"
   },
-  "loginctl not available - lock integration requires DMS socket connection": {
-    "loginctl not available - lock integration requires DMS socket connection": "loginctl недоступен — интеграция блокировки требует подключения к сокету DMS"
+  "loginctl not available - lock integration requires HypeShell socket connection": {
+    "loginctl not available - lock integration requires HypeShell socket connection": "loginctl недоступен — интеграция блокировки требует подключения к сокету HypeShell"
   },
   "mangowc Discord Server": {
     "mangowc Discord Server": ""
@@ -7613,8 +7613,8 @@
   "up": {
     "up": "вверх"
   },
-  "update dms for NM integration.": {
-    "update dms for NM integration.": "обновите dms для NM интеграции."
+  "update HypeShell for NM integration.": {
+    "update HypeShell for NM integration.": "обновите dms для NM интеграции."
   },
   "v%1 by %2": {
     "v%1 by %2": "v%1 от %2"

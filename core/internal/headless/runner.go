@@ -6,11 +6,11 @@ import (
 	"os"
 	"strings"
 
-	"github.com/AvengeMedia/DankMaterialShell/core/internal/config"
-	"github.com/AvengeMedia/DankMaterialShell/core/internal/deps"
-	"github.com/AvengeMedia/DankMaterialShell/core/internal/distros"
-	"github.com/AvengeMedia/DankMaterialShell/core/internal/greeter"
-	"github.com/AvengeMedia/DankMaterialShell/core/internal/privesc"
+	"github.com/acarlton5/HypeShell/core/internal/config"
+	"github.com/acarlton5/HypeShell/core/internal/deps"
+	"github.com/acarlton5/HypeShell/core/internal/distros"
+	"github.com/acarlton5/HypeShell/core/internal/greeter"
+	"github.com/acarlton5/HypeShell/core/internal/privesc"
 )
 
 // ErrConfirmationRequired is returned when --yes is not set and the user

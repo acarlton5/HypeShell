@@ -5,10 +5,10 @@ import (
 	"sync"
 	"time"
 
-	"github.com/AvengeMedia/DankMaterialShell/core/internal/geolocation"
-	"github.com/AvengeMedia/DankMaterialShell/core/internal/server/loginctl"
-	"github.com/AvengeMedia/DankMaterialShell/core/internal/server/wayland"
-	"github.com/AvengeMedia/DankMaterialShell/core/pkg/syncmap"
+	"github.com/acarlton5/HypeShell/core/internal/geolocation"
+	"github.com/acarlton5/HypeShell/core/internal/server/loginctl"
+	"github.com/acarlton5/HypeShell/core/internal/server/wayland"
+	"github.com/acarlton5/HypeShell/core/pkg/syncmap"
 )
 
 const (

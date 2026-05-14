@@ -9,7 +9,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/AvengeMedia/DankMaterialShell/core/internal/log"
+	"github.com/acarlton5/HypeShell/core/internal/log"
 	"github.com/spf13/afero"
 )
 
@@ -33,12 +33,20 @@ func NewManagerWithFs(fs afero.Fs) (*Manager, error) {
 }
 
 func getPluginsDir() string {
+	return filepath.Join(userConfigDir(), "HypeShell", "plugins")
+}
+
+func getLegacyPluginsDir() string {
+	return filepath.Join(userConfigDir(), "DankMaterialShell", "plugins")
+}
+
+func userConfigDir() string {
 	configDir, err := os.UserConfigDir()
 	if err != nil {
 		log.Error("failed to get user config dir", "err", err)
 		return ""
 	}
-	return filepath.Join(configDir, "DankMaterialShell", "plugins")
+	return configDir
 }
 
 func (m *Manager) IsInstalled(plugin Plugin) (bool, error) {
@@ -52,6 +60,14 @@ func (m *Manager) IsInstalled(plugin Plugin) (bool, error) {
 func (m *Manager) findInstalledPath(pluginID string) (string, error) {
 	// Check user plugins directory
 	path, err := m.findInDir(m.pluginsDir, pluginID)
+	if err != nil {
+		return "", err
+	}
+	if path != "" {
+		return path, nil
+	}
+
+	path, err = m.findInDir(getLegacyPluginsDir(), pluginID)
 	if err != nil {
 		return "", err
 	}
@@ -331,13 +347,16 @@ func (m *Manager) shouldCleanupRepo(repoPath, repoURL, excludePlugin string) (bo
 func (m *Manager) ListInstalled() ([]string, error) {
 	installedMap := make(map[string]bool)
 
-	exists, err := afero.DirExists(m.fs, m.pluginsDir)
-	if err != nil {
-		return nil, err
-	}
+	for _, pluginsDir := range []string{m.pluginsDir, getLegacyPluginsDir()} {
+		exists, err := afero.DirExists(m.fs, pluginsDir)
+		if err != nil {
+			return nil, err
+		}
+		if !exists {
+			continue
+		}
 
-	if exists {
-		entries, err := afero.ReadDir(m.fs, m.pluginsDir)
+		entries, err := afero.ReadDir(m.fs, pluginsDir)
 		if err != nil {
 			return nil, fmt.Errorf("failed to read plugins directory: %w", err)
 		}
@@ -348,7 +367,7 @@ func (m *Manager) ListInstalled() ([]string, error) {
 				continue
 			}
 
-			fullPath := filepath.Join(m.pluginsDir, name)
+			fullPath := filepath.Join(pluginsDir, name)
 			isPlugin := false
 
 			if entry.IsDir() {
@@ -495,6 +514,13 @@ func (m *Manager) UpdateByIDOrName(idOrName string) error {
 
 func (m *Manager) findInstalledPathByIDOrName(idOrName string) (string, error) {
 	path, err := m.findInDirByIDOrName(m.pluginsDir, idOrName)
+	if err != nil {
+		return "", err
+	}
+	if path != "" {
+		return path, nil
+	}
+	path, err = m.findInDirByIDOrName(getLegacyPluginsDir(), idOrName)
 	if err != nil {
 		return "", err
 	}

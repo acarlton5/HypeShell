@@ -991,7 +991,7 @@ Singleton {
     // Theme is the canonical access point for animation variant state. The
     // aliases below forward to AnimVariants.qml so consumers don't need two
     // imports. ~200 call sites read through Theme.variantEnterCurve /
-    // Theme.isConnectedEffect / etc. — do NOT migrate to AnimVariants directly.
+    // Theme.isConnectedEffect / etc. â€” do NOT migrate to AnimVariants directly.
     readonly property list<real> variantEnterCurve: AnimVariants.variantEnterCurve
     readonly property list<real> variantExitCurve: AnimVariants.variantExitCurve
     readonly property list<real> variantModalEnterCurve: AnimVariants.variantModalEnterCurve
@@ -1612,7 +1612,7 @@ Singleton {
         log.debug("Starting matugen worker");
         workerRunning = true;
 
-        const args = ["dms", "matugen", "queue", "--state-dir", stateDir, "--shell-dir", shellDir, "--config-dir", configDir, "--kind", desired.kind, "--value", desired.value, "--mode", desired.mode, "--icon-theme", desired.iconTheme, "--matugen-type", desired.matugenType,];
+        const args = ["hype", "matugen", "queue", "--state-dir", stateDir, "--shell-dir", shellDir, "--config-dir", configDir, "--kind", desired.kind, "--value", desired.value, "--mode", desired.mode, "--icon-theme", desired.iconTheme, "--matugen-type", desired.matugenType,];
 
         if (!desired.runUserTemplates) {
             args.push("--run-user-templates=false");

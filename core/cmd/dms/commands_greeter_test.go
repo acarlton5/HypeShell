@@ -5,7 +5,7 @@ import (
 	"reflect"
 	"testing"
 
-	sharedpam "github.com/AvengeMedia/DankMaterialShell/core/internal/pam"
+	sharedpam "github.com/acarlton5/HypeShell/core/internal/pam"
 )
 
 func TestSyncGreeterConfigsAndAuthDelegatesSharedAuth(t *testing.T) {

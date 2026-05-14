@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/AvengeMedia/DankMaterialShell/core/internal/log"
-	"github.com/AvengeMedia/DankMaterialShell/core/internal/proto/ext_workspace"
-	wlclient "github.com/AvengeMedia/DankMaterialShell/core/pkg/go-wayland/wayland/client"
+	"github.com/acarlton5/HypeShell/core/internal/log"
+	"github.com/acarlton5/HypeShell/core/internal/proto/ext_workspace"
+	wlclient "github.com/acarlton5/HypeShell/core/pkg/go-wayland/wayland/client"
 )
 
 func CheckCapability() bool {

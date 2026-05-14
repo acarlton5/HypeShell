@@ -226,6 +226,24 @@ backup_legacy_children() {
     done
 }
 
+migrate_dank_material_data() {
+    [ "$PURGE_USER_DATA" -eq 0 ] || return 0
+
+    for kind in plugins themes; do
+        src="$HOME/.config/DankMaterialShell/$kind"
+        dst="$HOME/.config/HypeShell/$kind"
+        [ -d "$src" ] || continue
+        run mkdir -p "$dst"
+        for child in "$src"/*; do
+            [ -e "$child" ] || [ -L "$child" ] || continue
+            name="$(basename "$child")"
+            if [ ! -e "$dst/$name" ] && [ ! -L "$dst/$name" ]; then
+                run cp -a "$child" "$dst/$name"
+            fi
+        done
+    done
+}
+
 stop_disable_user_units() {
     if ! have systemctl; then
         return 0
@@ -238,6 +256,7 @@ stop_disable_user_units() {
         hype-updater.service
         HYPESHELL.service
         dms.service
+        hype.service
     )
 
     for unit in "${units[@]}"; do
@@ -260,6 +279,7 @@ kill_legacy_processes() {
         run pkill -TERM -x "$name" 2>/dev/null || true
     done
 
+    run pkill -TERM -x hype 2>/dev/null || true
     run pkill -TERM -x dms 2>/dev/null || true
     sleep 1
 }
@@ -338,7 +358,6 @@ remove_legacy_user_artifacts() {
     backup_or_remove "$HOME/.config/quickshell/hype-shell"
     backup_or_remove "$HOME/.config/quickshell/hypeshell"
     backup_or_remove "$HOME/.config/HYPESHELL"
-    backup_or_remove "$HOME/.config/HypeShell"
     backup_or_remove "$HOME/.config/hypeshell"
     backup_or_remove "$HOME/.config/hype-shell"
     backup_or_remove "$HOME/.config/HYPESTORE"
@@ -346,7 +365,6 @@ remove_legacy_user_artifacts() {
     backup_or_remove "$HOME/.config/hypestore"
     backup_or_remove "$HOME/.config/hype-store"
     backup_or_remove "$HOME/.local/share/HYPESHELL"
-    backup_or_remove "$HOME/.local/share/HypeShell"
     backup_or_remove "$HOME/.local/share/hypeshell"
     backup_or_remove "$HOME/.local/share/hype-shell"
     backup_or_remove "$HOME/.local/share/HYPESTORE"
@@ -354,7 +372,6 @@ remove_legacy_user_artifacts() {
     backup_or_remove "$HOME/.local/share/hypestore"
     backup_or_remove "$HOME/.local/share/hype-store"
     backup_or_remove "$HOME/.local/state/HYPESHELL"
-    backup_or_remove "$HOME/.local/state/HypeShell"
     backup_or_remove "$HOME/.local/state/hypeshell"
     backup_or_remove "$HOME/.local/state/hype-shell"
     backup_or_remove "$HOME/.local/state/HYPESTORE"
@@ -362,7 +379,6 @@ remove_legacy_user_artifacts() {
     backup_or_remove "$HOME/.local/state/hypestore"
     backup_or_remove "$HOME/.local/state/hype-store"
     backup_or_remove "$HOME/.cache/HYPESHELL"
-    backup_or_remove "$HOME/.cache/HypeShell"
     backup_or_remove "$HOME/.cache/hypeshell"
     backup_or_remove "$HOME/.cache/hype-shell"
     backup_or_remove "$HOME/.cache/HYPESTORE"
@@ -372,6 +388,8 @@ remove_legacy_user_artifacts() {
 
     remove_user_file_if_exists "$HOME/.config/systemd/user/hypeshell.service"
     remove_user_file_if_exists "$HOME/.config/systemd/user/hype-shell.service"
+    migrate_dank_material_data
+
     remove_user_file_if_exists "$HOME/.config/systemd/user/hype.service"
     remove_user_file_if_exists "$HOME/.config/systemd/user/hype-updater.service"
     remove_user_file_if_exists "$HOME/.local/bin/hypeshell"
@@ -557,13 +575,13 @@ install_hyprland_session() {
     sudo_run install -D -m 755 "$SOURCE_DIR/assets/sessions/hypeshell-hyprland-session" "$PREFIX/bin/hypeshell-hyprland-session"
     sudo_run install -D -m 644 "$SOURCE_DIR/assets/sessions/hypeshell-hyprland.desktop" "$PREFIX/share/wayland-sessions/hypeshell-hyprland.desktop"
     sudo_run install -D -m 644 "$SOURCE_DIR/core/internal/config/embedded/hyprland.conf" "$defaults_dir/hyprland.conf"
-    sudo_run install -D -m 644 "$SOURCE_DIR/core/internal/config/embedded/hypr-colors.conf" "$defaults_dir/dms/colors.conf"
-    sudo_run install -D -m 644 "$SOURCE_DIR/core/internal/config/embedded/hypr-layout.conf" "$defaults_dir/dms/layout.conf"
-    sudo_run install -D -m 644 "$SOURCE_DIR/core/internal/config/embedded/hypr-binds.conf" "$defaults_dir/dms/binds.conf"
+    sudo_run install -D -m 644 "$SOURCE_DIR/core/internal/config/embedded/hypr-colors.conf" "$defaults_dir/hype/colors.conf"
+    sudo_run install -D -m 644 "$SOURCE_DIR/core/internal/config/embedded/hypr-layout.conf" "$defaults_dir/hype/layout.conf"
+    sudo_run install -D -m 644 "$SOURCE_DIR/core/internal/config/embedded/hypr-binds.conf" "$defaults_dir/hype/binds.conf"
 
-    sudo_run install -D -m 644 /dev/null "$defaults_dir/dms/outputs.conf"
-    sudo_run install -D -m 644 /dev/null "$defaults_dir/dms/cursor.conf"
-    sudo_run install -D -m 644 /dev/null "$defaults_dir/dms/windowrules.conf"
+    sudo_run install -D -m 644 /dev/null "$defaults_dir/hype/outputs.conf"
+    sudo_run install -D -m 644 /dev/null "$defaults_dir/hype/cursor.conf"
+    sudo_run install -D -m 644 /dev/null "$defaults_dir/hype/windowrules.conf"
 }
 
 ensure_hyprland_shell_startup() {
@@ -571,7 +589,9 @@ ensure_hyprland_shell_startup() {
 
     config_dir="${XDG_CONFIG_HOME:-$HOME/.config}/hypr"
     config_file="$config_dir/hyprland.conf"
-    startup_line="exec-once = systemctl --user start dms.service || dms run"
+    hype_config_dir="$config_dir/hype"
+    legacy_config_dir="$config_dir/dms"
+    startup_line="exec-once = systemctl --user start hype.service || hype run"
 
     if [ "$YES" -eq 0 ]; then
         run mkdir -p "$config_dir"
@@ -580,6 +600,15 @@ ensure_hyprland_shell_startup() {
     fi
 
     mkdir -p "$config_dir"
+    mkdir -p "$hype_config_dir"
+    if [ -d "$legacy_config_dir" ]; then
+        for config_name in colors.conf outputs.conf layout.conf cursor.conf binds.conf windowrules.conf; do
+            if [ -e "$legacy_config_dir/$config_name" ] && [ ! -e "$hype_config_dir/$config_name" ]; then
+                cp "$legacy_config_dir/$config_name" "$hype_config_dir/$config_name"
+            fi
+        done
+    fi
+
     if [ ! -s "$config_file" ]; then
         default_config="$PREFIX/share/hypeshell/hyprland/hyprland.conf"
         if [ -r "$default_config" ]; then
@@ -589,8 +618,21 @@ ensure_hyprland_shell_startup() {
         fi
     fi
 
-    if [ -f "$config_file" ] && ! grep -Eq '(^|[[:space:]])(dms run|dms\.service)' "$config_file"; then
+    if [ -f "$config_file" ] && grep -q 'source = \./dms/' "$config_file"; then
+        cp "$config_file" "$config_file.hypeshell-pre-paths.bak"
+        sed -i -e 's#source = \./dms/#source = ./hype/#g' "$config_file"
+    fi
+
+    if [ -f "$config_file" ] && ! grep -Eq '(^|[[:space:]])(hype run|hype\.service)' "$config_file"; then
         cp "$config_file" "$config_file.hypeshell-pre-startup.bak"
+        if grep -Eq '(^|[[:space:]])(dms run|dms\.service)' "$config_file"; then
+            sed -i \
+                -e 's/systemctl --user start dms\.service/systemctl --user start hype.service/g' \
+                -e 's/\bdms run\b/hype run/g' \
+                -e 's#source = \./dms/#source = ./hype/#g' \
+                "$config_file"
+            return 0
+        fi
         {
             printf '\n# HypeShell startup\n'
             printf '%s\n' "$startup_line"
@@ -664,19 +706,19 @@ install_greeter() {
         if [ "$INSTALL_METHOD" = "source" ]; then
             run sudo install-package greetd
             install_greeter_wrapper_from_source
-            run dms greeter enable --yes
-            run dms greeter sync --yes --local
+            run hype greeter enable --yes
+            run hype greeter sync --yes --local
         else
-            run dms greeter install --yes
-            run dms greeter sync --yes
+            run hype greeter install --yes
+            run hype greeter sync --yes
         fi
-        run dms greeter status
+        run hype greeter status
         return 0
     fi
 
-    if ! have dms; then
-        echo "Error: dms command is not available; cannot install HypeShell greeter." >&2
-        echo "Install Hype/DMS first, then rerun with --skip-install --install-greeter." >&2
+    if ! have hype; then
+        echo "Error: hype command is not available; cannot install HypeShell greeter." >&2
+        echo "Install HypeShell first, then rerun with --skip-install --install-greeter." >&2
         exit 1
     fi
 
@@ -684,13 +726,13 @@ install_greeter() {
     if [ "$INSTALL_METHOD" = "source" ]; then
         install_greetd_if_needed
         install_greeter_wrapper_from_source
-        run dms greeter enable --yes
-        run dms greeter sync --yes --local
+        run hype greeter enable --yes
+        run hype greeter sync --yes --local
     else
-        run dms greeter install --yes
-        run dms greeter sync --yes
+        run hype greeter install --yes
+        run hype greeter sync --yes
     fi
-    run dms greeter status || true
+    run hype greeter status || true
 }
 
 clean_display_manager() {
@@ -732,8 +774,8 @@ This will:
     $BACKUP_DIR
   - build and install Hype from:
     ${SOURCE_DIR:-$REPO_URL}
-  - install the new system command as "dms" under:
-    $PREFIX/bin/dms
+  - install the new system command as "hype" under:
+    $PREFIX/bin/hype
   - install method:
     $INSTALL_METHOD
   - install HypeShell greeter / replace SDDM with greetd:
@@ -771,12 +813,12 @@ EOF
         if [ "$PURGE_USER_DATA" -eq 0 ]; then
             echo "Legacy user data backup: $BACKUP_DIR"
         fi
-        echo "Start Hype/DMS with:"
-        echo "  systemctl --user enable --now dms"
+        echo "Start HypeShell with:"
+        echo "  systemctl --user enable --now hype"
         echo "or:"
-        echo "  dms run"
+        echo "  hype run"
         echo
-        echo "Note: Hype currently keeps the upstream DMS command/service names internally."
+        echo "Note: the legacy dms command remains as a compatibility alias."
     else
         echo
         echo "Dry run complete. No changes were made."

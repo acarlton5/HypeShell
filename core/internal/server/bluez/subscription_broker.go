@@ -4,8 +4,8 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/AvengeMedia/DankMaterialShell/core/internal/errdefs"
-	"github.com/AvengeMedia/DankMaterialShell/core/pkg/syncmap"
+	"github.com/acarlton5/HypeShell/core/internal/errdefs"
+	"github.com/acarlton5/HypeShell/core/pkg/syncmap"
 )
 
 type SubscriptionBroker struct {

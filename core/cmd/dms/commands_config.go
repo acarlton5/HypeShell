@@ -7,8 +7,8 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/AvengeMedia/DankMaterialShell/core/internal/log"
-	"github.com/AvengeMedia/DankMaterialShell/core/internal/utils"
+	"github.com/acarlton5/HypeShell/core/internal/log"
+	"github.com/acarlton5/HypeShell/core/internal/utils"
 	"github.com/spf13/cobra"
 )
 
@@ -75,10 +75,13 @@ func checkHyprlandInclude(filename string) (IncludeResult, error) {
 		return IncludeResult{}, err
 	}
 
-	targetPath := filepath.Join(configDir, "dms", filename)
+	targetPath := filepath.Join(configDir, "hype", filename)
+	legacyTargetPath := filepath.Join(configDir, "dms", filename)
 	result := IncludeResult{}
 
 	if _, err := os.Stat(targetPath); err == nil {
+		result.Exists = true
+	} else if _, err := os.Stat(legacyTargetPath); err == nil {
 		result.Exists = true
 	}
 
@@ -88,7 +91,11 @@ func checkHyprlandInclude(filename string) (IncludeResult, error) {
 	}
 
 	processed := make(map[string]bool)
-	result.Included = hyprlandFindInclude(mainConfig, "dms/"+filename, processed)
+	result.Included = hyprlandFindInclude(mainConfig, "hype/"+filename, processed)
+	if !result.Included {
+		processed = make(map[string]bool)
+		result.Included = hyprlandFindInclude(mainConfig, "dms/"+filename, processed)
+	}
 	return result, nil
 }
 

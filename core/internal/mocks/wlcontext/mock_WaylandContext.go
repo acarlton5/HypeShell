@@ -3,7 +3,7 @@
 package mocks_wlcontext
 
 import (
-	client "github.com/AvengeMedia/DankMaterialShell/core/pkg/go-wayland/wayland/client"
+	client "github.com/acarlton5/HypeShell/core/pkg/go-wayland/wayland/client"
 	mock "github.com/stretchr/testify/mock"
 )
 

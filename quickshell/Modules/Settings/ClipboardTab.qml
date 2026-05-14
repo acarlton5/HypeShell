@@ -264,7 +264,7 @@ Item {
 
                     StyledText {
                         font.pixelSize: Theme.fontSizeSmall
-                        text: !DMSService.isConnected ? I18n.tr("DMS service is not connected. Clipboard settings are unavailable.") : I18n.tr("Failed to load clipboard configuration.")
+                        text: !DMSService.isConnected ? I18n.tr("HypeShell service is not connected. Clipboard settings are unavailable.") : I18n.tr("Failed to load clipboard configuration.")
                         wrapMode: Text.WordWrap
                         width: parent.width - Theme.iconSizeSmall - Theme.spacingM
                         anchors.verticalCenter: parent.verticalCenter

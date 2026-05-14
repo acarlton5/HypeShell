@@ -3,7 +3,7 @@
 package mocks_cups_pkhelper
 
 import (
-	cups "github.com/AvengeMedia/DankMaterialShell/core/internal/server/cups"
+	cups "github.com/acarlton5/HypeShell/core/internal/server/cups"
 	mock "github.com/stretchr/testify/mock"
 )
 

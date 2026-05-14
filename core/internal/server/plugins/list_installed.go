@@ -5,8 +5,8 @@ import (
 	"net"
 	"strings"
 
-	"github.com/AvengeMedia/DankMaterialShell/core/internal/plugins"
-	"github.com/AvengeMedia/DankMaterialShell/core/internal/server/models"
+	"github.com/acarlton5/HypeShell/core/internal/plugins"
+	"github.com/acarlton5/HypeShell/core/internal/server/models"
 )
 
 func HandleListInstalled(conn net.Conn, req models.Request) {

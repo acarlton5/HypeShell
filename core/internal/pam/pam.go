@@ -10,8 +10,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/AvengeMedia/DankMaterialShell/core/internal/distros"
-	"github.com/AvengeMedia/DankMaterialShell/core/internal/privesc"
+	"github.com/acarlton5/HypeShell/core/internal/distros"
+	"github.com/acarlton5/HypeShell/core/internal/privesc"
 )
 
 const (

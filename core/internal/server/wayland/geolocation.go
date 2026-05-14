@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/AvengeMedia/DankMaterialShell/core/internal/log"
+	"github.com/acarlton5/HypeShell/core/internal/log"
 )
 
 type ipAPIResponse struct {

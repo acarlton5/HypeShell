@@ -89,7 +89,7 @@ DankModal {
         }
         if (action === "restart") {
             close();
-            Quickshell.execDetached(["dms", "restart"]);
+            Quickshell.execDetached(["hype", "restart"]);
             return;
         }
         close();
@@ -213,7 +213,7 @@ DankModal {
         case "restart":
             return {
                 "icon": "refresh",
-                "label": I18n.tr("Restart DMS"),
+                "label": I18n.tr("Restart HypeShell"),
                 "key": "D"
             };
         default:

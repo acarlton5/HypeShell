@@ -281,8 +281,8 @@
   "90°": {
     "90°": "90°"
   },
-  "<a href=\"https://github.com/AvengeMedia/DankMaterialShell/blob/master/LICENSE\" style=\"text-decoration:none; color:%1;\">MIT License</a>": {
-    "<a href=\"https://github.com/AvengeMedia/DankMaterialShell/blob/master/LICENSE\" style=\"text-decoration:none; color:%1;\">MIT License</a>": "<a href=\"https://github.com/AvengeMedia/DankMaterialShell/blob/master/LICENSE\" style=\"text-decoration:none; color:%1;\">MIT License</a>"
+  "<a href=\"https://github.com/acarlton5/HypeShell/blob/master/LICENSE\" style=\"text-decoration:none; color:%1;\">MIT License</a>": {
+    "<a href=\"https://github.com/acarlton5/HypeShell/blob/master/LICENSE\" style=\"text-decoration:none; color:%1;\">MIT License</a>": "<a href=\"https://github.com/acarlton5/HypeShell/blob/master/LICENSE\" style=\"text-decoration:none; color:%1;\">MIT License</a>"
   },
   "A file with this name already exists. Do you want to overwrite it?": {
     "A file with this name already exists. Do you want to overwrite it?": "已存在同名文件，是否覆盖？"
@@ -341,8 +341,8 @@
   "Activate Greeter": {
     "Activate Greeter": "激活 Greeter"
   },
-  "Activate the DMS greeter? A terminal will open for sudo authentication. Run Sync after activation to apply your settings.": {
-    "Activate the DMS greeter? A terminal will open for sudo authentication. Run Sync after activation to apply your settings.": "激活 DMS Greeter？将打开一个终端进行 sudo 身份验证。激活后运行“同步”以应用您的设置。"
+  "Activate the HypeShell Greeter? A terminal will open for sudo authentication. Run Sync after activation to apply your settings.": {
+    "Activate the HypeShell Greeter? A terminal will open for sudo authentication. Run Sync after activation to apply your settings.": "激活 HypeShell Greeter？将打开一个终端进行 sudo 身份验证。激活后运行“同步”以应用您的设置。"
   },
   "Activation": {
     "Activation": "激活"
@@ -734,8 +734,8 @@
   "Automatically lock after": {
     "Automatically lock after": "在此时间后自动锁定"
   },
-  "Automatically lock the screen when DMS starts": {
-    "Automatically lock the screen when DMS starts": "DMS 启动时自动锁定屏幕"
+  "Automatically lock the screen when HypeShell starts": {
+    "Automatically lock the screen when HypeShell starts": "HypeShell 启动时自动锁定屏幕"
   },
   "Automatically lock the screen when the system prepares to suspend": {
     "Automatically lock the screen when the system prepares to suspend": "当系统准备挂起时自动锁定屏幕"
@@ -1073,8 +1073,8 @@
   "Change bar appearance": {
     "Change bar appearance": "更改状态栏外观"
   },
-  "Change the locale used by the DMS interface.": {
-    "Change the locale used by the DMS interface.": "更改 DMS 界面使用的区域设置。"
+  "Change the locale used by the HypeShell interface.": {
+    "Change the locale used by the HypeShell interface.": "更改 HypeShell 界面使用的区域设置。"
   },
   "Change the locale used for date and time formatting, independent of the interface language.": {
     "Change the locale used for date and time formatting, independent of the interface language.": "更改用于日期和时间格式化的区域设置，与界面语言无关。"
@@ -1151,8 +1151,8 @@
   "Choose the border accent color": {
     "Choose the border accent color": "选择边框强调色"
   },
-  "Choose the logo displayed on the launcher button in DankBar": {
-    "Choose the logo displayed on the launcher button in DankBar": "选择在 DankBar 启动器按钮上显示的 Logo"
+  "Choose the logo displayed on the launcher button in Hype Bar": {
+    "Choose the logo displayed on the launcher button in Hype Bar": "选择在 DankBar 启动器按钮上显示的 Logo"
   },
   "Choose where notification popups appear on screen": {
     "Choose where notification popups appear on screen": "设置通知弹窗的出现位置"
@@ -1310,8 +1310,8 @@
   "Color theme for syntax highlighting. %1 themes available.": {
     "Color theme for syntax highlighting. %1 themes available.": "语法高亮的颜色主题。有%1的主题可供使用。"
   },
-  "Color theme from DMS registry": {
-    "Color theme from DMS registry": "DMS注册表的颜色主题"
+  "Color theme from HypeShell registry": {
+    "Color theme from HypeShell registry": "HypeShell注册表的颜色主题"
   },
   "Colorful": {
     "Colorful": "彩色"
@@ -1751,23 +1751,23 @@
   "DEMO MODE - Click anywhere to exit": {
     "DEMO MODE - Click anywhere to exit": "演示模式 - 点击任意位置退出"
   },
-  "DMS Plugin Manager Unavailable": {
-    "DMS Plugin Manager Unavailable": "DMS 插件管理器不可用"
+  "HypeShell Plugin Manager Unavailable": {
+    "HypeShell Plugin Manager Unavailable": "HypeShell 插件管理器不可用"
   },
-  "DMS Shortcuts": {
-    "DMS Shortcuts": "DMS快捷键"
+  "HypeShell Shortcuts": {
+    "HypeShell Shortcuts": "HypeShell快捷键"
   },
-  "DMS greeter needs: greetd, dms-greeter. Fingerprint: fprintd, pam_fprintd. Security keys: pam_u2f. Add your user to the greeter group. Authentication changes apply automatically and may open a terminal when sudo authentication is required.": {
-    "DMS greeter needs: greetd, dms-greeter. Fingerprint: fprintd, pam_fprintd. Security keys: pam_u2f. Add your user to the greeter group. Authentication changes apply automatically and may open a terminal when sudo authentication is required.": "DMS欢迎界面需要：greetd、dms-greeter。指纹：fprintd、pam_fprintd。安全钥匙：pam_u2f。把你的用户添加到greeter组。认证变更会自动应用，当需要sudo认证时，可能会打开终端。"
+  "HypeShell Greeter needs: greetd, dms-greeter. Fingerprint: fprintd, pam_fprintd. Security keys: pam_u2f. Add your user to the greeter group. Authentication changes apply automatically and may open a terminal when sudo authentication is required.": {
+    "HypeShell Greeter needs: greetd, dms-greeter. Fingerprint: fprintd, pam_fprintd. Security keys: pam_u2f. Add your user to the greeter group. Authentication changes apply automatically and may open a terminal when sudo authentication is required.": "HypeShell欢迎界面需要：greetd、dms-greeter。指纹：fprintd、pam_fprintd。安全钥匙：pam_u2f。把你的用户添加到greeter组。认证变更会自动应用，当需要sudo认证时，可能会打开终端。"
   },
-  "DMS out of date": {
-    "DMS out of date": "DMS 不是最新版本"
+  "HypeShell out of date": {
+    "HypeShell out of date": "HypeShell 不是最新版本"
   },
-  "DMS service is not connected. Clipboard settings are unavailable.": {
-    "DMS service is not connected. Clipboard settings are unavailable.": "DMS服务未连接。剪切板设置不可用。"
+  "HypeShell service is not connected. Clipboard settings are unavailable.": {
+    "HypeShell service is not connected. Clipboard settings are unavailable.": "HypeShell服务未连接。剪切板设置不可用。"
   },
-  "DMS shell actions (launcher, clipboard, etc.)": {
-    "DMS shell actions (launcher, clipboard, etc.)": "DMS shell 操作（启动器、剪贴板等）"
+  "HypeShell shell actions (launcher, clipboard, etc.)": {
+    "HypeShell shell actions (launcher, clipboard, etc.)": "HypeShell shell 操作（启动器、剪贴板等）"
   },
   "DMS_SOCKET not available": {
     "DMS_SOCKET not available": "DMS_SOCKET 不可用"
@@ -1781,20 +1781,20 @@
   "Daily at:": {
     "Daily at:": "在每日："
   },
-  "Dank": {
-    "Dank": "Dank"
+  "HypeShell": {
+    "HypeShell": "HypeShell"
   },
-  "Dank Bar": {
-    "Dank Bar": "Dank Bar"
+  "Hype Bar": {
+    "Hype Bar": "Hype Bar"
   },
-  "DankBar": {
-    "DankBar": "DankBar"
+  "Hype Bar": {
+    "Hype Bar": "Hype Bar"
   },
-  "DankMaterialShell is ready to use": {
-    "DankMaterialShell is ready to use": "DankMaterialShell现已可用"
+  "HypeShell is ready to use": {
+    "HypeShell is ready to use": "HypeShell现已可用"
   },
-  "DankShell & System Icons (requires restart)": {
-    "DankShell & System Icons (requires restart)": "DankShell 和系统图标 (需要重启)"
+  "HypeShell & System Icons (requires restart)": {
+    "HypeShell & System Icons (requires restart)": "DankShell 和系统图标 (需要重启)"
   },
   "Dark Mode": {
     "Dark Mode": "暗色模式"
@@ -2261,8 +2261,8 @@
   "Enable fingerprint authentication": {
     "Enable fingerprint authentication": "启用指纹认证"
   },
-  "Enable fingerprint or security key for DMS Greeter. Authentication changes apply automatically.": {
-    "Enable fingerprint or security key for DMS Greeter. Authentication changes apply automatically.": "启用DMS欢迎界面的指纹或安全密钥。认证变更会自动生效。"
+  "Enable fingerprint or security key for HypeShell Greeter. Authentication changes apply automatically.": {
+    "Enable fingerprint or security key for HypeShell Greeter. Authentication changes apply automatically.": "启用HypeShell欢迎界面的指纹或安全密钥。认证变更会自动生效。"
   },
   "Enable loginctl lock integration": {
     "Enable loginctl lock integration": "启用 loginctl 锁定集成"
@@ -2600,8 +2600,8 @@
   "Failed to ring device": {
     "Failed to ring device": "响铃设备失败"
   },
-  "Failed to run 'dms greeter status'. Ensure DMS is installed and dms is in PATH.": {
-    "Failed to run 'dms greeter status'. Ensure DMS is installed and dms is in PATH.": "未能运行 'dms greeter status'。确保 DMS 已安装，且 dms 已在 PATH 中。"
+  "Failed to run 'dms greeter status'. Ensure HypeShell is installed and dms is in PATH.": {
+    "Failed to run 'dms greeter status'. Ensure HypeShell is installed and dms is in PATH.": "未能运行 'dms greeter status'。确保 HypeShell 已安装，且 dms 已在 PATH 中。"
   },
   "Failed to save audio config": {
     "Failed to save audio config": "音频配置保存失败"
@@ -2819,8 +2819,8 @@
   "Folders": {
     "Folders": "文件夹"
   },
-  "Follow DMS background color": {
-    "Follow DMS background color": "遵循DMS背景颜色"
+  "Follow HypeShell background color": {
+    "Follow HypeShell background color": "遵循HypeShell背景颜色"
   },
   "Follow Monitor Focus": {
     "Follow Monitor Focus": "遵守显示器聚焦"
@@ -2984,11 +2984,11 @@
   "Gamma Control": {
     "Gamma Control": "伽马控制"
   },
-  "Gamma control not available. Requires DMS API v6+.": {
-    "Gamma control not available. Requires DMS API v6+.": "伽玛控制不可用，需要 DMS API v6+。"
+  "Gamma control not available. Requires HypeShell API v6+.": {
+    "Gamma control not available. Requires HypeShell API v6+.": "伽玛控制不可用，需要 HypeShell API v6+。"
   },
-  "Generate baseline GTK3/4 or QT5/QT6 (requires qt6ct-kde) configurations to follow DMS colors. Only needed once.<br /><br />It is recommended to configure <a href=\"https://github.com/AvengeMedia/DankMaterialShell/blob/master/README.md#Theming\" style=\"text-decoration:none; color:%1;\">adw-gtk3</a> prior to applying GTK themes.": {
-    "Generate baseline GTK3/4 or QT5/QT6 (requires qt6ct-kde) configurations to follow DMS colors. Only needed once.<br /><br />It is recommended to configure <a href=\"https://github.com/AvengeMedia/DankMaterialShell/blob/master/README.md#Theming\" style=\"text-decoration:none; color:%1;\">adw-gtk3</a> prior to applying GTK themes.": "创建 GTK3/4 或 QT5/QT6 （需要 qt6ct-kde）的基线配置以遵守DMS颜色。仅需一次。<br /><br />建议在应用<a href=\"https://github.com/AvengeMedia/DankMaterialShell/blob/master/README.md#Theming\" style=\"text-decoration:none; color:%1;\">adw-gtk3</a>GTK主题之前进行配置。"
+  "Generate baseline GTK3/4 or QT5/QT6 (requires qt6ct-kde) configurations to follow HypeShell colors. Only needed once.<br /><br />It is recommended to configure <a href=\"https://github.com/acarlton5/HypeShell/blob/master/README.md#Theming\" style=\"text-decoration:none; color:%1;\">adw-gtk3</a> prior to applying GTK themes.": {
+    "Generate baseline GTK3/4 or QT5/QT6 (requires qt6ct-kde) configurations to follow HypeShell colors. Only needed once.<br /><br />It is recommended to configure <a href=\"https://github.com/acarlton5/HypeShell/blob/master/README.md#Theming\" style=\"text-decoration:none; color:%1;\">adw-gtk3</a> prior to applying GTK themes.": "创建 GTK3/4 或 QT5/QT6 （需要 qt6ct-kde）的基线配置以遵守HypeShell颜色。仅需一次。<br /><br />建议在应用<a href=\"https://github.com/acarlton5/HypeShell/blob/master/README.md#Theming\" style=\"text-decoration:none; color:%1;\">adw-gtk3</a>GTK主题之前进行配置。"
   },
   "Generic": {
     "Generic": "通用"
@@ -3416,8 +3416,8 @@
   "Install Theme": {
     "Install Theme": "安装主题"
   },
-  "Install color themes from the DMS theme registry": {
-    "Install color themes from the DMS theme registry": "从DMS主题注册表安装色彩主题"
+  "Install color themes from the HypeShell theme registry": {
+    "Install color themes from the HypeShell theme registry": "从HypeShell主题注册表安装色彩主题"
   },
   "Install complete. Greeter has been installed.": {
     "Install complete. Greeter has been installed.": "安装完成。欢迎界面已安装。"
@@ -3428,17 +3428,17 @@
   "Install matugen package for dynamic theming": {
     "Install matugen package for dynamic theming": "为动态主题安装matugen包"
   },
-  "Install plugin '%1' from the DMS registry?": {
-    "Install plugin '%1' from the DMS registry?": "要从DMS注册表安装插件%1吗？"
+  "Install plugin '%1' from the HypeShell registry?": {
+    "Install plugin '%1' from the HypeShell registry?": "要从HypeShell注册表安装插件%1吗？"
   },
-  "Install plugins from the DMS plugin registry": {
-    "Install plugins from the DMS plugin registry": "从 DMS 插件库安装插件"
+  "Install plugins from the HypeShell plugin registry": {
+    "Install plugins from the HypeShell plugin registry": "从 HypeShell 插件库安装插件"
   },
-  "Install the DMS greeter? A terminal will open for sudo authentication.": {
-    "Install the DMS greeter? A terminal will open for sudo authentication.": "要安装DMS欢迎界面吗？降打开终端以进行sudo认证。"
+  "Install the HypeShell Greeter? A terminal will open for sudo authentication.": {
+    "Install the HypeShell Greeter? A terminal will open for sudo authentication.": "要安装HypeShell欢迎界面吗？降打开终端以进行sudo认证。"
   },
-  "Install theme '%1' from the DMS registry?": {
-    "Install theme '%1' from the DMS registry?": "要从DMS注册表安装主题%1吗？"
+  "Install theme '%1' from the HypeShell registry?": {
+    "Install theme '%1' from the HypeShell registry?": "要从HypeShell注册表安装主题%1吗？"
   },
   "Installation and PAM setup: see the ": {
     "Installation and PAM setup: see the ": "安装与PAM设置：请参考 "
@@ -3770,8 +3770,8 @@
   "Make sure KDE Connect or Valent is running on your other devices": {
     "Make sure KDE Connect or Valent is running on your other devices": "确保 KDE Connect 或 Valent 正在您的其他设备上运行"
   },
-  "Manage and configure plugins for extending DMS functionality": {
-    "Manage and configure plugins for extending DMS functionality": "管理和配置插件以扩展 DMS 功能"
+  "Manage and configure plugins for extending HypeShell functionality": {
+    "Manage and configure plugins for extending HypeShell functionality": "管理和配置插件以扩展 HypeShell 功能"
   },
   "Manage up to 4 independent bar configurations. Each bar has its own position, widgets, styling, and display assignment.": {
     "Manage up to 4 independent bar configurations. Each bar has its own position, widgets, styling, and display assignment.": "至多可管理4个独立的状态栏配置。每个状态栏都有自己的位置、控件、样式和显示布局。"
@@ -3842,8 +3842,8 @@
   "Material inspired shadows and elevation on modals, popouts, and dialogs": {
     "Material inspired shadows and elevation on modals, popouts, and dialogs": "模态、弹窗与对话框上出现的阴影（受Material启发的）与提升"
   },
-  "Material: Material Design 3 Expressive bezier curves. The DMS default feel.": {
-    "Material: Material Design 3 Expressive bezier curves. The DMS default feel.": "Material：Material Design 3是富有设计感的贝塞尔曲线。也是DMS的默认风格。"
+  "Material: Material Design 3 Expressive bezier curves. The HypeShell default feel.": {
+    "Material: Material Design 3 Expressive bezier curves. The HypeShell default feel.": "Material：Material Design 3是富有设计感的贝塞尔曲线。也是HypeShell的默认风格。"
   },
   "Matugen Contrast": {
     "Matugen Contrast": "Matugen对比度"
@@ -4268,8 +4268,8 @@
   "No Border": {
     "No Border": "无边框"
   },
-  "No DMS shortcuts configured": {
-    "No DMS shortcuts configured": "未配置DMS快捷键"
+  "No HypeShell Shortcuts configured": {
+    "No HypeShell Shortcuts configured": "未配置HypeShell快捷键"
   },
   "No Dim": {
     "No Dim": "无蒙眬效果"
@@ -4658,8 +4658,8 @@
   "Only adjust gamma based on time or location rules.": {
     "Only adjust gamma based on time or location rules.": "根据时间或位置调节伽马值。"
   },
-  "Only affects DMS-managed PAM. If greetd already includes pam_fprintd, fingerprint stays enabled.": {
-    "Only affects DMS-managed PAM. If greetd already includes pam_fprintd, fingerprint stays enabled.": "仅影响受DMS管理的PAM。如果greetd已经包含了pam_fprintd，则指纹认证将依旧保持启用。"
+  "Only affects HypeShell-managed PAM. If greetd already includes pam_fprintd, fingerprint stays enabled.": {
+    "Only affects HypeShell-managed PAM. If greetd already includes pam_fprintd, fingerprint stays enabled.": "仅影响受HypeShell管理的PAM。如果greetd已经包含了pam_fprintd，则指纹认证将依旧保持启用。"
   },
   "Only show windows from the current monitor on each dock": {
     "Only show windows from the current monitor on each dock": "在每个程序坞上仅显示当前显示器上的窗口"
@@ -5411,11 +5411,11 @@
   "Requires 'dgop' tool": {
     "Requires 'dgop' tool": "需要dgop工具"
   },
-  "Requires DMS %1": {
-    "Requires DMS %1": "需要DMS %1"
+  "Requires HypeShell %1": {
+    "Requires HypeShell %1": "需要HypeShell %1"
   },
-  "Requires DMS server with sysupdate capability": {
-    "Requires DMS server with sysupdate capability": "需要具备sysupdate功能的DMS服务器"
+  "Requires HypeShell server with sysupdate capability": {
+    "Requires HypeShell server with sysupdate capability": "需要具备sysupdate功能的HypeShell服务器"
   },
   "Requires DWL compositor": {
     "Requires DWL compositor": "需要 DWL 合成器"
@@ -5447,11 +5447,11 @@
   "Resolution, position, scale": {
     "Resolution, position, scale": "分辨率、位置与缩放"
   },
-  "Restart DMS": {
-    "Restart DMS": "重启 DMS"
+  "Restart HypeShell": {
+    "Restart HypeShell": "重启 HypeShell"
   },
-  "Restart the DankMaterialShell": {
-    "Restart the DankMaterialShell": "重启 DankMaterialShell"
+  "Restart the HypeShell": {
+    "Restart the HypeShell": "重启 HypeShell"
   },
   "Restarting audio system...": {
     "Restarting audio system...": "正在重启音频系统..."
@@ -5528,8 +5528,8 @@
   "Run Again": {
     "Run Again": "启动应用"
   },
-  "Run DMS Templates": {
-    "Run DMS Templates": "运行DMS模板"
+  "Run HypeShell Templates": {
+    "Run HypeShell Templates": "运行HypeShell模板"
   },
   "Run User Templates": {
     "Run User Templates": "运行用户模板"
@@ -5609,11 +5609,11 @@
   "Scale": {
     "Scale": "缩放"
   },
-  "Scale DankBar font sizes independently": {
-    "Scale DankBar font sizes independently": "独立调整 DankBar 字体缩放"
+  "Scale Hype Bar font sizes independently": {
+    "Scale Hype Bar font sizes independently": "独立调整 DankBar 字体缩放"
   },
-  "Scale DankBar icon sizes independently": {
-    "Scale DankBar icon sizes independently": "独立缩放DankBar图标大小"
+  "Scale Hype Bar icon sizes independently": {
+    "Scale Hype Bar icon sizes independently": "独立缩放DankBar图标大小"
   },
   "Scale all font sizes throughout the shell": {
     "Scale all font sizes throughout the shell": "缩放整个 shell 中的所有字体大小"
@@ -6074,8 +6074,8 @@
   "Show Reboot": {
     "Show Reboot": "显示重启"
   },
-  "Show Restart DMS": {
-    "Show Restart DMS": "显示重启 DMS"
+  "Show Restart HypeShell": {
+    "Show Restart HypeShell": "显示重启 HypeShell"
   },
   "Show Saved Items": {
     "Show Saved Items": "显示已保存的项目"
@@ -6293,8 +6293,8 @@
   "Snow": {
     "Snow": "下雪"
   },
-  "Some plugins require a newer version of DMS:": {
-    "Some plugins require a newer version of DMS:": "有些插件需要更新版的 DMS："
+  "Some plugins require a newer version of HypeShell:": {
+    "Some plugins require a newer version of HypeShell:": "有些插件需要更新版的 HypeShell："
   },
   "Sort Alphabetically": {
     "Sort Alphabetically": "按字母顺序排序"
@@ -6344,8 +6344,8 @@
   "Standard": {
     "Standard": "基础设置"
   },
-  "Standard: Classic Material Design 3 — panels rise from below with a subtle scale. The DMS default.": {
-    "Standard: Classic Material Design 3 — panels rise from below with a subtle scale. The DMS default.": "标准：经典Material Design 3——面板从下方缓缓升起，比例细腻。DMS默认设置。"
+  "Standard: Classic Material Design 3 — panels rise from below with a subtle scale. The HypeShell default.": {
+    "Standard: Classic Material Design 3 — panels rise from below with a subtle scale. The HypeShell default.": "标准：经典Material Design 3——面板从下方缓缓升起，比例细腻。HypeShell默认设置。"
   },
   "Start": {
     "Start": "开始"
@@ -6542,8 +6542,8 @@
   "Terminal fallback failed. Install a supported terminal emulator or run 'dms auth sync' manually.": {
     "Terminal fallback failed. Install a supported terminal emulator or run 'dms auth sync' manually.": "终端回滚失败。请安装支持的终端模拟器，或者手动运行dms auth sync。"
   },
-  "Terminal fallback failed. Install one of the supported terminal emulators or run 'dms greeter sync' manually.": {
-    "Terminal fallback failed. Install one of the supported terminal emulators or run 'dms greeter sync' manually.": "终端回退失败。请安装受支持的终端模拟器之一，或手动运行“dms greeter sync”。"
+  "Terminal fallback failed. Install one of the supported terminal emulators or run 'HypeShell Greeter sync' manually.": {
+    "Terminal fallback failed. Install one of the supported terminal emulators or run 'HypeShell Greeter sync' manually.": "终端回退失败。请安装受支持的终端模拟器之一，或手动运行“HypeShell Greeter sync”。"
   },
   "Terminal fallback opened. Complete authentication setup there; it will close automatically when done.": {
     "Terminal fallback opened. Complete authentication setup there; it will close automatically when done.": "终端回滚已打开。请在那里完成认证配置，结束时会自动关闭。"
@@ -6617,8 +6617,8 @@
   "Third-Party Plugin Warning": {
     "Third-Party Plugin Warning": "外部插件警示"
   },
-  "Third-party plugins are created by the community and are not officially supported by DankMaterialShell.\n\nThese plugins may pose security and privacy risks - install at your own risk.": {
-    "Third-party plugins are created by the community and are not officially supported by DankMaterialShell.\n\nThese plugins may pose security and privacy risks - install at your own risk.": "第三方插件由社区创建，且不被 DankMaterialShell 官方支持。\n\n这些插件可能存在安全和隐私风险——安装时请自行承担风险。"
+  "Third-party plugins are created by the community and are not officially supported by HypeShell.\n\nThese plugins may pose security and privacy risks - install at your own risk.": {
+    "Third-party plugins are created by the community and are not officially supported by HypeShell.\n\nThese plugins may pose security and privacy risks - install at your own risk.": "第三方插件由社区创建，且不被 HypeShell 官方支持。\n\n这些插件可能存在安全和隐私风险——安装时请自行承担风险。"
   },
   "This bind is overridden by config.kdl": {
     "This bind is overridden by config.kdl": "此绑定已被 config.kdl 覆盖"
@@ -6722,8 +6722,8 @@
   "To update, run the following command:": {
     "To update, run the following command:": "请运行以下命令以更新："
   },
-  "To use this DMS bind, remove or change the keybind in your config.kdl": {
-    "To use this DMS bind, remove or change the keybind in your config.kdl": "要使用此 DMS 绑定，请删除或更改 config.kdl 中的按键绑定"
+  "To use this HypeShell bind, remove or change the keybind in your config.kdl": {
+    "To use this HypeShell bind, remove or change the keybind in your config.kdl": "要使用此 HypeShell 绑定，请删除或更改 config.kdl 中的按键绑定"
   },
   "Toast Messages": {
     "Toast Messages": "弹出式信息"
@@ -6887,8 +6887,8 @@
   "Uninstall failed: %1": {
     "Uninstall failed: %1": "卸载失败：%1"
   },
-  "Uninstall the DMS greeter? This will remove configuration and restore your previous display manager. A terminal will open for sudo authentication.": {
-    "Uninstall the DMS greeter? This will remove configuration and restore your previous display manager. A terminal will open for sudo authentication.": "卸载 DMS Greeter？这将删除配置并恢复您之前的显示管理器。系统将打开一个终端以进行 sudo 身份验证。"
+  "Uninstall the HypeShell Greeter? This will remove configuration and restore your previous display manager. A terminal will open for sudo authentication.": {
+    "Uninstall the HypeShell Greeter? This will remove configuration and restore your previous display manager. A terminal will open for sudo authentication.": "卸载 HypeShell Greeter？这将删除配置并恢复您之前的显示管理器。系统将打开一个终端以进行 sudo 身份验证。"
   },
   "Uninstalled: %1": {
     "Uninstalled: %1": "已卸载：%1"
@@ -7262,8 +7262,8 @@
   "Welcome": {
     "Welcome": "欢迎"
   },
-  "Welcome to DankMaterialShell": {
-    "Welcome to DankMaterialShell": "欢迎来到DankMaterialShell"
+  "Welcome to HypeShell": {
+    "Welcome to HypeShell": "欢迎来到HypeShell"
   },
   "When clicking a dock window in a Hyprland special workspace, bring that special workspace back before focusing the window": {
     "When clicking a dock window in a Hyprland special workspace, bring that special workspace back before focusing the window": "在 Hyprland 特殊工作区点击程序坞窗口时，会拉回该特殊工作区，再聚焦窗口"
@@ -7487,8 +7487,8 @@
   "direct": {
     "direct": "直接"
   },
-  "dms is a highly customizable, modern desktop shell with a <a href=\"https://m3.material.io/\" style=\"text-decoration:none; color:%1;\">material 3 inspired</a> design.<br /><br/>It is built with <a href=\"https://quickshell.org\" style=\"text-decoration:none; color:%1;\">Quickshell</a>, a QT6 framework for building desktop shells, and <a href=\"https://go.dev\" style=\"text-decoration:none; color:%1;\">Go</a>, a statically typed, compiled programming language.": {
-    "dms is a highly customizable, modern desktop shell with a <a href=\"https://m3.material.io/\" style=\"text-decoration:none; color:%1;\">material 3 inspired</a> design.<br /><br/>It is built with <a href=\"https://quickshell.org\" style=\"text-decoration:none; color:%1;\">Quickshell</a>, a QT6 framework for building desktop shells, and <a href=\"https://go.dev\" style=\"text-decoration:none; color:%1;\">Go</a>, a statically typed, compiled programming language.": "DMS是一款高度可自定义的现代桌面shell，深受<a href=\"https://m3.material.io/\" style=\"text-decoration:none; color:%1;\">material 3</a>的启发而设计。<br /><br/>DMS基于<a href=\"https://quickshell.org\" style=\"text-decoration:none; color:%1;\">Quickshell</a>——一个专为创建桌面shell的QT6框架，并通过<a href=\"https://go.dev\" style=\"text-decoration:none; color:%1;\">Go语言</a>——一种静态类型化、编译的编程语言开发。"
+  "HypeShell is a highly customizable, modern desktop shell with a <a href=\"https://m3.material.io/\" style=\"text-decoration:none; color:%1;\">material 3 inspired</a> design.<br /><br/>It is built with <a href=\"https://quickshell.org\" style=\"text-decoration:none; color:%1;\">Quickshell</a>, a QT6 framework for building desktop shells, and <a href=\"https://go.dev\" style=\"text-decoration:none; color:%1;\">Go</a>, a statically typed, compiled programming language.": {
+    "HypeShell is a highly customizable, modern desktop shell with a <a href=\"https://m3.material.io/\" style=\"text-decoration:none; color:%1;\">material 3 inspired</a> design.<br /><br/>It is built with <a href=\"https://quickshell.org\" style=\"text-decoration:none; color:%1;\">Quickshell</a>, a QT6 framework for building desktop shells, and <a href=\"https://go.dev\" style=\"text-decoration:none; color:%1;\">Go</a>, a statically typed, compiled programming language.": "HypeShell是一款高度可自定义的现代桌面shell，深受<a href=\"https://m3.material.io/\" style=\"text-decoration:none; color:%1;\">material 3</a>的启发而设计。<br /><br/>HypeShell基于<a href=\"https://quickshell.org\" style=\"text-decoration:none; color:%1;\">Quickshell</a>——一个专为创建桌面shell的QT6框架，并通过<a href=\"https://go.dev\" style=\"text-decoration:none; color:%1;\">Go语言</a>——一种静态类型化、编译的编程语言开发。"
   },
   "dms/cursor config exists but is not included. Cursor settings won't apply.": {
     "dms/cursor config exists but is not included. Cursor settings won't apply.": "已找到dms/cursor的配置文件，但并未导入。光标设置将不会生效。"
@@ -7523,8 +7523,8 @@
   "leave empty for default": {
     "leave empty for default": "留空使用默认"
   },
-  "loginctl not available - lock integration requires DMS socket connection": {
-    "loginctl not available - lock integration requires DMS socket connection": "loginctl 不可用 - 启用锁定集成需连接 DMS socket"
+  "loginctl not available - lock integration requires HypeShell socket connection": {
+    "loginctl not available - lock integration requires HypeShell socket connection": "loginctl 不可用 - 启用锁定集成需连接 HypeShell socket"
   },
   "mangowc Discord Server": {
     "mangowc Discord Server": "mangowc Discord 服务器"
@@ -7613,8 +7613,8 @@
   "up": {
     "up": "上"
   },
-  "update dms for NM integration.": {
-    "update dms for NM integration.": "更新 DMS 以集成 NM"
+  "update HypeShell for NM integration.": {
+    "update HypeShell for NM integration.": "更新 HypeShell 以集成 NM"
   },
   "v%1 by %2": {
     "v%1 by %2": "v%1 by %2"

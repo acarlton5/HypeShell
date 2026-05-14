@@ -281,8 +281,8 @@
   "90°": {
     "90°": "90 fok"
   },
-  "<a href=\"https://github.com/AvengeMedia/DankMaterialShell/blob/master/LICENSE\" style=\"text-decoration:none; color:%1;\">MIT License</a>": {
-    "<a href=\"https://github.com/AvengeMedia/DankMaterialShell/blob/master/LICENSE\" style=\"text-decoration:none; color:%1;\">MIT License</a>": "<a href=\"https://github.com/AvengeMedia/DankMaterialShell/blob/master/LICENSE\" style=\"text-decoration:none; color:%1;\">MIT licenc</a>"
+  "<a href=\"https://github.com/acarlton5/HypeShell/blob/master/LICENSE\" style=\"text-decoration:none; color:%1;\">MIT License</a>": {
+    "<a href=\"https://github.com/acarlton5/HypeShell/blob/master/LICENSE\" style=\"text-decoration:none; color:%1;\">MIT License</a>": "<a href=\"https://github.com/acarlton5/HypeShell/blob/master/LICENSE\" style=\"text-decoration:none; color:%1;\">MIT licenc</a>"
   },
   "A file with this name already exists. Do you want to overwrite it?": {
     "A file with this name already exists. Do you want to overwrite it?": "Már létezik ilyen nevű fájl. Felül szeretnéd írni?"
@@ -341,8 +341,8 @@
   "Activate Greeter": {
     "Activate Greeter": "Üdvözlőképernyő aktiválása"
   },
-  "Activate the DMS greeter? A terminal will open for sudo authentication. Run Sync after activation to apply your settings.": {
-    "Activate the DMS greeter? A terminal will open for sudo authentication. Run Sync after activation to apply your settings.": "Aktiválod a DMS-üdvözlőképernyőt? (greeter) Egy terminál fog megnyílni a sudo hitelesítéshez. Az aktiválás után futtasd a szinkronizálást a beállítások alkalmazásához."
+  "Activate the HypeShell Greeter? A terminal will open for sudo authentication. Run Sync after activation to apply your settings.": {
+    "Activate the HypeShell Greeter? A terminal will open for sudo authentication. Run Sync after activation to apply your settings.": "Aktiválod a HypeShell-üdvözlőképernyőt? (greeter) Egy terminál fog megnyílni a sudo hitelesítéshez. Az aktiválás után futtasd a szinkronizálást a beállítások alkalmazásához."
   },
   "Activation": {
     "Activation": "Aktiválás"
@@ -734,8 +734,8 @@
   "Automatically lock after": {
     "Automatically lock after": "Automatikus zárolás"
   },
-  "Automatically lock the screen when DMS starts": {
-    "Automatically lock the screen when DMS starts": "Képernyő automatikus zárolása a DMS indulásakor"
+  "Automatically lock the screen when HypeShell starts": {
+    "Automatically lock the screen when HypeShell starts": "Képernyő automatikus zárolása a HypeShell indulásakor"
   },
   "Automatically lock the screen when the system prepares to suspend": {
     "Automatically lock the screen when the system prepares to suspend": "A képernyő automatikus zárolása, amikor a rendszer felfüggesztésre készül"
@@ -1073,8 +1073,8 @@
   "Change bar appearance": {
     "Change bar appearance": "Sáv megjelenésének megváltoztatása"
   },
-  "Change the locale used by the DMS interface.": {
-    "Change the locale used by the DMS interface.": "A DMS felület által használt területi beállítás módosítása."
+  "Change the locale used by the HypeShell interface.": {
+    "Change the locale used by the HypeShell interface.": "A HypeShell felület által használt területi beállítás módosítása."
   },
   "Change the locale used for date and time formatting, independent of the interface language.": {
     "Change the locale used for date and time formatting, independent of the interface language.": "A dátum- és időformátumhoz használt területi beállítás módosítása, a felület nyelvétől függetlenül."
@@ -1151,8 +1151,8 @@
   "Choose the border accent color": {
     "Choose the border accent color": "Válaszd ki a szegély kiemelőszínét"
   },
-  "Choose the logo displayed on the launcher button in DankBar": {
-    "Choose the logo displayed on the launcher button in DankBar": "Válaszd ki a DankBar indítógombján megjelenő logót"
+  "Choose the logo displayed on the launcher button in Hype Bar": {
+    "Choose the logo displayed on the launcher button in Hype Bar": "Válaszd ki a DankBar indítógombján megjelenő logót"
   },
   "Choose where notification popups appear on screen": {
     "Choose where notification popups appear on screen": "A felugró értesítések megjelenési helye"
@@ -1310,8 +1310,8 @@
   "Color theme for syntax highlighting. %1 themes available.": {
     "Color theme for syntax highlighting. %1 themes available.": "Színtéma a szintaxiskiemeléshez. %1 téma érhető el."
   },
-  "Color theme from DMS registry": {
-    "Color theme from DMS registry": "Színtéma a DMS-regiszterből"
+  "Color theme from HypeShell registry": {
+    "Color theme from HypeShell registry": "Színtéma a HypeShell-regiszterből"
   },
   "Colorful": {
     "Colorful": "Színes"
@@ -1751,23 +1751,23 @@
   "DEMO MODE - Click anywhere to exit": {
     "DEMO MODE - Click anywhere to exit": "DEMO MÓD - Kattints bárhova a kilépéshez"
   },
-  "DMS Plugin Manager Unavailable": {
-    "DMS Plugin Manager Unavailable": "A DMS-bővítménykezelő nem érhető el"
+  "HypeShell Plugin Manager Unavailable": {
+    "HypeShell Plugin Manager Unavailable": "A HypeShell-bővítménykezelő nem érhető el"
   },
-  "DMS Shortcuts": {
-    "DMS Shortcuts": "DMS gyorsbillentyűk"
+  "HypeShell Shortcuts": {
+    "HypeShell Shortcuts": "HypeShell gyorsbillentyűk"
   },
-  "DMS greeter needs: greetd, dms-greeter. Fingerprint: fprintd, pam_fprintd. Security keys: pam_u2f. Add your user to the greeter group. Authentication changes apply automatically and may open a terminal when sudo authentication is required.": {
-    "DMS greeter needs: greetd, dms-greeter. Fingerprint: fprintd, pam_fprintd. Security keys: pam_u2f. Add your user to the greeter group. Authentication changes apply automatically and may open a terminal when sudo authentication is required.": "A DMS-üdvözlőképernyőnek (greeter) szüksége van a következőkre: greetd, dms-greeter. Ujjlenyomat: fprintd, pam_fprintd. Biztonsági kulcsok: pam_u2f. Add hozzá a felhasználódat a greeter csoporthoz. A hitelesítési módosítások automatikusan alkalmazásra kerülnek, és terminált nyithatnak meg, ha sudo hitelesítés szükséges."
+  "HypeShell Greeter needs: greetd, dms-greeter. Fingerprint: fprintd, pam_fprintd. Security keys: pam_u2f. Add your user to the greeter group. Authentication changes apply automatically and may open a terminal when sudo authentication is required.": {
+    "HypeShell Greeter needs: greetd, dms-greeter. Fingerprint: fprintd, pam_fprintd. Security keys: pam_u2f. Add your user to the greeter group. Authentication changes apply automatically and may open a terminal when sudo authentication is required.": "A HypeShell-üdvözlőképernyőnek (greeter) szüksége van a következőkre: greetd, dms-greeter. Ujjlenyomat: fprintd, pam_fprintd. Biztonsági kulcsok: pam_u2f. Add hozzá a felhasználódat a greeter csoporthoz. A hitelesítési módosítások automatikusan alkalmazásra kerülnek, és terminált nyithatnak meg, ha sudo hitelesítés szükséges."
   },
-  "DMS out of date": {
-    "DMS out of date": "A DMS elavult"
+  "HypeShell out of date": {
+    "HypeShell out of date": "A HypeShell elavult"
   },
-  "DMS service is not connected. Clipboard settings are unavailable.": {
-    "DMS service is not connected. Clipboard settings are unavailable.": "A DMS-szolgáltatás nincs csatlakoztatva. A vágólapbeállítások nem érhetők el."
+  "HypeShell service is not connected. Clipboard settings are unavailable.": {
+    "HypeShell service is not connected. Clipboard settings are unavailable.": "A HypeShell-szolgáltatás nincs csatlakoztatva. A vágólapbeállítások nem érhetők el."
   },
-  "DMS shell actions (launcher, clipboard, etc.)": {
-    "DMS shell actions (launcher, clipboard, etc.)": "DMS héj-műveletek (indító, vágólap, stb.)"
+  "HypeShell shell actions (launcher, clipboard, etc.)": {
+    "HypeShell shell actions (launcher, clipboard, etc.)": "HypeShell héj-műveletek (indító, vágólap, stb.)"
   },
   "DMS_SOCKET not available": {
     "DMS_SOCKET not available": "A DMS_SOCKET nem érhető el"
@@ -1781,20 +1781,20 @@
   "Daily at:": {
     "Daily at:": "Naponta ekkor:"
   },
-  "Dank": {
-    "Dank": "Dank"
+  "HypeShell": {
+    "HypeShell": "HypeShell"
   },
-  "Dank Bar": {
-    "Dank Bar": "Dank Bar"
+  "Hype Bar": {
+    "Hype Bar": "Hype Bar"
   },
-  "DankBar": {
-    "DankBar": "DankBar"
+  "Hype Bar": {
+    "Hype Bar": "Hype Bar"
   },
-  "DankMaterialShell is ready to use": {
-    "DankMaterialShell is ready to use": "A DankMaterialShell használatra kész"
+  "HypeShell is ready to use": {
+    "HypeShell is ready to use": "A HypeShell használatra kész"
   },
-  "DankShell & System Icons (requires restart)": {
-    "DankShell & System Icons (requires restart)": "DankShell és Rendszerikonok (újraindítást igényel)"
+  "HypeShell & System Icons (requires restart)": {
+    "HypeShell & System Icons (requires restart)": "DankShell és Rendszerikonok (újraindítást igényel)"
   },
   "Dark Mode": {
     "Dark Mode": "Sötét mód"
@@ -2261,8 +2261,8 @@
   "Enable fingerprint authentication": {
     "Enable fingerprint authentication": "Ujjlenyomatos azonosítás engedélyezése"
   },
-  "Enable fingerprint or security key for DMS Greeter. Authentication changes apply automatically.": {
-    "Enable fingerprint or security key for DMS Greeter. Authentication changes apply automatically.": "Ujjlenyomat vagy biztonsági kulcs engedélyezése a DMS-üdvözlőképernyőhöz (greeter). A hitelesítési módosítások automatikusan alkalmazásra kerülnek."
+  "Enable fingerprint or security key for HypeShell Greeter. Authentication changes apply automatically.": {
+    "Enable fingerprint or security key for HypeShell Greeter. Authentication changes apply automatically.": "Ujjlenyomat vagy biztonsági kulcs engedélyezése a HypeShell-üdvözlőképernyőhöz (greeter). A hitelesítési módosítások automatikusan alkalmazásra kerülnek."
   },
   "Enable loginctl lock integration": {
     "Enable loginctl lock integration": "loginctl-alapú zárolás integráció engedélyezése"
@@ -2600,8 +2600,8 @@
   "Failed to ring device": {
     "Failed to ring device": "Nem sikerült az eszköz megcsöngetése"
   },
-  "Failed to run 'dms greeter status'. Ensure DMS is installed and dms is in PATH.": {
-    "Failed to run 'dms greeter status'. Ensure DMS is installed and dms is in PATH.": "Nem sikerült futtatni a 'dms greeter status' parancsot. Győződj meg róla, hogy a DMS telepítve van, és a dms benne van a PATH környezeti változóban."
+  "Failed to run 'dms greeter status'. Ensure HypeShell is installed and dms is in PATH.": {
+    "Failed to run 'dms greeter status'. Ensure HypeShell is installed and dms is in PATH.": "Nem sikerült futtatni a 'dms greeter status' parancsot. Győződj meg róla, hogy a HypeShell telepítve van, és a dms benne van a PATH környezeti változóban."
   },
   "Failed to save audio config": {
     "Failed to save audio config": "Nem sikerült menteni a hangkonfigurációt"
@@ -2819,8 +2819,8 @@
   "Folders": {
     "Folders": "Mappa"
   },
-  "Follow DMS background color": {
-    "Follow DMS background color": "A DMS háttérszínének követése"
+  "Follow HypeShell background color": {
+    "Follow HypeShell background color": "A HypeShell háttérszínének követése"
   },
   "Follow Monitor Focus": {
     "Follow Monitor Focus": "Monitor fókuszának követése"
@@ -2984,11 +2984,11 @@
   "Gamma Control": {
     "Gamma Control": "Gammavezérlés"
   },
-  "Gamma control not available. Requires DMS API v6+.": {
-    "Gamma control not available. Requires DMS API v6+.": "A gammavezérlés nem érhető el. DMS API v6+ szükséges."
+  "Gamma control not available. Requires HypeShell API v6+.": {
+    "Gamma control not available. Requires HypeShell API v6+.": "A gammavezérlés nem érhető el. HypeShell API v6+ szükséges."
   },
-  "Generate baseline GTK3/4 or QT5/QT6 (requires qt6ct-kde) configurations to follow DMS colors. Only needed once.<br /><br />It is recommended to configure <a href=\"https://github.com/AvengeMedia/DankMaterialShell/blob/master/README.md#Theming\" style=\"text-decoration:none; color:%1;\">adw-gtk3</a> prior to applying GTK themes.": {
-    "Generate baseline GTK3/4 or QT5/QT6 (requires qt6ct-kde) configurations to follow DMS colors. Only needed once.<br /><br />It is recommended to configure <a href=\"https://github.com/AvengeMedia/DankMaterialShell/blob/master/README.md#Theming\" style=\"text-decoration:none; color:%1;\">adw-gtk3</a> prior to applying GTK themes.": "Alapszintű GTK3/4 vagy QT5/QT6 (qt6ct-kde szükséges) konfigurációk generálása a DMS színeinek követéséhez. Csak egyszer kell.<br /><br />Javasolt az <a href=\"https://github.com/AvengeMedia/DankMaterialShell/blob/master/README.md#Theming\" style=\"text-decoration:none; color:%1;\">adw-gtk3</a> konfigurálása a GTK témák alkalmazása előtt."
+  "Generate baseline GTK3/4 or QT5/QT6 (requires qt6ct-kde) configurations to follow HypeShell colors. Only needed once.<br /><br />It is recommended to configure <a href=\"https://github.com/acarlton5/HypeShell/blob/master/README.md#Theming\" style=\"text-decoration:none; color:%1;\">adw-gtk3</a> prior to applying GTK themes.": {
+    "Generate baseline GTK3/4 or QT5/QT6 (requires qt6ct-kde) configurations to follow HypeShell colors. Only needed once.<br /><br />It is recommended to configure <a href=\"https://github.com/acarlton5/HypeShell/blob/master/README.md#Theming\" style=\"text-decoration:none; color:%1;\">adw-gtk3</a> prior to applying GTK themes.": "Alapszintű GTK3/4 vagy QT5/QT6 (qt6ct-kde szükséges) konfigurációk generálása a HypeShell színeinek követéséhez. Csak egyszer kell.<br /><br />Javasolt az <a href=\"https://github.com/acarlton5/HypeShell/blob/master/README.md#Theming\" style=\"text-decoration:none; color:%1;\">adw-gtk3</a> konfigurálása a GTK témák alkalmazása előtt."
   },
   "Generic": {
     "Generic": "Általános"
@@ -3416,8 +3416,8 @@
   "Install Theme": {
     "Install Theme": "Téma telepítése"
   },
-  "Install color themes from the DMS theme registry": {
-    "Install color themes from the DMS theme registry": "Színtémák telepítése a DMS-témaregiszterből"
+  "Install color themes from the HypeShell theme registry": {
+    "Install color themes from the HypeShell theme registry": "Színtémák telepítése a HypeShell-témaregiszterből"
   },
   "Install complete. Greeter has been installed.": {
     "Install complete. Greeter has been installed.": "Telepítés befejezve. Az üdvözlőképernyő telepítve lett."
@@ -3428,17 +3428,17 @@
   "Install matugen package for dynamic theming": {
     "Install matugen package for dynamic theming": "Telepítsd a matugen csomagot a dinamikus témázáshoz"
   },
-  "Install plugin '%1' from the DMS registry?": {
-    "Install plugin '%1' from the DMS registry?": "Telepíted a(z) „%1” bővítményt a DMS-regiszterből?"
+  "Install plugin '%1' from the HypeShell registry?": {
+    "Install plugin '%1' from the HypeShell registry?": "Telepíted a(z) „%1” bővítményt a HypeShell-regiszterből?"
   },
-  "Install plugins from the DMS plugin registry": {
-    "Install plugins from the DMS plugin registry": "Bővítmények telepítése a DMS-bővítményregiszterből"
+  "Install plugins from the HypeShell plugin registry": {
+    "Install plugins from the HypeShell plugin registry": "Bővítmények telepítése a HypeShell-bővítményregiszterből"
   },
-  "Install the DMS greeter? A terminal will open for sudo authentication.": {
-    "Install the DMS greeter? A terminal will open for sudo authentication.": "Telepíted a DMS-üdvözlőképernyőt? (greeter) Egy terminál fog megnyílni a sudo hitelesítéshez."
+  "Install the HypeShell Greeter? A terminal will open for sudo authentication.": {
+    "Install the HypeShell Greeter? A terminal will open for sudo authentication.": "Telepíted a HypeShell-üdvözlőképernyőt? (greeter) Egy terminál fog megnyílni a sudo hitelesítéshez."
   },
-  "Install theme '%1' from the DMS registry?": {
-    "Install theme '%1' from the DMS registry?": "Telepíted a(z) „%1” témát a DMS-regiszterből?"
+  "Install theme '%1' from the HypeShell registry?": {
+    "Install theme '%1' from the HypeShell registry?": "Telepíted a(z) „%1” témát a HypeShell-regiszterből?"
   },
   "Installation and PAM setup: see the ": {
     "Installation and PAM setup: see the ": "Telepítés és PAM beállítása: lásd a "
@@ -3770,8 +3770,8 @@
   "Make sure KDE Connect or Valent is running on your other devices": {
     "Make sure KDE Connect or Valent is running on your other devices": "Győződj meg róla, hogy a KDE Connect vagy a Valent fut a többi eszközön"
   },
-  "Manage and configure plugins for extending DMS functionality": {
-    "Manage and configure plugins for extending DMS functionality": "Bővítmények kezelése és konfigurálása a DMS funkcionalitásának kiterjesztésére"
+  "Manage and configure plugins for extending HypeShell functionality": {
+    "Manage and configure plugins for extending HypeShell functionality": "Bővítmények kezelése és konfigurálása a HypeShell funkcionalitásának kiterjesztésére"
   },
   "Manage up to 4 independent bar configurations. Each bar has its own position, widgets, styling, and display assignment.": {
     "Manage up to 4 independent bar configurations. Each bar has its own position, widgets, styling, and display assignment.": "Legfeljebb 4 független sávkonfiguráció kezelése. Minden sávnak megvan a saját pozíciója, widgetjei, stílusa és kijelző-hozzárendelése."
@@ -3842,8 +3842,8 @@
   "Material inspired shadows and elevation on modals, popouts, and dialogs": {
     "Material inspired shadows and elevation on modals, popouts, and dialogs": "Material stílusú árnyékok és emelések a modális ablakokon, felugrókon és párbeszédpaneleken"
   },
-  "Material: Material Design 3 Expressive bezier curves. The DMS default feel.": {
-    "Material: Material Design 3 Expressive bezier curves. The DMS default feel.": "Material: Material Design 3 kifejező Bézier-görbék. A DMS alapértelmezett érzete."
+  "Material: Material Design 3 Expressive bezier curves. The HypeShell default feel.": {
+    "Material: Material Design 3 Expressive bezier curves. The HypeShell default feel.": "Material: Material Design 3 kifejező Bézier-görbék. A HypeShell alapértelmezett érzete."
   },
   "Matugen Contrast": {
     "Matugen Contrast": "Matugen kontraszt"
@@ -4268,8 +4268,8 @@
   "No Border": {
     "No Border": "Nincs szegély"
   },
-  "No DMS shortcuts configured": {
-    "No DMS shortcuts configured": "Nincsenek DMS gyorsbillentyűk beállítva"
+  "No HypeShell Shortcuts configured": {
+    "No HypeShell Shortcuts configured": "Nincsenek HypeShell gyorsbillentyűk beállítva"
   },
   "No Dim": {
     "No Dim": "Nincs sötétítés"
@@ -4658,8 +4658,8 @@
   "Only adjust gamma based on time or location rules.": {
     "Only adjust gamma based on time or location rules.": "Csak az idő- vagy helyalapú szabályok szerint állítsa a gammát."
   },
-  "Only affects DMS-managed PAM. If greetd already includes pam_fprintd, fingerprint stays enabled.": {
-    "Only affects DMS-managed PAM. If greetd already includes pam_fprintd, fingerprint stays enabled.": "Csak a DMS által kezelt PAM-ra van hatással. Ha a greetd már tartalmazza a pam_fprintd-t, az ujjlenyomat-olvasó engedélyezve marad."
+  "Only affects HypeShell-managed PAM. If greetd already includes pam_fprintd, fingerprint stays enabled.": {
+    "Only affects HypeShell-managed PAM. If greetd already includes pam_fprintd, fingerprint stays enabled.": "Csak a HypeShell által kezelt PAM-ra van hatással. Ha a greetd már tartalmazza a pam_fprintd-t, az ujjlenyomat-olvasó engedélyezve marad."
   },
   "Only show windows from the current monitor on each dock": {
     "Only show windows from the current monitor on each dock": "Csak az aktuális monitor ablakainak megjelenítése minden dokkon"
@@ -5411,11 +5411,11 @@
   "Requires 'dgop' tool": {
     "Requires 'dgop' tool": "Szükséges a „dgop” eszköz"
   },
-  "Requires DMS %1": {
-    "Requires DMS %1": "Szükséges DMS %1"
+  "Requires HypeShell %1": {
+    "Requires HypeShell %1": "Szükséges HypeShell %1"
   },
-  "Requires DMS server with sysupdate capability": {
-    "Requires DMS server with sysupdate capability": "DMS szerver szükséges sysupdate képességgel"
+  "Requires HypeShell server with sysupdate capability": {
+    "Requires HypeShell server with sysupdate capability": "HypeShell szerver szükséges sysupdate képességgel"
   },
   "Requires DWL compositor": {
     "Requires DWL compositor": "Szükséges a DWL kompozitor"
@@ -5447,11 +5447,11 @@
   "Resolution, position, scale": {
     "Resolution, position, scale": "Felbontás, pozíció, méretezés"
   },
-  "Restart DMS": {
-    "Restart DMS": "DMS újraindítása"
+  "Restart HypeShell": {
+    "Restart HypeShell": "HypeShell újraindítása"
   },
-  "Restart the DankMaterialShell": {
-    "Restart the DankMaterialShell": "A DankMaterialShell újraindítása"
+  "Restart the HypeShell": {
+    "Restart the HypeShell": "A HypeShell újraindítása"
   },
   "Restarting audio system...": {
     "Restarting audio system...": "Hangrendszer újraindítása…"
@@ -5528,8 +5528,8 @@
   "Run Again": {
     "Run Again": "Futtatás újra"
   },
-  "Run DMS Templates": {
-    "Run DMS Templates": "DMS-sablonok futtatása"
+  "Run HypeShell Templates": {
+    "Run HypeShell Templates": "HypeShell-sablonok futtatása"
   },
   "Run User Templates": {
     "Run User Templates": "Felhasználói sablonok futtatása"
@@ -5609,11 +5609,11 @@
   "Scale": {
     "Scale": "Skála"
   },
-  "Scale DankBar font sizes independently": {
-    "Scale DankBar font sizes independently": "A DankBar betűméretének független méretezése"
+  "Scale Hype Bar font sizes independently": {
+    "Scale Hype Bar font sizes independently": "A DankBar betűméretének független méretezése"
   },
-  "Scale DankBar icon sizes independently": {
-    "Scale DankBar icon sizes independently": "DankBar ikonméretek független skálázása"
+  "Scale Hype Bar icon sizes independently": {
+    "Scale Hype Bar icon sizes independently": "DankBar ikonméretek független skálázása"
   },
   "Scale all font sizes throughout the shell": {
     "Scale all font sizes throughout the shell": "Betűméret skálázása a felületen"
@@ -6074,8 +6074,8 @@
   "Show Reboot": {
     "Show Reboot": "Újraindítás megjelenítése"
   },
-  "Show Restart DMS": {
-    "Show Restart DMS": "„DMS újraindítása” megjelenítése"
+  "Show Restart HypeShell": {
+    "Show Restart HypeShell": "„HypeShell újraindítása” megjelenítése"
   },
   "Show Saved Items": {
     "Show Saved Items": "Mentett elemek megjelenítése"
@@ -6293,8 +6293,8 @@
   "Snow": {
     "Snow": "Hó"
   },
-  "Some plugins require a newer version of DMS:": {
-    "Some plugins require a newer version of DMS:": "Néhány bővítmény a DMS újabb verzióját igényli:"
+  "Some plugins require a newer version of HypeShell:": {
+    "Some plugins require a newer version of HypeShell:": "Néhány bővítmény a HypeShell újabb verzióját igényli:"
   },
   "Sort Alphabetically": {
     "Sort Alphabetically": "Rendezés betűrend szerint"
@@ -6344,8 +6344,8 @@
   "Standard": {
     "Standard": "Szabványos"
   },
-  "Standard: Classic Material Design 3 — panels rise from below with a subtle scale. The DMS default.": {
-    "Standard: Classic Material Design 3 — panels rise from below with a subtle scale. The DMS default.": "Standard: Klasszikus Material Design 3 — a panelek alulról emelkednek fel finom skálázással. A DMS alapértelmezett beállítása."
+  "Standard: Classic Material Design 3 — panels rise from below with a subtle scale. The HypeShell default.": {
+    "Standard: Classic Material Design 3 — panels rise from below with a subtle scale. The HypeShell default.": "Standard: Klasszikus Material Design 3 — a panelek alulról emelkednek fel finom skálázással. A HypeShell alapértelmezett beállítása."
   },
   "Start": {
     "Start": "Indítás"
@@ -6542,8 +6542,8 @@
   "Terminal fallback failed. Install a supported terminal emulator or run 'dms auth sync' manually.": {
     "Terminal fallback failed. Install a supported terminal emulator or run 'dms auth sync' manually.": "A terminál visszalépés sikertelen. Telepíts egy támogatott terminálemulátort, vagy futtasd a 'dms auth sync' parancsot."
   },
-  "Terminal fallback failed. Install one of the supported terminal emulators or run 'dms greeter sync' manually.": {
-    "Terminal fallback failed. Install one of the supported terminal emulators or run 'dms greeter sync' manually.": "A terminál tartalék megnyitása sikertelen. Telepíts egyet a támogatott terminálemulátorok közül, vagy futtasd a 'dms greeter sync' parancsot."
+  "Terminal fallback failed. Install one of the supported terminal emulators or run 'HypeShell Greeter sync' manually.": {
+    "Terminal fallback failed. Install one of the supported terminal emulators or run 'HypeShell Greeter sync' manually.": "A terminál tartalék megnyitása sikertelen. Telepíts egyet a támogatott terminálemulátorok közül, vagy futtasd a 'HypeShell Greeter sync' parancsot."
   },
   "Terminal fallback opened. Complete authentication setup there; it will close automatically when done.": {
     "Terminal fallback opened. Complete authentication setup there; it will close automatically when done.": "Tartalék terminál megnyitva. Fejezd be ott a hitelesítési beállítást; a befejezés után automatikusan be fog záródni."
@@ -6617,8 +6617,8 @@
   "Third-Party Plugin Warning": {
     "Third-Party Plugin Warning": "Külső bővítmény figyelmeztetés"
   },
-  "Third-party plugins are created by the community and are not officially supported by DankMaterialShell.\n\nThese plugins may pose security and privacy risks - install at your own risk.": {
-    "Third-party plugins are created by the community and are not officially supported by DankMaterialShell.\n\nThese plugins may pose security and privacy risks - install at your own risk.": "A külső bővítményeket a közösség készíti, és a DankMaterialShell hivatalosan nem támogatja őket.\n\nEzek a bővítmények biztonsági és adatvédelmi kockázatokat jelenthetnek – telepítés csak saját felelősségre."
+  "Third-party plugins are created by the community and are not officially supported by HypeShell.\n\nThese plugins may pose security and privacy risks - install at your own risk.": {
+    "Third-party plugins are created by the community and are not officially supported by HypeShell.\n\nThese plugins may pose security and privacy risks - install at your own risk.": "A külső bővítményeket a közösség készíti, és a HypeShell hivatalosan nem támogatja őket.\n\nEzek a bővítmények biztonsági és adatvédelmi kockázatokat jelenthetnek – telepítés csak saját felelősségre."
   },
   "This bind is overridden by config.kdl": {
     "This bind is overridden by config.kdl": "Ezt a billentyűt felülírja a config.kdl"
@@ -6722,8 +6722,8 @@
   "To update, run the following command:": {
     "To update, run the following command:": "A frissítéshez futtasd a következő parancsot:"
   },
-  "To use this DMS bind, remove or change the keybind in your config.kdl": {
-    "To use this DMS bind, remove or change the keybind in your config.kdl": "A DMS-billentyű használatához távolítsd el vagy módosítsd a billentyűkombinációt a config.kdl fájlban"
+  "To use this HypeShell bind, remove or change the keybind in your config.kdl": {
+    "To use this HypeShell bind, remove or change the keybind in your config.kdl": "A HypeShell-billentyű használatához távolítsd el vagy módosítsd a billentyűkombinációt a config.kdl fájlban"
   },
   "Toast Messages": {
     "Toast Messages": "Felugró üzenetek"
@@ -6887,8 +6887,8 @@
   "Uninstall failed: %1": {
     "Uninstall failed: %1": "Eltávolítás sikertelen: %1"
   },
-  "Uninstall the DMS greeter? This will remove configuration and restore your previous display manager. A terminal will open for sudo authentication.": {
-    "Uninstall the DMS greeter? This will remove configuration and restore your previous display manager. A terminal will open for sudo authentication.": "Eltávolítod a DMS-üdvözlőképernyőt? (greeter) Ez törli a beállításokat és visszaállítja az előző megjelenítéskezelőt. Egy terminál fog megnyílni a sudo hitelesítéshez."
+  "Uninstall the HypeShell Greeter? This will remove configuration and restore your previous display manager. A terminal will open for sudo authentication.": {
+    "Uninstall the HypeShell Greeter? This will remove configuration and restore your previous display manager. A terminal will open for sudo authentication.": "Eltávolítod a HypeShell-üdvözlőképernyőt? (greeter) Ez törli a beállításokat és visszaállítja az előző megjelenítéskezelőt. Egy terminál fog megnyílni a sudo hitelesítéshez."
   },
   "Uninstalled: %1": {
     "Uninstalled: %1": "Eltávolítva: %1"
@@ -7262,8 +7262,8 @@
   "Welcome": {
     "Welcome": "Üdvözlünk"
   },
-  "Welcome to DankMaterialShell": {
-    "Welcome to DankMaterialShell": "Üdvözlünk a DankMaterialShell-ben"
+  "Welcome to HypeShell": {
+    "Welcome to HypeShell": "Üdvözlünk a HypeShell-ben"
   },
   "When clicking a dock window in a Hyprland special workspace, bring that special workspace back before focusing the window": {
     "When clicking a dock window in a Hyprland special workspace, bring that special workspace back before focusing the window": "Ha a Hyprland speciális munkaterületén lévő dokkolóablakra kattintasz, visszahozza azt a speciális munkaterületet, mielőtt az ablakra fókuszálna"
@@ -7487,8 +7487,8 @@
   "direct": {
     "direct": "közvetlen"
   },
-  "dms is a highly customizable, modern desktop shell with a <a href=\"https://m3.material.io/\" style=\"text-decoration:none; color:%1;\">material 3 inspired</a> design.<br /><br/>It is built with <a href=\"https://quickshell.org\" style=\"text-decoration:none; color:%1;\">Quickshell</a>, a QT6 framework for building desktop shells, and <a href=\"https://go.dev\" style=\"text-decoration:none; color:%1;\">Go</a>, a statically typed, compiled programming language.": {
-    "dms is a highly customizable, modern desktop shell with a <a href=\"https://m3.material.io/\" style=\"text-decoration:none; color:%1;\">material 3 inspired</a> design.<br /><br/>It is built with <a href=\"https://quickshell.org\" style=\"text-decoration:none; color:%1;\">Quickshell</a>, a QT6 framework for building desktop shells, and <a href=\"https://go.dev\" style=\"text-decoration:none; color:%1;\">Go</a>, a statically typed, compiled programming language.": "A dms egy nagymértékben testreszabható, modern asztali héj, <a href=\"https://m3.material.io/\" style=\"text-decoration:none; color:%1;\">material 3 ihlette</a> dizájnnal.<br /><br/>A <a href=\"https://quickshell.org\" style=\"text-decoration:none; color:%1;\">Quickshell</a>-lel, egy QT6 keretrendszerrel asztali héjak építéséhez, és a <a href=\"https://go.dev\" style=\"text-decoration:none; color:%1;\">Go</a> statikusan típusos, fordított programozási nyelvvel készült."
+  "HypeShell is a highly customizable, modern desktop shell with a <a href=\"https://m3.material.io/\" style=\"text-decoration:none; color:%1;\">material 3 inspired</a> design.<br /><br/>It is built with <a href=\"https://quickshell.org\" style=\"text-decoration:none; color:%1;\">Quickshell</a>, a QT6 framework for building desktop shells, and <a href=\"https://go.dev\" style=\"text-decoration:none; color:%1;\">Go</a>, a statically typed, compiled programming language.": {
+    "HypeShell is a highly customizable, modern desktop shell with a <a href=\"https://m3.material.io/\" style=\"text-decoration:none; color:%1;\">material 3 inspired</a> design.<br /><br/>It is built with <a href=\"https://quickshell.org\" style=\"text-decoration:none; color:%1;\">Quickshell</a>, a QT6 framework for building desktop shells, and <a href=\"https://go.dev\" style=\"text-decoration:none; color:%1;\">Go</a>, a statically typed, compiled programming language.": "A dms egy nagymértékben testreszabható, modern asztali héj, <a href=\"https://m3.material.io/\" style=\"text-decoration:none; color:%1;\">material 3 ihlette</a> dizájnnal.<br /><br/>A <a href=\"https://quickshell.org\" style=\"text-decoration:none; color:%1;\">Quickshell</a>-lel, egy QT6 keretrendszerrel asztali héjak építéséhez, és a <a href=\"https://go.dev\" style=\"text-decoration:none; color:%1;\">Go</a> statikusan típusos, fordított programozási nyelvvel készült."
   },
   "dms/cursor config exists but is not included. Cursor settings won't apply.": {
     "dms/cursor config exists but is not included. Cursor settings won't apply.": "A dms/cursor konfiguráció létezik, de nincs befoglalva. A kurzorbeállítások nem lesznek érvényesek."
@@ -7523,8 +7523,8 @@
   "leave empty for default": {
     "leave empty for default": "hagyd üresen az alapértelmezéshez"
   },
-  "loginctl not available - lock integration requires DMS socket connection": {
-    "loginctl not available - lock integration requires DMS socket connection": "A loginctl nem érhető el – a zárolás integrációhoz DMS socket kapcsolat szükséges"
+  "loginctl not available - lock integration requires HypeShell socket connection": {
+    "loginctl not available - lock integration requires HypeShell socket connection": "A loginctl nem érhető el – a zárolás integrációhoz HypeShell socket kapcsolat szükséges"
   },
   "mangowc Discord Server": {
     "mangowc Discord Server": "mangowc Discord szerver"
@@ -7613,8 +7613,8 @@
   "up": {
     "up": "fel"
   },
-  "update dms for NM integration.": {
-    "update dms for NM integration.": "frissítsd a dms-t az NM integrációhoz."
+  "update HypeShell for NM integration.": {
+    "update HypeShell for NM integration.": "frissítsd a dms-t az NM integrációhoz."
   },
   "v%1 by %2": {
     "v%1 by %2": "v%1 ettől: %2"

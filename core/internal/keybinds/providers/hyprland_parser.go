@@ -6,7 +6,7 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/AvengeMedia/DankMaterialShell/core/internal/utils"
+	"github.com/acarlton5/HypeShell/core/internal/utils"
 )
 
 const (
@@ -317,17 +317,17 @@ func (p *HyprlandParser) buildDMSStatus() *HyprlandDMSStatus {
 	switch {
 	case !p.dmsBindsExists:
 		status.Effective = false
-		status.StatusMessage = "dms/binds.conf does not exist"
+		status.StatusMessage = "hype/binds.conf does not exist"
 	case !p.dmsBindsIncluded:
 		status.Effective = false
-		status.StatusMessage = "dms/binds.conf is not sourced in config"
+		status.StatusMessage = "hype/binds.conf is not sourced in config"
 	case p.bindsAfterDMS > 0:
 		status.Effective = true
 		status.OverriddenBy = p.bindsAfterDMS
-		status.StatusMessage = "Some DMS binds may be overridden by config binds"
+		status.StatusMessage = "Some HypeShell binds may be overridden by config binds"
 	default:
 		status.Effective = true
-		status.StatusMessage = "DMS binds are active"
+		status.StatusMessage = "HypeShell binds are active"
 	}
 
 	return status
@@ -344,10 +344,15 @@ func (p *HyprlandParser) normalizeKey(key string) string {
 	return strings.ToLower(key)
 }
 
+func isHyprlandShellBindsPath(path string) bool {
+	normalized := strings.ReplaceAll(path, "\\", "/")
+	return strings.Contains(normalized, "hype/binds.conf") || strings.Contains(normalized, "dms/binds.conf")
+}
+
 func (p *HyprlandParser) addBind(kb *HyprlandKeyBinding) bool {
 	key := p.formatBindKey(kb)
 	normalizedKey := p.normalizeKey(key)
-	isDMSBind := strings.Contains(kb.Source, "dms/binds.conf")
+	isDMSBind := isHyprlandShellBindsPath(kb.Source)
 
 	if isDMSBind {
 		p.dmsBindKeys[normalizedKey] = true
@@ -373,8 +378,12 @@ func (p *HyprlandParser) ParseWithDMS() (*HyprlandSection, error) {
 		return nil, err
 	}
 
-	dmsBindsPath := filepath.Join(expandedDir, "dms", "binds.conf")
+	dmsBindsPath := filepath.Join(expandedDir, "hype", "binds.conf")
+	legacyBindsPath := filepath.Join(expandedDir, "dms", "binds.conf")
 	if _, err := os.Stat(dmsBindsPath); err == nil {
+		p.dmsBindsExists = true
+	} else if _, err := os.Stat(legacyBindsPath); err == nil {
+		dmsBindsPath = legacyBindsPath
 		p.dmsBindsExists = true
 	}
 
@@ -446,7 +455,7 @@ func (p *HyprlandParser) handleSource(line string, section *HyprlandSection, bas
 	}
 
 	sourcePath := strings.TrimSpace(parts[1])
-	isDMSSource := sourcePath == "dms/binds.conf" || strings.HasSuffix(sourcePath, "/dms/binds.conf")
+	isDMSSource := sourcePath == "hype/binds.conf" || strings.HasSuffix(sourcePath, "/hype/binds.conf") || sourcePath == "dms/binds.conf" || strings.HasSuffix(sourcePath, "/dms/binds.conf")
 
 	p.includeCount++
 	if isDMSSource {

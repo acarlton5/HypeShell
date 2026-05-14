@@ -3,8 +3,8 @@ package main
 import (
 	"fmt"
 
-	"github.com/AvengeMedia/DankMaterialShell/core/internal/proto/wlr_output_management"
-	wlclient "github.com/AvengeMedia/DankMaterialShell/core/pkg/go-wayland/wayland/client"
+	"github.com/acarlton5/HypeShell/core/internal/proto/wlr_output_management"
+	wlclient "github.com/acarlton5/HypeShell/core/pkg/go-wayland/wayland/client"
 )
 
 type randrOutput struct {

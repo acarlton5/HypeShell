@@ -1,23 +1,23 @@
 # HypeShell
 
 <div align="center">
-  <a href="https://danklinux.com">
+  <a href="https://github.com/acarlton5/HypeShell">
     <img src="assets/hypeshell-logo.svg" alt="HypeShell" width="200">
   </a>
 
-### A modern Hyprland shell, rebased from DankMaterialShell
+### A modern Hyprland-only desktop shell
 
 Built with [Quickshell](https://quickshell.org/) and [Go](https://go.dev/)
 
-[![Documentation](https://img.shields.io/badge/docs-danklinux.com-9ccbfb?style=for-the-badge&labelColor=101418)](https://danklinux.com/docs)
+[![Documentation](https://img.shields.io/badge/docs-HypeShell-9ccbfb?style=for-the-badge&labelColor=101418)](https://github.com/acarlton5/HypeShell)
 [![GitHub stars](https://img.shields.io/github/stars/acarlton5/HypeShell?style=for-the-badge&labelColor=101418&color=ffd700)](https://github.com/acarlton5/HypeShell/stargazers)
 [![GitHub License](https://img.shields.io/github/license/acarlton5/HypeShell?style=for-the-badge&labelColor=101418&color=b9c8da)](https://github.com/acarlton5/HypeShell/blob/main/LICENSE)
 [![GitHub release](https://img.shields.io/github/v/release/acarlton5/HypeShell?style=for-the-badge&labelColor=101418&color=9ccbfb)](https://github.com/acarlton5/HypeShell/releases)
-[![Ko-Fi donate](https://img.shields.io/badge/donate-kofi?style=for-the-badge&logo=ko-fi&logoColor=ffffff&label=ko-fi&labelColor=101418&color=f16061&link=https%3A%2F%2Fko-fi.com%2Fdanklinux)](https://ko-fi.com/danklinux)
+[![GitHub](https://img.shields.io/badge/source-GitHub-9ccbfb?style=for-the-badge&logo=github&logoColor=ffffff&labelColor=101418)](https://github.com/acarlton5/HypeShell)
 
 </div>
 
-HypeShell is a complete desktop shell for [Hyprland](https://hyprland.org/). It is independently imported from DankMaterialShell and is being reshaped into a Hyprland-only OS shell. The codebase currently keeps the upstream `dms` command/service names internally while HypeShell branding is migrated.
+HypeShell is a complete desktop shell for [Hyprland](https://hyprland.org/), reshaped into a Hyprland-only OS shell with Hype-owned install, plugin, theme, and update paths.
 
 ## Repository Structure
 
@@ -81,7 +81,7 @@ cd HypeShell
 ./scripts/migrate-from-hypeshell.sh --yes --install-greeter --clean
 ```
 
-**[Manual installation guide](https://danklinux.com/docs/dankmaterialshell/installation)**
+Manual installation docs will live in this repository while HypeShell's dedicated docs are rebuilt.
 
 ## Features
 
@@ -107,7 +107,7 @@ MPRIS player controls, calendar sync, weather widgets, and clipboard history wit
 Lock screen, idle detection, auto-lock/suspend with separate AC/battery settings, and greeter support.
 
 **Plugin System**
-Extend functionality with the [plugin registry](https://plugins.danklinux.com).
+Extend functionality with the Hype plugin registry.
 
 ## Supported Compositor
 
@@ -120,23 +120,20 @@ HypeShell targets [Hyprland](https://hyprland.org/) only, with workspace switchi
 Control the shell from the command line or keybinds:
 
 ```bash
-dms run              # Start the shell
-dms ipc call spotlight toggle
-dms ipc call audio setvolume 50
-dms ipc call wallpaper set /path/to/image.jpg
-dms brightness list  # List available displays
-dms plugins search   # Browse plugin registry
+hype run              # Start the shell
+hype ipc call spotlight toggle
+hype ipc call audio setvolume 50
+hype ipc call wallpaper set /path/to/image.jpg
+hype brightness list  # List available displays
+hype plugins search   # Browse plugin registry
 ```
 
-[Full CLI and IPC documentation](https://danklinux.com/docs/dankmaterialshell/keybinds-ipc)
+The legacy `dms` command remains as a compatibility alias during migration.
 
 ## Documentation
 
-- **Website:** [danklinux.com](https://danklinux.com)
-- **Docs:** [danklinux.com/docs](https://danklinux.com/docs/)
-- **Theming:** [Application themes](https://danklinux.com/docs/dankmaterialshell/application-themes) | [Custom themes](https://danklinux.com/docs/dankmaterialshell/custom-themes)
-- **Plugins:** [Development guide](https://danklinux.com/docs/dankmaterialshell/plugins-overview)
-- **Support:** [Ko-fi](https://ko-fi.com/avengemediallc)
+- **Source:** [github.com/acarlton5/HypeShell](https://github.com/acarlton5/HypeShell)
+- **Plugins/Themes:** [github.com/acarlton5/HypeRegistry](https://github.com/acarlton5/HypeRegistry)
 
 ## Development
 
@@ -148,11 +145,11 @@ See component-specific documentation:
 
 ### Building from Source
 
-**Core + Dankinstall:**
+**Core + installer:**
 
 ```bash
 cd core
-make              # Build dms CLI
+make              # Build hype CLI
 make dankinstall  # Build installer
 ```
 
@@ -166,10 +163,10 @@ quickshell -p quickshell/
 
 ```nix
 {
-  inputs.dms.url = "github:AvengeMedia/DankMaterialShell";
+  inputs.hypeshell.url = "github:acarlton5/HypeShell";
 
   # Use in home-manager or NixOS configuration
-  imports = [ inputs.dms.homeModules.dank-material-shell ];
+  imports = [ inputs.hypeshell.homeModules.hypeshell ];
 }
 ```
 
@@ -182,7 +179,7 @@ Contributions welcome. Bug fixes, widgets, features, documentation, and plugins 
 3. Test thoroughly
 4. Open a pull request
 
-For documentation contributions, see [DankLinux-Docs](https://github.com/AvengeMedia/DankLinux-Docs).
+For documentation contributions, open a pull request in this repository.
 
 ## Credits
 
@@ -194,7 +191,7 @@ For documentation contributions, see [DankLinux-Docs](https://github.com/AvengeM
 
 ## Star History
 
-[![Star History Chart](https://api.star-history.com/svg?repos=AvengeMedia/DankMaterialShell&type=date&legend=top-left)](https://www.star-history.com/#AvengeMedia/DankMaterialShell&type=date&legend=top-left)
+[![Star History Chart](https://api.star-history.com/svg?repos=acarlton5/HypeShell&type=date&legend=top-left)](https://www.star-history.com/#acarlton5/HypeShell&type=date&legend=top-left)
 
 ## License
 

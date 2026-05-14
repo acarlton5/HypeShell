@@ -104,17 +104,41 @@ type ThemeVariants struct {
 	Accents  []ThemeAccent         `json:"accents,omitempty"`
 }
 
+type ThemeWallpaper struct {
+	ID        string `json:"id,omitempty"`
+	Name      string `json:"name,omitempty"`
+	Path      string `json:"path,omitempty"`
+	LightPath string `json:"lightPath,omitempty"`
+	DarkPath  string `json:"darkPath,omitempty"`
+	FillMode  string `json:"fillMode,omitempty"`
+}
+
+type ThemeWindowStyle struct {
+	BorderColor         string `json:"borderColor,omitempty"`
+	BorderActiveColor   string `json:"borderActiveColor,omitempty"`
+	BorderInactiveColor string `json:"borderInactiveColor,omitempty"`
+	BorderSize          *int   `json:"borderSize,omitempty"`
+	GapsIn              *int   `json:"gapsIn,omitempty"`
+	GapsOut             *int   `json:"gapsOut,omitempty"`
+	Rounding            *int   `json:"rounding,omitempty"`
+	Blur                *bool  `json:"blur,omitempty"`
+	Opacity             string `json:"opacity,omitempty"`
+}
+
 type Theme struct {
-	ID          string         `json:"id"`
-	Name        string         `json:"name"`
-	Version     string         `json:"version"`
-	Author      string         `json:"author"`
-	Description string         `json:"description"`
-	Dark        ColorScheme    `json:"dark"`
-	Light       ColorScheme    `json:"light"`
-	Variants    *ThemeVariants `json:"variants,omitempty"`
-	PreviewPath string         `json:"-"`
-	SourceDir   string         `json:"sourceDir,omitempty"`
+	ID          string            `json:"id"`
+	Name        string            `json:"name"`
+	Version     string            `json:"version"`
+	Author      string            `json:"author"`
+	Description string            `json:"description"`
+	Dark        ColorScheme       `json:"dark"`
+	Light       ColorScheme       `json:"light"`
+	Variants    *ThemeVariants    `json:"variants,omitempty"`
+	Wallpapers  []ThemeWallpaper  `json:"wallpapers,omitempty"`
+	Window      *ThemeWindowStyle `json:"window,omitempty"`
+	Borders     *ThemeWindowStyle `json:"borders,omitempty"`
+	PreviewPath string            `json:"-"`
+	SourceDir   string            `json:"sourceDir,omitempty"`
 }
 
 type GitClient interface {

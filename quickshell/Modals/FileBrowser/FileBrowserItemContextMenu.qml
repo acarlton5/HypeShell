@@ -57,7 +57,7 @@ Popup {
     function copyPath() {
         if (!filePath)
             return;
-        Quickshell.execDetached(["dms", "cl", "copy", filePath]);
+        Quickshell.execDetached(["hype", "cl", "copy", filePath]);
         close();
     }
 

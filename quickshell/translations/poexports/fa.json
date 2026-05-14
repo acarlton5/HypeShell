@@ -281,8 +281,8 @@
   "90°": {
     "90°": "۹۰°"
   },
-  "<a href=\"https://github.com/AvengeMedia/DankMaterialShell/blob/master/LICENSE\" style=\"text-decoration:none; color:%1;\">MIT License</a>": {
-    "<a href=\"https://github.com/AvengeMedia/DankMaterialShell/blob/master/LICENSE\" style=\"text-decoration:none; color:%1;\">MIT License</a>": ""
+  "<a href=\"https://github.com/acarlton5/HypeShell/blob/master/LICENSE\" style=\"text-decoration:none; color:%1;\">MIT License</a>": {
+    "<a href=\"https://github.com/acarlton5/HypeShell/blob/master/LICENSE\" style=\"text-decoration:none; color:%1;\">MIT License</a>": ""
   },
   "A file with this name already exists. Do you want to overwrite it?": {
     "A file with this name already exists. Do you want to overwrite it?": "فایلی با این نام از قبل وجود دارد. آیا می‌خواهید آن را بازنویسی کنید؟"
@@ -341,8 +341,8 @@
   "Activate Greeter": {
     "Activate Greeter": ""
   },
-  "Activate the DMS greeter? A terminal will open for sudo authentication. Run Sync after activation to apply your settings.": {
-    "Activate the DMS greeter? A terminal will open for sudo authentication. Run Sync after activation to apply your settings.": ""
+  "Activate the HypeShell Greeter? A terminal will open for sudo authentication. Run Sync after activation to apply your settings.": {
+    "Activate the HypeShell Greeter? A terminal will open for sudo authentication. Run Sync after activation to apply your settings.": ""
   },
   "Activation": {
     "Activation": "فعال‌سازی"
@@ -734,8 +734,8 @@
   "Automatically lock after": {
     "Automatically lock after": "قفل خودکار پس از"
   },
-  "Automatically lock the screen when DMS starts": {
-    "Automatically lock the screen when DMS starts": "به طور خودکار صفحه را هنگامی که DMS شروع می‌شود قفل کن"
+  "Automatically lock the screen when HypeShell starts": {
+    "Automatically lock the screen when HypeShell starts": "به طور خودکار صفحه را هنگامی که HypeShell شروع می‌شود قفل کن"
   },
   "Automatically lock the screen when the system prepares to suspend": {
     "Automatically lock the screen when the system prepares to suspend": "صفحه را هنگام آماده‌شدن سیستم برای تعلیق به صورت خودکار قفل کن"
@@ -1073,8 +1073,8 @@
   "Change bar appearance": {
     "Change bar appearance": "نمای ظاهری نوار را تغییر بده"
   },
-  "Change the locale used by the DMS interface.": {
-    "Change the locale used by the DMS interface.": ""
+  "Change the locale used by the HypeShell interface.": {
+    "Change the locale used by the HypeShell interface.": ""
   },
   "Change the locale used for date and time formatting, independent of the interface language.": {
     "Change the locale used for date and time formatting, independent of the interface language.": ""
@@ -1151,8 +1151,8 @@
   "Choose the border accent color": {
     "Choose the border accent color": "انتخاب رنگ تأکیدی حاشیه"
   },
-  "Choose the logo displayed on the launcher button in DankBar": {
-    "Choose the logo displayed on the launcher button in DankBar": "لوگوی نمایش‌داده شده بر دکمه‌ی لانچر در نوار دَنک را انتخاب کنید"
+  "Choose the logo displayed on the launcher button in Hype Bar": {
+    "Choose the logo displayed on the launcher button in Hype Bar": "لوگوی نمایش‌داده شده بر دکمه‌ی لانچر در نوار دَنک را انتخاب کنید"
   },
   "Choose where notification popups appear on screen": {
     "Choose where notification popups appear on screen": "انتخاب کنید پاپ‌آپ اعلان کجای صفحه ظاهر شود"
@@ -1310,8 +1310,8 @@
   "Color theme for syntax highlighting. %1 themes available.": {
     "Color theme for syntax highlighting. %1 themes available.": "تم رنگی برای برجسته‌سازی کد. %1 تم دردسترس است."
   },
-  "Color theme from DMS registry": {
-    "Color theme from DMS registry": "رنگ تم از مخزن DMS"
+  "Color theme from HypeShell registry": {
+    "Color theme from HypeShell registry": "رنگ تم از مخزن HypeShell"
   },
   "Colorful": {
     "Colorful": "رنگارنگ"
@@ -1751,23 +1751,23 @@
   "DEMO MODE - Click anywhere to exit": {
     "DEMO MODE - Click anywhere to exit": "حالت آزمایشی - برای خروج بر هر‌جایی کلیک کنید"
   },
-  "DMS Plugin Manager Unavailable": {
-    "DMS Plugin Manager Unavailable": "مدیریت افزونه DMS در دسترس نیست"
+  "HypeShell Plugin Manager Unavailable": {
+    "HypeShell Plugin Manager Unavailable": "مدیریت افزونه HypeShell در دسترس نیست"
   },
-  "DMS Shortcuts": {
-    "DMS Shortcuts": "میانبرهای DMS"
+  "HypeShell Shortcuts": {
+    "HypeShell Shortcuts": "میانبرهای HypeShell"
   },
-  "DMS greeter needs: greetd, dms-greeter. Fingerprint: fprintd, pam_fprintd. Security keys: pam_u2f. Add your user to the greeter group. Authentication changes apply automatically and may open a terminal when sudo authentication is required.": {
-    "DMS greeter needs: greetd, dms-greeter. Fingerprint: fprintd, pam_fprintd. Security keys: pam_u2f. Add your user to the greeter group. Authentication changes apply automatically and may open a terminal when sudo authentication is required.": ""
+  "HypeShell Greeter needs: greetd, dms-greeter. Fingerprint: fprintd, pam_fprintd. Security keys: pam_u2f. Add your user to the greeter group. Authentication changes apply automatically and may open a terminal when sudo authentication is required.": {
+    "HypeShell Greeter needs: greetd, dms-greeter. Fingerprint: fprintd, pam_fprintd. Security keys: pam_u2f. Add your user to the greeter group. Authentication changes apply automatically and may open a terminal when sudo authentication is required.": ""
   },
-  "DMS out of date": {
-    "DMS out of date": "DMS بروز نیست"
+  "HypeShell out of date": {
+    "HypeShell out of date": "HypeShell بروز نیست"
   },
-  "DMS service is not connected. Clipboard settings are unavailable.": {
-    "DMS service is not connected. Clipboard settings are unavailable.": "سرویس DMS قطع می‌باشد. تنظیمات کلیپ‌بورد در دسترس نیست."
+  "HypeShell service is not connected. Clipboard settings are unavailable.": {
+    "HypeShell service is not connected. Clipboard settings are unavailable.": "سرویس HypeShell قطع می‌باشد. تنظیمات کلیپ‌بورد در دسترس نیست."
   },
-  "DMS shell actions (launcher, clipboard, etc.)": {
-    "DMS shell actions (launcher, clipboard, etc.)": "اقدام‌های شِل DMS (لانچر، کلیپ‌بورد و غیره)"
+  "HypeShell shell actions (launcher, clipboard, etc.)": {
+    "HypeShell shell actions (launcher, clipboard, etc.)": "اقدام‌های شِل HypeShell (لانچر، کلیپ‌بورد و غیره)"
   },
   "DMS_SOCKET not available": {
     "DMS_SOCKET not available": "DMS_SOCKET در دسترس نیست"
@@ -1781,20 +1781,20 @@
   "Daily at:": {
     "Daily at:": "روزانه در:"
   },
-  "Dank": {
-    "Dank": "Dank"
+  "HypeShell": {
+    "HypeShell": "HypeShell"
   },
-  "Dank Bar": {
-    "Dank Bar": "نوار دَنک"
+  "Hype Bar": {
+    "Hype Bar": "نوار دَنک"
   },
-  "DankBar": {
-    "DankBar": "نوار دَنک"
+  "Hype Bar": {
+    "Hype Bar": "نوار دَنک"
   },
-  "DankMaterialShell is ready to use": {
-    "DankMaterialShell is ready to use": "دَنک متریال شل آماده استفاده می‌باشد"
+  "HypeShell is ready to use": {
+    "HypeShell is ready to use": "دَنک متریال شل آماده استفاده می‌باشد"
   },
-  "DankShell & System Icons (requires restart)": {
-    "DankShell & System Icons (requires restart)": "آیکون‌های DankShell و سیستم (نیازمند راه‌اندازی مجدد)"
+  "HypeShell & System Icons (requires restart)": {
+    "HypeShell & System Icons (requires restart)": "آیکون‌های DankShell و سیستم (نیازمند راه‌اندازی مجدد)"
   },
   "Dark Mode": {
     "Dark Mode": "حالت تاریک"
@@ -2261,8 +2261,8 @@
   "Enable fingerprint authentication": {
     "Enable fingerprint authentication": "فعال‌کردن احراز هویت با اثرانگشت"
   },
-  "Enable fingerprint or security key for DMS Greeter. Authentication changes apply automatically.": {
-    "Enable fingerprint or security key for DMS Greeter. Authentication changes apply automatically.": ""
+  "Enable fingerprint or security key for HypeShell Greeter. Authentication changes apply automatically.": {
+    "Enable fingerprint or security key for HypeShell Greeter. Authentication changes apply automatically.": ""
   },
   "Enable loginctl lock integration": {
     "Enable loginctl lock integration": "فعال‌کردن یکپارچه‌سازی قفل loginctl"
@@ -2600,8 +2600,8 @@
   "Failed to ring device": {
     "Failed to ring device": "زنگ زدن دستگاه ناموفق بود"
   },
-  "Failed to run 'dms greeter status'. Ensure DMS is installed and dms is in PATH.": {
-    "Failed to run 'dms greeter status'. Ensure DMS is installed and dms is in PATH.": ""
+  "Failed to run 'dms greeter status'. Ensure HypeShell is installed and dms is in PATH.": {
+    "Failed to run 'dms greeter status'. Ensure HypeShell is installed and dms is in PATH.": ""
   },
   "Failed to save audio config": {
     "Failed to save audio config": "ذخیره پیکربندی صوتی ناموفق بود"
@@ -2819,8 +2819,8 @@
   "Folders": {
     "Folders": "پوشه‌ها"
   },
-  "Follow DMS background color": {
-    "Follow DMS background color": ""
+  "Follow HypeShell background color": {
+    "Follow HypeShell background color": ""
   },
   "Follow Monitor Focus": {
     "Follow Monitor Focus": "فوکوس مانیتور را دنبال کن"
@@ -2984,11 +2984,11 @@
   "Gamma Control": {
     "Gamma Control": "کنترل گاما"
   },
-  "Gamma control not available. Requires DMS API v6+.": {
-    "Gamma control not available. Requires DMS API v6+.": "کنترل گاما در دسترس نیست. نیاز به DMS API نسخه ۶ به بالا دارد."
+  "Gamma control not available. Requires HypeShell API v6+.": {
+    "Gamma control not available. Requires HypeShell API v6+.": "کنترل گاما در دسترس نیست. نیاز به HypeShell API نسخه ۶ به بالا دارد."
   },
-  "Generate baseline GTK3/4 or QT5/QT6 (requires qt6ct-kde) configurations to follow DMS colors. Only needed once.<br /><br />It is recommended to configure <a href=\"https://github.com/AvengeMedia/DankMaterialShell/blob/master/README.md#Theming\" style=\"text-decoration:none; color:%1;\">adw-gtk3</a> prior to applying GTK themes.": {
-    "Generate baseline GTK3/4 or QT5/QT6 (requires qt6ct-kde) configurations to follow DMS colors. Only needed once.<br /><br />It is recommended to configure <a href=\"https://github.com/AvengeMedia/DankMaterialShell/blob/master/README.md#Theming\" style=\"text-decoration:none; color:%1;\">adw-gtk3</a> prior to applying GTK themes.": ""
+  "Generate baseline GTK3/4 or QT5/QT6 (requires qt6ct-kde) configurations to follow HypeShell colors. Only needed once.<br /><br />It is recommended to configure <a href=\"https://github.com/acarlton5/HypeShell/blob/master/README.md#Theming\" style=\"text-decoration:none; color:%1;\">adw-gtk3</a> prior to applying GTK themes.": {
+    "Generate baseline GTK3/4 or QT5/QT6 (requires qt6ct-kde) configurations to follow HypeShell colors. Only needed once.<br /><br />It is recommended to configure <a href=\"https://github.com/acarlton5/HypeShell/blob/master/README.md#Theming\" style=\"text-decoration:none; color:%1;\">adw-gtk3</a> prior to applying GTK themes.": ""
   },
   "Generic": {
     "Generic": "عمومی"
@@ -3416,8 +3416,8 @@
   "Install Theme": {
     "Install Theme": "نصب تم"
   },
-  "Install color themes from the DMS theme registry": {
-    "Install color themes from the DMS theme registry": "نصب تم رنگ‌ها از مخزن تم DMS"
+  "Install color themes from the HypeShell theme registry": {
+    "Install color themes from the HypeShell theme registry": "نصب تم رنگ‌ها از مخزن تم HypeShell"
   },
   "Install complete. Greeter has been installed.": {
     "Install complete. Greeter has been installed.": ""
@@ -3428,17 +3428,17 @@
   "Install matugen package for dynamic theming": {
     "Install matugen package for dynamic theming": "نصب بسته matugen برای تم پویا"
   },
-  "Install plugin '%1' from the DMS registry?": {
-    "Install plugin '%1' from the DMS registry?": "آیا می‌خواهید افزونه '%1' را از مخزن DMS نصب کنید؟"
+  "Install plugin '%1' from the HypeShell registry?": {
+    "Install plugin '%1' from the HypeShell registry?": "آیا می‌خواهید افزونه '%1' را از مخزن HypeShell نصب کنید؟"
   },
-  "Install plugins from the DMS plugin registry": {
-    "Install plugins from the DMS plugin registry": "نصب افزونه‌ها از مخزن افزونه DMS"
+  "Install plugins from the HypeShell plugin registry": {
+    "Install plugins from the HypeShell plugin registry": "نصب افزونه‌ها از مخزن افزونه HypeShell"
   },
-  "Install the DMS greeter? A terminal will open for sudo authentication.": {
-    "Install the DMS greeter? A terminal will open for sudo authentication.": ""
+  "Install the HypeShell Greeter? A terminal will open for sudo authentication.": {
+    "Install the HypeShell Greeter? A terminal will open for sudo authentication.": ""
   },
-  "Install theme '%1' from the DMS registry?": {
-    "Install theme '%1' from the DMS registry?": "آیا می‌خواهید تم '%1' را از مخزن DMS نصب کنید؟"
+  "Install theme '%1' from the HypeShell registry?": {
+    "Install theme '%1' from the HypeShell registry?": "آیا می‌خواهید تم '%1' را از مخزن HypeShell نصب کنید؟"
   },
   "Installation and PAM setup: see the ": {
     "Installation and PAM setup: see the ": ""
@@ -3770,8 +3770,8 @@
   "Make sure KDE Connect or Valent is running on your other devices": {
     "Make sure KDE Connect or Valent is running on your other devices": "از اجرای KDE Connect یا Valent در دستگاه‌های دیگر خود اطمینان حاصل کنید"
   },
-  "Manage and configure plugins for extending DMS functionality": {
-    "Manage and configure plugins for extending DMS functionality": "مدیریت و پیکربندی افزونه‌ها برای گسترش کارایی DMS"
+  "Manage and configure plugins for extending HypeShell functionality": {
+    "Manage and configure plugins for extending HypeShell functionality": "مدیریت و پیکربندی افزونه‌ها برای گسترش کارایی HypeShell"
   },
   "Manage up to 4 independent bar configurations. Each bar has its own position, widgets, styling, and display assignment.": {
     "Manage up to 4 independent bar configurations. Each bar has its own position, widgets, styling, and display assignment.": "مدیریت حداکثر ۴ پیکربندی مستقل برای نوارها. هر نوار موقعیت، ابزارک‌ها، استایل و نحوه نمایش خاص خود را دارد."
@@ -3842,8 +3842,8 @@
   "Material inspired shadows and elevation on modals, popouts, and dialogs": {
     "Material inspired shadows and elevation on modals, popouts, and dialogs": ""
   },
-  "Material: Material Design 3 Expressive bezier curves. The DMS default feel.": {
-    "Material: Material Design 3 Expressive bezier curves. The DMS default feel.": ""
+  "Material: Material Design 3 Expressive bezier curves. The HypeShell default feel.": {
+    "Material: Material Design 3 Expressive bezier curves. The HypeShell default feel.": ""
   },
   "Matugen Contrast": {
     "Matugen Contrast": ""
@@ -4268,8 +4268,8 @@
   "No Border": {
     "No Border": "بدون حاشیه"
   },
-  "No DMS shortcuts configured": {
-    "No DMS shortcuts configured": "هیچ میانبری برای DMS پیکربندی نشده"
+  "No HypeShell Shortcuts configured": {
+    "No HypeShell Shortcuts configured": "هیچ میانبری برای HypeShell پیکربندی نشده"
   },
   "No Dim": {
     "No Dim": "بدون تاریک‌شدن"
@@ -4658,8 +4658,8 @@
   "Only adjust gamma based on time or location rules.": {
     "Only adjust gamma based on time or location rules.": "گاما را فقط بر اساس قواعد زمانی یا مکانی تنظیم کن."
   },
-  "Only affects DMS-managed PAM. If greetd already includes pam_fprintd, fingerprint stays enabled.": {
-    "Only affects DMS-managed PAM. If greetd already includes pam_fprintd, fingerprint stays enabled.": ""
+  "Only affects HypeShell-managed PAM. If greetd already includes pam_fprintd, fingerprint stays enabled.": {
+    "Only affects HypeShell-managed PAM. If greetd already includes pam_fprintd, fingerprint stays enabled.": ""
   },
   "Only show windows from the current monitor on each dock": {
     "Only show windows from the current monitor on each dock": "تنها پنجره‌ها در مانیتور کنونی را در هر داک نمایش بده"
@@ -5411,11 +5411,11 @@
   "Requires 'dgop' tool": {
     "Requires 'dgop' tool": "به ابزار 'dgop' نیاز دارد"
   },
-  "Requires DMS %1": {
-    "Requires DMS %1": "به DMS %1 نیاز دارد"
+  "Requires HypeShell %1": {
+    "Requires HypeShell %1": "به HypeShell %1 نیاز دارد"
   },
-  "Requires DMS server with sysupdate capability": {
-    "Requires DMS server with sysupdate capability": ""
+  "Requires HypeShell server with sysupdate capability": {
+    "Requires HypeShell server with sysupdate capability": ""
   },
   "Requires DWL compositor": {
     "Requires DWL compositor": "به کامپازیتور DWL نیاز دارد"
@@ -5447,11 +5447,11 @@
   "Resolution, position, scale": {
     "Resolution, position, scale": "وضوح، مکان، بزرگنمایی"
   },
-  "Restart DMS": {
-    "Restart DMS": "راه‌اندازی مجدد DMS"
+  "Restart HypeShell": {
+    "Restart HypeShell": "راه‌اندازی مجدد HypeShell"
   },
-  "Restart the DankMaterialShell": {
-    "Restart the DankMaterialShell": "دَنک متریال شل را مجدد راه بینداز"
+  "Restart the HypeShell": {
+    "Restart the HypeShell": "دَنک متریال شل را مجدد راه بینداز"
   },
   "Restarting audio system...": {
     "Restarting audio system...": "راه‌اندازی مجدد سیستم صوتی..."
@@ -5528,8 +5528,8 @@
   "Run Again": {
     "Run Again": "اجرای دوباره"
   },
-  "Run DMS Templates": {
-    "Run DMS Templates": "اجرای قالب‌های DMS"
+  "Run HypeShell Templates": {
+    "Run HypeShell Templates": "اجرای قالب‌های HypeShell"
   },
   "Run User Templates": {
     "Run User Templates": "اجرای قالب‌های کاربر"
@@ -5609,11 +5609,11 @@
   "Scale": {
     "Scale": "بزرگنمایی"
   },
-  "Scale DankBar font sizes independently": {
-    "Scale DankBar font sizes independently": "اندازه فونت نوار دَنک را به صورت مستقل مقیاس کن"
+  "Scale Hype Bar font sizes independently": {
+    "Scale Hype Bar font sizes independently": "اندازه فونت نوار دَنک را به صورت مستقل مقیاس کن"
   },
-  "Scale DankBar icon sizes independently": {
-    "Scale DankBar icon sizes independently": "اندازه آیکون‌های نوار دَنک را به صورت مستقل مقیاس کن"
+  "Scale Hype Bar icon sizes independently": {
+    "Scale Hype Bar icon sizes independently": "اندازه آیکون‌های نوار دَنک را به صورت مستقل مقیاس کن"
   },
   "Scale all font sizes throughout the shell": {
     "Scale all font sizes throughout the shell": "تمام اندازه‌های فونت در سراسر شِل مقیاس کن"
@@ -6074,8 +6074,8 @@
   "Show Reboot": {
     "Show Reboot": "نمایش راه‌اندازی مجدد"
   },
-  "Show Restart DMS": {
-    "Show Restart DMS": "نمایش راه‌اندازی مجدد DMS"
+  "Show Restart HypeShell": {
+    "Show Restart HypeShell": "نمایش راه‌اندازی مجدد HypeShell"
   },
   "Show Saved Items": {
     "Show Saved Items": "نمایش موارد ذخیره شده"
@@ -6293,8 +6293,8 @@
   "Snow": {
     "Snow": "برف"
   },
-  "Some plugins require a newer version of DMS:": {
-    "Some plugins require a newer version of DMS:": "برخی افزونه‌ها نیازمند نسخه جدیدتر DMS هستند:"
+  "Some plugins require a newer version of HypeShell:": {
+    "Some plugins require a newer version of HypeShell:": "برخی افزونه‌ها نیازمند نسخه جدیدتر HypeShell هستند:"
   },
   "Sort Alphabetically": {
     "Sort Alphabetically": "مرتب‌سازی بر اساس حروف الفبا"
@@ -6344,8 +6344,8 @@
   "Standard": {
     "Standard": "استاندارد"
   },
-  "Standard: Classic Material Design 3 — panels rise from below with a subtle scale. The DMS default.": {
-    "Standard: Classic Material Design 3 — panels rise from below with a subtle scale. The DMS default.": ""
+  "Standard: Classic Material Design 3 — panels rise from below with a subtle scale. The HypeShell default.": {
+    "Standard: Classic Material Design 3 — panels rise from below with a subtle scale. The HypeShell default.": ""
   },
   "Start": {
     "Start": "شروع"
@@ -6542,8 +6542,8 @@
   "Terminal fallback failed. Install a supported terminal emulator or run 'dms auth sync' manually.": {
     "Terminal fallback failed. Install a supported terminal emulator or run 'dms auth sync' manually.": ""
   },
-  "Terminal fallback failed. Install one of the supported terminal emulators or run 'dms greeter sync' manually.": {
-    "Terminal fallback failed. Install one of the supported terminal emulators or run 'dms greeter sync' manually.": ""
+  "Terminal fallback failed. Install one of the supported terminal emulators or run 'HypeShell Greeter sync' manually.": {
+    "Terminal fallback failed. Install one of the supported terminal emulators or run 'HypeShell Greeter sync' manually.": ""
   },
   "Terminal fallback opened. Complete authentication setup there; it will close automatically when done.": {
     "Terminal fallback opened. Complete authentication setup there; it will close automatically when done.": ""
@@ -6617,8 +6617,8 @@
   "Third-Party Plugin Warning": {
     "Third-Party Plugin Warning": "اخطار افزونه شخص ثالث"
   },
-  "Third-party plugins are created by the community and are not officially supported by DankMaterialShell.\n\nThese plugins may pose security and privacy risks - install at your own risk.": {
-    "Third-party plugins are created by the community and are not officially supported by DankMaterialShell.\n\nThese plugins may pose security and privacy risks - install at your own risk.": "افزونه‌های شخص‌ثالث توسط کامیونیتی ساخته شده‌اند و به‌طور رسمی توسط دَنک متریال شل پشتیبانی نمی‌شوند.\n\nاین افزونه‌ها ممکن است خطرات امنیتی و حریم خصوصی داشته باشند - با مسئولیت خودتان نصب کنید."
+  "Third-party plugins are created by the community and are not officially supported by HypeShell.\n\nThese plugins may pose security and privacy risks - install at your own risk.": {
+    "Third-party plugins are created by the community and are not officially supported by HypeShell.\n\nThese plugins may pose security and privacy risks - install at your own risk.": "افزونه‌های شخص‌ثالث توسط کامیونیتی ساخته شده‌اند و به‌طور رسمی توسط دَنک متریال شل پشتیبانی نمی‌شوند.\n\nاین افزونه‌ها ممکن است خطرات امنیتی و حریم خصوصی داشته باشند - با مسئولیت خودتان نصب کنید."
   },
   "This bind is overridden by config.kdl": {
     "This bind is overridden by config.kdl": "این نگاشت توسط config.kdl بازنویسی شده"
@@ -6722,8 +6722,8 @@
   "To update, run the following command:": {
     "To update, run the following command:": "برای بروزرسانی، دستور زیر را اجرا کن:"
   },
-  "To use this DMS bind, remove or change the keybind in your config.kdl": {
-    "To use this DMS bind, remove or change the keybind in your config.kdl": "برای استفاده از این نگاشت DMS، نگاشت‌کلید را در config.kdl خود حذف کنید یا تغییر دهید"
+  "To use this HypeShell bind, remove or change the keybind in your config.kdl": {
+    "To use this HypeShell bind, remove or change the keybind in your config.kdl": "برای استفاده از این نگاشت HypeShell، نگاشت‌کلید را در config.kdl خود حذف کنید یا تغییر دهید"
   },
   "Toast Messages": {
     "Toast Messages": "پیام‌های تًست"
@@ -6887,8 +6887,8 @@
   "Uninstall failed: %1": {
     "Uninstall failed: %1": "حذف ناموفق بود: %1"
   },
-  "Uninstall the DMS greeter? This will remove configuration and restore your previous display manager. A terminal will open for sudo authentication.": {
-    "Uninstall the DMS greeter? This will remove configuration and restore your previous display manager. A terminal will open for sudo authentication.": ""
+  "Uninstall the HypeShell Greeter? This will remove configuration and restore your previous display manager. A terminal will open for sudo authentication.": {
+    "Uninstall the HypeShell Greeter? This will remove configuration and restore your previous display manager. A terminal will open for sudo authentication.": ""
   },
   "Uninstalled: %1": {
     "Uninstalled: %1": "حذف شده: %1"
@@ -7262,8 +7262,8 @@
   "Welcome": {
     "Welcome": "خوش آمدید"
   },
-  "Welcome to DankMaterialShell": {
-    "Welcome to DankMaterialShell": "به دَنک متریال شل خوش آمدید"
+  "Welcome to HypeShell": {
+    "Welcome to HypeShell": "به دَنک متریال شل خوش آمدید"
   },
   "When clicking a dock window in a Hyprland special workspace, bring that special workspace back before focusing the window": {
     "When clicking a dock window in a Hyprland special workspace, bring that special workspace back before focusing the window": ""
@@ -7487,8 +7487,8 @@
   "direct": {
     "direct": ""
   },
-  "dms is a highly customizable, modern desktop shell with a <a href=\"https://m3.material.io/\" style=\"text-decoration:none; color:%1;\">material 3 inspired</a> design.<br /><br/>It is built with <a href=\"https://quickshell.org\" style=\"text-decoration:none; color:%1;\">Quickshell</a>, a QT6 framework for building desktop shells, and <a href=\"https://go.dev\" style=\"text-decoration:none; color:%1;\">Go</a>, a statically typed, compiled programming language.": {
-    "dms is a highly customizable, modern desktop shell with a <a href=\"https://m3.material.io/\" style=\"text-decoration:none; color:%1;\">material 3 inspired</a> design.<br /><br/>It is built with <a href=\"https://quickshell.org\" style=\"text-decoration:none; color:%1;\">Quickshell</a>, a QT6 framework for building desktop shells, and <a href=\"https://go.dev\" style=\"text-decoration:none; color:%1;\">Go</a>, a statically typed, compiled programming language.": ""
+  "HypeShell is a highly customizable, modern desktop shell with a <a href=\"https://m3.material.io/\" style=\"text-decoration:none; color:%1;\">material 3 inspired</a> design.<br /><br/>It is built with <a href=\"https://quickshell.org\" style=\"text-decoration:none; color:%1;\">Quickshell</a>, a QT6 framework for building desktop shells, and <a href=\"https://go.dev\" style=\"text-decoration:none; color:%1;\">Go</a>, a statically typed, compiled programming language.": {
+    "HypeShell is a highly customizable, modern desktop shell with a <a href=\"https://m3.material.io/\" style=\"text-decoration:none; color:%1;\">material 3 inspired</a> design.<br /><br/>It is built with <a href=\"https://quickshell.org\" style=\"text-decoration:none; color:%1;\">Quickshell</a>, a QT6 framework for building desktop shells, and <a href=\"https://go.dev\" style=\"text-decoration:none; color:%1;\">Go</a>, a statically typed, compiled programming language.": ""
   },
   "dms/cursor config exists but is not included. Cursor settings won't apply.": {
     "dms/cursor config exists but is not included. Cursor settings won't apply.": "پیکربندی dms/cursor وجود دارد اما وارد نشده است. تنظیمات اشاره‌گر موس اعمال نخواهند شد."
@@ -7523,8 +7523,8 @@
   "leave empty for default": {
     "leave empty for default": "برای پیش‌فرض خالی رها کنید"
   },
-  "loginctl not available - lock integration requires DMS socket connection": {
-    "loginctl not available - lock integration requires DMS socket connection": "loginctl در دسترس نیست - یکپارچه‌سازی قفل به اتصال سوکت DMS نیاز دارد"
+  "loginctl not available - lock integration requires HypeShell socket connection": {
+    "loginctl not available - lock integration requires HypeShell socket connection": "loginctl در دسترس نیست - یکپارچه‌سازی قفل به اتصال سوکت HypeShell نیاز دارد"
   },
   "mangowc Discord Server": {
     "mangowc Discord Server": ""
@@ -7613,8 +7613,8 @@
   "up": {
     "up": "روشن"
   },
-  "update dms for NM integration.": {
-    "update dms for NM integration.": "DMS را برای یکپارچه‌سازی NM بروز کنید."
+  "update HypeShell for NM integration.": {
+    "update HypeShell for NM integration.": "HypeShell را برای یکپارچه‌سازی NM بروز کنید."
   },
   "v%1 by %2": {
     "v%1 by %2": "نسخه %1 توسط %2"

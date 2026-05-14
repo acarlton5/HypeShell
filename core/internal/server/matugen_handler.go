@@ -5,8 +5,8 @@ import (
 	"net"
 	"time"
 
-	"github.com/AvengeMedia/DankMaterialShell/core/internal/matugen"
-	"github.com/AvengeMedia/DankMaterialShell/core/internal/server/models"
+	"github.com/acarlton5/HypeShell/core/internal/matugen"
+	"github.com/acarlton5/HypeShell/core/internal/server/models"
 )
 
 type MatugenQueueResult struct {

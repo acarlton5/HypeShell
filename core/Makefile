@@ -1,4 +1,4 @@
-BINARY_NAME=dms
+BINARY_NAME=hype
 BINARY_NAME_INSTALL=dankinstall
 SOURCE_DIR=cmd/dms
 SOURCE_DIR_INSTALL=cmd/dankinstall
@@ -27,7 +27,7 @@ ARCH ?= all
 # Default target
 all: build
 
-# Build the main binary (dms)
+# Build the main binary (hype)
 build:
 	@echo "Building $(BINARY_NAME)..."
 	@mkdir -p $(BUILD_DIR)

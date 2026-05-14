@@ -8,8 +8,8 @@ import (
 	"os"
 	"time"
 
-	"github.com/AvengeMedia/DankMaterialShell/core/internal/proto/ext_data_control"
-	wlclient "github.com/AvengeMedia/DankMaterialShell/core/pkg/go-wayland/wayland/client"
+	"github.com/acarlton5/HypeShell/core/internal/proto/ext_data_control"
+	wlclient "github.com/acarlton5/HypeShell/core/pkg/go-wayland/wayland/client"
 )
 
 type ClipboardChange struct {

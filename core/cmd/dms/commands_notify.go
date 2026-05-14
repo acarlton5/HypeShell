@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/AvengeMedia/DankMaterialShell/core/internal/notify"
+	"github.com/acarlton5/HypeShell/core/internal/notify"
 	"github.com/spf13/cobra"
 )
 

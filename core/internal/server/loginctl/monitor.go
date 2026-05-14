@@ -3,7 +3,7 @@ package loginctl
 import (
 	"time"
 
-	"github.com/AvengeMedia/DankMaterialShell/core/pkg/dbusutil"
+	"github.com/acarlton5/HypeShell/core/pkg/dbusutil"
 	"github.com/godbus/dbus/v5"
 )
 

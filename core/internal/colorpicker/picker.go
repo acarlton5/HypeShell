@@ -4,13 +4,13 @@ import (
 	"fmt"
 	"sync"
 
-	"github.com/AvengeMedia/DankMaterialShell/core/internal/log"
-	"github.com/AvengeMedia/DankMaterialShell/core/internal/proto/keyboard_shortcuts_inhibit"
-	"github.com/AvengeMedia/DankMaterialShell/core/internal/proto/wlr_layer_shell"
-	"github.com/AvengeMedia/DankMaterialShell/core/internal/proto/wlr_screencopy"
-	"github.com/AvengeMedia/DankMaterialShell/core/internal/proto/wp_viewporter"
-	wlhelpers "github.com/AvengeMedia/DankMaterialShell/core/internal/wayland/client"
-	"github.com/AvengeMedia/DankMaterialShell/core/pkg/go-wayland/wayland/client"
+	"github.com/acarlton5/HypeShell/core/internal/log"
+	"github.com/acarlton5/HypeShell/core/internal/proto/keyboard_shortcuts_inhibit"
+	"github.com/acarlton5/HypeShell/core/internal/proto/wlr_layer_shell"
+	"github.com/acarlton5/HypeShell/core/internal/proto/wlr_screencopy"
+	"github.com/acarlton5/HypeShell/core/internal/proto/wp_viewporter"
+	wlhelpers "github.com/acarlton5/HypeShell/core/internal/wayland/client"
+	"github.com/acarlton5/HypeShell/core/pkg/go-wayland/wayland/client"
 )
 
 type Config struct {

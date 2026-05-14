@@ -484,7 +484,7 @@ Item {
                         }
 
                         StyledText {
-                            text: I18n.tr("To use this DMS bind, remove or change the keybind in your config.kdl")
+                            text: I18n.tr("To use this HypeShell bind, remove or change the keybind in your compositor config")
                             font.pixelSize: Theme.fontSizeSmall
                             color: Theme.surfaceVariantText
                             width: parent.width
@@ -819,7 +819,7 @@ Item {
                                 required property int index
 
                                 readonly property var tooltipTexts: ({
-                                        "dms": I18n.tr("DMS shell actions (launcher, clipboard, etc.)"),
+                                        "dms": I18n.tr("HypeShell actions (launcher, clipboard, etc.)"),
                                         "compositor": I18n.tr("Niri compositor actions (focus, move, etc.)"),
                                         "spawn": I18n.tr("Run a program (e.g., firefox, kitty)"),
                                         "shell": I18n.tr("Run a shell command (e.g., notify-send)")

@@ -957,7 +957,7 @@ Item {
                 id: fontScaleSliderCard
                 iconName: "text_fields"
                 title: I18n.tr("Font Scale")
-                description: I18n.tr("Scale DankBar font sizes independently")
+                description: I18n.tr("Scale Hype Bar font sizes independently")
                 visible: selectedBarConfig?.enabled
                 minimum: 50
                 maximum: 200
@@ -982,7 +982,7 @@ Item {
                 id: iconScaleSliderCard
                 iconName: "interests"
                 title: I18n.tr("Icon Scale")
-                description: I18n.tr("Scale DankBar icon sizes independently")
+                description: I18n.tr("Scale Hype Bar icon sizes independently")
                 visible: selectedBarConfig?.enabled
                 minimum: 50
                 maximum: 200

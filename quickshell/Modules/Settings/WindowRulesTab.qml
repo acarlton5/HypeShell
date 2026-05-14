@@ -55,9 +55,9 @@ Item {
         case "hyprland":
             return {
                 "configFile": configDir + "/hypr/hyprland.conf",
-                "rulesFile": configDir + "/hypr/dms/windowrules.conf",
-                "grepPattern": 'source.*dms/windowrules.conf',
-                "includeLine": "source = ./dms/windowrules.conf"
+                "rulesFile": configDir + "/hypr/hype/windowrules.conf",
+                "grepPattern": 'source.*hype/windowrules.conf',
+                "includeLine": "source = ./hype/windowrules.conf"
             };
         default:
             return null;
@@ -71,7 +71,7 @@ Item {
             return;
         }
 
-        Proc.runCommand("load-windowrules", ["dms", "config", "windowrules", "list", compositor], (output, exitCode) => {
+        Proc.runCommand("load-windowrules", ["hype", "config", "windowrules", "list", compositor], (output, exitCode) => {
             if (exitCode !== 0) {
                 windowRules = [];
                 return;
@@ -79,7 +79,7 @@ Item {
             try {
                 const result = JSON.parse(output.trim());
                 const allRules = result.rules || [];
-                windowRules = allRules.filter(r => (r.source || "").includes("dms/windowrules"));
+                windowRules = allRules.filter(r => (r.source || "").includes("hype/windowrules") || (r.source || "").includes("dms/windowrules"));
                 if (result.dmsStatus) {
                     windowRulesIncludeStatus = {
                         "exists": result.dmsStatus.exists,
@@ -97,7 +97,7 @@ Item {
         if (compositor !== "niri" && compositor !== "hyprland")
             return;
 
-        Proc.runCommand("remove-windowrule", ["dms", "config", "windowrules", "remove", compositor, ruleId], (output, exitCode) => {
+        Proc.runCommand("remove-windowrule", ["hype", "config", "windowrules", "remove", compositor, ruleId], (output, exitCode) => {
             if (exitCode === 0) {
                 loadWindowRules();
                 rulesChanged();
@@ -117,7 +117,7 @@ Item {
         const [moved] = ids.splice(fromIndex, 1);
         ids.splice(toIndex, 0, moved);
 
-        Proc.runCommand("reorder-windowrules", ["dms", "config", "windowrules", "reorder", compositor, JSON.stringify(ids)], (output, exitCode) => {
+        Proc.runCommand("reorder-windowrules", ["hype", "config", "windowrules", "reorder", compositor, JSON.stringify(ids)], (output, exitCode) => {
             if (exitCode === 0) {
                 loadWindowRules();
                 rulesChanged();
@@ -137,7 +137,7 @@ Item {
 
         const filename = (compositor === "niri") ? "windowrules.kdl" : "windowrules.conf";
         checkingInclude = true;
-        Proc.runCommand("check-windowrules-include", ["dms", "config", "resolve-include", compositor, filename], (output, exitCode) => {
+        Proc.runCommand("check-windowrules-include", ["hype", "config", "resolve-include", compositor, filename], (output, exitCode) => {
             checkingInclude = false;
             if (exitCode !== 0) {
                 windowRulesIncludeStatus = {
@@ -252,7 +252,7 @@ Item {
                             }
 
                             StyledText {
-                                text: I18n.tr("Define rules for window behavior. Saves to %1").arg(CompositorService.isNiri ? "dms/windowrules.kdl" : "dms/windowrules.conf")
+                                text: I18n.tr("Define rules for window behavior. Saves to %1").arg(CompositorService.isNiri ? "dms/windowrules.kdl" : "hype/windowrules.conf")
                                 font.pixelSize: Theme.fontSizeSmall
                                 color: Theme.surfaceVariantText
                                 wrapMode: Text.WordWrap
@@ -351,7 +351,7 @@ Item {
                         }
 
                         StyledText {
-                            readonly property string rulesFile: CompositorService.isNiri ? "dms/windowrules.kdl" : "dms/windowrules.conf"
+                            readonly property string rulesFile: CompositorService.isNiri ? "dms/windowrules.kdl" : "hype/windowrules.conf"
                             text: warningBox.showSetup ? I18n.tr("Click 'Setup' to create %1 and add include to your compositor config.").arg(rulesFile) : I18n.tr("%1 exists but is not included. Window rules won't apply.").arg(rulesFile)
                             font.pixelSize: Theme.fontSizeSmall
                             color: Theme.surfaceVariantText
@@ -510,7 +510,7 @@ Item {
                                                         parts.push(m.appId);
                                                     if (m.title)
                                                         parts.push("title: " + m.title);
-                                                    return parts.length > 0 ? parts.join(" · ") : I18n.tr("No match criteria");
+                                                    return parts.length > 0 ? parts.join(" Â· ") : I18n.tr("No match criteria");
                                                 }
                                                 font.pixelSize: Theme.fontSizeSmall
                                                 color: Theme.surfaceVariantText

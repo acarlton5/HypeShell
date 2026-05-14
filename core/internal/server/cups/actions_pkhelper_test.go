@@ -3,10 +3,10 @@ package cups_test
 import (
 	"testing"
 
-	mocks_cups "github.com/AvengeMedia/DankMaterialShell/core/internal/mocks/cups"
-	mocks_pkhelper "github.com/AvengeMedia/DankMaterialShell/core/internal/mocks/cups_pkhelper"
-	"github.com/AvengeMedia/DankMaterialShell/core/internal/server/cups"
-	"github.com/AvengeMedia/DankMaterialShell/core/pkg/ipp"
+	mocks_cups "github.com/acarlton5/HypeShell/core/internal/mocks/cups"
+	mocks_pkhelper "github.com/acarlton5/HypeShell/core/internal/mocks/cups_pkhelper"
+	"github.com/acarlton5/HypeShell/core/internal/server/cups"
+	"github.com/acarlton5/HypeShell/core/pkg/ipp"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 )

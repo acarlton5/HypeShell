@@ -4,10 +4,10 @@ import (
 	"fmt"
 	"time"
 
-	wlclient "github.com/AvengeMedia/DankMaterialShell/core/pkg/go-wayland/wayland/client"
+	wlclient "github.com/acarlton5/HypeShell/core/pkg/go-wayland/wayland/client"
 
-	"github.com/AvengeMedia/DankMaterialShell/core/internal/log"
-	"github.com/AvengeMedia/DankMaterialShell/core/internal/proto/dwl_ipc"
+	"github.com/acarlton5/HypeShell/core/internal/log"
+	"github.com/acarlton5/HypeShell/core/internal/proto/dwl_ipc"
 )
 
 func NewManager(display wlclient.WaylandDisplay) (*Manager, error) {

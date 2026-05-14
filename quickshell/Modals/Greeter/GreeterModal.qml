@@ -27,7 +27,7 @@ FloatingWindow {
     function loadCheatsheet() {
         const provider = KeybindsService.cheatsheetProvider;
         if (KeybindsService.cheatsheetAvailable && provider && !cheatsheetLoaded) {
-            cheatsheetProcess.command = ["dms", "keybinds", "show", provider];
+            cheatsheetProcess.command = ["hype", "keybinds", "show", provider];
             cheatsheetProcess.running = true;
         }
     }

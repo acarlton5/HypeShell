@@ -3,7 +3,7 @@
 package mocks_network
 
 import (
-	network "github.com/AvengeMedia/DankMaterialShell/core/internal/server/network"
+	network "github.com/acarlton5/HypeShell/core/internal/server/network"
 	mock "github.com/stretchr/testify/mock"
 )
 

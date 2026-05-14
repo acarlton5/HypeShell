@@ -13,12 +13,12 @@ import (
 	"strings"
 	"time"
 
-	"github.com/AvengeMedia/DankMaterialShell/core/internal/config"
-	"github.com/AvengeMedia/DankMaterialShell/core/internal/distros"
-	"github.com/AvengeMedia/DankMaterialShell/core/internal/matugen"
-	sharedpam "github.com/AvengeMedia/DankMaterialShell/core/internal/pam"
-	"github.com/AvengeMedia/DankMaterialShell/core/internal/privesc"
-	"github.com/AvengeMedia/DankMaterialShell/core/internal/utils"
+	"github.com/acarlton5/HypeShell/core/internal/config"
+	"github.com/acarlton5/HypeShell/core/internal/distros"
+	"github.com/acarlton5/HypeShell/core/internal/matugen"
+	sharedpam "github.com/acarlton5/HypeShell/core/internal/pam"
+	"github.com/acarlton5/HypeShell/core/internal/privesc"
+	"github.com/acarlton5/HypeShell/core/internal/utils"
 	"github.com/sblinch/kdl-go"
 	"github.com/sblinch/kdl-go/document"
 )

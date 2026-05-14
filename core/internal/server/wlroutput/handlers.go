@@ -6,9 +6,9 @@ import (
 	"net"
 	"time"
 
-	"github.com/AvengeMedia/DankMaterialShell/core/internal/log"
-	"github.com/AvengeMedia/DankMaterialShell/core/internal/proto/wlr_output_management"
-	"github.com/AvengeMedia/DankMaterialShell/core/internal/server/models"
+	"github.com/acarlton5/HypeShell/core/internal/log"
+	"github.com/acarlton5/HypeShell/core/internal/proto/wlr_output_management"
+	"github.com/acarlton5/HypeShell/core/internal/server/models"
 )
 
 type HeadConfig struct {

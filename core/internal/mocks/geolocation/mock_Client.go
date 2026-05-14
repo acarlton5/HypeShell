@@ -3,7 +3,7 @@
 package mocks_geolocation
 
 import (
-	geolocation "github.com/AvengeMedia/DankMaterialShell/core/internal/geolocation"
+	geolocation "github.com/acarlton5/HypeShell/core/internal/geolocation"
 	mock "github.com/stretchr/testify/mock"
 )
 

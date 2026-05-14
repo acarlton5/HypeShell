@@ -53,7 +53,7 @@ Item {
             items.push({
                 name: note.text,
                 icon: "material:sticky_note_2",
-                comment: age + " — select to copy, hold for options",
+                comment: age + " â€” select to copy, hold for options",
                 action: "copy:" + note.text,
                 categories: ["Quick Notes"]
             });
@@ -134,14 +134,14 @@ Item {
     function _saveNotes() {
         if (!pluginService)
             return;
-        // Save to plugin STATE — writes to quickNotesExample_state.json
+        // Save to plugin STATE â€” writes to quickNotesExample_state.json
         // This is separate from plugin SETTINGS (plugin_settings.json)
         pluginService.savePluginState("quickNotesExample", "notes", notes);
         itemsChanged();
     }
 
     function copyToClipboard(text) {
-        Quickshell.execDetached(["dms", "cl", "copy", text]);
+        Quickshell.execDetached(["hype", "cl", "copy", text]);
         showToast("Copied to clipboard");
     }
 

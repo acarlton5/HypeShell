@@ -30,8 +30,8 @@
 package wlr_layer_shell
 
 import (
-	"github.com/AvengeMedia/DankMaterialShell/core/pkg/go-wayland/wayland/client"
-	xdg_shell "github.com/AvengeMedia/DankMaterialShell/core/pkg/go-wayland/wayland/stable/xdg-shell"
+	"github.com/acarlton5/HypeShell/core/pkg/go-wayland/wayland/client"
+	xdg_shell "github.com/acarlton5/HypeShell/core/pkg/go-wayland/wayland/stable/xdg-shell"
 )
 
 // ZwlrLayerShellV1InterfaceName is the name of the interface as it appears in the [client.Registry].

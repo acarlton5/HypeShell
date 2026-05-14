@@ -153,7 +153,7 @@ Singleton {
         const configDir = Paths.strip(StandardPaths.writableLocation(StandardPaths.ConfigLocation));
         const compositorDirs = {
             "niri": configDir + "/niri/dms/profiles",
-            "hyprland": configDir + "/hypr/dms/profiles",
+            "hyprland": configDir + "/hypr/hype/profiles",
             "dwl": configDir + "/mango/dms/profiles"
         };
         const compositorExts = {
@@ -395,7 +395,7 @@ Singleton {
         return cfg;
     }
 
-    // Convert monitors.json config entry → internal outputsData map
+    // Convert monitors.json config entry â†’ internal outputsData map
     function generateOutputsDataFromConfig(configEntry) {
         const result = {};
         const cfgOutputs = configEntry.outputs || {};
@@ -542,7 +542,7 @@ Singleton {
         }
     }
 
-    // ── Profile management ─────────────────────────────────────────────────
+    // â”€â”€ Profile management â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
     function validateProfiles() {
         log.info("Validating profiles against current outputs...");
@@ -817,7 +817,7 @@ Singleton {
         const newOutputSet = buildCurrentOutputSet();
         if (JSON.stringify(newOutputSet) === JSON.stringify(currentOutputSet))
             return;
-        // Physical output set changed — pending tweaks belong to the previous setup
+        // Physical output set changed â€” pending tweaks belong to the previous setup
         if (hasPendingChanges)
             clearPendingChanges();
         currentOutputSet = newOutputSet;
@@ -1270,9 +1270,9 @@ Singleton {
         case "hyprland":
             return {
                 "configFile": configDir + "/hypr/hyprland.conf",
-                "outputsFile": configDir + "/hypr/dms/outputs.conf",
-                "grepPattern": 'source.*dms/outputs.conf',
-                "includeLine": "source = ./dms/outputs.conf"
+                "outputsFile": configDir + "/hypr/hype/outputs.conf",
+                "grepPattern": 'source.*hype/outputs.conf',
+                "includeLine": "source = ./hype/outputs.conf"
             };
         case "dwl":
             return {
@@ -1300,7 +1300,7 @@ Singleton {
         const compositorArg = (compositor === "dwl") ? "mangowc" : compositor;
 
         checkingInclude = true;
-        Proc.runCommand("check-outputs-include", ["dms", "config", "resolve-include", compositorArg, filename], (output, exitCode) => {
+        Proc.runCommand("check-outputs-include", ["hype", "config", "resolve-include", compositorArg, filename], (output, exitCode) => {
             checkingInclude = false;
             if (exitCode !== 0) {
                 includeStatus = {
@@ -1747,55 +1747,55 @@ Singleton {
 
         if (formatChanged) {
             const formatLabel = SettingsData.displayNameMode === "model" ? I18n.tr("Model") : I18n.tr("Name");
-            changeDescriptions.push(I18n.tr("Config Format") + " → " + formatLabel);
+            changeDescriptions.push(I18n.tr("Config Format") + " â†’ " + formatLabel);
         }
 
         for (const outputName in pendingChanges) {
             const changes = pendingChanges[outputName];
             if (changes.position)
-                changeDescriptions.push(outputName + ": " + I18n.tr("Position") + " → " + changes.position.x + ", " + changes.position.y);
+                changeDescriptions.push(outputName + ": " + I18n.tr("Position") + " â†’ " + changes.position.x + ", " + changes.position.y);
             if (changes.mode)
-                changeDescriptions.push(outputName + ": " + I18n.tr("Mode") + " → " + changes.mode);
+                changeDescriptions.push(outputName + ": " + I18n.tr("Mode") + " â†’ " + changes.mode);
             if (changes.scale !== undefined)
-                changeDescriptions.push(outputName + ": " + I18n.tr("Scale") + " → " + changes.scale);
+                changeDescriptions.push(outputName + ": " + I18n.tr("Scale") + " â†’ " + changes.scale);
             if (changes.transform)
-                changeDescriptions.push(outputName + ": " + I18n.tr("Transform") + " → " + getTransformLabel(changes.transform));
+                changeDescriptions.push(outputName + ": " + I18n.tr("Transform") + " â†’ " + getTransformLabel(changes.transform));
             if (changes.vrr !== undefined)
-                changeDescriptions.push(outputName + ": " + I18n.tr("VRR") + " → " + (changes.vrr ? I18n.tr("Enabled") : I18n.tr("Disabled")));
+                changeDescriptions.push(outputName + ": " + I18n.tr("VRR") + " â†’ " + (changes.vrr ? I18n.tr("Enabled") : I18n.tr("Disabled")));
         }
 
         for (const outputId in pendingNiriChanges) {
             const changes = pendingNiriChanges[outputId];
             if (changes.disabled !== undefined)
-                changeDescriptions.push(outputId + ": " + I18n.tr("Disabled") + " → " + (changes.disabled ? I18n.tr("Yes") : I18n.tr("No")));
+                changeDescriptions.push(outputId + ": " + I18n.tr("Disabled") + " â†’ " + (changes.disabled ? I18n.tr("Yes") : I18n.tr("No")));
             if (changes.vrrOnDemand !== undefined)
-                changeDescriptions.push(outputId + ": " + I18n.tr("VRR On-Demand") + " → " + (changes.vrrOnDemand ? I18n.tr("Enabled") : I18n.tr("Disabled")));
+                changeDescriptions.push(outputId + ": " + I18n.tr("VRR On-Demand") + " â†’ " + (changes.vrrOnDemand ? I18n.tr("Enabled") : I18n.tr("Disabled")));
             if (changes.focusAtStartup !== undefined)
-                changeDescriptions.push(outputId + ": " + I18n.tr("Focus at Startup") + " → " + (changes.focusAtStartup ? I18n.tr("Yes") : I18n.tr("No")));
+                changeDescriptions.push(outputId + ": " + I18n.tr("Focus at Startup") + " â†’ " + (changes.focusAtStartup ? I18n.tr("Yes") : I18n.tr("No")));
             if (changes.hotCorners !== undefined)
-                changeDescriptions.push(outputId + ": " + I18n.tr("Hot Corners") + " → " + I18n.tr("Modified"));
+                changeDescriptions.push(outputId + ": " + I18n.tr("Hot Corners") + " â†’ " + I18n.tr("Modified"));
             if (changes.layout !== undefined)
-                changeDescriptions.push(outputId + ": " + I18n.tr("Layout") + " → " + I18n.tr("Modified"));
+                changeDescriptions.push(outputId + ": " + I18n.tr("Layout") + " â†’ " + I18n.tr("Modified"));
         }
 
         for (const outputId in pendingHyprlandChanges) {
             const changes = pendingHyprlandChanges[outputId];
             if (changes.disabled !== undefined)
-                changeDescriptions.push(outputId + ": " + I18n.tr("Disabled") + " → " + (changes.disabled ? I18n.tr("Yes") : I18n.tr("No")));
+                changeDescriptions.push(outputId + ": " + I18n.tr("Disabled") + " â†’ " + (changes.disabled ? I18n.tr("Yes") : I18n.tr("No")));
             if (changes.bitdepth !== undefined)
-                changeDescriptions.push(outputId + ": " + I18n.tr("Bit Depth") + " → " + changes.bitdepth);
+                changeDescriptions.push(outputId + ": " + I18n.tr("Bit Depth") + " â†’ " + changes.bitdepth);
             if (changes.colorManagement !== undefined)
-                changeDescriptions.push(outputId + ": " + I18n.tr("Color Management") + " → " + changes.colorManagement);
+                changeDescriptions.push(outputId + ": " + I18n.tr("Color Management") + " â†’ " + changes.colorManagement);
             if (changes.sdrBrightness !== undefined)
-                changeDescriptions.push(outputId + ": " + I18n.tr("SDR Brightness") + " → " + changes.sdrBrightness);
+                changeDescriptions.push(outputId + ": " + I18n.tr("SDR Brightness") + " â†’ " + changes.sdrBrightness);
             if (changes.sdrSaturation !== undefined)
-                changeDescriptions.push(outputId + ": " + I18n.tr("SDR Saturation") + " → " + changes.sdrSaturation);
+                changeDescriptions.push(outputId + ": " + I18n.tr("SDR Saturation") + " â†’ " + changes.sdrSaturation);
             if (changes.supportsHdr !== undefined)
-                changeDescriptions.push(outputId + ": " + I18n.tr("Force HDR") + " → " + (changes.supportsHdr ? I18n.tr("Yes") : I18n.tr("No")));
+                changeDescriptions.push(outputId + ": " + I18n.tr("Force HDR") + " â†’ " + (changes.supportsHdr ? I18n.tr("Yes") : I18n.tr("No")));
             if (changes.supportsWideColor !== undefined)
-                changeDescriptions.push(outputId + ": " + I18n.tr("Force Wide Color") + " → " + (changes.supportsWideColor ? I18n.tr("Yes") : I18n.tr("No")));
+                changeDescriptions.push(outputId + ": " + I18n.tr("Force Wide Color") + " â†’ " + (changes.supportsWideColor ? I18n.tr("Yes") : I18n.tr("No")));
             if (changes.vrrFullscreenOnly !== undefined)
-                changeDescriptions.push(outputId + ": " + I18n.tr("VRR Fullscreen Only") + " → " + (changes.vrrFullscreenOnly ? I18n.tr("Enabled") : I18n.tr("Disabled")));
+                changeDescriptions.push(outputId + ": " + I18n.tr("VRR Fullscreen Only") + " â†’ " + (changes.vrrFullscreenOnly ? I18n.tr("Enabled") : I18n.tr("Disabled")));
         }
 
         if (CompositorService.isNiri) {
@@ -1859,7 +1859,7 @@ Singleton {
                 merged[outputId][key] = pendingNiriChanges[outputId][key];
             }
         }
-        // Never disable the only connected output — clear any stale flag
+        // Never disable the only connected output â€” clear any stale flag
         if (Object.keys(outputs).length <= 1) {
             for (const id in merged)
                 delete merged[id].disabled;
@@ -1895,7 +1895,7 @@ Singleton {
                     merged[outputId][key] = val;
             }
         }
-        // Never disable the only connected output — clear any stale flag
+        // Never disable the only connected output â€” clear any stale flag
         if (Object.keys(outputs).length <= 1) {
             for (const id in merged)
                 delete merged[id].disabled;
@@ -1923,7 +1923,7 @@ Singleton {
     }
 
     function generateNiriOutputsKdl(outputsData, niriSettings) {
-        let kdlContent = `// Auto-generated by DMS - do not edit manually\n\n`;
+        let kdlContent = `// Auto-generated by HypeShell - do not edit manually\n\n`;
         const sortedNames = Object.keys(outputsData).sort((a, b) => {
             const la = outputsData[a].logical || {};
             const lb = outputsData[b].logical || {};
@@ -2387,19 +2387,19 @@ Singleton {
         case "Normal":
             return I18n.tr("Normal");
         case "90":
-            return I18n.tr("90°");
+            return I18n.tr("90Â°");
         case "180":
-            return I18n.tr("180°");
+            return I18n.tr("180Â°");
         case "270":
-            return I18n.tr("270°");
+            return I18n.tr("270Â°");
         case "Flipped":
             return I18n.tr("Flipped");
         case "Flipped90":
-            return I18n.tr("Flipped 90°");
+            return I18n.tr("Flipped 90Â°");
         case "Flipped180":
-            return I18n.tr("Flipped 180°");
+            return I18n.tr("Flipped 180Â°");
         case "Flipped270":
-            return I18n.tr("Flipped 270°");
+            return I18n.tr("Flipped 270Â°");
         default:
             return I18n.tr("Normal");
         }
@@ -2408,19 +2408,19 @@ Singleton {
     function getTransformValue(label) {
         if (label === I18n.tr("Normal"))
             return "Normal";
-        if (label === I18n.tr("90°"))
+        if (label === I18n.tr("90Â°"))
             return "90";
-        if (label === I18n.tr("180°"))
+        if (label === I18n.tr("180Â°"))
             return "180";
-        if (label === I18n.tr("270°"))
+        if (label === I18n.tr("270Â°"))
             return "270";
         if (label === I18n.tr("Flipped"))
             return "Flipped";
-        if (label === I18n.tr("Flipped 90°"))
+        if (label === I18n.tr("Flipped 90Â°"))
             return "Flipped90";
-        if (label === I18n.tr("Flipped 180°"))
+        if (label === I18n.tr("Flipped 180Â°"))
             return "Flipped180";
-        if (label === I18n.tr("Flipped 270°"))
+        if (label === I18n.tr("Flipped 270Â°"))
             return "Flipped270";
         return "Normal";
     }

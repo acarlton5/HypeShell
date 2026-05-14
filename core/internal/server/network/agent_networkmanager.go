@@ -8,8 +8,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/AvengeMedia/DankMaterialShell/core/internal/errdefs"
-	"github.com/AvengeMedia/DankMaterialShell/core/internal/log"
+	"github.com/acarlton5/HypeShell/core/internal/errdefs"
+	"github.com/acarlton5/HypeShell/core/internal/log"
 	"github.com/godbus/dbus/v5"
 	"golang.org/x/text/cases"
 	"golang.org/x/text/language"

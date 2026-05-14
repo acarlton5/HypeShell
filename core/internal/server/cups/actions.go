@@ -9,8 +9,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/AvengeMedia/DankMaterialShell/core/internal/config"
-	"github.com/AvengeMedia/DankMaterialShell/core/pkg/ipp"
+	"github.com/acarlton5/HypeShell/core/internal/config"
+	"github.com/acarlton5/HypeShell/core/pkg/ipp"
 )
 
 func isAuthError(err error) bool {

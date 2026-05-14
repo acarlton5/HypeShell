@@ -198,7 +198,7 @@ Item {
                             // Debian/Ubuntu/OpenSUSE git format: 1.0.3+git2264.c5c5ce84
                             let match = version.match(/^([\d.]+)\+git(\d+)\./);
                             if (match) {
-                                return `dms (git) v${match[1]}-${match[2]}`;
+                                return `hype (git) v${match[1]}-${match[2]}`;
                             }
 
                             // Fedora COPR git format: 0.0.git.2267.d430cae9
@@ -220,9 +220,9 @@ Item {
                                 if (!baseVersion)
                                     baseVersion = extractBaseVersion(ShellVersionService.semverVersion);
                                 if (baseVersion) {
-                                    return `dms (git) v${baseVersion}-${match[1]}`;
+                                    return `hype (git) v${baseVersion}-${match[1]}`;
                                 }
-                                return `dms (git) v${match[1]}`;
+                                return `hype (git) v${match[1]}`;
                             }
 
                             // Stable release format: 1.0.3
@@ -234,7 +234,7 @@ Item {
                             if (!version && cliVersion) {
                                 match = cliVersion.match(/^([\d.]+)\+git(\d+)\./);
                                 if (match) {
-                                    return `dms (git) v${match[1]}-${match[2]}`;
+                                    return `hype (git) v${match[1]}-${match[2]}`;
                                 }
                                 match = cliVersion.match(/^([\d.]+)$/);
                                 if (match) {
@@ -276,10 +276,10 @@ Item {
                             iconSize: 18
                             backgroundColor: Qt.rgba(Theme.surfaceText.r, Theme.surfaceText.g, Theme.surfaceText.b, 0.08)
                             textColor: Theme.surfaceText
-                            onClicked: Qt.openUrlExternally("https://danklinux.com/docs")
+                            onClicked: Qt.openUrlExternally("https://github.com/acarlton5/HypeShell")
                             onHoveredChanged: {
                                 if (hovered)
-                                    resourceTooltip.show(resourceButtonsRow.compactMode ? I18n.tr("Docs") + " - danklinux.com/docs" : "danklinux.com/docs", docsButton, 0, 0, "bottom");
+                                    resourceTooltip.show(resourceButtonsRow.compactMode ? I18n.tr("Docs") + " - github.com/acarlton5/HypeShell" : "github.com/acarlton5/HypeShell", docsButton, 0, 0, "bottom");
                                 else
                                     resourceTooltip.hide();
                             }
@@ -324,10 +324,10 @@ Item {
                             iconSize: 18
                             backgroundColor: Qt.rgba(Theme.primary.r, Theme.primary.g, Theme.primary.b, 0.12)
                             textColor: Theme.primary
-                            onClicked: Qt.openUrlExternally("https://ko-fi.com/danklinux")
+                            onClicked: Qt.openUrlExternally("https://github.com/acarlton5/HypeShell")
                             onHoveredChanged: {
                                 if (hovered)
-                                    resourceTooltip.show(resourceButtonsRow.compactMode ? I18n.tr("Ko-fi") + " - ko-fi.com/danklinux" : "ko-fi.com/danklinux", kofiButton, 0, 0, "bottom");
+                                    resourceTooltip.show(resourceButtonsRow.compactMode ? I18n.tr("Support") + " - github.com/acarlton5/HypeShell" : "github.com/acarlton5/HypeShell", kofiButton, 0, 0, "bottom");
                                 else
                                     resourceTooltip.hide();
                             }

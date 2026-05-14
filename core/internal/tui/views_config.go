@@ -7,8 +7,8 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/AvengeMedia/DankMaterialShell/core/internal/config"
-	"github.com/AvengeMedia/DankMaterialShell/core/internal/deps"
+	"github.com/acarlton5/HypeShell/core/internal/config"
+	"github.com/acarlton5/HypeShell/core/internal/deps"
 	tea "github.com/charmbracelet/bubbletea"
 )
 

@@ -1,7 +1,7 @@
 package screenshot
 
 import (
-	"github.com/AvengeMedia/DankMaterialShell/core/pkg/go-wayland/wayland/client"
+	"github.com/acarlton5/HypeShell/core/pkg/go-wayland/wayland/client"
 )
 
 func (r *RegionSelector) setupInput() {

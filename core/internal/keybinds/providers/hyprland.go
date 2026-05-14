@@ -7,8 +7,8 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/AvengeMedia/DankMaterialShell/core/internal/keybinds"
-	"github.com/AvengeMedia/DankMaterialShell/core/internal/utils"
+	"github.com/acarlton5/HypeShell/core/internal/keybinds"
+	"github.com/acarlton5/HypeShell/core/internal/utils"
 )
 
 type HyprlandProvider struct {
@@ -143,7 +143,7 @@ func (h *HyprlandProvider) convertKeybind(kb *HyprlandKeyBinding, subcategory st
 	}
 
 	source := "config"
-	if strings.Contains(kb.Source, "dms/binds.conf") {
+	if isHyprlandShellBindsPath(kb.Source) {
 		source = "dms"
 	}
 
@@ -188,9 +188,9 @@ func (h *HyprlandProvider) formatKey(kb *HyprlandKeyBinding) string {
 func (h *HyprlandProvider) GetOverridePath() string {
 	expanded, err := utils.ExpandPath(h.configPath)
 	if err != nil {
-		return filepath.Join(h.configPath, "dms", "binds.conf")
+		return filepath.Join(h.configPath, "hype", "binds.conf")
 	}
-	return filepath.Join(expanded, "dms", "binds.conf")
+	return filepath.Join(expanded, "hype", "binds.conf")
 }
 
 func (h *HyprlandProvider) validateAction(action string) error {
@@ -217,7 +217,7 @@ func (h *HyprlandProvider) SetBind(key, action, description string, options map[
 	overridePath := h.GetOverridePath()
 
 	if err := os.MkdirAll(filepath.Dir(overridePath), 0o755); err != nil {
-		return fmt.Errorf("failed to create dms directory: %w", err)
+		return fmt.Errorf("failed to create hype directory: %w", err)
 	}
 
 	existingBinds, err := h.loadOverrideBinds()

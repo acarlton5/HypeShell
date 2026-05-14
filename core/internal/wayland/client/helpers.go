@@ -1,6 +1,6 @@
 package client
 
-import wlclient "github.com/AvengeMedia/DankMaterialShell/core/pkg/go-wayland/wayland/client"
+import wlclient "github.com/acarlton5/HypeShell/core/pkg/go-wayland/wayland/client"
 
 func Roundtrip(display *wlclient.Display, ctx *wlclient.Context) error {
 	callback, err := display.Sync()

@@ -117,7 +117,7 @@ Item {
                             case 2:
                                 return I18n.tr("Dynamic: Spring bezier with overshoot — entry briefly exceeds its target then settles. Expressive and alive.");
                             default:
-                                return I18n.tr("Material: Material Design 3 Expressive bezier curves. The DMS default feel.");
+                                return I18n.tr("Material: Material Design 3 Expressive bezier curves. The HypeShell default feel.");
                             }
                         }
                     }
@@ -186,7 +186,7 @@ Item {
                             case 2:
                                 return I18n.tr("Depth: Panels scale up from small as they slide in — a dramatic pop-forward depth effect.");
                             default:
-                                return I18n.tr("Standard: Classic Material Design 3 — panels rise from below with a subtle scale. The DMS default.");
+                                return I18n.tr("Standard: Classic Material Design 3 — panels rise from below with a subtle scale. The HypeShell default.");
                             }
                         }
                     }

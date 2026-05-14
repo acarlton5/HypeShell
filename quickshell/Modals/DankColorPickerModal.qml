@@ -72,7 +72,7 @@ DankModal {
     }
 
     function copyColorToClipboard(colorValue) {
-        Quickshell.execDetached(["dms", "cl", "copy", colorValue]);
+        Quickshell.execDetached(["hype", "cl", "copy", colorValue]);
         ToastService.showInfo(I18n.tr("Color %1 copied").arg(colorValue));
         SessionData.addRecentColor(currentColor);
     }
@@ -110,7 +110,7 @@ DankModal {
 
     function pickColorFromScreen() {
         hideInstant();
-        Proc.runCommand("dms-color-pick", ["dms", "color", "pick", "--json"], (output, exitCode) => {
+        Proc.runCommand("dms-color-pick", ["hype", "color", "pick", "--json"], (output, exitCode) => {
             if (exitCode !== 0) {
                 log.warn("dms color pick exited with code:", exitCode);
                 root.show();
@@ -678,7 +678,7 @@ DankModal {
                                         } else {
                                             rgbString = `rgb(${r}, ${g}, ${b})`;
                                         }
-                                        Quickshell.execDetached(["dms", "cl", "copy", rgbString]);
+                                        Quickshell.execDetached(["hype", "cl", "copy", rgbString]);
                                         ToastService.showInfo(I18n.tr("%1 copied").arg(rgbString));
                                     }
                                 }
@@ -717,9 +717,9 @@ DankModal {
                                             const v = Math.round(root.value * 100);
                                             if (root.alpha < 1) {
                                                 const a = Math.round(root.alpha * 100);
-                                                return `${h}°, ${s}%, ${v}%, ${a}%`;
+                                                return `${h}Â°, ${s}%, ${v}%, ${a}%`;
                                             }
-                                            return `${h}°, ${s}%, ${v}%`;
+                                            return `${h}Â°, ${s}%, ${v}%`;
                                         }
                                         font.pixelSize: Theme.fontSizeMedium
                                         color: Theme.surfaceText
@@ -743,7 +743,7 @@ DankModal {
                                         } else {
                                             hsvString = `${h}, ${s}, ${v}`;
                                         }
-                                        Quickshell.execDetached(["dms", "cl", "copy", hsvString]);
+                                        Quickshell.execDetached(["hype", "cl", "copy", hsvString]);
                                         ToastService.showInfo(I18n.tr("HSV %1 copied").arg(hsvString));
                                     }
                                 }

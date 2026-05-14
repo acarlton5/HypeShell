@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	"github.com/AvengeMedia/DankMaterialShell/core/internal/tui"
+	"github.com/acarlton5/HypeShell/core/internal/tui"
 	"github.com/charmbracelet/lipgloss"
 )
 

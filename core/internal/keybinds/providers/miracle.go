@@ -6,8 +6,8 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/AvengeMedia/DankMaterialShell/core/internal/keybinds"
-	"github.com/AvengeMedia/DankMaterialShell/core/internal/utils"
+	"github.com/acarlton5/HypeShell/core/internal/keybinds"
+	"github.com/acarlton5/HypeShell/core/internal/utils"
 )
 
 type MiracleProvider struct {

@@ -238,7 +238,7 @@ Item {
                             }
 
                             StyledText {
-                                readonly property string bindsFile: KeybindsService.currentProvider === "niri" ? "dms/binds.kdl" : "dms/binds.conf"
+                                readonly property string bindsFile: KeybindsService.currentProvider === "niri" ? "dms/binds.kdl" : "hype/binds.conf"
                                 text: I18n.tr("Click any shortcut to edit. Changes save to %1").arg(bindsFile)
                                 font.pixelSize: Theme.fontSizeSmall
                                 color: Theme.surfaceVariantText
@@ -336,7 +336,7 @@ Item {
                             }
 
                             StyledText {
-                                readonly property string bindsFile: KeybindsService.currentProvider === "niri" ? "dms/binds.kdl" : "dms/binds.conf"
+                                readonly property string bindsFile: KeybindsService.currentProvider === "niri" ? "dms/binds.kdl" : "hype/binds.conf"
                                 text: {
                                     if (warningBox.showSetup)
                                         return I18n.tr("Click 'Setup' to create %1 and add include to config.").arg(bindsFile);
@@ -344,7 +344,7 @@ Item {
                                         return I18n.tr("%1 exists but is not included in config. Custom keybinds will not work until this is fixed.").arg(bindsFile);
                                     if (warningBox.showWarning) {
                                         const count = warningBox.status.overriddenBy;
-                                        return I18n.ntr("%1 DMS bind may be overridden by config binds that come after the include.", "%1 DMS binds may be overridden by config binds that come after the include.", count).arg(count);
+                                        return I18n.ntr("%1 HypeShell bind may be overridden by config binds that come after the include.", "%1 HypeShell binds may be overridden by config binds that come after the include.", count).arg(count);
                                     }
                                     return "";
                                 }

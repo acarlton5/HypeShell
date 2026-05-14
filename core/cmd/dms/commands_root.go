@@ -6,8 +6,8 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/AvengeMedia/DankMaterialShell/core/internal/config"
-	"github.com/AvengeMedia/DankMaterialShell/core/internal/log"
+	"github.com/acarlton5/HypeShell/core/internal/config"
+	"github.com/acarlton5/HypeShell/core/internal/log"
 	"github.com/spf13/cobra"
 )
 
@@ -15,13 +15,13 @@ var customConfigPath string
 var configPath string
 
 var rootCmd = &cobra.Command{
-	Use:   "dms",
-	Short: "dms CLI",
-	Long:  "dms is the DankMaterialShell management CLI and backend server.",
+	Use:   "hype",
+	Short: "HypeShell CLI",
+	Long:  "hype is the HypeShell management CLI and backend server.",
 }
 
 func init() {
-	rootCmd.PersistentFlags().StringVarP(&customConfigPath, "config", "c", "", "Specify a custom path to the DMS config directory")
+	rootCmd.PersistentFlags().StringVarP(&customConfigPath, "config", "c", "", "Specify a custom path to the HypeShell config directory")
 }
 
 func findConfig(cmd *cobra.Command, args []string) error {

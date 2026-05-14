@@ -281,8 +281,8 @@
   "90°": {
     "90°": "90°"
   },
-  "<a href=\"https://github.com/AvengeMedia/DankMaterialShell/blob/master/LICENSE\" style=\"text-decoration:none; color:%1;\">MIT License</a>": {
-    "<a href=\"https://github.com/AvengeMedia/DankMaterialShell/blob/master/LICENSE\" style=\"text-decoration:none; color:%1;\">MIT License</a>": "<a href=\"https://github.com/AvengeMedia/DankMaterialShell/blob/master/LICENSE\" style=\"text-decoration:none; color:%1;\">MIT-Lizenz</a>"
+  "<a href=\"https://github.com/acarlton5/HypeShell/blob/master/LICENSE\" style=\"text-decoration:none; color:%1;\">MIT License</a>": {
+    "<a href=\"https://github.com/acarlton5/HypeShell/blob/master/LICENSE\" style=\"text-decoration:none; color:%1;\">MIT License</a>": "<a href=\"https://github.com/acarlton5/HypeShell/blob/master/LICENSE\" style=\"text-decoration:none; color:%1;\">MIT-Lizenz</a>"
   },
   "A file with this name already exists. Do you want to overwrite it?": {
     "A file with this name already exists. Do you want to overwrite it?": "Eine Datei mit diesem Namen existiert bereits. Überschreiben?"
@@ -341,8 +341,8 @@
   "Activate Greeter": {
     "Activate Greeter": "Greeter aktivieren"
   },
-  "Activate the DMS greeter? A terminal will open for sudo authentication. Run Sync after activation to apply your settings.": {
-    "Activate the DMS greeter? A terminal will open for sudo authentication. Run Sync after activation to apply your settings.": "DMS Greeter aktivieren? Ein Terminal für die Sudo-Authentifizierung wird geöffnet. Führen Sie nach der Aktivierung 'Sync' aus, um Ihre Einstellungen zu übernehmen."
+  "Activate the HypeShell Greeter? A terminal will open for sudo authentication. Run Sync after activation to apply your settings.": {
+    "Activate the HypeShell Greeter? A terminal will open for sudo authentication. Run Sync after activation to apply your settings.": "HypeShell Greeter aktivieren? Ein Terminal für die Sudo-Authentifizierung wird geöffnet. Führen Sie nach der Aktivierung 'Sync' aus, um Ihre Einstellungen zu übernehmen."
   },
   "Activation": {
     "Activation": "Aktivierung"
@@ -734,8 +734,8 @@
   "Automatically lock after": {
     "Automatically lock after": "Automatisch sperren nach"
   },
-  "Automatically lock the screen when DMS starts": {
-    "Automatically lock the screen when DMS starts": "Bildschirm beim Start von DMS automatisch sperren"
+  "Automatically lock the screen when HypeShell starts": {
+    "Automatically lock the screen when HypeShell starts": "Bildschirm beim Start von HypeShell automatisch sperren"
   },
   "Automatically lock the screen when the system prepares to suspend": {
     "Automatically lock the screen when the system prepares to suspend": "Bilschirmsperrung aktivieren wenn das System in den Ruhemodus wechselt"
@@ -1073,8 +1073,8 @@
   "Change bar appearance": {
     "Change bar appearance": "Ändere Leistenerscheinungsbild"
   },
-  "Change the locale used by the DMS interface.": {
-    "Change the locale used by the DMS interface.": "Ändern Sie das Gebietsschema für die DMS-Benutzeroberfläche."
+  "Change the locale used by the HypeShell interface.": {
+    "Change the locale used by the HypeShell interface.": "Ändern Sie das Gebietsschema für die HypeShell-Benutzeroberfläche."
   },
   "Change the locale used for date and time formatting, independent of the interface language.": {
     "Change the locale used for date and time formatting, independent of the interface language.": "Ändern Sie das Gebietsschema für die Datums- und Zeitformatierung, unabhängig von der Sprache der Benutzeroberfläche."
@@ -1151,8 +1151,8 @@
   "Choose the border accent color": {
     "Choose the border accent color": "Rahmenakzentfarbe auswählen"
   },
-  "Choose the logo displayed on the launcher button in DankBar": {
-    "Choose the logo displayed on the launcher button in DankBar": "Wähle das Logo des Launcher Knopfs in der DankBar"
+  "Choose the logo displayed on the launcher button in Hype Bar": {
+    "Choose the logo displayed on the launcher button in Hype Bar": "Wähle das Logo des Launcher Knopfs in der DankBar"
   },
   "Choose where notification popups appear on screen": {
     "Choose where notification popups appear on screen": "Wähle wo auf dem Bildschirm Benachrichtigungen erscheinen"
@@ -1310,8 +1310,8 @@
   "Color theme for syntax highlighting. %1 themes available.": {
     "Color theme for syntax highlighting. %1 themes available.": "Farbschema für Syntax-Hervorhebung. %1 Schemata verfügbar."
   },
-  "Color theme from DMS registry": {
-    "Color theme from DMS registry": "Farbschema aus der DMS-Registry"
+  "Color theme from HypeShell registry": {
+    "Color theme from HypeShell registry": "Farbschema aus der HypeShell-Registry"
   },
   "Colorful": {
     "Colorful": "Farbenfroh"
@@ -1751,23 +1751,23 @@
   "DEMO MODE - Click anywhere to exit": {
     "DEMO MODE - Click anywhere to exit": "DEMO MODUS - Irgendwo klicken um abzubrechen"
   },
-  "DMS Plugin Manager Unavailable": {
-    "DMS Plugin Manager Unavailable": "DMS Plugin Manager nicht verfügbar"
+  "HypeShell Plugin Manager Unavailable": {
+    "HypeShell Plugin Manager Unavailable": "HypeShell Plugin Manager nicht verfügbar"
   },
-  "DMS Shortcuts": {
-    "DMS Shortcuts": "DMS-Kurzbefehle"
+  "HypeShell Shortcuts": {
+    "HypeShell Shortcuts": "HypeShell-Kurzbefehle"
   },
-  "DMS greeter needs: greetd, dms-greeter. Fingerprint: fprintd, pam_fprintd. Security keys: pam_u2f. Add your user to the greeter group. Authentication changes apply automatically and may open a terminal when sudo authentication is required.": {
-    "DMS greeter needs: greetd, dms-greeter. Fingerprint: fprintd, pam_fprintd. Security keys: pam_u2f. Add your user to the greeter group. Authentication changes apply automatically and may open a terminal when sudo authentication is required.": "DMS-Greeter benötigt: greetd, dms-greeter. Fingerabdruck: fprintd, pam_fprintd. Sicherheitsschlüssel: pam_u2f. Fügen Sie Ihren Benutzer der Gruppe „greeter“ hinzu. Authentifizierungsänderungen werden automatisch angewendet und können ein Terminal öffnen, wenn eine Sudo-Authentifizierung erforderlich ist."
+  "HypeShell Greeter needs: greetd, dms-greeter. Fingerprint: fprintd, pam_fprintd. Security keys: pam_u2f. Add your user to the greeter group. Authentication changes apply automatically and may open a terminal when sudo authentication is required.": {
+    "HypeShell Greeter needs: greetd, dms-greeter. Fingerprint: fprintd, pam_fprintd. Security keys: pam_u2f. Add your user to the greeter group. Authentication changes apply automatically and may open a terminal when sudo authentication is required.": "HypeShell-Greeter benötigt: greetd, dms-greeter. Fingerabdruck: fprintd, pam_fprintd. Sicherheitsschlüssel: pam_u2f. Fügen Sie Ihren Benutzer der Gruppe „greeter“ hinzu. Authentifizierungsänderungen werden automatisch angewendet und können ein Terminal öffnen, wenn eine Sudo-Authentifizierung erforderlich ist."
   },
-  "DMS out of date": {
-    "DMS out of date": "DMS ist veraltet"
+  "HypeShell out of date": {
+    "HypeShell out of date": "HypeShell ist veraltet"
   },
-  "DMS service is not connected. Clipboard settings are unavailable.": {
-    "DMS service is not connected. Clipboard settings are unavailable.": "DMS-Dienst ist nicht verbunden. Zwischenablage-Einstellungen sind nicht verfügbar."
+  "HypeShell service is not connected. Clipboard settings are unavailable.": {
+    "HypeShell service is not connected. Clipboard settings are unavailable.": "HypeShell-Dienst ist nicht verbunden. Zwischenablage-Einstellungen sind nicht verfügbar."
   },
-  "DMS shell actions (launcher, clipboard, etc.)": {
-    "DMS shell actions (launcher, clipboard, etc.)": "DMS Shell Aktionen (Launcher, Zwischenablage, etc.)"
+  "HypeShell shell actions (launcher, clipboard, etc.)": {
+    "HypeShell shell actions (launcher, clipboard, etc.)": "HypeShell shell Aktionen (Launcher, Zwischenablage, etc.)"
   },
   "DMS_SOCKET not available": {
     "DMS_SOCKET not available": "DMS_SOCKET nicht verfügbar"
@@ -1781,20 +1781,20 @@
   "Daily at:": {
     "Daily at:": "Täglich um:"
   },
-  "Dank": {
-    "Dank": "Dank"
+  "HypeShell": {
+    "HypeShell": "HypeShell"
   },
-  "Dank Bar": {
-    "Dank Bar": "Dank Bar"
+  "Hype Bar": {
+    "Hype Bar": "Hype Bar"
   },
-  "DankBar": {
-    "DankBar": "DankBar"
+  "Hype Bar": {
+    "Hype Bar": "Hype Bar"
   },
-  "DankMaterialShell is ready to use": {
-    "DankMaterialShell is ready to use": "DankMaterialShell ist einsatzbereit"
+  "HypeShell is ready to use": {
+    "HypeShell is ready to use": "HypeShell ist einsatzbereit"
   },
-  "DankShell & System Icons (requires restart)": {
-    "DankShell & System Icons (requires restart)": "DankShell & System Icons (Neutstart erforderlich)"
+  "HypeShell & System Icons (requires restart)": {
+    "HypeShell & System Icons (requires restart)": "DankShell & System Icons (Neutstart erforderlich)"
   },
   "Dark Mode": {
     "Dark Mode": "Dunkler Modus"
@@ -2261,8 +2261,8 @@
   "Enable fingerprint authentication": {
     "Enable fingerprint authentication": "Aktiviere Fingerabdruck Authentifizierung"
   },
-  "Enable fingerprint or security key for DMS Greeter. Authentication changes apply automatically.": {
-    "Enable fingerprint or security key for DMS Greeter. Authentication changes apply automatically.": "Fingerabdruck oder Sicherheitsschlüssel für DMS-Greeter aktivieren. Authentifizierungsänderungen werden automatisch angewendet."
+  "Enable fingerprint or security key for HypeShell Greeter. Authentication changes apply automatically.": {
+    "Enable fingerprint or security key for HypeShell Greeter. Authentication changes apply automatically.": "Fingerabdruck oder Sicherheitsschlüssel für HypeShell-Greeter aktivieren. Authentifizierungsänderungen werden automatisch angewendet."
   },
   "Enable loginctl lock integration": {
     "Enable loginctl lock integration": "Loginctl‑Sperrintegration aktivieren"
@@ -2600,8 +2600,8 @@
   "Failed to ring device": {
     "Failed to ring device": "Gerät konnte nicht klingeln gelassen werden"
   },
-  "Failed to run 'dms greeter status'. Ensure DMS is installed and dms is in PATH.": {
-    "Failed to run 'dms greeter status'. Ensure DMS is installed and dms is in PATH.": "Fehler beim Ausführen von 'dms greeter status'. Stellen Sie sicher, dass DMS installiert ist und dms im PATH liegt."
+  "Failed to run 'dms greeter status'. Ensure HypeShell is installed and dms is in PATH.": {
+    "Failed to run 'dms greeter status'. Ensure HypeShell is installed and dms is in PATH.": "Fehler beim Ausführen von 'dms greeter status'. Stellen Sie sicher, dass HypeShell installiert ist und dms im PATH liegt."
   },
   "Failed to save audio config": {
     "Failed to save audio config": "Speichern der Audiokonfiguration fehlgeschlagen"
@@ -2819,8 +2819,8 @@
   "Folders": {
     "Folders": "Ordner"
   },
-  "Follow DMS background color": {
-    "Follow DMS background color": "DMS-Hintergrundfarbe folgen"
+  "Follow HypeShell background color": {
+    "Follow HypeShell background color": "HypeShell-Hintergrundfarbe folgen"
   },
   "Follow Monitor Focus": {
     "Follow Monitor Focus": "Monitorfokus folgen"
@@ -2984,11 +2984,11 @@
   "Gamma Control": {
     "Gamma Control": "Gamma-Steuerung"
   },
-  "Gamma control not available. Requires DMS API v6+.": {
-    "Gamma control not available. Requires DMS API v6+.": "Gamma-Steuerung nicht verfügbar. Erfordert DMS API v6+."
+  "Gamma control not available. Requires HypeShell API v6+.": {
+    "Gamma control not available. Requires HypeShell API v6+.": "Gamma-Steuerung nicht verfügbar. Erfordert HypeShell API v6+."
   },
-  "Generate baseline GTK3/4 or QT5/QT6 (requires qt6ct-kde) configurations to follow DMS colors. Only needed once.<br /><br />It is recommended to configure <a href=\"https://github.com/AvengeMedia/DankMaterialShell/blob/master/README.md#Theming\" style=\"text-decoration:none; color:%1;\">adw-gtk3</a> prior to applying GTK themes.": {
-    "Generate baseline GTK3/4 or QT5/QT6 (requires qt6ct-kde) configurations to follow DMS colors. Only needed once.<br /><br />It is recommended to configure <a href=\"https://github.com/AvengeMedia/DankMaterialShell/blob/master/README.md#Theming\" style=\"text-decoration:none; color:%1;\">adw-gtk3</a> prior to applying GTK themes.": "Basis-GTK3/4- oder QT5/QT6-Konfigurationen (erfordert qt6ct-kde) erstellen, um DMS-Farben zu folgen. Nur einmal erforderlich.<br /><br />Es wird empfohlen, <a href=\"https://github.com/AvengeMedia/DankMaterialShell/blob/master/README.md#Theming\" style=\"text-decoration:none; color:%1;\">adw-gtk3</a> vor der Anwendung von GTK-Themes zu konfigurieren."
+  "Generate baseline GTK3/4 or QT5/QT6 (requires qt6ct-kde) configurations to follow HypeShell colors. Only needed once.<br /><br />It is recommended to configure <a href=\"https://github.com/acarlton5/HypeShell/blob/master/README.md#Theming\" style=\"text-decoration:none; color:%1;\">adw-gtk3</a> prior to applying GTK themes.": {
+    "Generate baseline GTK3/4 or QT5/QT6 (requires qt6ct-kde) configurations to follow HypeShell colors. Only needed once.<br /><br />It is recommended to configure <a href=\"https://github.com/acarlton5/HypeShell/blob/master/README.md#Theming\" style=\"text-decoration:none; color:%1;\">adw-gtk3</a> prior to applying GTK themes.": "Basis-GTK3/4- oder QT5/QT6-Konfigurationen (erfordert qt6ct-kde) erstellen, um HypeShell-Farben zu folgen. Nur einmal erforderlich.<br /><br />Es wird empfohlen, <a href=\"https://github.com/acarlton5/HypeShell/blob/master/README.md#Theming\" style=\"text-decoration:none; color:%1;\">adw-gtk3</a> vor der Anwendung von GTK-Themes zu konfigurieren."
   },
   "Generic": {
     "Generic": "Generisch"
@@ -3416,8 +3416,8 @@
   "Install Theme": {
     "Install Theme": "Theme installieren"
   },
-  "Install color themes from the DMS theme registry": {
-    "Install color themes from the DMS theme registry": "Farbschemata aus der DMS-Theme-Registry installieren"
+  "Install color themes from the HypeShell theme registry": {
+    "Install color themes from the HypeShell theme registry": "Farbschemata aus der HypeShell-Theme-Registry installieren"
   },
   "Install complete. Greeter has been installed.": {
     "Install complete. Greeter has been installed.": "Installation abgeschlossen. Greeter wurde installiert."
@@ -3428,17 +3428,17 @@
   "Install matugen package for dynamic theming": {
     "Install matugen package for dynamic theming": "Installieren Sie das matugen-Paket für dynamisches Theming"
   },
-  "Install plugin '%1' from the DMS registry?": {
-    "Install plugin '%1' from the DMS registry?": "Plugin '%1' aus der DMS-Registry installieren?"
+  "Install plugin '%1' from the HypeShell registry?": {
+    "Install plugin '%1' from the HypeShell registry?": "Plugin '%1' aus der HypeShell-Registry installieren?"
   },
-  "Install plugins from the DMS plugin registry": {
-    "Install plugins from the DMS plugin registry": "Installiere Plugins aus der DMS Plugin-Registry"
+  "Install plugins from the HypeShell plugin registry": {
+    "Install plugins from the HypeShell plugin registry": "Installiere Plugins aus der HypeShell Plugin-Registry"
   },
-  "Install the DMS greeter? A terminal will open for sudo authentication.": {
-    "Install the DMS greeter? A terminal will open for sudo authentication.": "DMS Greeter installieren? Ein Terminal für die Sudo-Authentifizierung wird geöffnet."
+  "Install the HypeShell Greeter? A terminal will open for sudo authentication.": {
+    "Install the HypeShell Greeter? A terminal will open for sudo authentication.": "HypeShell Greeter installieren? Ein Terminal für die Sudo-Authentifizierung wird geöffnet."
   },
-  "Install theme '%1' from the DMS registry?": {
-    "Install theme '%1' from the DMS registry?": "Theme '%1' aus der DMS-Registry installieren?"
+  "Install theme '%1' from the HypeShell registry?": {
+    "Install theme '%1' from the HypeShell registry?": "Theme '%1' aus der HypeShell-Registry installieren?"
   },
   "Installation and PAM setup: see the ": {
     "Installation and PAM setup: see the ": "Installation und PAM-Einrichtung: siehe die "
@@ -3770,8 +3770,8 @@
   "Make sure KDE Connect or Valent is running on your other devices": {
     "Make sure KDE Connect or Valent is running on your other devices": "Stellen Sie sicher, dass KDE Connect oder Valent auf Ihren anderen Geräten läuft"
   },
-  "Manage and configure plugins for extending DMS functionality": {
-    "Manage and configure plugins for extending DMS functionality": "Plugins zur Erweiterung der DMS-Funktionalität verwalten und konfigurieren"
+  "Manage and configure plugins for extending HypeShell functionality": {
+    "Manage and configure plugins for extending HypeShell functionality": "Plugins zur Erweiterung der HypeShell-Funktionalität verwalten und konfigurieren"
   },
   "Manage up to 4 independent bar configurations. Each bar has its own position, widgets, styling, and display assignment.": {
     "Manage up to 4 independent bar configurations. Each bar has its own position, widgets, styling, and display assignment.": "Verwalten Sie bis zu 4 unabhängige Leistenkonfigurationen. Jede Leiste hat ihre eigene Position, Widgets, Styling und Display-Zuweisung."
@@ -3842,8 +3842,8 @@
   "Material inspired shadows and elevation on modals, popouts, and dialogs": {
     "Material inspired shadows and elevation on modals, popouts, and dialogs": "Von Material Design inspirierte Schatten und Erhöhungen auf Modalen, Popouts und Dialogen"
   },
-  "Material: Material Design 3 Expressive bezier curves. The DMS default feel.": {
-    "Material: Material Design 3 Expressive bezier curves. The DMS default feel.": "Material: Material Design 3 Ausdrucksstarke Bezier-Kurven. Das DMS-Standardgefühl."
+  "Material: Material Design 3 Expressive bezier curves. The HypeShell default feel.": {
+    "Material: Material Design 3 Expressive bezier curves. The HypeShell default feel.": "Material: Material Design 3 Ausdrucksstarke Bezier-Kurven. Das HypeShell-Standardgefühl."
   },
   "Matugen Contrast": {
     "Matugen Contrast": "Matugen-Kontrast"
@@ -4268,8 +4268,8 @@
   "No Border": {
     "No Border": "Kein Rand"
   },
-  "No DMS shortcuts configured": {
-    "No DMS shortcuts configured": "Keine DMS-Tastenkombinationen konfiguriert"
+  "No HypeShell Shortcuts configured": {
+    "No HypeShell Shortcuts configured": "Keine HypeShell-Tastenkombinationen konfiguriert"
   },
   "No Dim": {
     "No Dim": "Kein Abdunkeln"
@@ -4658,8 +4658,8 @@
   "Only adjust gamma based on time or location rules.": {
     "Only adjust gamma based on time or location rules.": "Nur die Gamma-Einstellung basierend auf Zeit- oder Ortsregeln anpassen."
   },
-  "Only affects DMS-managed PAM. If greetd already includes pam_fprintd, fingerprint stays enabled.": {
-    "Only affects DMS-managed PAM. If greetd already includes pam_fprintd, fingerprint stays enabled.": "Betrifft nur von DMS verwaltetes PAM. Wenn greetd bereits pam_fprintd enthält, bleibt der Fingerabdruck aktiviert."
+  "Only affects HypeShell-managed PAM. If greetd already includes pam_fprintd, fingerprint stays enabled.": {
+    "Only affects HypeShell-managed PAM. If greetd already includes pam_fprintd, fingerprint stays enabled.": "Betrifft nur von HypeShell verwaltetes PAM. Wenn greetd bereits pam_fprintd enthält, bleibt der Fingerabdruck aktiviert."
   },
   "Only show windows from the current monitor on each dock": {
     "Only show windows from the current monitor on each dock": "Nur Fenster des aktuellen Monitors in jedem Dock anzeigen"
@@ -5411,11 +5411,11 @@
   "Requires 'dgop' tool": {
     "Requires 'dgop' tool": "Erfordert 'dgop' Tool"
   },
-  "Requires DMS %1": {
-    "Requires DMS %1": "Erfordert DMS %1"
+  "Requires HypeShell %1": {
+    "Requires HypeShell %1": "Erfordert HypeShell %1"
   },
-  "Requires DMS server with sysupdate capability": {
-    "Requires DMS server with sysupdate capability": "Erfordert DMS-Server mit sysupdate-Funktion"
+  "Requires HypeShell server with sysupdate capability": {
+    "Requires HypeShell server with sysupdate capability": "Erfordert HypeShell-Server mit sysupdate-Funktion"
   },
   "Requires DWL compositor": {
     "Requires DWL compositor": "Erfordert DWL-Compositor"
@@ -5447,11 +5447,11 @@
   "Resolution, position, scale": {
     "Resolution, position, scale": "Auflösung, Position, Skalierung"
   },
-  "Restart DMS": {
-    "Restart DMS": "Neustart DMS"
+  "Restart HypeShell": {
+    "Restart HypeShell": "Neustart HypeShell"
   },
-  "Restart the DankMaterialShell": {
-    "Restart the DankMaterialShell": "DankMaterialShell neustarten"
+  "Restart the HypeShell": {
+    "Restart the HypeShell": "HypeShell neustarten"
   },
   "Restarting audio system...": {
     "Restarting audio system...": "Audiosystem wird neu gestartet..."
@@ -5528,8 +5528,8 @@
   "Run Again": {
     "Run Again": "Erneut ausführen"
   },
-  "Run DMS Templates": {
-    "Run DMS Templates": "DMS Vorlagen ausführen"
+  "Run HypeShell Templates": {
+    "Run HypeShell Templates": "HypeShell Vorlagen ausführen"
   },
   "Run User Templates": {
     "Run User Templates": "Benutzer-Vorlagen ausführen"
@@ -5609,11 +5609,11 @@
   "Scale": {
     "Scale": "Skalierung"
   },
-  "Scale DankBar font sizes independently": {
-    "Scale DankBar font sizes independently": "Skaliere DankBar Schriftgröße seperat"
+  "Scale Hype Bar font sizes independently": {
+    "Scale Hype Bar font sizes independently": "Skaliere DankBar Schriftgröße seperat"
   },
-  "Scale DankBar icon sizes independently": {
-    "Scale DankBar icon sizes independently": "DankBar-Icon-Größen unabhängig skalieren"
+  "Scale Hype Bar icon sizes independently": {
+    "Scale Hype Bar icon sizes independently": "DankBar-Icon-Größen unabhängig skalieren"
   },
   "Scale all font sizes throughout the shell": {
     "Scale all font sizes throughout the shell": "Alle Schriftgrößen in der Shell skalieren"
@@ -6074,8 +6074,8 @@
   "Show Reboot": {
     "Show Reboot": "Neustart anzeigen"
   },
-  "Show Restart DMS": {
-    "Show Restart DMS": "DMS-Neustart anzeigen"
+  "Show Restart HypeShell": {
+    "Show Restart HypeShell": "HypeShell-Neustart anzeigen"
   },
   "Show Saved Items": {
     "Show Saved Items": "Gespeicherte Elemente anzeigen"
@@ -6293,8 +6293,8 @@
   "Snow": {
     "Snow": "Schnee"
   },
-  "Some plugins require a newer version of DMS:": {
-    "Some plugins require a newer version of DMS:": "Einige Plugins benötigen eine neuere DMS Version:"
+  "Some plugins require a newer version of HypeShell:": {
+    "Some plugins require a newer version of HypeShell:": "Einige Plugins benötigen eine neuere HypeShell Version:"
   },
   "Sort Alphabetically": {
     "Sort Alphabetically": "Alphabetisch sortieren"
@@ -6344,8 +6344,8 @@
   "Standard": {
     "Standard": "Standard"
   },
-  "Standard: Classic Material Design 3 — panels rise from below with a subtle scale. The DMS default.": {
-    "Standard: Classic Material Design 3 — panels rise from below with a subtle scale. The DMS default.": "Standard: Klassisches Material Design 3 – Panels steigen von unten mit einer subtilen Skalierung auf. Der DMS-Standard."
+  "Standard: Classic Material Design 3 — panels rise from below with a subtle scale. The HypeShell default.": {
+    "Standard: Classic Material Design 3 — panels rise from below with a subtle scale. The HypeShell default.": "Standard: Klassisches Material Design 3 – Panels steigen von unten mit einer subtilen Skalierung auf. Der HypeShell-Standard."
   },
   "Start": {
     "Start": "Start"
@@ -6542,8 +6542,8 @@
   "Terminal fallback failed. Install a supported terminal emulator or run 'dms auth sync' manually.": {
     "Terminal fallback failed. Install a supported terminal emulator or run 'dms auth sync' manually.": "Terminal-Fallback fehlgeschlagen. Installieren Sie einen unterstützten Terminal-Emulator oder führen Sie „dms auth sync“ manuell aus."
   },
-  "Terminal fallback failed. Install one of the supported terminal emulators or run 'dms greeter sync' manually.": {
-    "Terminal fallback failed. Install one of the supported terminal emulators or run 'dms greeter sync' manually.": "Terminal-Fallback fehlgeschlagen. Installieren Sie einen der unterstützten Terminal-Emulatoren oder führen Sie 'dms greeter sync' manuell aus."
+  "Terminal fallback failed. Install one of the supported terminal emulators or run 'HypeShell Greeter sync' manually.": {
+    "Terminal fallback failed. Install one of the supported terminal emulators or run 'HypeShell Greeter sync' manually.": "Terminal-Fallback fehlgeschlagen. Installieren Sie einen der unterstützten Terminal-Emulatoren oder führen Sie 'HypeShell Greeter sync' manuell aus."
   },
   "Terminal fallback opened. Complete authentication setup there; it will close automatically when done.": {
     "Terminal fallback opened. Complete authentication setup there; it will close automatically when done.": "Terminal-Fallback geöffnet. Schließen Sie dort die Authentifizierungseinrichtung ab; es wird nach Abschluss automatisch geschlossen."
@@ -6617,8 +6617,8 @@
   "Third-Party Plugin Warning": {
     "Third-Party Plugin Warning": "Drittanbieter-Plugin Warnung"
   },
-  "Third-party plugins are created by the community and are not officially supported by DankMaterialShell.\n\nThese plugins may pose security and privacy risks - install at your own risk.": {
-    "Third-party plugins are created by the community and are not officially supported by DankMaterialShell.\n\nThese plugins may pose security and privacy risks - install at your own risk.": "Plugins von Drittanbietern werden von der Community erstellt und nicht offiziell von DankMaterialShell unterstützt.\n\nDiese Plugins können Sicherheits- und Datenschutzrisiken bergen – Installation auf eigene Gefahr."
+  "Third-party plugins are created by the community and are not officially supported by HypeShell.\n\nThese plugins may pose security and privacy risks - install at your own risk.": {
+    "Third-party plugins are created by the community and are not officially supported by HypeShell.\n\nThese plugins may pose security and privacy risks - install at your own risk.": "Plugins von Drittanbietern werden von der Community erstellt und nicht offiziell von HypeShell unterstützt.\n\nDiese Plugins können Sicherheits- und Datenschutzrisiken bergen – Installation auf eigene Gefahr."
   },
   "This bind is overridden by config.kdl": {
     "This bind is overridden by config.kdl": "Diese Bindung wird durch config.kdl überschrieben"
@@ -6722,8 +6722,8 @@
   "To update, run the following command:": {
     "To update, run the following command:": "Zum Aktualisieren führen Sie folgenden Befehl aus:"
   },
-  "To use this DMS bind, remove or change the keybind in your config.kdl": {
-    "To use this DMS bind, remove or change the keybind in your config.kdl": "Um diese DMS-Bindung zu verwenden, entfernen oder ändern Sie das Tastenkürzel in Ihrer config.kdl"
+  "To use this HypeShell bind, remove or change the keybind in your config.kdl": {
+    "To use this HypeShell bind, remove or change the keybind in your config.kdl": "Um diese HypeShell-Bindung zu verwenden, entfernen oder ändern Sie das Tastenkürzel in Ihrer config.kdl"
   },
   "Toast Messages": {
     "Toast Messages": "Toast-Nachrichten"
@@ -6887,8 +6887,8 @@
   "Uninstall failed: %1": {
     "Uninstall failed: %1": "Deinstallation fehlgeschlagen: %1"
   },
-  "Uninstall the DMS greeter? This will remove configuration and restore your previous display manager. A terminal will open for sudo authentication.": {
-    "Uninstall the DMS greeter? This will remove configuration and restore your previous display manager. A terminal will open for sudo authentication.": "DMS-Greeter deinstallieren? Dies entfernt die Konfiguration und stellt Ihren vorherigen Display-Manager wieder her. Ein Terminal zur Sudo-Authentifizierung wird geöffnet."
+  "Uninstall the HypeShell Greeter? This will remove configuration and restore your previous display manager. A terminal will open for sudo authentication.": {
+    "Uninstall the HypeShell Greeter? This will remove configuration and restore your previous display manager. A terminal will open for sudo authentication.": "HypeShell-Greeter deinstallieren? Dies entfernt die Konfiguration und stellt Ihren vorherigen Display-Manager wieder her. Ein Terminal zur Sudo-Authentifizierung wird geöffnet."
   },
   "Uninstalled: %1": {
     "Uninstalled: %1": "Deinstalliert: %1"
@@ -7262,8 +7262,8 @@
   "Welcome": {
     "Welcome": "Willkommen"
   },
-  "Welcome to DankMaterialShell": {
-    "Welcome to DankMaterialShell": "Willkommen bei DankMaterialShell"
+  "Welcome to HypeShell": {
+    "Welcome to HypeShell": "Willkommen bei HypeShell"
   },
   "When clicking a dock window in a Hyprland special workspace, bring that special workspace back before focusing the window": {
     "When clicking a dock window in a Hyprland special workspace, bring that special workspace back before focusing the window": "Beim Klicken auf ein Dock-Fenster in einem speziellen Hyprland-Arbeitsbereich diesen wiederherstellen, bevor das Fenster fokussiert wird"
@@ -7487,8 +7487,8 @@
   "direct": {
     "direct": "direkt"
   },
-  "dms is a highly customizable, modern desktop shell with a <a href=\"https://m3.material.io/\" style=\"text-decoration:none; color:%1;\">material 3 inspired</a> design.<br /><br/>It is built with <a href=\"https://quickshell.org\" style=\"text-decoration:none; color:%1;\">Quickshell</a>, a QT6 framework for building desktop shells, and <a href=\"https://go.dev\" style=\"text-decoration:none; color:%1;\">Go</a>, a statically typed, compiled programming language.": {
-    "dms is a highly customizable, modern desktop shell with a <a href=\"https://m3.material.io/\" style=\"text-decoration:none; color:%1;\">material 3 inspired</a> design.<br /><br/>It is built with <a href=\"https://quickshell.org\" style=\"text-decoration:none; color:%1;\">Quickshell</a>, a QT6 framework for building desktop shells, and <a href=\"https://go.dev\" style=\"text-decoration:none; color:%1;\">Go</a>, a statically typed, compiled programming language.": "dms ist eine hochgradig anpassbare, moderne Desktop-Shell mit einem <a href=\"https://m3.material.io/\" style=\"text-decoration:none; color:%1;\">Material 3 inspirierten</a> Design.<br /><br/>Sie wurde mit <a href=\"https://quickshell.org\" style=\"text-decoration:none; color:%1;\">Quickshell</a> entwickelt, einem QT6-Framework zum Erstellen von Desktop-Shells, und <a href=\"https://go.dev\" style=\"text-decoration:none; color:%1;\">Go</a>, einer statisch typisierten, kompilierten Programmiersprache."
+  "HypeShell is a highly customizable, modern desktop shell with a <a href=\"https://m3.material.io/\" style=\"text-decoration:none; color:%1;\">material 3 inspired</a> design.<br /><br/>It is built with <a href=\"https://quickshell.org\" style=\"text-decoration:none; color:%1;\">Quickshell</a>, a QT6 framework for building desktop shells, and <a href=\"https://go.dev\" style=\"text-decoration:none; color:%1;\">Go</a>, a statically typed, compiled programming language.": {
+    "HypeShell is a highly customizable, modern desktop shell with a <a href=\"https://m3.material.io/\" style=\"text-decoration:none; color:%1;\">material 3 inspired</a> design.<br /><br/>It is built with <a href=\"https://quickshell.org\" style=\"text-decoration:none; color:%1;\">Quickshell</a>, a QT6 framework for building desktop shells, and <a href=\"https://go.dev\" style=\"text-decoration:none; color:%1;\">Go</a>, a statically typed, compiled programming language.": "dms ist eine hochgradig anpassbare, moderne Desktop-Shell mit einem <a href=\"https://m3.material.io/\" style=\"text-decoration:none; color:%1;\">Material 3 inspirierten</a> Design.<br /><br/>Sie wurde mit <a href=\"https://quickshell.org\" style=\"text-decoration:none; color:%1;\">Quickshell</a> entwickelt, einem QT6-Framework zum Erstellen von Desktop-Shells, und <a href=\"https://go.dev\" style=\"text-decoration:none; color:%1;\">Go</a>, einer statisch typisierten, kompilierten Programmiersprache."
   },
   "dms/cursor config exists but is not included. Cursor settings won't apply.": {
     "dms/cursor config exists but is not included. Cursor settings won't apply.": "dms/cursor-Konfiguration existiert, ist aber nicht eingebunden. Cursor-Einstellungen werden nicht angewendet."
@@ -7523,8 +7523,8 @@
   "leave empty for default": {
     "leave empty for default": "leer lassen für Standardwert"
   },
-  "loginctl not available - lock integration requires DMS socket connection": {
-    "loginctl not available - lock integration requires DMS socket connection": "loginctl nicht verfügbar – Sperrintegration erfordert DMS-Socket-Verbindung"
+  "loginctl not available - lock integration requires HypeShell socket connection": {
+    "loginctl not available - lock integration requires HypeShell socket connection": "loginctl nicht verfügbar – Sperrintegration erfordert HypeShell-Socket-Verbindung"
   },
   "mangowc Discord Server": {
     "mangowc Discord Server": "mangowc Discord-Server"
@@ -7613,8 +7613,8 @@
   "up": {
     "up": "hoch"
   },
-  "update dms for NM integration.": {
-    "update dms for NM integration.": "dms für NM-Integration aktualisieren."
+  "update HypeShell for NM integration.": {
+    "update HypeShell for NM integration.": "dms für NM-Integration aktualisieren."
   },
   "v%1 by %2": {
     "v%1 by %2": "v%1 von %2"

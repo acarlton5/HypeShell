@@ -267,7 +267,7 @@ FloatingWindow {
 
         if (isEditMode) {
             const ruleJson = JSON.stringify(ruleData);
-            Proc.runCommand("update-windowrule", ["dms", "config", "windowrules", "update", compositor, editingRule.id, ruleJson], (output, exitCode) => {
+            Proc.runCommand("update-windowrule", ["hype", "config", "windowrules", "update", compositor, editingRule.id, ruleJson], (output, exitCode) => {
                 root.submitting = false;
                 if (exitCode !== 0)
                     return;
@@ -278,7 +278,7 @@ FloatingWindow {
             });
         } else {
             const ruleJson = JSON.stringify(ruleData);
-            Proc.runCommand("add-windowrule", ["dms", "config", "windowrules", "add", compositor, ruleJson], (output, exitCode) => {
+            Proc.runCommand("add-windowrule", ["hype", "config", "windowrules", "add", compositor, ruleJson], (output, exitCode) => {
                 root.submitting = false;
                 if (exitCode !== 0)
                     return;

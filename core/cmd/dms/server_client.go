@@ -8,8 +8,8 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/AvengeMedia/DankMaterialShell/core/internal/server"
-	"github.com/AvengeMedia/DankMaterialShell/core/internal/server/models"
+	"github.com/acarlton5/HypeShell/core/internal/server"
+	"github.com/acarlton5/HypeShell/core/internal/server/models"
 )
 
 func sendServerRequest(req models.Request) (*models.Response[any], error) {

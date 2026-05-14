@@ -11,14 +11,14 @@ import (
 	"syscall"
 	"time"
 
-	wlclient "github.com/AvengeMedia/DankMaterialShell/core/pkg/go-wayland/wayland/client"
+	wlclient "github.com/acarlton5/HypeShell/core/pkg/go-wayland/wayland/client"
 	"github.com/godbus/dbus/v5"
 	"golang.org/x/sys/unix"
 
-	"github.com/AvengeMedia/DankMaterialShell/core/internal/errdefs"
-	"github.com/AvengeMedia/DankMaterialShell/core/internal/geolocation"
-	"github.com/AvengeMedia/DankMaterialShell/core/internal/log"
-	"github.com/AvengeMedia/DankMaterialShell/core/internal/proto/wlr_gamma_control"
+	"github.com/acarlton5/HypeShell/core/internal/errdefs"
+	"github.com/acarlton5/HypeShell/core/internal/geolocation"
+	"github.com/acarlton5/HypeShell/core/internal/log"
+	"github.com/acarlton5/HypeShell/core/internal/proto/wlr_gamma_control"
 )
 
 const animKelvinStep = 25

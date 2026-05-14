@@ -9,7 +9,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 
-	mocks_wlcontext "github.com/AvengeMedia/DankMaterialShell/core/internal/mocks/wlcontext"
+	mocks_wlcontext "github.com/acarlton5/HypeShell/core/internal/mocks/wlcontext"
 )
 
 func TestEncodeDecodeEntry_Roundtrip(t *testing.T) {

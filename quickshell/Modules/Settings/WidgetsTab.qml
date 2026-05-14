@@ -247,7 +247,7 @@ Item {
                 "description": I18n.tr("Check for system updates"),
                 "icon": "update",
                 "enabled": SystemUpdateService.sysupdateAvailable,
-                "warning": SystemUpdateService.sysupdateAvailable ? undefined : I18n.tr("Requires DMS server with sysupdate capability")
+                "warning": SystemUpdateService.sysupdateAvailable ? undefined : I18n.tr("Requires HypeShell server with sysupdate capability")
             },
             {
                 "id": "powerMenuButton",

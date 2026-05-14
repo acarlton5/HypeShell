@@ -7,7 +7,7 @@ import (
 	evdev "github.com/holoplot/go-evdev"
 	"github.com/stretchr/testify/assert"
 
-	mocks "github.com/AvengeMedia/DankMaterialShell/core/internal/mocks/evdev"
+	mocks "github.com/acarlton5/HypeShell/core/internal/mocks/evdev"
 )
 
 func TestManager_Creation(t *testing.T) {

@@ -9,8 +9,8 @@ import (
 	"slices"
 	"strings"
 
-	"github.com/AvengeMedia/DankMaterialShell/core/internal/deps"
-	"github.com/AvengeMedia/DankMaterialShell/core/internal/privesc"
+	"github.com/acarlton5/HypeShell/core/internal/deps"
+	"github.com/acarlton5/HypeShell/core/internal/privesc"
 )
 
 func init() {

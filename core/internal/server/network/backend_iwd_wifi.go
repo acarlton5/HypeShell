@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/AvengeMedia/DankMaterialShell/core/internal/errdefs"
+	"github.com/acarlton5/HypeShell/core/internal/errdefs"
 	"github.com/godbus/dbus/v5"
 )
 

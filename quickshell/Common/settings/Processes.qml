@@ -434,7 +434,7 @@ Singleton {
     }
 
     property var authApplyProcess: Process {
-        command: ["dms", "auth", "sync", "--yes"]
+        command: ["hype", "auth", "sync", "--yes"]
         running: false
 
         stdout: StdioCollector {
@@ -480,7 +480,7 @@ Singleton {
         onExited: exitCode => {
             const err = (root.authApplySudoProbeStderr || "").trim();
             if (exitCode === 0) {
-                ToastService.showInfo(I18n.tr("Applying authentication changes…"), "", "", "auth-sync");
+                ToastService.showInfo(I18n.tr("Applying authentication changesâ€¦"), "", "", "auth-sync");
                 root.authApplyProcess.running = true;
                 return;
             }
@@ -490,7 +490,7 @@ Singleton {
     }
 
     property var authApplyTerminalFallbackProcess: Process {
-        command: ["dms", "auth", "sync", "--terminal", "--yes"]
+        command: ["hype", "auth", "sync", "--terminal", "--yes"]
         running: false
 
         stderr: StdioCollector {

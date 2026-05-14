@@ -3,7 +3,7 @@ package distros
 import (
 	"context"
 
-	"github.com/AvengeMedia/DankMaterialShell/core/internal/deps"
+	"github.com/acarlton5/HypeShell/core/internal/deps"
 )
 
 // DistroFamily represents a family of related distributions

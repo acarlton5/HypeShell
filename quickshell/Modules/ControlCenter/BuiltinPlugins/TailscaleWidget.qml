@@ -138,7 +138,7 @@ PluginComponent {
                         }
                     }
 
-                    // Scrollable peer list — fills remaining space below header
+                    // Scrollable peer list â€” fills remaining space below header
                     DankFlickable {
                         anchors.top: headerColumn.bottom
                         anchors.topMargin: Theme.spacingS
@@ -270,7 +270,7 @@ PluginComponent {
                                                 iconSize: 11
                                                 iconColor: Theme.surfaceVariantText
                                                 tooltipText: I18n.tr("Copy", "Copy to clipboard")
-                                                onClicked: Quickshell.execDetached(["dms", "cl", "copy", modelData.tailscaleIp])
+                                                onClicked: Quickshell.execDetached(["hype", "cl", "copy", modelData.tailscaleIp])
                                             }
                                         }
 
@@ -317,7 +317,7 @@ PluginComponent {
                                                     buttonSize: 20
                                                     iconSize: 11
                                                     iconColor: Theme.surfaceVariantText
-                                                    onClicked: Quickshell.execDetached(["dms", "cl", "copy", modelData.dnsName])
+                                                    onClicked: Quickshell.execDetached(["hype", "cl", "copy", modelData.dnsName])
                                                 }
                                             }
 

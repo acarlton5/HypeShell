@@ -5,7 +5,7 @@ import (
 	"errors"
 	"sync"
 
-	"github.com/AvengeMedia/DankMaterialShell/core/internal/log"
+	"github.com/acarlton5/HypeShell/core/internal/log"
 )
 
 type Result struct {

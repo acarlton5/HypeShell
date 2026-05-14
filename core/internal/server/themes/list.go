@@ -5,8 +5,8 @@ import (
 	"net"
 	"strings"
 
-	"github.com/AvengeMedia/DankMaterialShell/core/internal/server/models"
-	"github.com/AvengeMedia/DankMaterialShell/core/internal/themes"
+	"github.com/acarlton5/HypeShell/core/internal/server/models"
+	"github.com/acarlton5/HypeShell/core/internal/themes"
 )
 
 func HandleList(conn net.Conn, req models.Request) {

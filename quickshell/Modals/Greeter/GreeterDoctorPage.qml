@@ -380,7 +380,7 @@ Item {
 
     Process {
         id: doctorProcess
-        command: ["dms", "doctor", "--json"]
+        command: ["hype", "doctor", "--json"]
         running: false
 
         stdout: StdioCollector {

@@ -6,7 +6,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/AvengeMedia/DankMaterialShell/core/internal/keybinds"
+	"github.com/acarlton5/HypeShell/core/internal/keybinds"
 )
 
 type SwayProvider struct {

@@ -8,8 +8,8 @@ import (
 	"path/filepath"
 	"syscall"
 
-	"github.com/AvengeMedia/DankMaterialShell/core/internal/proto/ext_data_control"
-	wlclient "github.com/AvengeMedia/DankMaterialShell/core/pkg/go-wayland/wayland/client"
+	"github.com/acarlton5/HypeShell/core/internal/proto/ext_data_control"
+	wlclient "github.com/acarlton5/HypeShell/core/pkg/go-wayland/wayland/client"
 )
 
 const envServe = "_DMS_CLIPBOARD_SERVE"

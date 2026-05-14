@@ -7,10 +7,10 @@ import (
 	"strings"
 	"time"
 
-	"github.com/AvengeMedia/DankMaterialShell/core/internal/log"
-	"github.com/AvengeMedia/DankMaterialShell/core/internal/utils"
-	"github.com/AvengeMedia/DankMaterialShell/core/internal/windowrules"
-	"github.com/AvengeMedia/DankMaterialShell/core/internal/windowrules/providers"
+	"github.com/acarlton5/HypeShell/core/internal/log"
+	"github.com/acarlton5/HypeShell/core/internal/utils"
+	"github.com/acarlton5/HypeShell/core/internal/windowrules"
+	"github.com/acarlton5/HypeShell/core/internal/windowrules/providers"
 	"github.com/spf13/cobra"
 )
 

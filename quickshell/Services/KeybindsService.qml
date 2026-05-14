@@ -292,7 +292,7 @@ Singleton {
         if (!target)
             return;
         cheatsheetLoading = true;
-        cheatsheetProcess.command = ["dms", "keybinds", "show", target];
+        cheatsheetProcess.command = ["hype", "keybinds", "show", target];
         cheatsheetProcess.running = true;
     }
 
@@ -301,7 +301,7 @@ Singleton {
             return;
         const hasData = Object.keys(_allBinds).length > 0;
         loading = showLoading !== false && !hasData;
-        loadProcess.command = ["dms", "keybinds", "show", currentProvider];
+        loadProcess.command = ["hype", "keybinds", "show", currentProvider];
         loadProcess.running = true;
     }
 
@@ -438,7 +438,7 @@ Singleton {
         if (!bindData.key || !Actions.isValidAction(bindData.action))
             return;
         saving = true;
-        const cmd = ["dms", "keybinds", "set", currentProvider, bindData.key, bindData.action, "--desc", bindData.desc || ""];
+        const cmd = ["hype", "keybinds", "set", currentProvider, bindData.key, bindData.action, "--desc", bindData.desc || ""];
         if (originalKey && originalKey !== bindData.key)
             cmd.push("--replace-key", originalKey);
         if (bindData.cooldownMs > 0)
@@ -459,7 +459,7 @@ Singleton {
     function removeBind(key) {
         if (!key)
             return;
-        removeProcess.command = ["dms", "keybinds", "remove", currentProvider, key];
+        removeProcess.command = ["hype", "keybinds", "remove", currentProvider, key];
         removeProcess.running = true;
         bindRemoved(key);
     }

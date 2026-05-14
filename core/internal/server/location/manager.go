@@ -3,8 +3,8 @@ package location
 import (
 	"time"
 
-	"github.com/AvengeMedia/DankMaterialShell/core/internal/geolocation"
-	"github.com/AvengeMedia/DankMaterialShell/core/internal/log"
+	"github.com/acarlton5/HypeShell/core/internal/geolocation"
+	"github.com/acarlton5/HypeShell/core/internal/log"
 )
 
 func NewManager(client geolocation.Client) (*Manager, error) {

@@ -4,8 +4,8 @@ import (
 	"errors"
 	"testing"
 
-	mocks_network "github.com/AvengeMedia/DankMaterialShell/core/internal/mocks/network"
-	"github.com/AvengeMedia/DankMaterialShell/core/internal/server/network"
+	mocks_network "github.com/acarlton5/HypeShell/core/internal/mocks/network"
+	"github.com/acarlton5/HypeShell/core/internal/server/network"
 	"github.com/stretchr/testify/assert"
 )
 

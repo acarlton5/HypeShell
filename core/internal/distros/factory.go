@@ -1,7 +1,7 @@
 package distros
 
 import (
-	"github.com/AvengeMedia/DankMaterialShell/core/internal/deps"
+	"github.com/acarlton5/HypeShell/core/internal/deps"
 )
 
 // NewDependencyDetector creates a DependencyDetector for the specified distribution

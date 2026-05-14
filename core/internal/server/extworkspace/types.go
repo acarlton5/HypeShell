@@ -3,9 +3,9 @@ package extworkspace
 import (
 	"sync"
 
-	"github.com/AvengeMedia/DankMaterialShell/core/internal/proto/ext_workspace"
-	wlclient "github.com/AvengeMedia/DankMaterialShell/core/pkg/go-wayland/wayland/client"
-	"github.com/AvengeMedia/DankMaterialShell/core/pkg/syncmap"
+	"github.com/acarlton5/HypeShell/core/internal/proto/ext_workspace"
+	wlclient "github.com/acarlton5/HypeShell/core/pkg/go-wayland/wayland/client"
+	"github.com/acarlton5/HypeShell/core/pkg/syncmap"
 )
 
 type Workspace struct {

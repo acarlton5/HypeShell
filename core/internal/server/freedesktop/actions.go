@@ -3,7 +3,7 @@ package freedesktop
 import (
 	"fmt"
 
-	"github.com/AvengeMedia/DankMaterialShell/core/internal/utils"
+	"github.com/acarlton5/HypeShell/core/internal/utils"
 	"github.com/godbus/dbus/v5"
 )
 

@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/AvengeMedia/DankMaterialShell/core/internal/clipboard"
-	"github.com/AvengeMedia/DankMaterialShell/core/internal/colorpicker"
+	"github.com/acarlton5/HypeShell/core/internal/clipboard"
+	"github.com/acarlton5/HypeShell/core/internal/colorpicker"
 	"github.com/spf13/cobra"
 )
 

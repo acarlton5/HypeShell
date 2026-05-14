@@ -38,7 +38,7 @@ Item {
 
                 StyledText {
                     width: parent.width
-                    text: I18n.tr("Choose the logo displayed on the launcher button in DankBar")
+                    text: I18n.tr("Choose the logo displayed on the launcher button in Hype Bar")
                     font.pixelSize: Theme.fontSizeSmall
                     color: Theme.surfaceVariantText
                     wrapMode: Text.WordWrap
@@ -518,7 +518,7 @@ Item {
                 id: builtInPluginsCard
                 width: parent.width
                 iconName: "extension"
-                title: "DMS"
+                title: "HypeShell"
                 settingKey: "builtInPlugins"
 
                 Column {
@@ -759,7 +759,7 @@ Item {
                                                 StyledText {
                                                     id: dmsBadgeLabel
                                                     anchors.centerIn: parent
-                                                    text: "DMS"
+                                                    text: "HypeShell"
                                                     font.pixelSize: Theme.fontSizeSmall - 2
                                                     color: Theme.primary
                                                 }

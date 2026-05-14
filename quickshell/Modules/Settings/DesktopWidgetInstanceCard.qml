@@ -422,7 +422,7 @@ SettingsCard {
                             horizontalPadding: 4
                             anchors.verticalCenter: parent.verticalCenter
                             onClicked: {
-                                Quickshell.execDetached(["dms", "cl", "copy", "dms ipc call desktopWidget toggleOverlay " + root.instanceId]);
+                                Quickshell.execDetached(["hype", "cl", "copy", "dms ipc call desktopWidget toggleOverlay " + root.instanceId]);
                                 ToastService.showInfo(I18n.tr("Copied to clipboard"));
                             }
                         }

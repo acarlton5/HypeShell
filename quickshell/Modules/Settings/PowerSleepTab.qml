@@ -400,7 +400,7 @@ Item {
                     settingKey: "powerMenuDefaultAction"
                     tags: ["power", "menu", "default", "action", "reboot", "logout", "shutdown"]
                     text: I18n.tr("Default selected action")
-                    options: [I18n.tr("Reboot"), I18n.tr("Log Out"), I18n.tr("Power Off"), I18n.tr("Lock"), I18n.tr("Suspend"), I18n.tr("Restart DMS"), I18n.tr("Hibernate")]
+                    options: [I18n.tr("Reboot"), I18n.tr("Log Out"), I18n.tr("Power Off"), I18n.tr("Lock"), I18n.tr("Suspend"), I18n.tr("Restart HypeShell"), I18n.tr("Hibernate")]
                     property var actionValues: ["reboot", "logout", "poweroff", "lock", "suspend", "restart", "hibernate"]
 
                     Component.onCompleted: {
@@ -452,8 +452,8 @@ Item {
                             },
                             {
                                 key: "restart",
-                                label: I18n.tr("Show Restart DMS"),
-                                desc: I18n.tr("Restart the DankMaterialShell")
+                                label: I18n.tr("Show Restart HypeShell"),
+                                desc: I18n.tr("Restart HypeShell")
                             },
                             {
                                 key: "hibernate",

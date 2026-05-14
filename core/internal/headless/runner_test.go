@@ -4,7 +4,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/AvengeMedia/DankMaterialShell/core/internal/deps"
+	"github.com/acarlton5/HypeShell/core/internal/deps"
 )
 
 func TestParseWindowManager(t *testing.T) {

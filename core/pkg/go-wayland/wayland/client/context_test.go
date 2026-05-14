@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/AvengeMedia/DankMaterialShell/core/pkg/go-wayland/wayland/client"
+	"github.com/acarlton5/HypeShell/core/pkg/go-wayland/wayland/client"
 )
 
 // Shows a dispatch loop that will block the goroutine.

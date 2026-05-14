@@ -36,7 +36,7 @@ Item {
 
         switch (reason) {
         case "ready":
-            return SettingsData.greeterEnableFprint ? I18n.tr("Authentication changes apply automatically. Fingerprint-only login may not unlock Keyring.") : I18n.tr("Only affects DMS-managed PAM. If greetd already includes pam_fprintd, fingerprint stays enabled.");
+            return SettingsData.greeterEnableFprint ? I18n.tr("Authentication changes apply automatically. Fingerprint-only login may not unlock Keyring.") : I18n.tr("Only affects HypeShell-managed PAM. If greetd already includes pam_fprintd, fingerprint stays enabled.");
         case "missing_enrollment":
             if (SettingsData.greeterEnableFprint)
                 return I18n.tr("Enabled, but no prints are enrolled yet. Enroll fingerprints and run Sync.");
@@ -44,7 +44,7 @@ Item {
         case "missing_reader":
             return SettingsData.greeterEnableFprint ? I18n.tr("Enabled, but no fingerprint reader was detected.") : I18n.tr("No fingerprint reader detected.");
         case "missing_pam_support":
-            return I18n.tr("Not available — install fprintd and pam_fprintd, or configure greetd PAM.");
+            return I18n.tr("Not available â€” install fprintd and pam_fprintd, or configure greetd PAM.");
         default:
             return SettingsData.greeterEnableFprint ? I18n.tr("Enabled, but fingerprint availability could not be confirmed.") : I18n.tr("Fingerprint availability could not be confirmed.");
         }
@@ -66,7 +66,7 @@ Item {
                 return I18n.tr("Enabled, but no registered security key was found yet. Register a key and run Sync.");
             return I18n.tr("Security-key support was detected, but no registered key was found yet. You can enable this now and register one later.");
         case "missing_pam_support":
-            return I18n.tr("Not available — install or configure pam_u2f, or configure greetd PAM.");
+            return I18n.tr("Not available â€” install or configure pam_u2f, or configure greetd PAM.");
         default:
             return SettingsData.greeterEnableU2f ? I18n.tr("Enabled, but security-key availability could not be confirmed.") : I18n.tr("Security-key availability could not be confirmed.");
         }
@@ -131,10 +131,10 @@ Item {
     }
     readonly property var greeterActionCommand: {
         if (!root.greeterInstalled)
-            return ["dms", "greeter", "install", "--terminal"];
+            return ["hype", "greeter", "install", "--terminal"];
         if (!root.greeterEnabled)
-            return ["dms", "greeter", "enable", "--terminal"];
-        return ["dms", "greeter", "uninstall", "--terminal", "--yes"];
+            return ["hype", "greeter", "enable", "--terminal"];
+        return ["hype", "greeter", "uninstall", "--terminal", "--yes"];
     }
     property string greeterPendingAction: ""
 
@@ -153,7 +153,7 @@ Item {
 
     function runGreeterInstallAction() {
         root.greeterPendingAction = !root.greeterInstalled ? "install" : !root.greeterEnabled ? "activate" : "uninstall";
-        greeterStatusText = I18n.tr("Opening terminal: ") + root.greeterActionLabel + "…";
+        greeterStatusText = I18n.tr("Opening terminal: ") + root.greeterActionLabel + "â€¦";
         greeterInstallActionRunning = true;
         greeterInstallActionProcess.running = true;
     }
@@ -162,15 +162,15 @@ Item {
         var title, message, confirmText;
         if (!root.greeterInstalled) {
             title = I18n.tr("Install Greeter", "greeter action confirmation");
-            message = I18n.tr("Install the DMS greeter? A terminal will open for sudo authentication.");
+            message = I18n.tr("Install the HypeShell greeter? A terminal will open for sudo authentication.");
             confirmText = I18n.tr("Install");
         } else if (!root.greeterEnabled) {
             title = I18n.tr("Activate Greeter", "greeter action confirmation");
-            message = I18n.tr("Activate the DMS greeter? A terminal will open for sudo authentication. Run Sync after activation to apply your settings.");
+            message = I18n.tr("Activate the HypeShell greeter? A terminal will open for sudo authentication. Run Sync after activation to apply your settings.");
             confirmText = I18n.tr("Activate");
         } else {
             title = I18n.tr("Uninstall Greeter", "greeter action confirmation");
-            message = I18n.tr("Uninstall the DMS greeter? This will remove configuration and restore your previous display manager. A terminal will open for sudo authentication.");
+            message = I18n.tr("Uninstall the HypeShell greeter? This will remove configuration and restore your previous display manager. A terminal will open for sudo authentication.");
             confirmText = I18n.tr("Uninstall");
         }
         greeterActionConfirm.showWithOptions({
@@ -190,7 +190,7 @@ Item {
         greeterSudoProbeStderr = "";
         greeterTerminalFallbackStderr = "";
         greeterTerminalFallbackFromPrecheck = false;
-        greeterStatusText = I18n.tr("Checking whether sudo authentication is needed…");
+        greeterStatusText = I18n.tr("Checking whether sudo authentication is neededâ€¦");
         greeterSyncRunning = true;
         greeterSudoProbeProcess.running = true;
     }
@@ -248,7 +248,7 @@ Item {
 
     Process {
         id: greeterStatusProcess
-        command: ["dms", "greeter", "status"]
+        command: ["hype", "greeter", "status"]
         running: false
 
         stdout: StdioCollector {
@@ -271,7 +271,7 @@ Item {
                     root.greeterStatusText = root.greeterStatusText + "\n\nstderr:\n" + err;
                 return;
             }
-            var failure = I18n.tr("Failed to run 'dms greeter status'. Ensure DMS is installed and dms is in PATH.", "greeter status error") + " (exit " + exitCode + ")";
+            var failure = I18n.tr("Failed to run 'hype greeter status'. Ensure HypeShell is installed and hype is in PATH.", "greeter status error") + " (exit " + exitCode + ")";
             if (out !== "")
                 failure = failure + "\n\n" + out;
             if (err !== "")
@@ -282,7 +282,7 @@ Item {
 
     Process {
         id: greeterSyncProcess
-        command: ["dms", "greeter", "sync", "--yes"]
+        command: ["hype", "greeter", "sync", "--yes"]
         running: false
 
         stdout: StdioCollector {
@@ -329,7 +329,7 @@ Item {
         onExited: exitCode => {
             const err = (root.greeterSudoProbeStderr || "").trim();
             if (exitCode === 0) {
-                root.greeterStatusText = I18n.tr("Running greeter sync…");
+                root.greeterStatusText = I18n.tr("Running greeter syncâ€¦");
                 greeterSyncProcess.running = true;
                 return;
             }
@@ -343,7 +343,7 @@ Item {
 
     Process {
         id: greeterTerminalFallbackProcess
-        command: ["dms", "greeter", "sync", "--terminal", "--yes"]
+        command: ["hype", "greeter", "sync", "--terminal", "--yes"]
         running: false
 
         stderr: StdioCollector {
@@ -357,7 +357,7 @@ Item {
                 root.greeterStatusText = root.greeterStatusText ? root.greeterStatusText + "\n\n" + launched : launched;
                 return;
             }
-            var fallback = I18n.tr("Terminal fallback failed. Install one of the supported terminal emulators or run 'dms greeter sync' manually.") + " (exit " + exitCode + ")";
+            var fallback = I18n.tr("Terminal fallback failed. Install one of the supported terminal emulators or run 'hype greeter sync' manually.") + " (exit " + exitCode + ")";
             const err = (root.greeterTerminalFallbackStderr || "").trim();
             if (err !== "")
                 fallback = fallback + "\n\nstderr:\n" + err;
@@ -470,7 +470,7 @@ Item {
                         id: statusTextArea
                         anchors.fill: parent
                         anchors.margins: Theme.spacingM
-                        text: root.greeterStatusRunning ? I18n.tr("Checking…", "greeter status loading") : (root.greeterStatusText || I18n.tr("Click Refresh to check status.", "greeter status placeholder"))
+                        text: root.greeterStatusRunning ? I18n.tr("Checkingâ€¦", "greeter status loading") : (root.greeterStatusText || I18n.tr("Click Refresh to check status.", "greeter status placeholder"))
                         font.pixelSize: Theme.fontSizeSmall
                         font.family: "monospace"
                         color: root.greeterStatusRunning ? Theme.surfaceVariantText : Theme.surfaceText
@@ -525,7 +525,7 @@ Item {
                 settingKey: "greeterAuth"
 
                 StyledText {
-                    text: I18n.tr("Enable fingerprint or security key for DMS Greeter. Authentication changes apply automatically.")
+                    text: I18n.tr("Enable fingerprint or security key for HypeShell Greeter. Authentication changes apply automatically.")
                     font.pixelSize: Theme.fontSizeSmall
                     color: Theme.surfaceVariantText
                     width: parent.width
@@ -599,7 +599,7 @@ Item {
                     settingKey: "greeterUse24Hour"
                     tags: ["greeter", "time", "24hour"]
                     text: I18n.tr("24-hour clock")
-                    description: I18n.tr("Greeter only — does not affect main clock")
+                    description: I18n.tr("Greeter only â€” does not affect main clock")
                     checked: SettingsData.greeterUse24HourClock
                     onToggled: checked => SettingsData.set("greeterUse24HourClock", checked)
                 }
@@ -633,7 +633,7 @@ Item {
                     settingKey: "greeterLockDateFormat"
                     tags: ["greeter", "date", "format"]
                     text: I18n.tr("Date format")
-                    description: I18n.tr("Greeter only — format for the date on the login screen")
+                    description: I18n.tr("Greeter only â€” format for the date on the login screen")
                     options: root._lockDateFormatPresets.map(p => p.label)
                     currentValue: {
                         var current = (SettingsData.greeterLockDateFormat !== undefined && SettingsData.greeterLockDateFormat !== "") ? SettingsData.greeterLockDateFormat : SettingsData.lockDateFormat || "";
@@ -754,7 +754,7 @@ Item {
                 settingKey: "greeterDeps"
 
                 StyledText {
-                    text: I18n.tr("DMS greeter needs: greetd, dms-greeter. Fingerprint: fprintd, pam_fprintd. Security keys: pam_u2f. Add your user to the greeter group. Authentication changes apply automatically and may open a terminal when sudo authentication is required.")
+                    text: I18n.tr("HypeShell greeter needs: greetd, dms-greeter. Fingerprint: fprintd, pam_fprintd. Security keys: pam_u2f. Add your user to the greeter group. Authentication changes apply automatically and may open a terminal when sudo authentication is required.")
                     font.pixelSize: Theme.fontSizeSmall
                     color: Theme.surfaceVariantText
                     width: parent.width
@@ -762,7 +762,7 @@ Item {
                 }
 
                 StyledText {
-                    text: I18n.tr("Installation and PAM setup: see the ") + "<a href=\"https://danklinux.com/docs/dankgreeter/installation\" style=\"text-decoration:none; color:" + Theme.primary + ";\">DankGreeter docs</a> " + I18n.tr("or run ") + "'dms greeter install'."
+                    text: I18n.tr("Installation and PAM setup: see the ") + "<a href=\"https://github.com/acarlton5/HypeShell\" style=\"text-decoration:none; color:" + Theme.primary + ";\">HypeShell docs</a> " + I18n.tr("or run ") + "'hype greeter install'."
                     textFormat: Text.RichText
                     font.pixelSize: Theme.fontSizeSmall
                     color: Theme.surfaceVariantText

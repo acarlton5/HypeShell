@@ -8,18 +8,18 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/AvengeMedia/DankMaterialShell/core/internal/config"
-	"github.com/AvengeMedia/DankMaterialShell/core/internal/deps"
-	"github.com/AvengeMedia/DankMaterialShell/core/internal/greeter"
-	"github.com/AvengeMedia/DankMaterialShell/core/internal/log"
-	"github.com/AvengeMedia/DankMaterialShell/core/internal/privesc"
-	"github.com/AvengeMedia/DankMaterialShell/core/internal/utils"
+	"github.com/acarlton5/HypeShell/core/internal/config"
+	"github.com/acarlton5/HypeShell/core/internal/deps"
+	"github.com/acarlton5/HypeShell/core/internal/greeter"
+	"github.com/acarlton5/HypeShell/core/internal/log"
+	"github.com/acarlton5/HypeShell/core/internal/privesc"
+	"github.com/acarlton5/HypeShell/core/internal/utils"
 	"github.com/spf13/cobra"
 )
 
 var setupCmd = &cobra.Command{
 	Use:               "setup",
-	Short:             "Deploy DMS configurations",
+	Short:             "Deploy HypeShell configurations",
 	Long:              "Deploy compositor and terminal configurations with interactive prompts",
 	PersistentPreRunE: preRunPrivileged,
 	Run: func(cmd *cobra.Command, args []string) {
@@ -232,19 +232,19 @@ func runSetupDmsConfig(name string) error {
 		return fmt.Errorf("%s is not supported for %s", name, compositor)
 	}
 
-	var dmsDir string
+	var shellConfigDir string
 	switch compositor {
 	case "niri":
-		dmsDir = filepath.Join(os.Getenv("HOME"), ".config", "niri", "dms")
+		shellConfigDir = filepath.Join(os.Getenv("HOME"), ".config", "niri", "dms")
 	case "hyprland":
-		dmsDir = filepath.Join(os.Getenv("HOME"), ".config", "hypr", "dms")
+		shellConfigDir = filepath.Join(os.Getenv("HOME"), ".config", "hypr", "hype")
 	}
 
-	if err := os.MkdirAll(dmsDir, 0o755); err != nil {
-		return fmt.Errorf("failed to create dms directory: %w", err)
+	if err := os.MkdirAll(shellConfigDir, 0o755); err != nil {
+		return fmt.Errorf("failed to create shell config directory: %w", err)
 	}
 
-	path := filepath.Join(dmsDir, filename)
+	path := filepath.Join(shellConfigDir, filename)
 	if info, err := os.Stat(path); err == nil && info.Size() > 0 {
 		return fmt.Errorf("%s already exists and is not empty: %s", name, path)
 	}
@@ -267,7 +267,7 @@ func runSetupDmsConfig(name string) error {
 }
 
 func runSetup() error {
-	fmt.Println("=== DMS Configuration Setup ===")
+	fmt.Println("=== HypeShell Configuration Setup ===")
 
 	ensureInputGroup()
 

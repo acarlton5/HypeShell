@@ -13,9 +13,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/AvengeMedia/DankMaterialShell/core/internal/deps"
-	"github.com/AvengeMedia/DankMaterialShell/core/internal/privesc"
-	"github.com/AvengeMedia/DankMaterialShell/core/internal/version"
+	"github.com/acarlton5/HypeShell/core/internal/deps"
+	"github.com/acarlton5/HypeShell/core/internal/privesc"
+	"github.com/acarlton5/HypeShell/core/internal/version"
 )
 
 const (

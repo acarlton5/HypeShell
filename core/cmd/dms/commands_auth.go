@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/AvengeMedia/DankMaterialShell/core/internal/log"
-	sharedpam "github.com/AvengeMedia/DankMaterialShell/core/internal/pam"
+	"github.com/acarlton5/HypeShell/core/internal/log"
+	sharedpam "github.com/acarlton5/HypeShell/core/internal/pam"
 	"github.com/spf13/cobra"
 )
 

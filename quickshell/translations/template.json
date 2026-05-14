@@ -658,7 +658,7 @@
     "comment": ""
   },
   {
-    "term": "<a href=\"https://github.com/AvengeMedia/DankMaterialShell/blob/master/LICENSE\" style=\"text-decoration:none; color:%1;\">MIT License</a>",
+    "term": "<a href=\"https://github.com/acarlton5/HypeShell/blob/master/LICENSE\" style=\"text-decoration:none; color:%1;\">MIT License</a>",
     "translation": "",
     "context": "",
     "reference": "",
@@ -798,7 +798,7 @@
     "comment": ""
   },
   {
-    "term": "Activate the DMS greeter? A terminal will open for sudo authentication. Run Sync after activation to apply your settings.",
+    "term": "Activate the HypeShell Greeter? A terminal will open for sudo authentication. Run Sync after activation to apply your settings.",
     "translation": "",
     "context": "",
     "reference": "",
@@ -1715,7 +1715,7 @@
     "comment": ""
   },
   {
-    "term": "Automatically lock the screen when DMS starts",
+    "term": "Automatically lock the screen when HypeShell starts",
     "translation": "",
     "context": "",
     "reference": "",
@@ -2506,7 +2506,7 @@
     "comment": ""
   },
   {
-    "term": "Change the locale used by the DMS interface.",
+    "term": "Change the locale used by the HypeShell interface.",
     "translation": "",
     "context": "",
     "reference": "",
@@ -2688,7 +2688,7 @@
     "comment": ""
   },
   {
-    "term": "Choose the logo displayed on the launcher button in DankBar",
+    "term": "Choose the logo displayed on the launcher button in Hype Bar",
     "translation": "",
     "context": "",
     "reference": "",
@@ -3052,7 +3052,7 @@
     "comment": ""
   },
   {
-    "term": "Color theme from DMS registry",
+    "term": "Color theme from HypeShell registry",
     "translation": "",
     "context": "registry theme description",
     "reference": "",
@@ -4074,42 +4074,42 @@
     "comment": ""
   },
   {
-    "term": "DMS Plugin Manager Unavailable",
+    "term": "HypeShell Plugin Manager Unavailable",
     "translation": "",
     "context": "",
     "reference": "",
     "comment": ""
   },
   {
-    "term": "DMS Shortcuts",
+    "term": "HypeShell Shortcuts",
     "translation": "",
     "context": "greeter keybinds section header",
     "reference": "",
     "comment": ""
   },
   {
-    "term": "DMS greeter needs: greetd, dms-greeter. Fingerprint: fprintd, pam_fprintd. Security keys: pam_u2f. Add your user to the greeter group. Authentication changes apply automatically and may open a terminal when sudo authentication is required.",
+    "term": "HypeShell Greeter needs: greetd, dms-greeter. Fingerprint: fprintd, pam_fprintd. Security keys: pam_u2f. Add your user to the greeter group. Authentication changes apply automatically and may open a terminal when sudo authentication is required.",
     "translation": "",
     "context": "",
     "reference": "",
     "comment": ""
   },
   {
-    "term": "DMS out of date",
+    "term": "HypeShell out of date",
     "translation": "",
     "context": "",
     "reference": "",
     "comment": ""
   },
   {
-    "term": "DMS service is not connected. Clipboard settings are unavailable.",
+    "term": "HypeShell service is not connected. Clipboard settings are unavailable.",
     "translation": "",
     "context": "",
     "reference": "",
     "comment": ""
   },
   {
-    "term": "DMS shell actions (launcher, clipboard, etc.)",
+    "term": "HypeShell shell actions (launcher, clipboard, etc.)",
     "translation": "",
     "context": "",
     "reference": "",
@@ -4144,35 +4144,35 @@
     "comment": ""
   },
   {
-    "term": "Dank",
+    "term": "HypeShell",
     "translation": "",
     "context": "",
     "reference": "",
     "comment": ""
   },
   {
-    "term": "Dank Bar",
+    "term": "Hype Bar",
     "translation": "",
     "context": "",
     "reference": "",
     "comment": ""
   },
   {
-    "term": "DankBar",
+    "term": "Hype Bar",
     "translation": "",
     "context": "greeter feature card title | greeter settings link",
     "reference": "",
     "comment": ""
   },
   {
-    "term": "DankMaterialShell is ready to use",
+    "term": "HypeShell is ready to use",
     "translation": "",
     "context": "greeter completion page subtitle",
     "reference": "",
     "comment": ""
   },
   {
-    "term": "DankShell & System Icons (requires restart)",
+    "term": "HypeShell & System Icons (requires restart)",
     "translation": "",
     "context": "",
     "reference": "",
@@ -5257,7 +5257,7 @@
     "comment": ""
   },
   {
-    "term": "Enable fingerprint or security key for DMS Greeter. Authentication changes apply automatically.",
+    "term": "Enable fingerprint or security key for HypeShell Greeter. Authentication changes apply automatically.",
     "translation": "",
     "context": "",
     "reference": "",
@@ -6027,7 +6027,7 @@
     "comment": ""
   },
   {
-    "term": "Failed to run 'dms greeter status'. Ensure DMS is installed and dms is in PATH.",
+    "term": "Failed to run 'dms greeter status'. Ensure HypeShell is installed and dms is in PATH.",
     "translation": "",
     "context": "greeter status error",
     "reference": "",
@@ -6524,7 +6524,7 @@
     "comment": ""
   },
   {
-    "term": "Follow DMS background color",
+    "term": "Follow HypeShell background color",
     "translation": "",
     "context": "",
     "reference": "",
@@ -6895,14 +6895,14 @@
     "comment": ""
   },
   {
-    "term": "Gamma control not available. Requires DMS API v6+.",
+    "term": "Gamma control not available. Requires HypeShell API v6+.",
     "translation": "",
     "context": "",
     "reference": "",
     "comment": ""
   },
   {
-    "term": "Generate baseline GTK3/4 or QT5/QT6 (requires qt6ct-kde) configurations to follow DMS colors. Only needed once.<br /><br />It is recommended to configure <a href=\"https://github.com/AvengeMedia/DankMaterialShell/blob/master/README.md#Theming\" style=\"text-decoration:none; color:%1;\">adw-gtk3</a> prior to applying GTK themes.",
+    "term": "Generate baseline GTK3/4 or QT5/QT6 (requires qt6ct-kde) configurations to follow HypeShell colors. Only needed once.<br /><br />It is recommended to configure <a href=\"https://github.com/acarlton5/HypeShell/blob/master/README.md#Theming\" style=\"text-decoration:none; color:%1;\">adw-gtk3</a> prior to applying GTK themes.",
     "translation": "",
     "context": "",
     "reference": "",
@@ -7889,7 +7889,7 @@
     "comment": ""
   },
   {
-    "term": "Install color themes from the DMS theme registry",
+    "term": "Install color themes from the HypeShell theme registry",
     "translation": "",
     "context": "theme browser description",
     "reference": "",
@@ -7917,28 +7917,28 @@
     "comment": ""
   },
   {
-    "term": "Install plugin '%1' from the DMS registry?",
+    "term": "Install plugin '%1' from the HypeShell registry?",
     "translation": "",
     "context": "plugin installation confirmation",
     "reference": "",
     "comment": ""
   },
   {
-    "term": "Install plugins from the DMS plugin registry",
+    "term": "Install plugins from the HypeShell plugin registry",
     "translation": "",
     "context": "plugin browser description",
     "reference": "",
     "comment": ""
   },
   {
-    "term": "Install the DMS greeter? A terminal will open for sudo authentication.",
+    "term": "Install the HypeShell Greeter? A terminal will open for sudo authentication.",
     "translation": "",
     "context": "",
     "reference": "",
     "comment": ""
   },
   {
-    "term": "Install theme '%1' from the DMS registry?",
+    "term": "Install theme '%1' from the HypeShell registry?",
     "translation": "",
     "context": "theme installation confirmation",
     "reference": "",
@@ -8708,7 +8708,7 @@
     "comment": ""
   },
   {
-    "term": "Manage and configure plugins for extending DMS functionality",
+    "term": "Manage and configure plugins for extending HypeShell functionality",
     "translation": "",
     "context": "",
     "reference": "",
@@ -8869,7 +8869,7 @@
     "comment": ""
   },
   {
-    "term": "Material: Material Design 3 Expressive bezier curves. The DMS default feel.",
+    "term": "Material: Material Design 3 Expressive bezier curves. The HypeShell default feel.",
     "translation": "",
     "context": "",
     "reference": "",
@@ -9863,7 +9863,7 @@
     "comment": ""
   },
   {
-    "term": "No DMS shortcuts configured",
+    "term": "No HypeShell Shortcuts configured",
     "translation": "",
     "context": "greeter no keybinds message",
     "reference": "",
@@ -10766,7 +10766,7 @@
     "comment": ""
   },
   {
-    "term": "Only affects DMS-managed PAM. If greetd already includes pam_fprintd, fingerprint stays enabled.",
+    "term": "Only affects HypeShell-managed PAM. If greetd already includes pam_fprintd, fingerprint stays enabled.",
     "translation": "",
     "context": "",
     "reference": "",
@@ -12516,14 +12516,14 @@
     "comment": ""
   },
   {
-    "term": "Requires DMS %1",
+    "term": "Requires HypeShell %1",
     "translation": "",
     "context": "",
     "reference": "",
     "comment": ""
   },
   {
-    "term": "Requires DMS server with sysupdate capability",
+    "term": "Requires HypeShell server with sysupdate capability",
     "translation": "",
     "context": "",
     "reference": "",
@@ -12600,14 +12600,14 @@
     "comment": ""
   },
   {
-    "term": "Restart DMS",
+    "term": "Restart HypeShell",
     "translation": "",
     "context": "",
     "reference": "",
     "comment": ""
   },
   {
-    "term": "Restart the DankMaterialShell",
+    "term": "Restart the HypeShell",
     "translation": "",
     "context": "",
     "reference": "",
@@ -12789,7 +12789,7 @@
     "comment": ""
   },
   {
-    "term": "Run DMS Templates",
+    "term": "Run HypeShell Templates",
     "translation": "",
     "context": "",
     "reference": "",
@@ -12978,14 +12978,14 @@
     "comment": ""
   },
   {
-    "term": "Scale DankBar font sizes independently",
+    "term": "Scale Hype Bar font sizes independently",
     "translation": "",
     "context": "",
     "reference": "",
     "comment": ""
   },
   {
-    "term": "Scale DankBar icon sizes independently",
+    "term": "Scale Hype Bar icon sizes independently",
     "translation": "",
     "context": "",
     "reference": "",
@@ -14042,7 +14042,7 @@
     "comment": ""
   },
   {
-    "term": "Show Restart DMS",
+    "term": "Show Restart HypeShell",
     "translation": "",
     "context": "",
     "reference": "",
@@ -14553,7 +14553,7 @@
     "comment": ""
   },
   {
-    "term": "Some plugins require a newer version of DMS:",
+    "term": "Some plugins require a newer version of HypeShell:",
     "translation": "",
     "context": "",
     "reference": "",
@@ -14672,7 +14672,7 @@
     "comment": ""
   },
   {
-    "term": "Standard: Classic Material Design 3 — panels rise from below with a subtle scale. The DMS default.",
+    "term": "Standard: Classic Material Design 3 — panels rise from below with a subtle scale. The HypeShell default.",
     "translation": "",
     "context": "",
     "reference": "",
@@ -15120,7 +15120,7 @@
     "comment": ""
   },
   {
-    "term": "Terminal fallback failed. Install one of the supported terminal emulators or run 'dms greeter sync' manually.",
+    "term": "Terminal fallback failed. Install one of the supported terminal emulators or run 'HypeShell Greeter sync' manually.",
     "translation": "",
     "context": "",
     "reference": "",
@@ -15295,7 +15295,7 @@
     "comment": ""
   },
   {
-    "term": "Third-party plugins are created by the community and are not officially supported by DankMaterialShell.\n\nThese plugins may pose security and privacy risks - install at your own risk.",
+    "term": "Third-party plugins are created by the community and are not officially supported by HypeShell.\n\nThese plugins may pose security and privacy risks - install at your own risk.",
     "translation": "",
     "context": "",
     "reference": "",
@@ -15540,7 +15540,7 @@
     "comment": ""
   },
   {
-    "term": "To use this DMS bind, remove or change the keybind in your config.kdl",
+    "term": "To use this HypeShell bind, remove or change the keybind in your config.kdl",
     "translation": "",
     "context": "",
     "reference": "",
@@ -15925,7 +15925,7 @@
     "comment": ""
   },
   {
-    "term": "Uninstall the DMS greeter? This will remove configuration and restore your previous display manager. A terminal will open for sudo authentication.",
+    "term": "Uninstall the HypeShell Greeter? This will remove configuration and restore your previous display manager. A terminal will open for sudo authentication.",
     "translation": "",
     "context": "",
     "reference": "",
@@ -16793,7 +16793,7 @@
     "comment": ""
   },
   {
-    "term": "Welcome to DankMaterialShell",
+    "term": "Welcome to HypeShell",
     "translation": "",
     "context": "greeter welcome page title",
     "reference": "",
@@ -17311,7 +17311,7 @@
     "comment": ""
   },
   {
-    "term": "dms is a highly customizable, modern desktop shell with a <a href=\"https://m3.material.io/\" style=\"text-decoration:none; color:%1;\">material 3 inspired</a> design.<br /><br/>It is built with <a href=\"https://quickshell.org\" style=\"text-decoration:none; color:%1;\">Quickshell</a>, a QT6 framework for building desktop shells, and <a href=\"https://go.dev\" style=\"text-decoration:none; color:%1;\">Go</a>, a statically typed, compiled programming language.",
+    "term": "HypeShell is a highly customizable, modern desktop shell with a <a href=\"https://m3.material.io/\" style=\"text-decoration:none; color:%1;\">material 3 inspired</a> design.<br /><br/>It is built with <a href=\"https://quickshell.org\" style=\"text-decoration:none; color:%1;\">Quickshell</a>, a QT6 framework for building desktop shells, and <a href=\"https://go.dev\" style=\"text-decoration:none; color:%1;\">Go</a>, a statically typed, compiled programming language.",
     "translation": "",
     "context": "",
     "reference": "",
@@ -17395,7 +17395,7 @@
     "comment": ""
   },
   {
-    "term": "loginctl not available - lock integration requires DMS socket connection",
+    "term": "loginctl not available - lock integration requires HypeShell socket connection",
     "translation": "",
     "context": "",
     "reference": "",
@@ -17605,7 +17605,7 @@
     "comment": ""
   },
   {
-    "term": "update dms for NM integration.",
+    "term": "update HypeShell for NM integration.",
     "translation": "",
     "context": "",
     "reference": "",

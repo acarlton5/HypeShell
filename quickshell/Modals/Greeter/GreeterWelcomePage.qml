@@ -111,7 +111,7 @@ Item {
                 GreeterFeatureCard {
                     width: (parent.width - Theme.spacingS * 2) / 3
                     iconName: "view_carousel"
-                    title: I18n.tr("DankBar", "greeter feature card title")
+                    title: I18n.tr("Hype Bar", "greeter feature card title")
                     description: I18n.tr("Modular widget bar", "greeter feature card description")
                     onClicked: PopoutService.openSettingsWithTab("dankbar_settings")
                 }
@@ -149,7 +149,7 @@ Item {
                     title: I18n.tr("Control Center", "greeter feature card title")
                     description: I18n.tr("Quick system toggles", "greeter feature card description")
                     // This is doing an IPC since its just easier and lazier to access the bar ref
-                    onClicked: Quickshell.execDetached(["dms", "ipc", "call", "control-center", "open"])
+                    onClicked: Quickshell.execDetached(["hype", "ipc", "call", "control-center", "open"])
                 }
 
                 GreeterFeatureCard {

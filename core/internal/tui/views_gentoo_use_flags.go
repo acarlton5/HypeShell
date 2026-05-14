@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/AvengeMedia/DankMaterialShell/core/internal/distros"
+	"github.com/acarlton5/HypeShell/core/internal/distros"
 	tea "github.com/charmbracelet/bubbletea"
 )
 

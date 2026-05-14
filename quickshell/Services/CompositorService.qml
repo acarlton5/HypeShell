@@ -41,7 +41,7 @@ Singleton {
     signal toplevelsChanged
 
     function fetchRandrData() {
-        Proc.runCommand("randr", ["dms", "randr", "--json"], (output, exitCode) => {
+        Proc.runCommand("randr", ["hype", "randr", "--json"], (output, exitCode) => {
             if (exitCode === 0 && output) {
                 try {
                     const data = JSON.parse(output.trim());
@@ -692,7 +692,7 @@ Singleton {
             return;
         }
         if (isLabwc) {
-            Quickshell.execDetached(["dms", "dpms", "off"]);
+            Quickshell.execDetached(["hype", "dpms", "off"]);
         }
         log.warn("Cannot power off monitors, unknown compositor");
     }
@@ -711,7 +711,7 @@ Singleton {
             return;
         }
         if (isLabwc) {
-            Quickshell.execDetached(["dms", "dpms", "on"]);
+            Quickshell.execDetached(["hype", "dpms", "on"]);
         }
         log.warn("Cannot power on monitors, unknown compositor");
     }

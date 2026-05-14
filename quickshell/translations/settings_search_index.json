@@ -712,7 +712,7 @@
     "section": "barConfigurations",
     "label": "Bar Configurations",
     "tabIndex": 3,
-    "category": "Dank Bar",
+    "category": "Hype Bar",
     "keywords": [
       "bar",
       "config",
@@ -731,7 +731,7 @@
     "section": "barCorners",
     "label": "Corners & Background",
     "tabIndex": 3,
-    "category": "Dank Bar",
+    "category": "Hype Bar",
     "keywords": [
       "background",
       "bar",
@@ -748,9 +748,9 @@
   },
   {
     "section": "_tab_3",
-    "label": "Dank Bar",
+    "label": "Hype Bar",
     "tabIndex": 3,
-    "category": "Dank Bar",
+    "category": "Hype Bar",
     "keywords": [
       "bar",
       "dank",
@@ -765,7 +765,7 @@
     "section": "barShadowDirectionSource",
     "label": "Direction Source",
     "tabIndex": 3,
-    "category": "Dank Bar",
+    "category": "Hype Bar",
     "keywords": [
       "bar",
       "choose",
@@ -785,7 +785,7 @@
     "section": "barDisplay",
     "label": "Display Assignment",
     "tabIndex": 3,
-    "category": "Dank Bar",
+    "category": "Hype Bar",
     "keywords": [
       "assignment",
       "bar",
@@ -804,7 +804,7 @@
     "section": "barShadowDirectionManual",
     "label": "Manual Direction",
     "tabIndex": 3,
-    "category": "Dank Bar",
+    "category": "Hype Bar",
     "keywords": [
       "bar",
       "dank",
@@ -823,7 +823,7 @@
     "section": "barPosition",
     "label": "Position",
     "tabIndex": 3,
-    "category": "Dank Bar",
+    "category": "Hype Bar",
     "keywords": [
       "bar",
       "dank",
@@ -838,7 +838,7 @@
     "section": "barShadow",
     "label": "Shadow Override",
     "tabIndex": 3,
-    "category": "Dank Bar",
+    "category": "Hype Bar",
     "keywords": [
       "bar",
       "dank",
@@ -858,7 +858,7 @@
     "section": "barSpacing",
     "label": "Spacing",
     "tabIndex": 3,
-    "category": "Dank Bar",
+    "category": "Hype Bar",
     "keywords": [
       "bar",
       "dank",
@@ -878,7 +878,7 @@
     "section": "trayIconTint",
     "label": "System Tray Icon Tint",
     "tabIndex": 3,
-    "category": "Dank Bar",
+    "category": "Hype Bar",
     "keywords": [
       "applying",
       "bar",
@@ -906,7 +906,7 @@
     "section": "barTransparency",
     "label": "Transparency",
     "tabIndex": 3,
-    "category": "Dank Bar",
+    "category": "Hype Bar",
     "keywords": [
       "alpha",
       "bar",
@@ -925,7 +925,7 @@
     "section": "barVisibility",
     "label": "Visibility",
     "tabIndex": 3,
-    "category": "Dank Bar",
+    "category": "Hype Bar",
     "keywords": [
       "auto-hide",
       "autohide",
@@ -2011,7 +2011,7 @@
   },
   {
     "section": "builtInPlugins",
-    "label": "DMS",
+    "label": "HypeShell",
     "tabIndex": 9,
     "category": "Launcher",
     "keywords": [
@@ -2939,7 +2939,7 @@
   },
   {
     "section": "matugenTemplateNeovimSetBackground",
-    "label": "Follow DMS background color",
+    "label": "Follow HypeShell background color",
     "tabIndex": 10,
     "category": "Theme & Colors",
     "keywords": [
@@ -3136,7 +3136,7 @@
       "theme"
     ],
     "icon": "interests",
-    "description": "DankShell & System Icons (requires restart)"
+    "description": "HypeShell & System Icons (requires restart)"
   },
   {
     "section": "matugenTemplateKcolorscheme",
@@ -3701,7 +3701,7 @@
   },
   {
     "section": "runDmsMatugenTemplates",
-    "label": "Run DMS Templates",
+    "label": "Run HypeShell Templates",
     "tabIndex": 10,
     "category": "Theme & Colors",
     "keywords": [
@@ -4699,7 +4699,7 @@
       "starts",
       "startup"
     ],
-    "description": "Automatically lock the screen when DMS starts"
+    "description": "Automatically lock the screen when HypeShell starts"
   },
   {
     "section": "lockScreenNotificationMode",
@@ -7051,7 +7051,7 @@
     "section": "_tab_22",
     "label": "Widgets",
     "tabIndex": 22,
-    "category": "Dank Bar",
+    "category": "Hype Bar",
     "keywords": [
       "bar",
       "components",
@@ -7445,7 +7445,7 @@
       "settings"
     ],
     "icon": "language",
-    "description": "Change the locale used by the DMS interface."
+    "description": "Change the locale used by the HypeShell interface."
   },
   {
     "section": "timeLocale",

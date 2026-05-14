@@ -3,7 +3,7 @@
 set -euo pipefail
 
 CONFIG_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/hypr"
-DMS_DIR="$CONFIG_DIR/dms"
+HYPE_DIR="$CONFIG_DIR/hype"
 CONFIG_FILE="${HYPESHELL_HYPRLAND_CONFIG:-$CONFIG_DIR/hyprland.conf}"
 DEFAULT_DIR="${HYPESHELL_HYPRLAND_DEFAULTS:-/usr/local/share/hypeshell/hyprland}"
 
@@ -19,12 +19,12 @@ seed_config() {
     cp "$source_file" "$target_file"
 }
 
-mkdir -p "$CONFIG_DIR" "$DMS_DIR"
+mkdir -p "$CONFIG_DIR" "$HYPE_DIR"
 seed_config "$DEFAULT_DIR/hyprland.conf" "$CONFIG_FILE"
-seed_config "$DEFAULT_DIR/dms/colors.conf" "$DMS_DIR/colors.conf"
-seed_config "$DEFAULT_DIR/dms/layout.conf" "$DMS_DIR/layout.conf"
-seed_config "$DEFAULT_DIR/dms/binds.conf" "$DMS_DIR/binds.conf"
-touch "$DMS_DIR/outputs.conf" "$DMS_DIR/cursor.conf" "$DMS_DIR/windowrules.conf"
+seed_config "$DEFAULT_DIR/hype/colors.conf" "$HYPE_DIR/colors.conf"
+seed_config "$DEFAULT_DIR/hype/layout.conf" "$HYPE_DIR/layout.conf"
+seed_config "$DEFAULT_DIR/hype/binds.conf" "$HYPE_DIR/binds.conf"
+touch "$HYPE_DIR/outputs.conf" "$HYPE_DIR/cursor.conf" "$HYPE_DIR/windowrules.conf"
 
 if command -v dbus-update-activation-environment >/dev/null 2>&1; then
     dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP XDG_SESSION_DESKTOP XDG_SESSION_TYPE || true

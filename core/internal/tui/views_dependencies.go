@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/AvengeMedia/DankMaterialShell/core/internal/deps"
-	"github.com/AvengeMedia/DankMaterialShell/core/internal/distros"
-	"github.com/AvengeMedia/DankMaterialShell/core/internal/greeter"
+	"github.com/acarlton5/HypeShell/core/internal/deps"
+	"github.com/acarlton5/HypeShell/core/internal/distros"
+	"github.com/acarlton5/HypeShell/core/internal/greeter"
 	tea "github.com/charmbracelet/bubbletea"
 )
 

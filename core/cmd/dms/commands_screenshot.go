@@ -7,8 +7,8 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/AvengeMedia/DankMaterialShell/core/internal/clipboard"
-	"github.com/AvengeMedia/DankMaterialShell/core/internal/screenshot"
+	"github.com/acarlton5/HypeShell/core/internal/clipboard"
+	"github.com/acarlton5/HypeShell/core/internal/screenshot"
 	"github.com/spf13/cobra"
 )
 

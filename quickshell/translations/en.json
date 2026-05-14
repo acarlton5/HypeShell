@@ -564,8 +564,8 @@
     "comment": ""
   },
   {
-    "term": "<a href=\"https://github.com/AvengeMedia/DankMaterialShell/blob/master/LICENSE\" style=\"text-decoration:none; color:%1;\">MIT License</a>",
-    "context": "<a href=\"https://github.com/AvengeMedia/DankMaterialShell/blob/master/LICENSE\" style=\"text-decoration:none; color:%1;\">MIT License</a>",
+    "term": "<a href=\"https://github.com/acarlton5/HypeShell/blob/master/LICENSE\" style=\"text-decoration:none; color:%1;\">MIT License</a>",
+    "context": "<a href=\"https://github.com/acarlton5/HypeShell/blob/master/LICENSE\" style=\"text-decoration:none; color:%1;\">MIT License</a>",
     "reference": "Modules/Settings/AboutTab.qml:826",
     "comment": ""
   },
@@ -684,8 +684,8 @@
     "comment": "greeter action confirmation"
   },
   {
-    "term": "Activate the DMS greeter? A terminal will open for sudo authentication. Run Sync after activation to apply your settings.",
-    "context": "Activate the DMS greeter? A terminal will open for sudo authentication. Run Sync after activation to apply your settings.",
+    "term": "Activate the HypeShell Greeter? A terminal will open for sudo authentication. Run Sync after activation to apply your settings.",
+    "context": "Activate the HypeShell Greeter? A terminal will open for sudo authentication. Run Sync after activation to apply your settings.",
     "reference": "Modules/Settings/GreeterTab.qml:169",
     "comment": ""
   },
@@ -716,7 +716,7 @@
   {
     "term": "Active VPN",
     "context": "Active VPN",
-    "reference": "Services/DMSNetworkService.qml:105",
+    "reference": "Services/HypeShellNetworkService.qml:105",
     "comment": ""
   },
   {
@@ -1406,13 +1406,13 @@
   {
     "term": "Autoconnect disabled",
     "context": "Autoconnect disabled",
-    "reference": "Services/LegacyNetworkService.qml:501, Services/DMSNetworkService.qml:980",
+    "reference": "Services/LegacyNetworkService.qml:501, Services/HypeShellNetworkService.qml:980",
     "comment": ""
   },
   {
     "term": "Autoconnect enabled",
     "context": "Autoconnect enabled",
-    "reference": "Services/LegacyNetworkService.qml:501, Services/DMSNetworkService.qml:980",
+    "reference": "Services/LegacyNetworkService.qml:501, Services/HypeShellNetworkService.qml:980",
     "comment": ""
   },
   {
@@ -1470,8 +1470,8 @@
     "comment": ""
   },
   {
-    "term": "Automatically lock the screen when DMS starts",
-    "context": "Automatically lock the screen when DMS starts",
+    "term": "Automatically lock the screen when HypeShell starts",
+    "context": "Automatically lock the screen when HypeShell starts",
     "reference": "Modules/Settings/LockScreenTab.qml:211",
     "comment": ""
   },
@@ -2036,7 +2036,7 @@
   {
     "term": "Cancel",
     "context": "Cancel",
-    "reference": "DMSShell.qml:412, Modals/WindowRuleModal.qml:1130, Modals/PolkitAuthContent.qml:326, Modals/WorkspaceRenameModal.qml:161, Modals/BluetoothPairingModal.qml:273, Modals/WifiPasswordModal.qml:691, Widgets/KeybindItem.qml:1782, Modals/DankLauncherV2/LauncherContent.qml:996, Modals/FileBrowser/FileBrowserOverwriteDialog.qml:83, Modules/Settings/PluginBrowser.qml:123, Modules/Settings/PluginBrowser.qml:835, Modules/Settings/GreeterTab.qml:180, Modules/Settings/ThemeBrowser.qml:122, Modules/Settings/DisplayConfigTab.qml:287, Modules/Settings/DisplayConfigTab.qml:332, Modules/Settings/DisplayConfigTab.qml:418, Modules/Settings/AudioTab.qml:727, Modules/DankBar/Popouts/SystemUpdatePopout.qml:221",
+    "reference": "HypeShellShell.qml:412, Modals/WindowRuleModal.qml:1130, Modals/PolkitAuthContent.qml:326, Modals/WorkspaceRenameModal.qml:161, Modals/BluetoothPairingModal.qml:273, Modals/WifiPasswordModal.qml:691, Widgets/KeybindItem.qml:1782, Modals/DankLauncherV2/LauncherContent.qml:996, Modals/FileBrowser/FileBrowserOverwriteDialog.qml:83, Modules/Settings/PluginBrowser.qml:123, Modules/Settings/PluginBrowser.qml:835, Modules/Settings/GreeterTab.qml:180, Modules/Settings/ThemeBrowser.qml:122, Modules/Settings/DisplayConfigTab.qml:287, Modules/Settings/DisplayConfigTab.qml:332, Modules/Settings/DisplayConfigTab.qml:418, Modules/Settings/AudioTab.qml:727, Modules/DankBar/Popouts/SystemUpdatePopout.qml:221",
     "comment": ""
   },
   {
@@ -2148,8 +2148,8 @@
     "comment": ""
   },
   {
-    "term": "Change the locale used by the DMS interface.",
-    "context": "Change the locale used by the DMS interface.",
+    "term": "Change the locale used by the HypeShell interface.",
+    "context": "Change the locale used by the HypeShell interface.",
     "reference": "Modules/Settings/LocaleTab.qml:57",
     "comment": ""
   },
@@ -2304,8 +2304,8 @@
     "comment": ""
   },
   {
-    "term": "Choose the logo displayed on the launcher button in DankBar",
-    "context": "Choose the logo displayed on the launcher button in DankBar",
+    "term": "Choose the logo displayed on the launcher button in Hype Bar",
+    "context": "Choose the logo displayed on the launcher button in Hype Bar",
     "reference": "Modules/Settings/LauncherTab.qml:41",
     "comment": ""
   },
@@ -2616,8 +2616,8 @@
     "comment": ""
   },
   {
-    "term": "Color theme from DMS registry",
-    "context": "Color theme from DMS registry",
+    "term": "Color theme from HypeShell registry",
+    "context": "Color theme from HypeShell registry",
     "reference": "Modules/Settings/ThemeColorsTab.qml:249",
     "comment": "registry theme description"
   },
@@ -2750,7 +2750,7 @@
   {
     "term": "Configuration activated",
     "context": "Configuration activated",
-    "reference": "Services/DMSNetworkService.qml:429",
+    "reference": "Services/HypeShellNetworkService.qml:429",
     "comment": ""
   },
   {
@@ -3492,38 +3492,38 @@
     "comment": ""
   },
   {
-    "term": "DMS Plugin Manager Unavailable",
-    "context": "DMS Plugin Manager Unavailable",
+    "term": "HypeShell Plugin Manager Unavailable",
+    "context": "HypeShell Plugin Manager Unavailable",
     "reference": "Modules/Settings/PluginsTab.qml:137",
     "comment": ""
   },
   {
-    "term": "DMS Shortcuts",
-    "context": "DMS Shortcuts",
+    "term": "HypeShell Shortcuts",
+    "context": "HypeShell Shortcuts",
     "reference": "Modals/Greeter/GreeterCompletePage.qml:136",
     "comment": "greeter keybinds section header"
   },
   {
-    "term": "DMS greeter needs: greetd, dms-greeter. Fingerprint: fprintd, pam_fprintd. Security keys: pam_u2f. Add your user to the greeter group. Authentication changes apply automatically and may open a terminal when sudo authentication is required.",
-    "context": "DMS greeter needs: greetd, dms-greeter. Fingerprint: fprintd, pam_fprintd. Security keys: pam_u2f. Add your user to the greeter group. Authentication changes apply automatically and may open a terminal when sudo authentication is required.",
+    "term": "HypeShell Greeter needs: greetd, dms-greeter. Fingerprint: fprintd, pam_fprintd. Security keys: pam_u2f. Add your user to the greeter group. Authentication changes apply automatically and may open a terminal when sudo authentication is required.",
+    "context": "HypeShell Greeter needs: greetd, dms-greeter. Fingerprint: fprintd, pam_fprintd. Security keys: pam_u2f. Add your user to the greeter group. Authentication changes apply automatically and may open a terminal when sudo authentication is required.",
     "reference": "Modules/Settings/GreeterTab.qml:757",
     "comment": ""
   },
   {
-    "term": "DMS out of date",
-    "context": "DMS out of date",
-    "reference": "Services/DMSService.qml:323",
+    "term": "HypeShell out of date",
+    "context": "HypeShell out of date",
+    "reference": "Services/HypeShellService.qml:323",
     "comment": ""
   },
   {
-    "term": "DMS service is not connected. Clipboard settings are unavailable.",
-    "context": "DMS service is not connected. Clipboard settings are unavailable.",
+    "term": "HypeShell service is not connected. Clipboard settings are unavailable.",
+    "context": "HypeShell service is not connected. Clipboard settings are unavailable.",
     "reference": "Modules/Settings/ClipboardTab.qml:267",
     "comment": ""
   },
   {
-    "term": "DMS shell actions (launcher, clipboard, etc.)",
-    "context": "DMS shell actions (launcher, clipboard, etc.)",
+    "term": "HypeShell shell actions (launcher, clipboard, etc.)",
+    "context": "HypeShell shell actions (launcher, clipboard, etc.)",
     "reference": "Widgets/KeybindItem.qml:822",
     "comment": ""
   },
@@ -3552,32 +3552,32 @@
     "comment": ""
   },
   {
-    "term": "Dank",
-    "context": "Dank",
+    "term": "HypeShell",
+    "context": "HypeShell",
     "reference": "Modules/Settings/DockTab.qml:280, Modules/Settings/LauncherTab.qml:59",
     "comment": ""
   },
   {
-    "term": "Dank Bar",
-    "context": "Dank Bar",
+    "term": "Hype Bar",
+    "context": "Hype Bar",
     "reference": "Modals/Settings/SettingsSidebar.qml:109",
     "comment": ""
   },
   {
-    "term": "DankBar",
-    "context": "DankBar",
+    "term": "Hype Bar",
+    "context": "Hype Bar",
     "reference": "Modals/Greeter/GreeterWelcomePage.qml:114, Modals/Greeter/GreeterCompletePage.qml:405",
     "comment": "greeter feature card title | greeter settings link"
   },
   {
-    "term": "DankMaterialShell is ready to use",
-    "context": "DankMaterialShell is ready to use",
+    "term": "HypeShell is ready to use",
+    "context": "HypeShell is ready to use",
     "reference": "Modals/Greeter/GreeterCompletePage.qml:112",
     "comment": "greeter completion page subtitle"
   },
   {
-    "term": "DankShell & System Icons (requires restart)",
-    "context": "DankShell & System Icons (requires restart)",
+    "term": "HypeShell & System Icons (requires restart)",
+    "context": "HypeShell & System Icons (requires restart)",
     "reference": "Modules/Settings/ThemeColorsTab.qml:2502",
     "comment": ""
   },
@@ -3980,7 +3980,7 @@
   {
     "term": "Disconnected from WiFi",
     "context": "Disconnected from WiFi",
-    "reference": "Services/LegacyNetworkService.qml:385, Services/DMSNetworkService.qml:521",
+    "reference": "Services/LegacyNetworkService.qml:385, Services/HypeShellNetworkService.qml:521",
     "comment": ""
   },
   {
@@ -4388,7 +4388,7 @@
   {
     "term": "Empty",
     "context": "Empty",
-    "reference": "DMSShell.qml:411, Services/BatteryService.qml:140, Modules/Notepad/NotepadTextEditor.qml:841",
+    "reference": "HypeShellShell.qml:411, Services/BatteryService.qml:140, Modules/Notepad/NotepadTextEditor.qml:841",
     "comment": "battery status"
   },
   {
@@ -4406,7 +4406,7 @@
   {
     "term": "Empty Trash?",
     "context": "Empty Trash?",
-    "reference": "DMSShell.qml:409",
+    "reference": "HypeShellShell.qml:409",
     "comment": ""
   },
   {
@@ -4506,8 +4506,8 @@
     "comment": ""
   },
   {
-    "term": "Enable fingerprint or security key for DMS Greeter. Authentication changes apply automatically.",
-    "context": "Enable fingerprint or security key for DMS Greeter. Authentication changes apply automatically.",
+    "term": "Enable fingerprint or security key for HypeShell Greeter. Authentication changes apply automatically.",
+    "context": "Enable fingerprint or security key for HypeShell Greeter. Authentication changes apply automatically.",
     "reference": "Modules/Settings/GreeterTab.qml:528",
     "comment": ""
   },
@@ -4892,7 +4892,7 @@
   {
     "term": "Failed to activate configuration",
     "context": "Failed to activate configuration",
-    "reference": "Services/DMSNetworkService.qml:425",
+    "reference": "Services/HypeShellNetworkService.qml:425",
     "comment": ""
   },
   {
@@ -4940,13 +4940,13 @@
   {
     "term": "Failed to connect VPN",
     "context": "Failed to connect VPN",
-    "reference": "Services/DMSNetworkService.qml:871",
+    "reference": "Services/HypeShellNetworkService.qml:871",
     "comment": ""
   },
   {
     "term": "Failed to connect to %1",
     "context": "Failed to connect to %1",
-    "reference": "Services/LegacyNetworkService.qml:313, Services/DMSNetworkService.qml:396",
+    "reference": "Services/LegacyNetworkService.qml:313, Services/HypeShellNetworkService.qml:396",
     "comment": ""
   },
   {
@@ -4994,19 +4994,19 @@
   {
     "term": "Failed to disconnect VPN",
     "context": "Failed to disconnect VPN",
-    "reference": "Services/DMSNetworkService.qml:895",
+    "reference": "Services/HypeShellNetworkService.qml:895",
     "comment": ""
   },
   {
     "term": "Failed to disconnect VPNs",
     "context": "Failed to disconnect VPNs",
-    "reference": "Services/DMSNetworkService.qml:913",
+    "reference": "Services/HypeShellNetworkService.qml:913",
     "comment": ""
   },
   {
     "term": "Failed to disconnect WiFi",
     "context": "Failed to disconnect WiFi",
-    "reference": "Services/DMSNetworkService.qml:519",
+    "reference": "Services/HypeShellNetworkService.qml:519",
     "comment": ""
   },
   {
@@ -5024,7 +5024,7 @@
   {
     "term": "Failed to enable WiFi",
     "context": "Failed to enable WiFi",
-    "reference": "Services/DMSNetworkService.qml:622",
+    "reference": "Services/HypeShellNetworkService.qml:622",
     "comment": ""
   },
   {
@@ -5166,8 +5166,8 @@
     "comment": "Phone Connect error"
   },
   {
-    "term": "Failed to run 'dms greeter status'. Ensure DMS is installed and dms is in PATH.",
-    "context": "Failed to run 'dms greeter status'. Ensure DMS is installed and dms is in PATH.",
+    "term": "Failed to run 'dms greeter status'. Ensure HypeShell is installed and dms is in PATH.",
+    "context": "Failed to run 'dms greeter status'. Ensure HypeShell is installed and dms is in PATH.",
     "reference": "Modules/Settings/GreeterTab.qml:274",
     "comment": "greeter status error"
   },
@@ -5264,7 +5264,7 @@
   {
     "term": "Failed to start connection to %1",
     "context": "Failed to start connection to %1",
-    "reference": "Services/DMSNetworkService.qml:506",
+    "reference": "Services/HypeShellNetworkService.qml:506",
     "comment": ""
   },
   {
@@ -5282,7 +5282,7 @@
   {
     "term": "Failed to update autoconnect",
     "context": "Failed to update autoconnect",
-    "reference": "Services/DMSNetworkService.qml:978",
+    "reference": "Services/HypeShellNetworkService.qml:978",
     "comment": ""
   },
   {
@@ -5592,8 +5592,8 @@
     "comment": ""
   },
   {
-    "term": "Follow DMS background color",
-    "context": "Follow DMS background color",
+    "term": "Follow HypeShell background color",
+    "context": "Follow HypeShell background color",
     "reference": "Modules/Settings/ThemeColorsTab.qml:2813",
     "comment": ""
   },
@@ -5756,7 +5756,7 @@
   {
     "term": "Forgot network %1",
     "context": "Forgot network %1",
-    "reference": "Services/LegacyNetworkService.qml:393, Services/DMSNetworkService.qml:579",
+    "reference": "Services/LegacyNetworkService.qml:393, Services/HypeShellNetworkService.qml:579",
     "comment": ""
   },
   {
@@ -5910,14 +5910,14 @@
     "comment": ""
   },
   {
-    "term": "Gamma control not available. Requires DMS API v6+.",
-    "context": "Gamma control not available. Requires DMS API v6+.",
+    "term": "Gamma control not available. Requires HypeShell API v6+.",
+    "context": "Gamma control not available. Requires HypeShell API v6+.",
     "reference": "Modules/Settings/GammaControlTab.qml:77",
     "comment": ""
   },
   {
-    "term": "Generate baseline GTK3/4 or QT5/QT6 (requires qt6ct-kde) configurations to follow DMS colors. Only needed once.<br /><br />It is recommended to configure <a href=\"https://github.com/AvengeMedia/DankMaterialShell/blob/master/README.md#Theming\" style=\"text-decoration:none; color:%1;\">adw-gtk3</a> prior to applying GTK themes.",
-    "context": "Generate baseline GTK3/4 or QT5/QT6 (requires qt6ct-kde) configurations to follow DMS colors. Only needed once.<br /><br />It is recommended to configure <a href=\"https://github.com/AvengeMedia/DankMaterialShell/blob/master/README.md#Theming\" style=\"text-decoration:none; color:%1;\">adw-gtk3</a> prior to applying GTK themes.",
+    "term": "Generate baseline GTK3/4 or QT5/QT6 (requires qt6ct-kde) configurations to follow HypeShell colors. Only needed once.<br /><br />It is recommended to configure <a href=\"https://github.com/acarlton5/HypeShell/blob/master/README.md#Theming\" style=\"text-decoration:none; color:%1;\">adw-gtk3</a> prior to applying GTK themes.",
+    "context": "Generate baseline GTK3/4 or QT5/QT6 (requires qt6ct-kde) configurations to follow HypeShell colors. Only needed once.<br /><br />It is recommended to configure <a href=\"https://github.com/acarlton5/HypeShell/blob/master/README.md#Theming\" style=\"text-decoration:none; color:%1;\">adw-gtk3</a> prior to applying GTK themes.",
     "reference": "Modules/Settings/ThemeColorsTab.qml:3021",
     "comment": ""
   },
@@ -6762,8 +6762,8 @@
     "comment": "theme installation dialog title"
   },
   {
-    "term": "Install color themes from the DMS theme registry",
-    "context": "Install color themes from the DMS theme registry",
+    "term": "Install color themes from the HypeShell theme registry",
+    "context": "Install color themes from the HypeShell theme registry",
     "reference": "Modules/Settings/ThemeBrowser.qml:291",
     "comment": "theme browser description"
   },
@@ -6786,26 +6786,26 @@
     "comment": "matugen installation hint"
   },
   {
-    "term": "Install plugin '%1' from the DMS registry?",
-    "context": "Install plugin '%1' from the DMS registry?",
+    "term": "Install plugin '%1' from the HypeShell registry?",
+    "context": "Install plugin '%1' from the HypeShell registry?",
     "reference": "Modules/Settings/PluginBrowser.qml:121",
     "comment": "plugin installation confirmation"
   },
   {
-    "term": "Install plugins from the DMS plugin registry",
-    "context": "Install plugins from the DMS plugin registry",
+    "term": "Install plugins from the HypeShell plugin registry",
+    "context": "Install plugins from the HypeShell plugin registry",
     "reference": "Modules/Settings/PluginBrowser.qml:322",
     "comment": "plugin browser description"
   },
   {
-    "term": "Install the DMS greeter? A terminal will open for sudo authentication.",
-    "context": "Install the DMS greeter? A terminal will open for sudo authentication.",
+    "term": "Install the HypeShell Greeter? A terminal will open for sudo authentication.",
+    "context": "Install the HypeShell Greeter? A terminal will open for sudo authentication.",
     "reference": "Modules/Settings/GreeterTab.qml:165",
     "comment": ""
   },
   {
-    "term": "Install theme '%1' from the DMS registry?",
-    "context": "Install theme '%1' from the DMS registry?",
+    "term": "Install theme '%1' from the HypeShell registry?",
+    "context": "Install theme '%1' from the HypeShell registry?",
     "reference": "Modules/Settings/ThemeBrowser.qml:120",
     "comment": "theme installation confirmation"
   },
@@ -7464,8 +7464,8 @@
     "comment": "Phone Connect hint message"
   },
   {
-    "term": "Manage and configure plugins for extending DMS functionality",
-    "context": "Manage and configure plugins for extending DMS functionality",
+    "term": "Manage and configure plugins for extending HypeShell functionality",
+    "context": "Manage and configure plugins for extending HypeShell functionality",
     "reference": "Modules/Settings/PluginsTab.qml:102",
     "comment": ""
   },
@@ -7602,8 +7602,8 @@
     "comment": ""
   },
   {
-    "term": "Material: Material Design 3 Expressive bezier curves. The DMS default feel.",
-    "context": "Material: Material Design 3 Expressive bezier curves. The DMS default feel.",
+    "term": "Material: Material Design 3 Expressive bezier curves. The HypeShell default feel.",
+    "context": "Material: Material Design 3 Expressive bezier curves. The HypeShell default feel.",
     "reference": "Modules/Settings/TypographyMotionTab.qml:120",
     "comment": ""
   },
@@ -8454,8 +8454,8 @@
     "comment": ""
   },
   {
-    "term": "No DMS shortcuts configured",
-    "context": "No DMS shortcuts configured",
+    "term": "No HypeShell Shortcuts configured",
+    "context": "No HypeShell Shortcuts configured",
     "reference": "Modals/Greeter/GreeterCompletePage.qml:265",
     "comment": "greeter no keybinds message"
   },
@@ -9026,7 +9026,7 @@
   {
     "term": "Notepad",
     "context": "Notepad",
-    "reference": "DMSShell.qml:963, Services/AppSearchService.qml:181, Modules/Settings/WidgetsTab.qml:232",
+    "reference": "HypeShellShell.qml:963, Services/AppSearchService.qml:181, Modules/Settings/WidgetsTab.qml:232",
     "comment": "Notepad"
   },
   {
@@ -9228,8 +9228,8 @@
     "comment": ""
   },
   {
-    "term": "Only affects DMS-managed PAM. If greetd already includes pam_fprintd, fingerprint stays enabled.",
-    "context": "Only affects DMS-managed PAM. If greetd already includes pam_fprintd, fingerprint stays enabled.",
+    "term": "Only affects HypeShell-managed PAM. If greetd already includes pam_fprintd, fingerprint stays enabled.",
+    "context": "Only affects HypeShell-managed PAM. If greetd already includes pam_fprintd, fingerprint stays enabled.",
     "reference": "Modules/Settings/GreeterTab.qml:39",
     "comment": ""
   },
@@ -9344,7 +9344,7 @@
   {
     "term": "Open with...",
     "context": "Open with...",
-    "reference": "DMSShell.qml:773, Modals/BrowserPickerModal.qml:13",
+    "reference": "HypeShellShell.qml:773, Modals/BrowserPickerModal.qml:13",
     "comment": ""
   },
   {
@@ -9770,7 +9770,7 @@
   {
     "term": "Permanently delete %1 item(s)? This cannot be undone.",
     "context": "Permanently delete %1 item(s)? This cannot be undone.",
-    "reference": "DMSShell.qml:410",
+    "reference": "HypeShellShell.qml:410",
     "comment": ""
   },
   {
@@ -10728,14 +10728,14 @@
     "comment": ""
   },
   {
-    "term": "Requires DMS %1",
-    "context": "Requires DMS %1",
+    "term": "Requires HypeShell %1",
+    "context": "Requires HypeShell %1",
     "reference": "Modules/Settings/PluginListItem.qml:133",
     "comment": ""
   },
   {
-    "term": "Requires DMS server with sysupdate capability",
-    "context": "Requires DMS server with sysupdate capability",
+    "term": "Requires HypeShell server with sysupdate capability",
+    "context": "Requires HypeShell server with sysupdate capability",
     "reference": "Modules/Settings/WidgetsTab.qml:250",
     "comment": ""
   },
@@ -10800,14 +10800,14 @@
     "comment": "greeter displays description"
   },
   {
-    "term": "Restart DMS",
-    "context": "Restart DMS",
+    "term": "Restart HypeShell",
+    "context": "Restart HypeShell",
     "reference": "Modals/PowerMenuModal.qml:216, Modules/Settings/PowerSleepTab.qml:403",
     "comment": ""
   },
   {
-    "term": "Restart the DankMaterialShell",
-    "context": "Restart the DankMaterialShell",
+    "term": "Restart the HypeShell",
+    "context": "Restart the HypeShell",
     "reference": "Modules/Settings/PowerSleepTab.qml:456",
     "comment": ""
   },
@@ -10962,8 +10962,8 @@
     "comment": "greeter doctor page button"
   },
   {
-    "term": "Run DMS Templates",
-    "context": "Run DMS Templates",
+    "term": "Run HypeShell Templates",
+    "context": "Run HypeShell Templates",
     "reference": "Modules/Settings/ThemeColorsTab.qml:2541",
     "comment": ""
   },
@@ -11124,14 +11124,14 @@
     "comment": ""
   },
   {
-    "term": "Scale DankBar font sizes independently",
-    "context": "Scale DankBar font sizes independently",
+    "term": "Scale Hype Bar font sizes independently",
+    "context": "Scale Hype Bar font sizes independently",
     "reference": "Modules/Settings/DankBarTab.qml:960",
     "comment": ""
   },
   {
-    "term": "Scale DankBar icon sizes independently",
-    "context": "Scale DankBar icon sizes independently",
+    "term": "Scale Hype Bar icon sizes independently",
+    "context": "Scale Hype Bar icon sizes independently",
     "reference": "Modules/Settings/DankBarTab.qml:985",
     "comment": ""
   },
@@ -12036,8 +12036,8 @@
     "comment": ""
   },
   {
-    "term": "Show Restart DMS",
-    "context": "Show Restart DMS",
+    "term": "Show Restart HypeShell",
+    "context": "Show Restart HypeShell",
     "reference": "Modules/Settings/PowerSleepTab.qml:455",
     "comment": ""
   },
@@ -12474,8 +12474,8 @@
     "comment": ""
   },
   {
-    "term": "Some plugins require a newer version of DMS:",
-    "context": "Some plugins require a newer version of DMS:",
+    "term": "Some plugins require a newer version of HypeShell:",
+    "context": "Some plugins require a newer version of HypeShell:",
     "reference": "Modules/Settings/PluginsTab.qml:199",
     "comment": ""
   },
@@ -12576,8 +12576,8 @@
     "comment": ""
   },
   {
-    "term": "Standard: Classic Material Design 3 — panels rise from below with a subtle scale. The DMS default.",
-    "context": "Standard: Classic Material Design 3 — panels rise from below with a subtle scale. The DMS default.",
+    "term": "Standard: Classic Material Design 3 — panels rise from below with a subtle scale. The HypeShell default.",
+    "context": "Standard: Classic Material Design 3 — panels rise from below with a subtle scale. The HypeShell default.",
     "reference": "Modules/Settings/TypographyMotionTab.qml:189",
     "comment": ""
   },
@@ -12960,8 +12960,8 @@
     "comment": ""
   },
   {
-    "term": "Terminal fallback failed. Install one of the supported terminal emulators or run 'dms greeter sync' manually.",
-    "context": "Terminal fallback failed. Install one of the supported terminal emulators or run 'dms greeter sync' manually.",
+    "term": "Terminal fallback failed. Install one of the supported terminal emulators or run 'HypeShell Greeter sync' manually.",
+    "context": "Terminal fallback failed. Install one of the supported terminal emulators or run 'HypeShell Greeter sync' manually.",
     "reference": "Modules/Settings/GreeterTab.qml:360",
     "comment": ""
   },
@@ -13110,8 +13110,8 @@
     "comment": ""
   },
   {
-    "term": "Third-party plugins are created by the community and are not officially supported by DankMaterialShell.\n\nThese plugins may pose security and privacy risks - install at your own risk.",
-    "context": "Third-party plugins are created by the community and are not officially supported by DankMaterialShell.\n\nThese plugins may pose security and privacy risks - install at your own risk.",
+    "term": "Third-party plugins are created by the community and are not officially supported by HypeShell.\n\nThese plugins may pose security and privacy risks - install at your own risk.",
+    "context": "Third-party plugins are created by the community and are not officially supported by HypeShell.\n\nThese plugins may pose security and privacy risks - install at your own risk.",
     "reference": "Modules/Settings/PluginBrowser.qml:796",
     "comment": ""
   },
@@ -13316,12 +13316,12 @@
   {
     "term": "To update, run the following command:",
     "context": "To update, run the following command:",
-    "reference": "Services/DMSService.qml:323",
+    "reference": "Services/HypeShellService.qml:323",
     "comment": ""
   },
   {
-    "term": "To use this DMS bind, remove or change the keybind in your config.kdl",
-    "context": "To use this DMS bind, remove or change the keybind in your config.kdl",
+    "term": "To use this HypeShell bind, remove or change the keybind in your config.kdl",
+    "context": "To use this HypeShell bind, remove or change the keybind in your config.kdl",
     "reference": "Widgets/KeybindItem.qml:487",
     "comment": ""
   },
@@ -13650,8 +13650,8 @@
     "comment": "uninstallation error"
   },
   {
-    "term": "Uninstall the DMS greeter? This will remove configuration and restore your previous display manager. A terminal will open for sudo authentication.",
-    "context": "Uninstall the DMS greeter? This will remove configuration and restore your previous display manager. A terminal will open for sudo authentication.",
+    "term": "Uninstall the HypeShell Greeter? This will remove configuration and restore your previous display manager. A terminal will open for sudo authentication.",
+    "context": "Uninstall the HypeShell Greeter? This will remove configuration and restore your previous display manager. A terminal will open for sudo authentication.",
     "reference": "Modules/Settings/GreeterTab.qml:173",
     "comment": ""
   },
@@ -14394,8 +14394,8 @@
     "comment": "greeter modal window title"
   },
   {
-    "term": "Welcome to DankMaterialShell",
-    "context": "Welcome to DankMaterialShell",
+    "term": "Welcome to HypeShell",
+    "context": "Welcome to HypeShell",
     "reference": "Modals/Greeter/GreeterWelcomePage.qml:47",
     "comment": "greeter welcome page title"
   },
@@ -14456,13 +14456,13 @@
   {
     "term": "WiFi disabled",
     "context": "WiFi disabled",
-    "reference": "Services/LegacyNetworkService.qml:206, Services/DMSNetworkService.qml:612",
+    "reference": "Services/LegacyNetworkService.qml:206, Services/HypeShellNetworkService.qml:612",
     "comment": ""
   },
   {
     "term": "WiFi enabled",
     "context": "WiFi enabled",
-    "reference": "Services/LegacyNetworkService.qml:206, Services/LegacyNetworkService.qml:411, Services/DMSNetworkService.qml:612, Services/DMSNetworkService.qml:624",
+    "reference": "Services/LegacyNetworkService.qml:206, Services/LegacyNetworkService.qml:411, Services/HypeShellNetworkService.qml:612, Services/HypeShellNetworkService.qml:624",
     "comment": ""
   },
   {
@@ -14838,8 +14838,8 @@
     "comment": "Tailscale direct connection"
   },
   {
-    "term": "dms is a highly customizable, modern desktop shell with a <a href=\"https://m3.material.io/\" style=\"text-decoration:none; color:%1;\">material 3 inspired</a> design.<br /><br/>It is built with <a href=\"https://quickshell.org\" style=\"text-decoration:none; color:%1;\">Quickshell</a>, a QT6 framework for building desktop shells, and <a href=\"https://go.dev\" style=\"text-decoration:none; color:%1;\">Go</a>, a statically typed, compiled programming language.",
-    "context": "dms is a highly customizable, modern desktop shell with a <a href=\"https://m3.material.io/\" style=\"text-decoration:none; color:%1;\">material 3 inspired</a> design.<br /><br/>It is built with <a href=\"https://quickshell.org\" style=\"text-decoration:none; color:%1;\">Quickshell</a>, a QT6 framework for building desktop shells, and <a href=\"https://go.dev\" style=\"text-decoration:none; color:%1;\">Go</a>, a statically typed, compiled programming language.",
+    "term": "HypeShell is a highly customizable, modern desktop shell with a <a href=\"https://m3.material.io/\" style=\"text-decoration:none; color:%1;\">material 3 inspired</a> design.<br /><br/>It is built with <a href=\"https://quickshell.org\" style=\"text-decoration:none; color:%1;\">Quickshell</a>, a QT6 framework for building desktop shells, and <a href=\"https://go.dev\" style=\"text-decoration:none; color:%1;\">Go</a>, a statically typed, compiled programming language.",
+    "context": "HypeShell is a highly customizable, modern desktop shell with a <a href=\"https://m3.material.io/\" style=\"text-decoration:none; color:%1;\">material 3 inspired</a> design.<br /><br/>It is built with <a href=\"https://quickshell.org\" style=\"text-decoration:none; color:%1;\">Quickshell</a>, a QT6 framework for building desktop shells, and <a href=\"https://go.dev\" style=\"text-decoration:none; color:%1;\">Go</a>, a statically typed, compiled programming language.",
     "reference": "Modules/Settings/AboutTab.qml:585",
     "comment": ""
   },
@@ -14910,8 +14910,8 @@
     "comment": ""
   },
   {
-    "term": "loginctl not available - lock integration requires DMS socket connection",
-    "context": "loginctl not available - lock integration requires DMS socket connection",
+    "term": "loginctl not available - lock integration requires HypeShell socket connection",
+    "context": "loginctl not available - lock integration requires HypeShell socket connection",
     "reference": "Modules/Settings/LockScreenTab.qml:166",
     "comment": ""
   },
@@ -15090,8 +15090,8 @@
     "comment": ""
   },
   {
-    "term": "update dms for NM integration.",
-    "context": "update dms for NM integration.",
+    "term": "update HypeShell for NM integration.",
+    "context": "update HypeShell for NM integration.",
     "reference": "Modules/ControlCenter/Components/DragDropGrid.qml:292",
     "comment": ""
   },

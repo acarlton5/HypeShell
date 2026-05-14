@@ -5,8 +5,8 @@ package main
 import (
 	"os"
 
-	"github.com/AvengeMedia/DankMaterialShell/core/internal/clipboard"
-	"github.com/AvengeMedia/DankMaterialShell/core/internal/log"
+	"github.com/acarlton5/HypeShell/core/internal/clipboard"
+	"github.com/acarlton5/HypeShell/core/internal/log"
 )
 
 var Version = "dev"

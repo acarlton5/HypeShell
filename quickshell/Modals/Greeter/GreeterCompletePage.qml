@@ -109,7 +109,7 @@ Item {
                     }
 
                     StyledText {
-                        text: I18n.tr("DankMaterialShell is ready to use", "greeter completion page subtitle")
+                        text: I18n.tr("HypeShell is ready to use", "greeter completion page subtitle")
                         font.pixelSize: Theme.fontSizeMedium
                         color: Theme.surfaceVariantText
                     }
@@ -133,7 +133,7 @@ Item {
                     }
 
                     StyledText {
-                        text: I18n.tr("DMS Shortcuts", "greeter keybinds section header")
+                        text: I18n.tr("HypeShell Shortcuts", "greeter keybinds section header")
                         font.pixelSize: Theme.fontSizeMedium
                         font.weight: Font.Medium
                         color: Theme.surfaceText
@@ -262,7 +262,7 @@ Item {
                         }
 
                         StyledText {
-                            text: I18n.tr("No DMS shortcuts configured", "greeter no keybinds message")
+                            text: I18n.tr("No HypeShell shortcuts configured", "greeter no keybinds message")
                             font.pixelSize: Theme.fontSizeSmall
                             color: Theme.surfaceVariantText
                             anchors.verticalCenter: parent.verticalCenter
@@ -315,13 +315,13 @@ Item {
                             hoverEnabled: true
                             cursorShape: Qt.PointingHandCursor
                             onClicked: {
-                                let url = "https://danklinux.com/docs/dankmaterialshell/keybinds-ipc";
+                                let url = "https://github.com/acarlton5/HypeShell";
                                 if (CompositorService.isNiri)
-                                    url = "https://danklinux.com/docs/dankmaterialshell/compositors#dms-keybindings";
+                                    url = "https://github.com/acarlton5/HypeShell";
                                 else if (CompositorService.isHyprland)
-                                    url = "https://danklinux.com/docs/dankmaterialshell/compositors#dms-keybindings-1";
+                                    url = "https://github.com/acarlton5/HypeShell";
                                 else if (CompositorService.isDwl)
-                                    url = "https://danklinux.com/docs/dankmaterialshell/compositors#dms-keybindings-2";
+                                    url = "https://github.com/acarlton5/HypeShell";
                                 Qt.openUrlExternally(url);
                             }
                         }
@@ -402,7 +402,7 @@ Item {
                     GreeterSettingsCard {
                         width: (parent.width - Theme.spacingS) / 2
                         iconName: "toolbar"
-                        title: I18n.tr("DankBar", "greeter settings link")
+                        title: I18n.tr("Hype Bar", "greeter settings link")
                         description: I18n.tr("Widgets, layout, style", "greeter dankbar description")
                         onClicked: PopoutService.openSettingsWithTab("dankbar_settings")
                     }
@@ -467,7 +467,7 @@ Item {
                         iconName: "menu_book"
                         title: I18n.tr("Docs", "greeter documentation link")
                         isExternal: true
-                        onClicked: Qt.openUrlExternally("https://danklinux.com/docs")
+                        onClicked: Qt.openUrlExternally("https://github.com/acarlton5/HypeShell")
                     }
 
                     GreeterQuickLink {

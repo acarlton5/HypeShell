@@ -6,9 +6,9 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/AvengeMedia/DankMaterialShell/core/internal/keybinds"
-	"github.com/AvengeMedia/DankMaterialShell/core/internal/keybinds/providers"
-	"github.com/AvengeMedia/DankMaterialShell/core/internal/log"
+	"github.com/acarlton5/HypeShell/core/internal/keybinds"
+	"github.com/acarlton5/HypeShell/core/internal/keybinds/providers"
+	"github.com/acarlton5/HypeShell/core/internal/log"
 	"github.com/spf13/cobra"
 )
 

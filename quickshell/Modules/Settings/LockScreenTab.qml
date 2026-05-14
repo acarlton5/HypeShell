@@ -163,7 +163,7 @@ Item {
                 settingKey: "lockBehavior"
 
                 StyledText {
-                    text: I18n.tr("loginctl not available - lock integration requires DMS socket connection")
+                    text: I18n.tr("loginctl not available - lock integration requires HypeShell socket connection")
                     font.pixelSize: Theme.fontSizeSmall
                     color: Theme.warning
                     visible: !SessionService.loginctlAvailable
@@ -208,7 +208,7 @@ Item {
                     settingKey: "lockAtStartup"
                     tags: ["lock", "screen", "startup", "start", "boot", "login", "automatic"]
                     text: I18n.tr("Lock at startup")
-                    description: I18n.tr("Automatically lock the screen when DMS starts")
+                    description: I18n.tr("Automatically lock the screen when HypeShell starts")
                     checked: SettingsData.lockAtStartup
                     onToggled: checked => SettingsData.set("lockAtStartup", checked)
                 }

@@ -4,7 +4,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/AvengeMedia/DankMaterialShell/core/pkg/syncmap"
+	"github.com/acarlton5/HypeShell/core/pkg/syncmap"
 )
 
 type DeviceClass string

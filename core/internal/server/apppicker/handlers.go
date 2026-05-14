@@ -3,8 +3,8 @@ package apppicker
 import (
 	"net"
 
-	"github.com/AvengeMedia/DankMaterialShell/core/internal/log"
-	"github.com/AvengeMedia/DankMaterialShell/core/internal/server/models"
+	"github.com/acarlton5/HypeShell/core/internal/log"
+	"github.com/acarlton5/HypeShell/core/internal/server/models"
 )
 
 func HandleRequest(conn net.Conn, req models.Request, manager *Manager) {

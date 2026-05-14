@@ -6,8 +6,8 @@ import (
 	"strings"
 	"testing"
 
-	mocks_utils "github.com/AvengeMedia/DankMaterialShell/core/internal/mocks/utils"
-	"github.com/AvengeMedia/DankMaterialShell/core/internal/utils"
+	mocks_utils "github.com/acarlton5/HypeShell/core/internal/mocks/utils"
+	"github.com/acarlton5/HypeShell/core/internal/utils"
 	"github.com/stretchr/testify/assert"
 )
 

@@ -8,8 +8,8 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/AvengeMedia/DankMaterialShell/core/internal/utils"
-	"github.com/AvengeMedia/DankMaterialShell/core/internal/windowrules"
+	"github.com/acarlton5/HypeShell/core/internal/utils"
+	"github.com/acarlton5/HypeShell/core/internal/windowrules"
 )
 
 type HyprlandWindowRule struct {

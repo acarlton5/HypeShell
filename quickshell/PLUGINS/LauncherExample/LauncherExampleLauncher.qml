@@ -47,7 +47,7 @@ Item {
             },
             {
                 name: "Unicode Icon Example",
-                icon: "unicode:🚀",
+                icon: "unicode:ðŸš€",
                 comment: "Demonstrates unicode/emoji icon support",
                 action: "toast:Unicode icons work great!",
                 categories: ["LauncherExample"]
@@ -119,7 +119,7 @@ Item {
     }
 
     function copyToClipboard(text) {
-        Quickshell.execDetached(["dms", "cl", "copy", text])
+        Quickshell.execDetached(["hype", "cl", "copy", text])
         showToast("Copied to clipboard: " + text)
     }
 

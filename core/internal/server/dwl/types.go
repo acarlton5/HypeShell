@@ -3,8 +3,8 @@ package dwl
 import (
 	"sync"
 
-	wlclient "github.com/AvengeMedia/DankMaterialShell/core/pkg/go-wayland/wayland/client"
-	"github.com/AvengeMedia/DankMaterialShell/core/pkg/syncmap"
+	wlclient "github.com/acarlton5/HypeShell/core/pkg/go-wayland/wayland/client"
+	"github.com/acarlton5/HypeShell/core/pkg/syncmap"
 )
 
 type TagState struct {

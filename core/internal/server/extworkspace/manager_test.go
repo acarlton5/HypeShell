@@ -8,7 +8,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	mocks_wlclient "github.com/AvengeMedia/DankMaterialShell/core/internal/mocks/wlclient"
+	mocks_wlclient "github.com/acarlton5/HypeShell/core/internal/mocks/wlclient"
 )
 
 func TestStateChanged_BothNil(t *testing.T) {

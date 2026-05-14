@@ -717,7 +717,7 @@ Item {
                                 hoverEnabled: true
                                 cursorShape: Qt.PointingHandCursor
                                 onClicked: {
-                                    Quickshell.execDetached(["dms", "cl", "copy", processItemRoot.processFullCmd]);
+                                    Quickshell.execDetached(["hype", "cl", "copy", processItemRoot.processFullCmd]);
                                 }
                             }
                         }

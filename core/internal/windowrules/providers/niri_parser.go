@@ -11,7 +11,7 @@ import (
 	"github.com/sblinch/kdl-go"
 	"github.com/sblinch/kdl-go/document"
 
-	"github.com/AvengeMedia/DankMaterialShell/core/internal/windowrules"
+	"github.com/acarlton5/HypeShell/core/internal/windowrules"
 )
 
 type NiriWindowRule struct {

@@ -431,7 +431,7 @@ const COMPOSITOR_ACTIONS = {
     hyprland: HYPRLAND_ACTIONS
 };
 
-const CATEGORY_ORDER = ["DMS", "Execute", "Workspace", "Tags", "Window", "Move/Resize", "Focus", "Move", "Layout", "Groups", "Monitor", "Scratchpad", "Screenshot", "System", "Pass-through", "Overview", "Alt-Tab", "Other"];
+const CATEGORY_ORDER = ["hype", "Execute", "Workspace", "Tags", "Window", "Move/Resize", "Focus", "Move", "Layout", "Groups", "Monitor", "Scratchpad", "Screenshot", "System", "Pass-through", "Overview", "Alt-Tab", "Other"];
 
 const NIRI_ACTION_ARGS = {
     "quit": {

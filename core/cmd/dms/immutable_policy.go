@@ -9,7 +9,7 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/AvengeMedia/DankMaterialShell/core/internal/privesc"
+	"github.com/acarlton5/HypeShell/core/internal/privesc"
 	"github.com/spf13/cobra"
 )
 

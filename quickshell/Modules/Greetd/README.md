@@ -47,8 +47,8 @@ sudo rm -rf /etc/xdg/quickshell/dms-greeter
 Then complete setup:
 
 ```bash
-dms greeter enable
-dms greeter sync
+hype greeter enable
+hype greeter sync
 ```
 
 #### Syncing themes (Optional)
@@ -105,8 +105,8 @@ The package automatically:
 Then complete setup:
 
 ```bash
-dms greeter enable
-dms greeter sync
+hype greeter enable
+hype greeter sync
 ```
 
 #### Syncing themes (Optional)
@@ -114,14 +114,14 @@ dms greeter sync
 Run:
 
 ```bash
-dms greeter sync
+hype greeter sync
 ```
 
 Then logout/login to see your wallpaper on the greeter.
 
 ### Automatic
 
-The easiest thing is to run `dms greeter install` or `dms` for interactive installation.
+The easiest thing is to run `hype greeter install` or `hype` for interactive installation.
 On Debian/openSUSE, this now prefers the `dms-greeter` package when the OBS repo is configured.
 
 ### Manual (fallback only)
@@ -240,16 +240,16 @@ DMS_RUN_GREETER=1 qs -p /path/to/dms
 
 For current wrapper-based installs, the `dms-greeter` wrapper supports niri, hyprland, sway, scroll, miracle-wm, labwc, and mangowc.
 
-Only niri currently has a generated greeter config path managed by `dms greeter sync`.
+Only niri currently has a generated greeter config path managed by `hype greeter sync`.
 
-- niri: `dms greeter sync` writes the generated greeter config to `/etc/greetd/niri/config.kdl`. Add local manual tweaks in `/etc/greetd/niri_overrides.kdl`.
+- niri: `hype greeter sync` writes the generated greeter config to `/etc/greetd/niri/config.kdl`. Add local manual tweaks in `/etc/greetd/niri_overrides.kdl`.
 - Other wrapper-supported compositors use the wrapper-generated config by default. If you need a custom compositor config, add `-C /path/to/config` to the `dms-greeter` command in `/etc/greetd/config.toml`.
 
 #### Personalization
 
 The greeter can be personalized with wallpapers, themes, weather, clock formats, and more - configured exactly the same as dms.
 
-**Easiest method:** Run `dms greeter sync` to automatically sync your DMS theme with the greeter.
+**Easiest method:** Run `hype greeter sync` to automatically sync your HypeShell theme with the greeter.
 
 **Manual method:** You can manually synchronize configurations if you want greeter settings to always mirror your shell:
 

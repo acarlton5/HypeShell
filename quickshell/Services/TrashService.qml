@@ -58,7 +58,7 @@ Singleton {
     }
 
     function refreshCount() {
-        Proc.runCommand("trash-count", ["dms", "trash", "count"], (output, exitCode) => {
+        Proc.runCommand("trash-count", ["hype", "trash", "count"], (output, exitCode) => {
             if (exitCode !== 0) {
                 root.count = homeTrashModel.count;
                 return;
@@ -74,7 +74,7 @@ Singleton {
                 callback(false, "empty path");
             return;
         }
-        Proc.runCommand(null, ["dms", "trash", "put", path], (output, exitCode) => {
+        Proc.runCommand(null, ["hype", "trash", "put", path], (output, exitCode) => {
             const ok = exitCode === 0;
             if (!ok)
                 ToastService.showError(I18n.tr("Failed to move to trash"), path);
@@ -95,7 +95,7 @@ Singleton {
             return;
         }
         if (availableFileManagers.indexOf(choice) < 0) {
-            ToastService.showInfo(I18n.tr("Cannot open trash: '%1' is not installed").arg(choice), I18n.tr("Pick a different file manager in Settings → Dock → Trash."));
+            ToastService.showInfo(I18n.tr("Cannot open trash: '%1' is not installed").arg(choice), I18n.tr("Pick a different file manager in Settings â†’ Dock â†’ Trash."));
             return;
         }
         Quickshell.execDetached([choice, "trash:///"]);
@@ -104,12 +104,12 @@ Singleton {
     function openCustom() {
         const cmd = (SettingsData.dockTrashCustomCommand || "").trim();
         if (!cmd) {
-            ToastService.showInfo(I18n.tr("Cannot open trash: no custom command set"), I18n.tr("Configure one in Settings → Dock → Trash."));
+            ToastService.showInfo(I18n.tr("Cannot open trash: no custom command set"), I18n.tr("Configure one in Settings â†’ Dock â†’ Trash."));
             return;
         }
         Proc.runCommand(null, ["sh", "-c", cmd], (output, exitCode) => {
             if (exitCode !== 0) {
-                ToastService.showError(I18n.tr("Trash command failed (exit %1)").arg(exitCode), I18n.tr("Check your custom command in Settings → Dock → Trash."));
+                ToastService.showError(I18n.tr("Trash command failed (exit %1)").arg(exitCode), I18n.tr("Check your custom command in Settings â†’ Dock â†’ Trash."));
             }
         }, 0, Proc.noTimeout);
     }
@@ -121,7 +121,7 @@ Singleton {
     }
 
     function emptyTrash() {
-        Proc.runCommand("trash-empty", ["dms", "trash", "empty"], (output, exitCode) => {
+        Proc.runCommand("trash-empty", ["hype", "trash", "empty"], (output, exitCode) => {
             if (exitCode !== 0)
                 ToastService.showError(I18n.tr("Failed to empty trash"), output || "");
             refreshCount();

@@ -74,7 +74,7 @@ Item {
 
                         width: parent.width
                         text: I18n.tr("Night Mode")
-                        description: DisplayService.gammaControlAvailable ? I18n.tr("Apply warm color temperature to reduce eye strain. Use automation settings below to control when it activates.") : I18n.tr("Gamma control not available. Requires DMS API v6+.")
+                        description: DisplayService.gammaControlAvailable ? I18n.tr("Apply warm color temperature to reduce eye strain. Use automation settings below to control when it activates.") : I18n.tr("Gamma control not available. Requires HypeShell API v6+.")
                         checked: DisplayService.nightModeEnabled
                         enabled: DisplayService.gammaControlAvailable
                         onToggled: checked => {

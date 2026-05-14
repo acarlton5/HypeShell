@@ -6,7 +6,7 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/AvengeMedia/DankMaterialShell/core/internal/deps"
+	"github.com/acarlton5/HypeShell/core/internal/deps"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -409,7 +409,7 @@ func TestHyprlandConfigDeployment(t *testing.T) {
 		content, err := os.ReadFile(result.Path)
 		require.NoError(t, err)
 		assert.Contains(t, string(content), "# MONITOR CONFIG")
-		assert.Contains(t, string(content), "source = ./dms/binds.conf")
+		assert.Contains(t, string(content), "source = ./hype/binds.conf")
 		assert.Contains(t, string(content), "exec-once = ")
 	})
 
@@ -445,7 +445,7 @@ general {
 		require.NoError(t, err)
 		assert.Contains(t, string(newContent), "monitor = DP-1, 1920x1080@144")
 		assert.Contains(t, string(newContent), "monitor = HDMI-A-1, 3840x2160@60")
-		assert.Contains(t, string(newContent), "source = ./dms/binds.conf")
+		assert.Contains(t, string(newContent), "source = ./hype/binds.conf")
 		assert.NotContains(t, string(newContent), "monitor = eDP-2")
 	})
 }
@@ -462,7 +462,7 @@ func TestHyprlandConfigStructure(t *testing.T) {
 	assert.Contains(t, HyprlandConfig, "# MONITOR CONFIG")
 	assert.Contains(t, HyprlandConfig, "# STARTUP APPS")
 	assert.Contains(t, HyprlandConfig, "# INPUT CONFIG")
-	assert.Contains(t, HyprlandConfig, "source = ./dms/binds.conf")
+	assert.Contains(t, HyprlandConfig, "source = ./hype/binds.conf")
 }
 
 func TestGhosttyConfigStructure(t *testing.T) {

@@ -45,9 +45,9 @@ Singleton {
     }
 
     enum AnimationEffect {
-        Standard,     // 0 — M3: scale-in, rises from below
-        Directional,  // 1 — pure large slide, no scale
-        Depth         // 2 — medium slide with deep depth scale pop
+        Standard,     // 0 â€” M3: scale-in, rises from below
+        Directional,  // 1 â€” pure large slide, no scale
+        Depth         // 2 â€” medium slide with deep depth scale pop
     }
 
     enum SuspendBehavior {
@@ -1581,7 +1581,7 @@ Singleton {
     }
 
     // Zeroes out connected-mode-hostile fields (shadow, square/goth corners, border).
-    // Returns { configs, changed } — `configs` is the same ref when no change.
+    // Returns { configs, changed } â€” `configs` is the same ref when no change.
     function _sanitizeBarConfigsForConnectedFrame(configs) {
         if (!connectedFrameModeActive || !Array.isArray(configs))
             return {
@@ -1622,7 +1622,7 @@ Singleton {
     }
 
     // Single entry point for connected-mode settings state.
-    //   !active → restore backups
+    //   !active â†’ restore backups
     function _reconcileConnectedFrameBarStyles() {
         if (!connectedFrameModeActive) {
             _restoreConnectedFrameBarStyleBackups();
@@ -2324,7 +2324,7 @@ Singleton {
         }
 
         const notif = notifications[index];
-        testNotificationProcess.command = ["notify-send", "-h", "int:transient:1", "-a", "DMS", "-i", notif[2], notif[0], notif[1]];
+        testNotificationProcess.command = ["notify-send", "-h", "int:transient:1", "-a", "hype", "-i", notif[2], notif[0], notif[1]];
         testNotificationProcess.running = true;
     }
 

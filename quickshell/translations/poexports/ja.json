@@ -281,8 +281,8 @@
   "90°": {
     "90°": "90°"
   },
-  "<a href=\"https://github.com/AvengeMedia/DankMaterialShell/blob/master/LICENSE\" style=\"text-decoration:none; color:%1;\">MIT License</a>": {
-    "<a href=\"https://github.com/AvengeMedia/DankMaterialShell/blob/master/LICENSE\" style=\"text-decoration:none; color:%1;\">MIT License</a>": "<a href=\"https://github.com/AvengeMedia/DankMaterialShell/blob/master/LICENSE\" style=\"text-decoration:none; color:%1;\">MITライセンス</a>"
+  "<a href=\"https://github.com/acarlton5/HypeShell/blob/master/LICENSE\" style=\"text-decoration:none; color:%1;\">MIT License</a>": {
+    "<a href=\"https://github.com/acarlton5/HypeShell/blob/master/LICENSE\" style=\"text-decoration:none; color:%1;\">MIT License</a>": "<a href=\"https://github.com/acarlton5/HypeShell/blob/master/LICENSE\" style=\"text-decoration:none; color:%1;\">MITライセンス</a>"
   },
   "A file with this name already exists. Do you want to overwrite it?": {
     "A file with this name already exists. Do you want to overwrite it?": "この名前のファイルは既に存在します。上書きしてもよろしいですか?"
@@ -341,8 +341,8 @@
   "Activate Greeter": {
     "Activate Greeter": "Greeter を有効にする"
   },
-  "Activate the DMS greeter? A terminal will open for sudo authentication. Run Sync after activation to apply your settings.": {
-    "Activate the DMS greeter? A terminal will open for sudo authentication. Run Sync after activation to apply your settings.": "DMS greeter を有効にしますか? sudo 認証用の端末が開きます。有効化後に設定を適用するには Sync を実行してください。"
+  "Activate the HypeShell Greeter? A terminal will open for sudo authentication. Run Sync after activation to apply your settings.": {
+    "Activate the HypeShell Greeter? A terminal will open for sudo authentication. Run Sync after activation to apply your settings.": "HypeShell Greeter を有効にしますか? sudo 認証用の端末が開きます。有効化後に設定を適用するには Sync を実行してください。"
   },
   "Activation": {
     "Activation": "有効化"
@@ -734,8 +734,8 @@
   "Automatically lock after": {
     "Automatically lock after": "自動的にロック"
   },
-  "Automatically lock the screen when DMS starts": {
-    "Automatically lock the screen when DMS starts": "DMS 起動時に自動的に画面をロック"
+  "Automatically lock the screen when HypeShell starts": {
+    "Automatically lock the screen when HypeShell starts": "HypeShell 起動時に自動的に画面をロック"
   },
   "Automatically lock the screen when the system prepares to suspend": {
     "Automatically lock the screen when the system prepares to suspend": "システムが一時停止の準備中に自動的に画面をロック"
@@ -1073,8 +1073,8 @@
   "Change bar appearance": {
     "Change bar appearance": "バーの見た目を変更"
   },
-  "Change the locale used by the DMS interface.": {
-    "Change the locale used by the DMS interface.": "DMS インターフェースで使用するロケールを変更します。"
+  "Change the locale used by the HypeShell interface.": {
+    "Change the locale used by the HypeShell interface.": "HypeShell インターフェースで使用するロケールを変更します。"
   },
   "Change the locale used for date and time formatting, independent of the interface language.": {
     "Change the locale used for date and time formatting, independent of the interface language.": "日時の書式設定に使用するロケールを、インターフェース言語とは独立して変更します。"
@@ -1151,8 +1151,8 @@
   "Choose the border accent color": {
     "Choose the border accent color": "ボーダーの強調色を選ぶ"
   },
-  "Choose the logo displayed on the launcher button in DankBar": {
-    "Choose the logo displayed on the launcher button in DankBar": "Dank Barのランチャーボタンに表示されるロゴを選ぶ"
+  "Choose the logo displayed on the launcher button in Hype Bar": {
+    "Choose the logo displayed on the launcher button in Hype Bar": "Hype Barのランチャーボタンに表示されるロゴを選ぶ"
   },
   "Choose where notification popups appear on screen": {
     "Choose where notification popups appear on screen": "通知ポップアップが画面に表示される場所を選ぶ"
@@ -1310,8 +1310,8 @@
   "Color theme for syntax highlighting. %1 themes available.": {
     "Color theme for syntax highlighting. %1 themes available.": "シンタックスハイライト用のカラーテーマ。%1 個のテーマが利用可能です。"
   },
-  "Color theme from DMS registry": {
-    "Color theme from DMS registry": "DMS レジストリのカラーテーマ"
+  "Color theme from HypeShell registry": {
+    "Color theme from HypeShell registry": "HypeShell レジストリのカラーテーマ"
   },
   "Colorful": {
     "Colorful": "カラフル"
@@ -1751,23 +1751,23 @@
   "DEMO MODE - Click anywhere to exit": {
     "DEMO MODE - Click anywhere to exit": "デモモード -任意の場所をクリックして 終了"
   },
-  "DMS Plugin Manager Unavailable": {
-    "DMS Plugin Manager Unavailable": "DMS プラグイン マネージャーが利用できません"
+  "HypeShell Plugin Manager Unavailable": {
+    "HypeShell Plugin Manager Unavailable": "HypeShell プラグイン マネージャーが利用できません"
   },
-  "DMS Shortcuts": {
-    "DMS Shortcuts": "DMS ショートカット"
+  "HypeShell Shortcuts": {
+    "HypeShell Shortcuts": "HypeShell ショートカット"
   },
-  "DMS greeter needs: greetd, dms-greeter. Fingerprint: fprintd, pam_fprintd. Security keys: pam_u2f. Add your user to the greeter group. Authentication changes apply automatically and may open a terminal when sudo authentication is required.": {
-    "DMS greeter needs: greetd, dms-greeter. Fingerprint: fprintd, pam_fprintd. Security keys: pam_u2f. Add your user to the greeter group. Authentication changes apply automatically and may open a terminal when sudo authentication is required.": "DMS greeter には greetd と dms-greeter が必要です。指紋認証には fprintd と pam_fprintd、セキュリティキーには pam_u2f が必要です。ユーザーを greeter グループに追加してください。認証の変更は自動的に適用され、sudo 認証が必要な場合は端末が開くことがあります。"
+  "HypeShell Greeter needs: greetd, dms-greeter. Fingerprint: fprintd, pam_fprintd. Security keys: pam_u2f. Add your user to the greeter group. Authentication changes apply automatically and may open a terminal when sudo authentication is required.": {
+    "HypeShell Greeter needs: greetd, dms-greeter. Fingerprint: fprintd, pam_fprintd. Security keys: pam_u2f. Add your user to the greeter group. Authentication changes apply automatically and may open a terminal when sudo authentication is required.": "HypeShell Greeter には greetd と dms-greeter が必要です。指紋認証には fprintd と pam_fprintd、セキュリティキーには pam_u2f が必要です。ユーザーを greeter グループに追加してください。認証の変更は自動的に適用され、sudo 認証が必要な場合は端末が開くことがあります。"
   },
-  "DMS out of date": {
-    "DMS out of date": "DMSに更新があります"
+  "HypeShell out of date": {
+    "HypeShell out of date": "HypeShellに更新があります"
   },
-  "DMS service is not connected. Clipboard settings are unavailable.": {
-    "DMS service is not connected. Clipboard settings are unavailable.": "DMS サービスに接続されていません。クリップボード設定は利用できません。"
+  "HypeShell service is not connected. Clipboard settings are unavailable.": {
+    "HypeShell service is not connected. Clipboard settings are unavailable.": "HypeShell サービスに接続されていません。クリップボード設定は利用できません。"
   },
-  "DMS shell actions (launcher, clipboard, etc.)": {
-    "DMS shell actions (launcher, clipboard, etc.)": "DMS シェルアクション（ランチャー、クリップボードなど）"
+  "HypeShell shell actions (launcher, clipboard, etc.)": {
+    "HypeShell shell actions (launcher, clipboard, etc.)": "HypeShell シェルアクション（ランチャー、クリップボードなど）"
   },
   "DMS_SOCKET not available": {
     "DMS_SOCKET not available": "DMS_SOCKETが利用できません"
@@ -1781,20 +1781,20 @@
   "Daily at:": {
     "Daily at:": "毎日："
   },
-  "Dank": {
-    "Dank": "Dank"
+  "HypeShell": {
+    "HypeShell": "HypeShell"
   },
-  "Dank Bar": {
-    "Dank Bar": "Dank Bar"
+  "Hype Bar": {
+    "Hype Bar": "Hype Bar"
   },
-  "DankBar": {
-    "DankBar": "DankBar"
+  "Hype Bar": {
+    "Hype Bar": "Hype Bar"
   },
-  "DankMaterialShell is ready to use": {
-    "DankMaterialShell is ready to use": "DankMaterialShell は使用可能です"
+  "HypeShell is ready to use": {
+    "HypeShell is ready to use": "HypeShell は使用可能です"
   },
-  "DankShell & System Icons (requires restart)": {
-    "DankShell & System Icons (requires restart)": "DankShell とシステムアイコン（再起動が必要）"
+  "HypeShell & System Icons (requires restart)": {
+    "HypeShell & System Icons (requires restart)": "DankShell とシステムアイコン（再起動が必要）"
   },
   "Dark Mode": {
     "Dark Mode": "ダークモード"
@@ -2261,8 +2261,8 @@
   "Enable fingerprint authentication": {
     "Enable fingerprint authentication": "指紋認証を有効に"
   },
-  "Enable fingerprint or security key for DMS Greeter. Authentication changes apply automatically.": {
-    "Enable fingerprint or security key for DMS Greeter. Authentication changes apply automatically.": "DMS Greeter で指紋認証またはセキュリティキーを有効にします。認証の変更は自動的に適用されます。"
+  "Enable fingerprint or security key for HypeShell Greeter. Authentication changes apply automatically.": {
+    "Enable fingerprint or security key for HypeShell Greeter. Authentication changes apply automatically.": "HypeShell Greeter で指紋認証またはセキュリティキーを有効にします。認証の変更は自動的に適用されます。"
   },
   "Enable loginctl lock integration": {
     "Enable loginctl lock integration": "ログインロックの統合を有効に"
@@ -2600,8 +2600,8 @@
   "Failed to ring device": {
     "Failed to ring device": "デバイスの呼び出しに失敗しました"
   },
-  "Failed to run 'dms greeter status'. Ensure DMS is installed and dms is in PATH.": {
-    "Failed to run 'dms greeter status'. Ensure DMS is installed and dms is in PATH.": "'dms greeter status' の実行に失敗しました。DMS がインストールされ、dms が PATH にあることを確認してください。"
+  "Failed to run 'dms greeter status'. Ensure HypeShell is installed and dms is in PATH.": {
+    "Failed to run 'dms greeter status'. Ensure HypeShell is installed and dms is in PATH.": "'dms greeter status' の実行に失敗しました。HypeShell がインストールされ、dms が PATH にあることを確認してください。"
   },
   "Failed to save audio config": {
     "Failed to save audio config": "オーディオ設定の保存に失敗しました"
@@ -2819,8 +2819,8 @@
   "Folders": {
     "Folders": "フォルダー"
   },
-  "Follow DMS background color": {
-    "Follow DMS background color": "DMS の背景色に従う"
+  "Follow HypeShell background color": {
+    "Follow HypeShell background color": "HypeShell の背景色に従う"
   },
   "Follow Monitor Focus": {
     "Follow Monitor Focus": "モニターフォーカスに従う"
@@ -2984,11 +2984,11 @@
   "Gamma Control": {
     "Gamma Control": "ガンマ設定"
   },
-  "Gamma control not available. Requires DMS API v6+.": {
-    "Gamma control not available. Requires DMS API v6+.": "ガンマ制御は使用できません。DMS API v6+ が必要です。"
+  "Gamma control not available. Requires HypeShell API v6+.": {
+    "Gamma control not available. Requires HypeShell API v6+.": "ガンマ制御は使用できません。HypeShell API v6+ が必要です。"
   },
-  "Generate baseline GTK3/4 or QT5/QT6 (requires qt6ct-kde) configurations to follow DMS colors. Only needed once.<br /><br />It is recommended to configure <a href=\"https://github.com/AvengeMedia/DankMaterialShell/blob/master/README.md#Theming\" style=\"text-decoration:none; color:%1;\">adw-gtk3</a> prior to applying GTK themes.": {
-    "Generate baseline GTK3/4 or QT5/QT6 (requires qt6ct-kde) configurations to follow DMS colors. Only needed once.<br /><br />It is recommended to configure <a href=\"https://github.com/AvengeMedia/DankMaterialShell/blob/master/README.md#Theming\" style=\"text-decoration:none; color:%1;\">adw-gtk3</a> prior to applying GTK themes.": "DMS の色に合わせたベースライン GTK3/4 または QT5/QT6（qt6ct-kde が必要）設定を生成します。必要なのは一度だけです。<br /><br />GTK テーマを適用する前に <a href=\"https://github.com/AvengeMedia/DankMaterialShell/blob/master/README.md#Theming\" style=\"text-decoration:none; color:%1;\">adw-gtk3</a> を設定することを推奨します。"
+  "Generate baseline GTK3/4 or QT5/QT6 (requires qt6ct-kde) configurations to follow HypeShell colors. Only needed once.<br /><br />It is recommended to configure <a href=\"https://github.com/acarlton5/HypeShell/blob/master/README.md#Theming\" style=\"text-decoration:none; color:%1;\">adw-gtk3</a> prior to applying GTK themes.": {
+    "Generate baseline GTK3/4 or QT5/QT6 (requires qt6ct-kde) configurations to follow HypeShell colors. Only needed once.<br /><br />It is recommended to configure <a href=\"https://github.com/acarlton5/HypeShell/blob/master/README.md#Theming\" style=\"text-decoration:none; color:%1;\">adw-gtk3</a> prior to applying GTK themes.": "HypeShell の色に合わせたベースライン GTK3/4 または QT5/QT6（qt6ct-kde が必要）設定を生成します。必要なのは一度だけです。<br /><br />GTK テーマを適用する前に <a href=\"https://github.com/acarlton5/HypeShell/blob/master/README.md#Theming\" style=\"text-decoration:none; color:%1;\">adw-gtk3</a> を設定することを推奨します。"
   },
   "Generic": {
     "Generic": "汎用"
@@ -3416,8 +3416,8 @@
   "Install Theme": {
     "Install Theme": "テーマをインストール"
   },
-  "Install color themes from the DMS theme registry": {
-    "Install color themes from the DMS theme registry": "DMS テーマレジストリからカラーテーマをインストール"
+  "Install color themes from the HypeShell theme registry": {
+    "Install color themes from the HypeShell theme registry": "HypeShell テーマレジストリからカラーテーマをインストール"
   },
   "Install complete. Greeter has been installed.": {
     "Install complete. Greeter has been installed.": "インストールが完了しました。Greeter がインストールされました。"
@@ -3428,17 +3428,17 @@
   "Install matugen package for dynamic theming": {
     "Install matugen package for dynamic theming": "動的テーマ用に matugen パッケージをインストール"
   },
-  "Install plugin '%1' from the DMS registry?": {
-    "Install plugin '%1' from the DMS registry?": "DMS レジストリからプラグイン '%1' をインストールしますか?"
+  "Install plugin '%1' from the HypeShell registry?": {
+    "Install plugin '%1' from the HypeShell registry?": "HypeShell レジストリからプラグイン '%1' をインストールしますか?"
   },
-  "Install plugins from the DMS plugin registry": {
-    "Install plugins from the DMS plugin registry": "DMSプラグインレジストリからプラグインをインストールする"
+  "Install plugins from the HypeShell plugin registry": {
+    "Install plugins from the HypeShell plugin registry": "HypeShellプラグインレジストリからプラグインをインストールする"
   },
-  "Install the DMS greeter? A terminal will open for sudo authentication.": {
-    "Install the DMS greeter? A terminal will open for sudo authentication.": "DMS Greeter をインストールしますか? sudo 認証用の端末が開きます。"
+  "Install the HypeShell Greeter? A terminal will open for sudo authentication.": {
+    "Install the HypeShell Greeter? A terminal will open for sudo authentication.": "HypeShell Greeter をインストールしますか? sudo 認証用の端末が開きます。"
   },
-  "Install theme '%1' from the DMS registry?": {
-    "Install theme '%1' from the DMS registry?": "DMS レジストリからテーマ '%1' をインストールしますか?"
+  "Install theme '%1' from the HypeShell registry?": {
+    "Install theme '%1' from the HypeShell registry?": "HypeShell レジストリからテーマ '%1' をインストールしますか?"
   },
   "Installation and PAM setup: see the ": {
     "Installation and PAM setup: see the ": "インストールと PAM 設定については次を参照してください: "
@@ -3770,8 +3770,8 @@
   "Make sure KDE Connect or Valent is running on your other devices": {
     "Make sure KDE Connect or Valent is running on your other devices": "他のデバイスで KDE Connect または Valent が実行されていることを確認してください"
   },
-  "Manage and configure plugins for extending DMS functionality": {
-    "Manage and configure plugins for extending DMS functionality": "DMS 機能を拡張するためのプラグインを管理および構成"
+  "Manage and configure plugins for extending HypeShell functionality": {
+    "Manage and configure plugins for extending HypeShell functionality": "HypeShell 機能を拡張するためのプラグインを管理および構成"
   },
   "Manage up to 4 independent bar configurations. Each bar has its own position, widgets, styling, and display assignment.": {
     "Manage up to 4 independent bar configurations. Each bar has its own position, widgets, styling, and display assignment.": "最大4つの独立したバー構成を管理できます。各バーには独自の位置、ウィジェット、スタイリング、表示割り当てがあります。"
@@ -3842,8 +3842,8 @@
   "Material inspired shadows and elevation on modals, popouts, and dialogs": {
     "Material inspired shadows and elevation on modals, popouts, and dialogs": "モーダル、ポップアウト、ダイアログに Material 風の影とエレベーションを適用"
   },
-  "Material: Material Design 3 Expressive bezier curves. The DMS default feel.": {
-    "Material: Material Design 3 Expressive bezier curves. The DMS default feel.": ""
+  "Material: Material Design 3 Expressive bezier curves. The HypeShell default feel.": {
+    "Material: Material Design 3 Expressive bezier curves. The HypeShell default feel.": ""
   },
   "Matugen Contrast": {
     "Matugen Contrast": "Matugen コントラスト"
@@ -4268,8 +4268,8 @@
   "No Border": {
     "No Border": "ボーダーなし"
   },
-  "No DMS shortcuts configured": {
-    "No DMS shortcuts configured": "DMS ショートカットが設定されていません"
+  "No HypeShell Shortcuts configured": {
+    "No HypeShell Shortcuts configured": "HypeShell ショートカットが設定されていません"
   },
   "No Dim": {
     "No Dim": "暗転なし"
@@ -4658,8 +4658,8 @@
   "Only adjust gamma based on time or location rules.": {
     "Only adjust gamma based on time or location rules.": "ガンマは、時間または場所のルールに基づいてのみ調整します。"
   },
-  "Only affects DMS-managed PAM. If greetd already includes pam_fprintd, fingerprint stays enabled.": {
-    "Only affects DMS-managed PAM. If greetd already includes pam_fprintd, fingerprint stays enabled.": "DMS 管理の PAM にのみ影響します。greetd がすでに pam_fprintd を含んでいる場合、指紋認証は有効のままです。"
+  "Only affects HypeShell-managed PAM. If greetd already includes pam_fprintd, fingerprint stays enabled.": {
+    "Only affects HypeShell-managed PAM. If greetd already includes pam_fprintd, fingerprint stays enabled.": "HypeShell 管理の PAM にのみ影響します。greetd がすでに pam_fprintd を含んでいる場合、指紋認証は有効のままです。"
   },
   "Only show windows from the current monitor on each dock": {
     "Only show windows from the current monitor on each dock": "各ドックに現在のモニターのウィンドウのみ表示"
@@ -5411,11 +5411,11 @@
   "Requires 'dgop' tool": {
     "Requires 'dgop' tool": "'dgop' ツールが必要"
   },
-  "Requires DMS %1": {
-    "Requires DMS %1": "DMS %1 が必要"
+  "Requires HypeShell %1": {
+    "Requires HypeShell %1": "HypeShell %1 が必要"
   },
-  "Requires DMS server with sysupdate capability": {
-    "Requires DMS server with sysupdate capability": "sysupdate 機能に対応した DMS サーバーが必要です"
+  "Requires HypeShell server with sysupdate capability": {
+    "Requires HypeShell server with sysupdate capability": "sysupdate 機能に対応した HypeShell サーバーが必要です"
   },
   "Requires DWL compositor": {
     "Requires DWL compositor": "DWLコンポジターが必要"
@@ -5447,11 +5447,11 @@
   "Resolution, position, scale": {
     "Resolution, position, scale": "解像度、位置、スケール"
   },
-  "Restart DMS": {
-    "Restart DMS": "DMSを再起動"
+  "Restart HypeShell": {
+    "Restart HypeShell": "HypeShellを再起動"
   },
-  "Restart the DankMaterialShell": {
-    "Restart the DankMaterialShell": "DankMaterialShellを再起動"
+  "Restart the HypeShell": {
+    "Restart the HypeShell": "HypeShellを再起動"
   },
   "Restarting audio system...": {
     "Restarting audio system...": "オーディオシステムを再起動しています..."
@@ -5528,8 +5528,8 @@
   "Run Again": {
     "Run Again": "再実行"
   },
-  "Run DMS Templates": {
-    "Run DMS Templates": "DMS テンプレートを実行"
+  "Run HypeShell Templates": {
+    "Run HypeShell Templates": "HypeShell テンプレートを実行"
   },
   "Run User Templates": {
     "Run User Templates": "ユーザーのテンプレを実行"
@@ -5609,11 +5609,11 @@
   "Scale": {
     "Scale": "スケール"
   },
-  "Scale DankBar font sizes independently": {
-    "Scale DankBar font sizes independently": "Dank Barのフォントサイズを個別に調整"
+  "Scale Hype Bar font sizes independently": {
+    "Scale Hype Bar font sizes independently": "Hype Barのフォントサイズを個別に調整"
   },
-  "Scale DankBar icon sizes independently": {
-    "Scale DankBar icon sizes independently": "DankBar のアイコンサイズを個別に調整"
+  "Scale Hype Bar icon sizes independently": {
+    "Scale Hype Bar icon sizes independently": "DankBar のアイコンサイズを個別に調整"
   },
   "Scale all font sizes throughout the shell": {
     "Scale all font sizes throughout the shell": "シェル全体のフォントサイズを調整"
@@ -6074,8 +6074,8 @@
   "Show Reboot": {
     "Show Reboot": "再起動を表示"
   },
-  "Show Restart DMS": {
-    "Show Restart DMS": "DMS再起動を表示"
+  "Show Restart HypeShell": {
+    "Show Restart HypeShell": "HypeShell再起動を表示"
   },
   "Show Saved Items": {
     "Show Saved Items": "保存済み項目を表示"
@@ -6293,8 +6293,8 @@
   "Snow": {
     "Snow": "雪"
   },
-  "Some plugins require a newer version of DMS:": {
-    "Some plugins require a newer version of DMS:": "一部のプラグインにはより新しいバージョンの DMS が必要です:"
+  "Some plugins require a newer version of HypeShell:": {
+    "Some plugins require a newer version of HypeShell:": "一部のプラグインにはより新しいバージョンの HypeShell が必要です:"
   },
   "Sort Alphabetically": {
     "Sort Alphabetically": "アルファベット順に並べ替える"
@@ -6344,8 +6344,8 @@
   "Standard": {
     "Standard": "標準"
   },
-  "Standard: Classic Material Design 3 — panels rise from below with a subtle scale. The DMS default.": {
-    "Standard: Classic Material Design 3 — panels rise from below with a subtle scale. The DMS default.": ""
+  "Standard: Classic Material Design 3 — panels rise from below with a subtle scale. The HypeShell default.": {
+    "Standard: Classic Material Design 3 — panels rise from below with a subtle scale. The HypeShell default.": ""
   },
   "Start": {
     "Start": "始める"
@@ -6542,8 +6542,8 @@
   "Terminal fallback failed. Install a supported terminal emulator or run 'dms auth sync' manually.": {
     "Terminal fallback failed. Install a supported terminal emulator or run 'dms auth sync' manually.": "端末フォールバックに失敗しました。対応する端末エミュレーターをインストールするか、'dms auth sync' を手動で実行してください。"
   },
-  "Terminal fallback failed. Install one of the supported terminal emulators or run 'dms greeter sync' manually.": {
-    "Terminal fallback failed. Install one of the supported terminal emulators or run 'dms greeter sync' manually.": "端末フォールバックに失敗しました。対応する端末エミュレーターのいずれかをインストールするか、'dms greeter sync' を手動で実行してください。"
+  "Terminal fallback failed. Install one of the supported terminal emulators or run 'HypeShell Greeter sync' manually.": {
+    "Terminal fallback failed. Install one of the supported terminal emulators or run 'HypeShell Greeter sync' manually.": "端末フォールバックに失敗しました。対応する端末エミュレーターのいずれかをインストールするか、'HypeShell Greeter sync' を手動で実行してください。"
   },
   "Terminal fallback opened. Complete authentication setup there; it will close automatically when done.": {
     "Terminal fallback opened. Complete authentication setup there; it will close automatically when done.": "端末フォールバックを開きました。そこで認証設定を完了してください。完了すると自動的に閉じます。"
@@ -6617,8 +6617,8 @@
   "Third-Party Plugin Warning": {
     "Third-Party Plugin Warning": "サードパーティ製プラグインの警告"
   },
-  "Third-party plugins are created by the community and are not officially supported by DankMaterialShell.\n\nThese plugins may pose security and privacy risks - install at your own risk.": {
-    "Third-party plugins are created by the community and are not officially supported by DankMaterialShell.\n\nThese plugins may pose security and privacy risks - install at your own risk.": "サードパーティ製プラグインはコミュニティによって作成されており、DankMaterialShell では公式にサポートされていません。\n\nこれらのプラグインにはセキュリティおよびプライバシー上のリスクがある可能性があります。自己責任でインストールしてください。"
+  "Third-party plugins are created by the community and are not officially supported by HypeShell.\n\nThese plugins may pose security and privacy risks - install at your own risk.": {
+    "Third-party plugins are created by the community and are not officially supported by HypeShell.\n\nThese plugins may pose security and privacy risks - install at your own risk.": "サードパーティ製プラグインはコミュニティによって作成されており、HypeShell では公式にサポートされていません。\n\nこれらのプラグインにはセキュリティおよびプライバシー上のリスクがある可能性があります。自己責任でインストールしてください。"
   },
   "This bind is overridden by config.kdl": {
     "This bind is overridden by config.kdl": "このバインドは config.kdl によって上書きされています"
@@ -6722,8 +6722,8 @@
   "To update, run the following command:": {
     "To update, run the following command:": "更新するには以下のコマンドを実行してください："
   },
-  "To use this DMS bind, remove or change the keybind in your config.kdl": {
-    "To use this DMS bind, remove or change the keybind in your config.kdl": "この DMS バインドを使うには、config.kdl 内のキーバインドを削除または変更してください"
+  "To use this HypeShell bind, remove or change the keybind in your config.kdl": {
+    "To use this HypeShell bind, remove or change the keybind in your config.kdl": "この HypeShell バインドを使うには、config.kdl 内のキーバインドを削除または変更してください"
   },
   "Toast Messages": {
     "Toast Messages": "トーストメッセージ"
@@ -6887,8 +6887,8 @@
   "Uninstall failed: %1": {
     "Uninstall failed: %1": "アンインストールに失敗しました: %1"
   },
-  "Uninstall the DMS greeter? This will remove configuration and restore your previous display manager. A terminal will open for sudo authentication.": {
-    "Uninstall the DMS greeter? This will remove configuration and restore your previous display manager. A terminal will open for sudo authentication.": "DMS Greeter をアンインストールしますか? 設定を削除し、以前のディスプレイマネージャーを復元します。sudo 認証のために端末が開きます。"
+  "Uninstall the HypeShell Greeter? This will remove configuration and restore your previous display manager. A terminal will open for sudo authentication.": {
+    "Uninstall the HypeShell Greeter? This will remove configuration and restore your previous display manager. A terminal will open for sudo authentication.": "HypeShell Greeter をアンインストールしますか? 設定を削除し、以前のディスプレイマネージャーを復元します。sudo 認証のために端末が開きます。"
   },
   "Uninstalled: %1": {
     "Uninstalled: %1": "アンインストールしました: %1"
@@ -7262,8 +7262,8 @@
   "Welcome": {
     "Welcome": "ようこそ"
   },
-  "Welcome to DankMaterialShell": {
-    "Welcome to DankMaterialShell": "DankMaterialShell へようこそ"
+  "Welcome to HypeShell": {
+    "Welcome to HypeShell": "HypeShell へようこそ"
   },
   "When clicking a dock window in a Hyprland special workspace, bring that special workspace back before focusing the window": {
     "When clicking a dock window in a Hyprland special workspace, bring that special workspace back before focusing the window": "Hyprland の特殊ワークスペースでドックのウィンドウをクリックしたときは、ウィンドウにフォーカスする前にその特殊ワークスペースを戻します"
@@ -7487,8 +7487,8 @@
   "direct": {
     "direct": ""
   },
-  "dms is a highly customizable, modern desktop shell with a <a href=\"https://m3.material.io/\" style=\"text-decoration:none; color:%1;\">material 3 inspired</a> design.<br /><br/>It is built with <a href=\"https://quickshell.org\" style=\"text-decoration:none; color:%1;\">Quickshell</a>, a QT6 framework for building desktop shells, and <a href=\"https://go.dev\" style=\"text-decoration:none; color:%1;\">Go</a>, a statically typed, compiled programming language.": {
-    "dms is a highly customizable, modern desktop shell with a <a href=\"https://m3.material.io/\" style=\"text-decoration:none; color:%1;\">material 3 inspired</a> design.<br /><br/>It is built with <a href=\"https://quickshell.org\" style=\"text-decoration:none; color:%1;\">Quickshell</a>, a QT6 framework for building desktop shells, and <a href=\"https://go.dev\" style=\"text-decoration:none; color:%1;\">Go</a>, a statically typed, compiled programming language.": "dms は、<a href=\"https://m3.material.io/\" style=\"text-decoration:none; color:%1;\">Material 3 に着想を得た</a>デザインを持つ、高度にカスタマイズ可能なモダンなデスクトップシェルです。<br /><br/>デスクトップシェルを構築するための QT6 フレームワークである <a href=\"https://quickshell.org\" style=\"text-decoration:none; color:%1;\">Quickshell</a> と、静的型付けのコンパイル言語である <a href=\"https://go.dev\" style=\"text-decoration:none; color:%1;\">Go</a> で構築されています。"
+  "HypeShell is a highly customizable, modern desktop shell with a <a href=\"https://m3.material.io/\" style=\"text-decoration:none; color:%1;\">material 3 inspired</a> design.<br /><br/>It is built with <a href=\"https://quickshell.org\" style=\"text-decoration:none; color:%1;\">Quickshell</a>, a QT6 framework for building desktop shells, and <a href=\"https://go.dev\" style=\"text-decoration:none; color:%1;\">Go</a>, a statically typed, compiled programming language.": {
+    "HypeShell is a highly customizable, modern desktop shell with a <a href=\"https://m3.material.io/\" style=\"text-decoration:none; color:%1;\">material 3 inspired</a> design.<br /><br/>It is built with <a href=\"https://quickshell.org\" style=\"text-decoration:none; color:%1;\">Quickshell</a>, a QT6 framework for building desktop shells, and <a href=\"https://go.dev\" style=\"text-decoration:none; color:%1;\">Go</a>, a statically typed, compiled programming language.": "dms は、<a href=\"https://m3.material.io/\" style=\"text-decoration:none; color:%1;\">Material 3 に着想を得た</a>デザインを持つ、高度にカスタマイズ可能なモダンなデスクトップシェルです。<br /><br/>デスクトップシェルを構築するための QT6 フレームワークである <a href=\"https://quickshell.org\" style=\"text-decoration:none; color:%1;\">Quickshell</a> と、静的型付けのコンパイル言語である <a href=\"https://go.dev\" style=\"text-decoration:none; color:%1;\">Go</a> で構築されています。"
   },
   "dms/cursor config exists but is not included. Cursor settings won't apply.": {
     "dms/cursor config exists but is not included. Cursor settings won't apply.": "dms/cursor 設定は存在しますが、読み込まれていません。カーソル設定は適用されません。"
@@ -7523,8 +7523,8 @@
   "leave empty for default": {
     "leave empty for default": "既定値を使うには空のままにしてください"
   },
-  "loginctl not available - lock integration requires DMS socket connection": {
-    "loginctl not available - lock integration requires DMS socket connection": "loginctlが利用できません- ロック統合のためにDMS socketの接続が必要です。"
+  "loginctl not available - lock integration requires HypeShell socket connection": {
+    "loginctl not available - lock integration requires HypeShell socket connection": "loginctlが利用できません- ロック統合のためにHypeShell socketの接続が必要です。"
   },
   "mangowc Discord Server": {
     "mangowc Discord Server": "mangowc Discord サーバー"
@@ -7613,8 +7613,8 @@
   "up": {
     "up": "上"
   },
-  "update dms for NM integration.": {
-    "update dms for NM integration.": "NM統合のためにDMSを更新します。"
+  "update HypeShell for NM integration.": {
+    "update HypeShell for NM integration.": "NM統合のためにHypeShellを更新します。"
   },
   "v%1 by %2": {
     "v%1 by %2": "v%1 by %2"

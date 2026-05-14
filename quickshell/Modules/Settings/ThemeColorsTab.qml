@@ -40,9 +40,9 @@ Item {
         case "hyprland":
             return {
                 "configFile": configDir + "/hypr/hyprland.conf",
-                "cursorFile": configDir + "/hypr/dms/cursor.conf",
-                "grepPattern": 'source.*dms/cursor.conf',
-                "includeLine": "source = ./dms/cursor.conf"
+                "cursorFile": configDir + "/hypr/hype/cursor.conf",
+                "grepPattern": 'source.*hype/cursor.conf',
+                "includeLine": "source = ./hype/cursor.conf"
             };
         case "dwl":
             return {
@@ -70,7 +70,7 @@ Item {
         const compositorArg = (compositor === "dwl") ? "mangowc" : compositor;
 
         checkingCursorInclude = true;
-        Proc.runCommand("check-cursor-include", ["dms", "config", "resolve-include", compositorArg, filename], (output, exitCode) => {
+        Proc.runCommand("check-cursor-include", ["hype", "config", "resolve-include", compositorArg, filename], (output, exitCode) => {
             checkingCursorInclude = false;
             if (exitCode !== 0) {
                 cursorIncludeStatus = {
@@ -118,7 +118,7 @@ Item {
         if (isTemplateDetected(templateId))
             return baseDescription;
         if (baseDescription)
-            return baseDescription + " · " + I18n.tr("Not detected");
+            return baseDescription + " Â· " + I18n.tr("Not detected");
         return I18n.tr("Not detected");
     }
 
@@ -166,7 +166,7 @@ Item {
             DMSService.listInstalledThemes();
         if (PopoutService.pendingThemeInstall)
             Qt.callLater(() => showThemeBrowser());
-        Proc.runCommand("template-check", ["dms", "matugen", "check"], (output, exitCode) => {
+        Proc.runCommand("template-check", ["hype", "matugen", "check"], (output, exitCode) => {
             if (exitCode !== 0)
                 return;
             try {
@@ -619,7 +619,7 @@ Item {
                                     property var variants: modelData.variants || null
                                     property string selectedVariant: hasVariants ? SettingsData.getRegistryThemeVariant(modelData.id, variants?.default || "") : ""
                                     property string previewPath: {
-                                        const baseDir = Quickshell.env("HOME") + "/.config/DankMaterialShell/themes/" + (modelData.sourceDir || modelData.id);
+                                        const baseDir = Quickshell.env("HOME") + "/.config/HypeShell/themes/" + (modelData.sourceDir || modelData.id);
                                         const mode = Theme.isLightMode ? "light" : "dark";
                                         if (hasVariants && selectedVariant)
                                             return baseDir + "/preview-" + selectedVariant + "-" + mode + ".svg";
@@ -725,7 +725,7 @@ Item {
                                         hoverEnabled: true
                                         cursorShape: Qt.PointingHandCursor
                                         onClicked: {
-                                            const themesDir = Quickshell.env("HOME") + "/.config/DankMaterialShell/themes";
+                                            const themesDir = Quickshell.env("HOME") + "/.config/HypeShell/themes";
                                             const themePath = themesDir + "/" + (modelData.sourceDir || modelData.id) + "/theme.json";
                                             SettingsData.set("customThemeFile", themePath);
                                             Theme.switchTheme("custom", true, true);
@@ -2350,7 +2350,7 @@ Item {
                                 }
 
                                 StyledText {
-                                    text: cursorWarningBox.showSetup ? I18n.tr("Click 'Setup' to create cursor config and add include to your compositor config.") : I18n.tr("dms/cursor config exists but is not included. Cursor settings won't apply.")
+                                    text: cursorWarningBox.showSetup ? I18n.tr("Click 'Setup' to create cursor config and add include to your compositor config.") : I18n.tr("HypeShell cursor config exists but is not included. Cursor settings won't apply.")
                                     font.pixelSize: Theme.fontSizeSmall
                                     color: Theme.surfaceVariantText
                                     wrapMode: Text.WordWrap
@@ -2536,9 +2536,9 @@ Item {
 
                 SettingsToggleRow {
                     tab: "theme"
-                    tags: ["matugen", "dms", "templates"]
+                    tags: ["matugen", "hype", "templates"]
                     settingKey: "runDmsMatugenTemplates"
-                    text: I18n.tr("Run DMS Templates")
+                    text: I18n.tr("Run HypeShell Templates")
                     description: ""
                     checked: SettingsData.runDmsMatugenTemplates
                     onToggled: checked => SettingsData.set("runDmsMatugenTemplates", checked)
@@ -2810,7 +2810,7 @@ Item {
                 }
 
                 SettingsToggleRow {
-                    text: I18n.tr("Follow DMS background color")
+                    text: I18n.tr("Follow HypeShell background color")
                     tags: ["matugen", "neovim", "terminal", "template"]
                     settingKey: "matugenTemplateNeovimSetBackground"
                     visible: neovimThemeToggle.visible && neovimThemeToggle.checked

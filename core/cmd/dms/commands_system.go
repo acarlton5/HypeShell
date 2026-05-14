@@ -9,9 +9,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/AvengeMedia/DankMaterialShell/core/internal/log"
-	"github.com/AvengeMedia/DankMaterialShell/core/internal/server/models"
-	"github.com/AvengeMedia/DankMaterialShell/core/internal/server/sysupdate"
+	"github.com/acarlton5/HypeShell/core/internal/log"
+	"github.com/acarlton5/HypeShell/core/internal/server/models"
+	"github.com/acarlton5/HypeShell/core/internal/server/sysupdate"
 	"github.com/charmbracelet/lipgloss"
 	"github.com/spf13/cobra"
 )

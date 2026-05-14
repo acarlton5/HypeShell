@@ -9,7 +9,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/AvengeMedia/DankMaterialShell/core/internal/deps"
+	"github.com/acarlton5/HypeShell/core/internal/deps"
 )
 
 type ConfigDeployer struct {
@@ -504,9 +504,9 @@ func (cd *ConfigDeployer) deployHyprlandConfig(terminal deps.Terminal, useSystem
 		return result, result.Error
 	}
 
-	dmsDir := filepath.Join(configDir, "dms")
-	if err := os.MkdirAll(dmsDir, 0o755); err != nil {
-		result.Error = fmt.Errorf("failed to create dms directory: %w", err)
+	hypeDir := filepath.Join(configDir, "hype")
+	if err := os.MkdirAll(hypeDir, 0o755); err != nil {
+		result.Error = fmt.Errorf("failed to create hype directory: %w", err)
 		return result, result.Error
 	}
 
@@ -549,7 +549,7 @@ func (cd *ConfigDeployer) deployHyprlandConfig(terminal deps.Terminal, useSystem
 	}
 
 	if existingConfig != "" {
-		mergedConfig, err := cd.mergeHyprlandMonitorSections(newConfig, existingConfig, dmsDir)
+		mergedConfig, err := cd.mergeHyprlandMonitorSections(newConfig, existingConfig, hypeDir)
 		if err != nil {
 			cd.log(fmt.Sprintf("Warning: Failed to merge monitor sections: %v", err))
 		} else {
@@ -563,8 +563,8 @@ func (cd *ConfigDeployer) deployHyprlandConfig(terminal deps.Terminal, useSystem
 		return result, result.Error
 	}
 
-	if err := cd.deployHyprlandDmsConfigs(dmsDir, terminalCommand); err != nil {
-		result.Error = fmt.Errorf("failed to deploy dms configs: %w", err)
+	if err := cd.deployHyprlandHypeConfigs(hypeDir, terminalCommand); err != nil {
+		result.Error = fmt.Errorf("failed to deploy HypeShell configs: %w", err)
 		return result, result.Error
 	}
 
@@ -573,7 +573,7 @@ func (cd *ConfigDeployer) deployHyprlandConfig(terminal deps.Terminal, useSystem
 	return result, nil
 }
 
-func (cd *ConfigDeployer) deployHyprlandDmsConfigs(dmsDir string, terminalCommand string) error {
+func (cd *ConfigDeployer) deployHyprlandHypeConfigs(hypeDir string, terminalCommand string) error {
 	configs := []struct {
 		name    string
 		content string
@@ -587,7 +587,7 @@ func (cd *ConfigDeployer) deployHyprlandDmsConfigs(dmsDir string, terminalComman
 	}
 
 	for _, cfg := range configs {
-		path := filepath.Join(dmsDir, cfg.name)
+		path := filepath.Join(hypeDir, cfg.name)
 		// Skip if file already exists and is not empty to preserve user modifications
 		if info, err := os.Stat(path); err == nil && info.Size() > 0 {
 			cd.log(fmt.Sprintf("Skipping %s (already exists)", cfg.name))
@@ -602,7 +602,7 @@ func (cd *ConfigDeployer) deployHyprlandDmsConfigs(dmsDir string, terminalComman
 	return nil
 }
 
-func (cd *ConfigDeployer) mergeHyprlandMonitorSections(newConfig, existingConfig, dmsDir string) (string, error) {
+func (cd *ConfigDeployer) mergeHyprlandMonitorSections(newConfig, existingConfig, hypeDir string) (string, error) {
 	monitorRegex := regexp.MustCompile(`(?m)^#?\s*monitor\s*=.*$`)
 	existingMonitors := monitorRegex.FindAllString(existingConfig, -1)
 
@@ -610,7 +610,7 @@ func (cd *ConfigDeployer) mergeHyprlandMonitorSections(newConfig, existingConfig
 		return newConfig, nil
 	}
 
-	outputsPath := filepath.Join(dmsDir, "outputs.conf")
+	outputsPath := filepath.Join(hypeDir, "outputs.conf")
 	if _, err := os.Stat(outputsPath); err != nil {
 		var outputsContent strings.Builder
 		for _, monitor := range existingMonitors {
@@ -620,7 +620,7 @@ func (cd *ConfigDeployer) mergeHyprlandMonitorSections(newConfig, existingConfig
 		if err := os.WriteFile(outputsPath, []byte(outputsContent.String()), 0o644); err != nil {
 			cd.log(fmt.Sprintf("Warning: Failed to migrate monitors to %s: %v", outputsPath, err))
 		} else {
-			cd.log("Migrated monitor sections to dms/outputs.conf")
+			cd.log("Migrated monitor sections to hype/outputs.conf")
 		}
 	}
 
@@ -662,7 +662,7 @@ func (cd *ConfigDeployer) transformHyprlandConfigForNonSystemd(config, terminalC
 		}
 		if strings.HasPrefix(trimmed, "exec-once = systemctl --user start") {
 			startupSectionFound = true
-			result = append(result, "exec-once = dms run")
+			result = append(result, "exec-once = hype run")
 			result = append(result, "env = QT_QPA_PLATFORM,wayland;xcb")
 			result = append(result, "env = ELECTRON_OZONE_PLATFORM_HINT,auto")
 			result = append(result, "env = QT_QPA_PLATFORMTHEME,gtk3")
@@ -677,7 +677,7 @@ func (cd *ConfigDeployer) transformHyprlandConfigForNonSystemd(config, terminalC
 		for i, line := range result {
 			if strings.Contains(line, "STARTUP APPS") {
 				insertLines := []string{
-					"exec-once = dms run",
+					"exec-once = hype run",
 					"env = QT_QPA_PLATFORM,wayland;xcb",
 					"env = ELECTRON_OZONE_PLATFORM_HINT,auto",
 					"env = QT_QPA_PLATFORMTHEME,gtk3",

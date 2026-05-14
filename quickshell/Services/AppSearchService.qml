@@ -181,7 +181,7 @@ Singleton {
                 name: I18n.tr("Notepad", "Notepad"),
                 icon: "svg+corner:" + dmsLogoPath + "|description",
                 cornerIcon: "description",
-                comment: "DMS",
+                comment: "HypeShell",
                 action: "ipc:notepad",
                 categories: ["Office", "Utility"],
                 defaultTrigger: "",
@@ -192,7 +192,7 @@ Singleton {
                 name: I18n.tr("System Monitor", "sysmon window title"),
                 icon: "svg+corner:" + dmsLogoPath + "|monitor_heart",
                 cornerIcon: "monitor_heart",
-                comment: "DMS",
+                comment: "HypeShell",
                 action: "ipc:processlist",
                 categories: ["System", "Monitor"],
                 defaultTrigger: "",
@@ -203,7 +203,7 @@ Singleton {
                 name: I18n.tr("Color Picker"),
                 icon: "svg+corner:" + dmsLogoPath + "|palette",
                 cornerIcon: "palette",
-                comment: "DMS",
+                comment: "HypeShell",
                 action: "ipc:color-picker",
                 categories: ["Graphics", "Utility"],
                 defaultTrigger: "",
@@ -213,7 +213,7 @@ Singleton {
                 id: "dms_settings_search",
                 name: I18n.tr("Settings", "settings window title"),
                 cornerIcon: "search",
-                comment: "DMS",
+                comment: "HypeShell",
                 defaultTrigger: "?",
                 isLauncher: true
             }
@@ -703,7 +703,7 @@ Singleton {
             appCategories.forEach(cat => categories.add(cat));
         }
 
-        // Include categories from core apps (e.g. DMS Settings)
+        // Include categories from core apps (e.g. HypeShell Settings)
         for (const app of coreApps) {
             const appCategories = getCategoriesForApp(app);
             appCategories.forEach(cat => categories.add(cat));
@@ -916,7 +916,7 @@ Singleton {
         if (typeof instance.getPasteText === "function") {
             const text = instance.getPasteText(item);
             if (text)
-                return ["dms", "cl", "copy", text];
+                return ["hype", "cl", "copy", text];
         }
 
         return null;
