@@ -99,6 +99,14 @@ func getPIDFilePath() string {
 	return filepath.Join(getRuntimeDir(), fmt.Sprintf("HYPESHELL-%d.pid", os.Getpid()))
 }
 
+func ensureWaylandSession() {
+	if os.Getenv("WAYLAND_DISPLAY") != "" || os.Getenv("DMS_RUN_GREETER") != "" {
+		return
+	}
+
+	log.Fatalf("Error starting HypeShell: no Wayland session detected (WAYLAND_DISPLAY is not set). From a TTY, start the HypeShell (Hyprland) login session or run hypeshell-hyprland-session; run 'hype run' only from inside Hyprland.")
+}
+
 func writePIDFile(childPID int) error {
 	pidFile := getPIDFilePath()
 	return os.WriteFile(pidFile, []byte(strconv.Itoa(childPID)), 0o644)
@@ -192,6 +200,7 @@ func runShellInteractive(session bool) {
 		}
 	}()
 
+	ensureWaylandSession()
 	log.Infof("Spawning quickshell with -p %s", configPath)
 
 	qsPath, err := exec.LookPath("qs")
@@ -439,6 +448,7 @@ func runShellDaemon(session bool) {
 		}
 	}()
 
+	ensureWaylandSession()
 	log.Infof("Spawning quickshell with -p %s", configPath)
 
 	qsPath, err := exec.LookPath("qs")

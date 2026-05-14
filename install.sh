@@ -598,6 +598,22 @@ install_quickshell_dependency() {
     fi
 }
 
+install_qt_wayland_dependency() {
+    echo "Ensuring Qt Wayland runtime dependency is installed..."
+    if have pacman; then
+        sudo_run pacman -S --needed --noconfirm qt6-wayland
+    elif have dnf; then
+        sudo_run dnf install -y qt6-qtwayland
+    elif have zypper; then
+        sudo_run zypper --non-interactive install qt6-wayland
+    elif have apt-get; then
+        sudo_run apt-get update
+        sudo_run env DEBIAN_FRONTEND=noninteractive apt-get install -y qt6-wayland
+    else
+        echo "Warning: could not verify Qt Wayland runtime dependency; no supported package manager found." >&2
+    fi
+}
+
 install_greetd_if_needed() {
     if have greetd || [ -x /usr/sbin/greetd ] || [ -x /sbin/greetd ]; then
         return 0
@@ -799,6 +815,7 @@ install_hype() {
 
     install_build_dependencies
     install_quickshell_dependency
+    install_qt_wayland_dependency
 
     run make -C "$SOURCE_DIR" build
     sudo_run make -C "$SOURCE_DIR" PREFIX="$PREFIX" install
