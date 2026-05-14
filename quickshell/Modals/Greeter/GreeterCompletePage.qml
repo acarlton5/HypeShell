@@ -475,7 +475,7 @@ Item {
                         iconName: "extension"
                         title: I18n.tr("Plugins", "greeter plugins link")
                         isExternal: true
-                        onClicked: Qt.openUrlExternally("https://danklinux.com/plugins")
+                        onClicked: Qt.openUrlExternally("https://github.com/acarlton5/HypeRegistry/tree/master/plugins")
                     }
 
                     GreeterQuickLink {
@@ -483,7 +483,7 @@ Item {
                         iconName: "palette"
                         title: I18n.tr("Themes", "greeter themes link")
                         isExternal: true
-                        onClicked: Qt.openUrlExternally("https://danklinux.com/plugins?tab=themes")
+                        onClicked: Qt.openUrlExternally("https://github.com/acarlton5/HypeRegistry/tree/master/themes")
                     }
                 }
             }

@@ -43,7 +43,7 @@ func HandleList(conn net.Conn, req models.Request) {
 			Compositors:  p.Compositors,
 			Dependencies: p.Dependencies,
 			Installed:    installed,
-			FirstParty:   strings.HasPrefix(p.Repo, "https://github.com/AvengeMedia"),
+			FirstParty:   strings.HasPrefix(p.Repo, "https://github.com/acarlton5/"),
 			Featured:     p.Featured,
 			RequiresDMS:  p.RequiresDMS,
 		}

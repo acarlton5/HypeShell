@@ -117,7 +117,7 @@ FloatingWindow {
         PopoutService.pendingThemeInstall = "";
         urlInstallConfirm.showWithOptions({
             "title": I18n.tr("Install Theme", "theme installation dialog title"),
-            "message": I18n.tr("Install theme '%1' from the DMS registry?", "theme installation confirmation").arg(themeId),
+            "message": I18n.tr("Install theme '%1' from the HypeShell registry?", "theme installation confirmation").arg(themeId),
             "confirmText": I18n.tr("Install", "install action button"),
             "cancelText": I18n.tr("Cancel"),
             "onConfirm": () => installTheme(themeId, themeId, true),
@@ -288,7 +288,7 @@ FloatingWindow {
                 anchors.right: parent.right
                 anchors.top: headerArea.bottom
                 anchors.topMargin: Theme.spacingM
-                text: I18n.tr("Install color themes from the DMS theme registry", "theme browser description")
+                text: I18n.tr("Install color themes from the HypeShell theme registry", "theme browser description")
                 font.pixelSize: Theme.fontSizeSmall
                 color: Theme.outline
                 wrapMode: Text.WordWrap
@@ -400,7 +400,7 @@ FloatingWindow {
                             return variants.default || (variants.options?.[0]?.id ?? "");
                         }
                         property string previewPath: {
-                            const baseDir = "/tmp/dankdots-plugin-registry/themes/" + (modelData.sourceDir || modelData.id);
+                            const baseDir = "/tmp/hypeshell-registry/themes/" + (modelData.sourceDir || modelData.id);
                             const mode = Theme.isLightMode ? "light" : "dark";
                             if (hasVariants && selectedVariantId) {
                                 if (variants?.type === "multi")

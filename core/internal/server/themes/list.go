@@ -50,5 +50,5 @@ func HandleList(conn net.Conn, req models.Request) {
 }
 
 func isFirstParty(author string) bool {
-	return strings.EqualFold(author, "Avenge Media") || strings.EqualFold(author, "AvengeMedia")
+	return strings.EqualFold(author, "HypeShell") || strings.EqualFold(author, "acarlton5")
 }

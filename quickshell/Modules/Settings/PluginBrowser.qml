@@ -118,7 +118,7 @@ FloatingWindow {
         PopoutService.pendingPluginInstall = "";
         urlInstallConfirm.showWithOptions({
             "title": I18n.tr("Install Plugin", "plugin installation dialog title"),
-            "message": I18n.tr("Install plugin '%1' from the DMS registry?", "plugin installation confirmation").arg(pluginId),
+            "message": I18n.tr("Install plugin '%1' from the HypeShell registry?", "plugin installation confirmation").arg(pluginId),
             "confirmText": I18n.tr("Install", "install action button"),
             "cancelText": I18n.tr("Cancel"),
             "onConfirm": () => installPlugin(pluginId, true),
@@ -319,7 +319,7 @@ FloatingWindow {
                 anchors.right: parent.right
                 anchors.top: headerArea.bottom
                 anchors.topMargin: Theme.spacingM
-                text: I18n.tr("Install plugins from the DMS plugin registry", "plugin browser description")
+                text: I18n.tr("Install plugins from the HypeShell plugin registry", "plugin browser description")
                 font.pixelSize: Theme.fontSizeSmall
                 color: Theme.outline
                 wrapMode: Text.WordWrap

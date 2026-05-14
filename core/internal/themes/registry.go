@@ -11,7 +11,7 @@ import (
 	"github.com/spf13/afero"
 )
 
-const registryRepo = "https://github.com/AvengeMedia/dms-plugin-registry.git"
+const registryRepo = "https://github.com/acarlton5/HypeRegistry.git"
 
 type ColorScheme struct {
 	Primary                 string `json:"primary,omitempty"`
@@ -172,7 +172,7 @@ func NewRegistryWithFs(fs afero.Fs) (*Registry, error) {
 }
 
 func getCacheDir() string {
-	return filepath.Join(os.TempDir(), "dankdots-plugin-registry")
+	return filepath.Join(os.TempDir(), "hypeshell-registry")
 }
 
 func (r *Registry) Update() error {

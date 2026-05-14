@@ -246,7 +246,7 @@ Item {
                             if (Theme.currentTheme === Theme.dynamic)
                                 return I18n.tr("Material colors generated from wallpaper", "dynamic theme description");
                             if (Theme.currentThemeCategory === "registry")
-                                return I18n.tr("Color theme from DMS registry", "registry theme description");
+                                return I18n.tr("Color theme from HypeShell registry", "registry theme description");
                             if (Theme.currentTheme === Theme.custom)
                                 return I18n.tr("Custom theme loaded from JSON file", "custom theme description");
                             return I18n.tr("Material Design inspired color themes", "generic theme description");
@@ -3018,7 +3018,7 @@ Item {
                 }
 
                 StyledText {
-                    text: I18n.tr('Generate baseline GTK3/4 or QT5/QT6 (requires qt6ct-kde) configurations to follow DMS colors. Only needed once.<br /><br />It is recommended to configure <a href="https://github.com/AvengeMedia/DankMaterialShell/blob/master/README.md#Theming" style="text-decoration:none; color:%1;">adw-gtk3</a> prior to applying GTK themes.').arg(Theme.primary)
+                    text: I18n.tr('Generate baseline GTK3/4 or QT5/QT6 (requires qt6ct-kde) configurations to follow HypeShell colors. Only needed once.<br /><br />It is recommended to configure <a href="https://github.com/acarlton5/HypeShell/blob/main/README.md#theming" style="text-decoration:none; color:%1;">adw-gtk3</a> prior to applying GTK themes.').arg(Theme.primary)
                     textFormat: Text.RichText
                     linkColor: Theme.primary
                     onLinkActivated: url => Qt.openUrlExternally(url)
