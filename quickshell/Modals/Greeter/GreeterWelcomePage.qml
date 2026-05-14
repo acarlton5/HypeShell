@@ -22,13 +22,13 @@ Item {
 
             Image {
                 width: root.logoSize
-                height: width * (569.94629 / 506.50931)
+                height: width
                 anchors.horizontalCenter: parent.horizontalCenter
                 fillMode: Image.PreserveAspectFit
                 smooth: true
                 mipmap: true
                 asynchronous: true
-                source: "file://" + Theme.shellDir + "/assets/danklogonormal.svg"
+                source: "file://" + Theme.shellDir + "/assets/hypeshell-logo.svg"
                 layer.enabled: true
                 layer.smooth: true
                 layer.mipmap: true
@@ -44,7 +44,7 @@ Item {
                 spacing: Theme.spacingXS
 
                 StyledText {
-                    text: I18n.tr("Welcome to DankMaterialShell", "greeter welcome page title")
+                    text: I18n.tr("Welcome to HypeShell", "greeter welcome page title")
                     font.pixelSize: Theme.fontSizeXLarge + 4
                     font.weight: Font.Bold
                     color: Theme.surfaceText
@@ -52,7 +52,7 @@ Item {
                 }
 
                 StyledText {
-                    text: I18n.tr("A modern desktop shell for Wayland compositors", "greeter welcome page tagline")
+                    text: I18n.tr("A modern Hyprland shell", "greeter welcome page tagline")
                     font.pixelSize: Theme.fontSizeMedium
                     color: Theme.surfaceVariantText
                     anchors.horizontalCenter: parent.horizontalCenter

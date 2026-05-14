@@ -23,13 +23,13 @@ Column {
 
             Image {
                 width: root.logoSize
-                height: width * (569.94629 / 506.50931)
+                height: width
                 anchors.verticalCenter: parent.verticalCenter
                 fillMode: Image.PreserveAspectFit
                 smooth: true
                 mipmap: true
                 asynchronous: true
-                source: "file://" + Theme.shellDir + "/assets/danklogonormal.svg"
+                source: "file://" + Theme.shellDir + "/assets/hypeshell-logo.svg"
                 layer.enabled: true
                 layer.smooth: true
                 layer.mipmap: true
@@ -48,7 +48,7 @@ Column {
                     spacing: Theme.spacingS
 
                     StyledText {
-                        text: "DMS " + ChangelogService.currentVersion
+                        text: "HypeShell " + ChangelogService.currentVersion
                         font.pixelSize: Theme.fontSizeXLarge + 2
                         font.weight: Font.Bold
                         color: Theme.surfaceText

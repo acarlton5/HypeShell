@@ -69,7 +69,8 @@ install-systemd:
 
 install-icon:
 	@echo "Installing icon..."
-	@install -D -m 644 $(ASSETS_DIR)/danklogo.svg $(ICON_DIR)/danklogo.svg
+	@install -D -m 644 $(ASSETS_DIR)/hypeshell-logo.svg $(ICON_DIR)/hypeshell-logo.svg
+	@install -D -m 644 $(ASSETS_DIR)/hypeshell-logo.svg $(ICON_DIR)/danklogo.svg
 	@gtk-update-icon-cache -q $(DATA_DIR)/icons/hicolor 2>/dev/null || true
 	@echo "Icon installed"
 
@@ -111,6 +112,7 @@ uninstall-systemd:
 
 uninstall-icon:
 	@echo "Removing icon..."
+	@rm -f $(ICON_DIR)/hypeshell-logo.svg
 	@rm -f $(ICON_DIR)/danklogo.svg
 	@gtk-update-icon-cache -q $(DATA_DIR)/icons/hicolor 2>/dev/null || true
 	@echo "Icon removed"

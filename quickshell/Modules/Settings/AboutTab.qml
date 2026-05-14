@@ -155,12 +155,12 @@ Item {
                             visible: !parent.hideLogo
                             anchors.verticalCenter: parent.verticalCenter
                             width: parent.compactLogo ? 80 : 120
-                            height: width * (569.94629 / 506.50931)
+                            height: width
                             fillMode: Image.PreserveAspectFit
                             smooth: true
                             mipmap: true
                             asynchronous: true
-                            source: "file://" + Theme.shellDir + "/assets/danklogonormal.svg"
+                            source: "file://" + Theme.shellDir + "/assets/hypeshell-logo.svg"
                             layer.enabled: true
                             layer.smooth: true
                             layer.mipmap: true
@@ -173,7 +173,7 @@ Item {
 
                         Text {
                             anchors.verticalCenter: parent.verticalCenter
-                            text: "DANK LINUX"
+                            text: "HYPESHELL"
                             font.pixelSize: parent.compactLogo ? 32 : 48
                             font.weight: Font.Bold
                             font.family: interFont.name

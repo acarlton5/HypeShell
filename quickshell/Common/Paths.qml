@@ -104,8 +104,8 @@ Singleton {
 
     function getAppIcon(appId: string, desktopEntry: var): string {
         // ! TODO - after QS 0.3, we can install our icon properly
-        if (appId === "org.quickshell" || appId === "com.danklinux.dms") {
-            return Qt.resolvedUrl("../assets/danklogo.svg");
+        if (appId === "org.quickshell" || appId === "com.danklinux.dms" || appId === "com.hypeshell.shell") {
+            return Qt.resolvedUrl("../assets/hypeshell-logo.svg");
         }
 
         const moddedId = moddedAppId(appId);

@@ -224,7 +224,7 @@ Item {
                 smooth: true
                 mipmap: true
                 asynchronous: true
-                source: "file://" + Theme.shellDir + "/assets/danklogo.svg"
+                source: "file://" + Theme.shellDir + "/assets/hypeshell-logo.svg"
                 layer.enabled: effectiveLogoColor !== ""
                 layer.smooth: true
                 layer.mipmap: true

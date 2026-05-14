@@ -2,7 +2,7 @@
 
 <div align="center">
   <a href="https://danklinux.com">
-    <img src="assets/danklogo.svg" alt="HypeShell" width="200">
+    <img src="assets/hypeshell-logo.svg" alt="HypeShell" width="200">
   </a>
 
 ### A modern Hyprland shell, rebased from DankMaterialShell

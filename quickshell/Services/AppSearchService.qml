@@ -162,7 +162,7 @@ Singleton {
         });
     }
 
-    readonly property string dmsLogoPath: Qt.resolvedUrl("../assets/danklogo2.svg")
+    readonly property string dmsLogoPath: Qt.resolvedUrl("../assets/hypeshell-logo.svg")
 
     readonly property var builtInPlugins: ({
             "dms_settings": {
@@ -170,7 +170,7 @@ Singleton {
                 name: I18n.tr("Settings", "settings window title"),
                 icon: "svg+corner:" + dmsLogoPath + "|settings",
                 cornerIcon: "settings",
-                comment: "DMS",
+                comment: "HypeShell",
                 action: "ipc:settings",
                 categories: ["Settings", "System"],
                 defaultTrigger: "",
