@@ -3,7 +3,7 @@
 set -euo pipefail
 
 SCRIPT_NAME="$(basename "$0")"
-DEFAULT_REPO_URL="https://github.com/acarlton5/Hype.git"
+DEFAULT_REPO_URL="https://github.com/acarlton5/HypeShell.git"
 
 YES=0
 PURGE_USER_DATA=0

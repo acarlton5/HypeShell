@@ -1,17 +1,17 @@
-# DankMaterialShell
+# HypeShell
 
 <div align="center">
   <a href="https://danklinux.com">
-    <img src="assets/danklogo.svg" alt="DankMaterialShell" width="200">
+    <img src="assets/danklogo.svg" alt="HypeShell" width="200">
   </a>
 
-### A modern desktop shell for Wayland
+### A modern desktop shell for Wayland, rebased from DankMaterialShell
 
 Built with [Quickshell](https://quickshell.org/) and [Go](https://go.dev/)
 
 [![Documentation](https://img.shields.io/badge/docs-danklinux.com-9ccbfb?style=for-the-badge&labelColor=101418)](https://danklinux.com/docs)
-[![GitHub stars](https://img.shields.io/github/stars/AvengeMedia/DankMaterialShell?style=for-the-badge&labelColor=101418&color=ffd700)](https://github.com/AvengeMedia/DankMaterialShell/stargazers)
-[![GitHub License](https://img.shields.io/github/license/AvengeMedia/DankMaterialShell?style=for-the-badge&labelColor=101418&color=b9c8da)](https://github.com/AvengeMedia/DankMaterialShell/blob/master/LICENSE)
+[![GitHub stars](https://img.shields.io/github/stars/acarlton5/HypeShell?style=for-the-badge&labelColor=101418&color=ffd700)](https://github.com/acarlton5/HypeShell/stargazers)
+[![GitHub License](https://img.shields.io/github/license/acarlton5/HypeShell?style=for-the-badge&labelColor=101418&color=b9c8da)](https://github.com/acarlton5/HypeShell/blob/main/LICENSE)
 [![GitHub release](https://img.shields.io/github/v/release/AvengeMedia/DankMaterialShell?style=for-the-badge&labelColor=101418&color=9ccbfb)](https://github.com/AvengeMedia/DankMaterialShell/releases)
 [![Arch version](https://img.shields.io/archlinux/v/extra/x86_64/dms-shell?style=for-the-badge&labelColor=101418&color=9ccbfb)](https://archlinux.org/packages/extra/x86_64/dms-shell/)
 [![AUR version (git)](<https://img.shields.io/aur/version/dms-shell-git?style=for-the-badge&labelColor=101418&color=9ccbfb&label=AUR%20(git)>)](https://aur.archlinux.org/packages/dms-shell-git)
@@ -19,14 +19,14 @@ Built with [Quickshell](https://quickshell.org/) and [Go](https://go.dev/)
 
 </div>
 
-DankMaterialShell is a complete desktop shell for [niri](https://github.com/YaLTeR/niri), [Hyprland](https://hyprland.org/), [MangoWC](https://github.com/DreamMaoMao/mangowc), [Sway](https://swaywm.org), [labwc](https://labwc.github.io/), [Scroll](https://github.com/dawsers/scroll), [Miracle WM](https://github.com/miracle-wm-org/miracle-wm), and other Wayland compositors. It replaces waybar, swaylock, swayidle, mako, fuzzel, polkit, and everything else you'd normally stitch together to make a desktop.
+HypeShell is a complete desktop shell for [niri](https://github.com/YaLTeR/niri), [Hyprland](https://hyprland.org/), [MangoWC](https://github.com/DreamMaoMao/mangowc), [Sway](https://swaywm.org), [labwc](https://labwc.github.io/), [Scroll](https://github.com/dawsers/scroll), [Miracle WM](https://github.com/miracle-wm-org/miracle-wm), and other Wayland compositors. It is independently imported from DankMaterialShell and currently keeps the upstream `dms` command/service names internally while HypeShell branding is migrated.
 
 ## Repository Structure
 
 This is a monorepo containing both the shell interface and the core backend services:
 
 ```
-DankMaterialShell/
+HypeShell/
 ├── quickshell/         # QML-based shell interface
 │   ├── Modules/        # UI components (panels, widgets, overlays)
 │   ├── Services/       # System integration (audio, network, bluetooth)
@@ -70,10 +70,12 @@ https://github.com/user-attachments/assets/1200a739-7770-4601-8b85-695ca527819a
 ## Installation
 
 ```bash
-curl -fsSL https://install.danklinux.com | sh
+git clone https://github.com/acarlton5/HypeShell.git
+cd HypeShell
+./scripts/migrate-from-hypeshell.sh --yes --install-method package --install-greeter --clean
 ```
 
-One command installs DMS and all dependencies on Arch, Fedora, Debian, Ubuntu, openSUSE, or Gentoo.
+The migration script removes old HYPESHELL-era files, installs the new DMS/HypeShell base, and can switch SDDM/GDM/LightDM to DankGreeter on `greetd`.
 
 **[Manual installation guide](https://danklinux.com/docs/dankmaterialshell/installation)**
 
