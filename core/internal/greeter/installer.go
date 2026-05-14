@@ -33,6 +33,34 @@ func DetectDMSPath() (string, error) {
 	return config.LocateDMSConfig()
 }
 
+func findGreeterWrapper(dmsPath string) (string, error) {
+	candidates := []string{}
+	if dmsPath != "" {
+		candidates = append(candidates,
+			filepath.Join(dmsPath, "Modules", "Greetd", "assets", "dms-greeter"),
+			filepath.Join(dmsPath, "quickshell", "Modules", "Greetd", "assets", "dms-greeter"),
+		)
+	}
+	candidates = append(candidates,
+		"/usr/local/share/quickshell/hype/Modules/Greetd/assets/dms-greeter",
+		"/usr/share/quickshell/hype/Modules/Greetd/assets/dms-greeter",
+		"/etc/xdg/quickshell/hype/Modules/Greetd/assets/dms-greeter",
+		"/usr/local/share/quickshell/dms/Modules/Greetd/assets/dms-greeter",
+		"/usr/share/quickshell/dms/Modules/Greetd/assets/dms-greeter",
+		"/etc/xdg/quickshell/dms/Modules/Greetd/assets/dms-greeter",
+	)
+
+	for _, candidate := range candidates {
+		if info, err := os.Stat(candidate); err == nil && !info.IsDir() {
+			return candidate, nil
+		}
+	}
+	if dmsPath == "" {
+		return "", fmt.Errorf("dms-greeter wrapper not found")
+	}
+	return "", fmt.Errorf("dms-greeter wrapper not found near %s", dmsPath)
+}
+
 // IsNixOS returns true when running on NixOS, which manages PAM configs through
 // its module system. The HypeShell PAM managed block won't be written on NixOS.
 func IsNixOS() bool {
@@ -489,11 +517,9 @@ func CopyGreeterFiles(dmsPath, compositor string, logFunc func(string), sudoPass
 			return fmt.Errorf("dms path is required for manual dms-greeter wrapper installs")
 		}
 
-		assetsDir := filepath.Join(dmsPath, "Modules", "Greetd", "assets")
-		wrapperSrc := filepath.Join(assetsDir, "dms-greeter")
-
-		if _, err := os.Stat(wrapperSrc); os.IsNotExist(err) {
-			return fmt.Errorf("dms-greeter wrapper not found at %s", wrapperSrc)
+		wrapperSrc, err := findGreeterWrapper(dmsPath)
+		if err != nil {
+			return err
 		}
 
 		wrapperDst := "/usr/local/bin/dms-greeter"

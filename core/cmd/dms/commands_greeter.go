@@ -672,6 +672,9 @@ func syncGreeter(nonInteractive bool, forceAuth bool, local bool) error {
 
 	if local {
 		localWrapperScript := filepath.Join(dmsPath, "Modules", "Greetd", "assets", "dms-greeter")
+		if info, statErr := os.Stat(localWrapperScript); statErr != nil || info.IsDir() {
+			localWrapperScript = filepath.Join(dmsPath, "quickshell", "Modules", "Greetd", "assets", "dms-greeter")
+		}
 		restoreWrapperOverride := func() {}
 		if info, statErr := os.Stat(localWrapperScript); statErr == nil && !info.IsDir() {
 			wrapperShell, shellErr := resolveLocalWrapperShell()
