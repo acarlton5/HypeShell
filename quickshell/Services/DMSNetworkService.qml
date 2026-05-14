@@ -160,7 +160,7 @@ Singleton {
     signal connectionChanged
     signal credentialsNeeded(string token, string ssid, string setting, var fields, var hints, string reason, string connType, string connName, string vpnService, var fieldsInfo)
 
-    readonly property string socketPath: Quickshell.env("DMS_SOCKET")
+    readonly property string socketPath: Quickshell.env("HYPE_SOCKET") || Quickshell.env("DMS_SOCKET")
 
     readonly property string effectiveWifiDevice: {
         if (!wifiDeviceOverride)

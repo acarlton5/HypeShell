@@ -34,7 +34,7 @@ func DetectDMSPath() (string, error) {
 }
 
 // IsNixOS returns true when running on NixOS, which manages PAM configs through
-// its module system. The DMS PAM managed block won't be written on NixOS.
+// its module system. The HypeShell PAM managed block won't be written on NixOS.
 func IsNixOS() bool {
 	_, err := os.Stat("/etc/NIXOS")
 	return err == nil
@@ -693,7 +693,7 @@ func InstallAppArmorProfile(logFunc func(string), sudoPassword string) error {
 	return nil
 }
 
-// UninstallAppArmorProfile removes the DMS AppArmor profile and reloads AppArmor.
+// UninstallAppArmorProfile removes the HypeShell AppArmor profile and reloads AppArmor.
 // It is a no-op when AppArmor is not active or the profile does not exist.
 func UninstallAppArmorProfile(logFunc func(string), sudoPassword string) error {
 	if IsNixOS() {
@@ -712,7 +712,7 @@ func UninstallAppArmorProfile(logFunc func(string), sudoPassword string) error {
 	if err := privesc.Run(context.Background(), sudoPassword, "rm", "-f", appArmorProfileDest); err != nil {
 		return fmt.Errorf("failed to remove AppArmor profile: %w", err)
 	}
-	logFunc("  ✓ Removed DMS AppArmor profile")
+	logFunc("  ✓ Removed HypeShell AppArmor profile")
 	return nil
 }
 
@@ -837,9 +837,9 @@ func RemediateStaleACLs(logFunc func(string), sudoPassword string) {
 	dirs := []string{
 		homeDir,
 		filepath.Join(homeDir, ".config"),
-		filepath.Join(homeDir, ".config", "DankMaterialShell"),
+		filepath.Join(homeDir, ".config", "HypeShell"),
 		filepath.Join(homeDir, ".cache"),
-		filepath.Join(homeDir, ".cache", "DankMaterialShell"),
+		filepath.Join(homeDir, ".cache", "HypeShell"),
 		filepath.Join(homeDir, ".local"),
 		filepath.Join(homeDir, ".local", "state"),
 		filepath.Join(homeDir, ".local", "share"),
@@ -942,9 +942,9 @@ func SetupDMSGroup(logFunc func(string), sudoPassword string) error {
 		path string
 		desc string
 	}{
-		{filepath.Join(homeDir, ".config", "DankMaterialShell"), "DankMaterialShell config"},
-		{filepath.Join(homeDir, ".local", "state", "DankMaterialShell"), "DankMaterialShell state"},
-		{filepath.Join(homeDir, ".cache", "DankMaterialShell"), "DankMaterialShell cache"},
+		{filepath.Join(homeDir, ".config", "HypeShell"), "HypeShell config"},
+		{filepath.Join(homeDir, ".local", "state", "HypeShell"), "HypeShell state"},
+		{filepath.Join(homeDir, ".cache", "HypeShell"), "HypeShell cache"},
 		{filepath.Join(homeDir, ".cache", "quickshell"), "quickshell cache"},
 		{filepath.Join(homeDir, ".config", "quickshell"), "quickshell config"},
 		{filepath.Join(homeDir, ".local", "share", "wayland-sessions"), "wayland sessions"},
@@ -1007,11 +1007,11 @@ type greeterThemeSyncState struct {
 }
 
 func defaultGreeterColorsSource(homeDir string) string {
-	return filepath.Join(homeDir, ".cache", "DankMaterialShell", "dms-colors.json")
+	return filepath.Join(homeDir, ".cache", "HypeShell", "dms-colors.json")
 }
 
 func greeterOverrideColorsStateDir(homeDir string) string {
-	return filepath.Join(homeDir, ".cache", "DankMaterialShell", "greeter-colors")
+	return filepath.Join(homeDir, ".cache", "HypeShell", "greeter-colors")
 }
 
 func greeterOverrideColorsSource(homeDir string) string {
@@ -1038,7 +1038,7 @@ func readGreeterThemeSyncSettings(homeDir string) (greeterThemeSyncSettings, err
 		MatugenScheme:    "scheme-tonal-spot",
 		IconTheme:        "System Default",
 	}
-	settingsPath := filepath.Join(homeDir, ".config", "DankMaterialShell", "settings.json")
+	settingsPath := filepath.Join(homeDir, ".config", "HypeShell", "settings.json")
 	if err := readOptionalJSONFile(settingsPath, &settings); err != nil {
 		return greeterThemeSyncSettings{}, fmt.Errorf("failed to parse settings at %s: %w", settingsPath, err)
 	}
@@ -1047,7 +1047,7 @@ func readGreeterThemeSyncSettings(homeDir string) (greeterThemeSyncSettings, err
 
 func readGreeterThemeSyncSession(homeDir string) (greeterThemeSyncSession, error) {
 	session := greeterThemeSyncSession{}
-	sessionPath := filepath.Join(homeDir, ".local", "state", "DankMaterialShell", "session.json")
+	sessionPath := filepath.Join(homeDir, ".local", "state", "HypeShell", "session.json")
 	if err := readOptionalJSONFile(sessionPath, &session); err != nil {
 		return greeterThemeSyncSession{}, fmt.Errorf("failed to parse session at %s: %w", sessionPath, err)
 	}
@@ -1204,12 +1204,12 @@ func SyncDMSConfigs(dmsPath, compositor string, logFunc func(string), sudoPasswo
 		desc   string
 	}{
 		{
-			source: filepath.Join(homeDir, ".config", "DankMaterialShell", "settings.json"),
+			source: filepath.Join(homeDir, ".config", "HypeShell", "settings.json"),
 			target: filepath.Join(cacheDir, "settings.json"),
 			desc:   "core settings (theme, clock formats, etc)",
 		},
 		{
-			source: filepath.Join(homeDir, ".local", "state", "DankMaterialShell", "session.json"),
+			source: filepath.Join(homeDir, ".local", "state", "HypeShell", "session.json"),
 			target: filepath.Join(cacheDir, "session.json"),
 			desc:   "state (wallpaper configuration)",
 		},
@@ -1927,10 +1927,10 @@ func AutoSetupGreeter(compositor, sudoPassword string, logFunc func(string)) err
 	if !IsGreeterPackaged() {
 		detected, err := DetectDMSPath()
 		if err != nil {
-			return fmt.Errorf("DMS installation not found: %w", err)
+			return fmt.Errorf("HypeShell installation not found: %w", err)
 		}
 		dmsPath = detected
-		logFunc(fmt.Sprintf("✓ Found DMS at: %s", dmsPath))
+		logFunc(fmt.Sprintf("✓ Found HypeShell at: %s", dmsPath))
 	} else {
 		logFunc("✓ Using packaged dms-greeter (/usr/share/quickshell/dms-greeter)")
 	}
@@ -1954,7 +1954,7 @@ func AutoSetupGreeter(compositor, sudoPassword string, logFunc func(string)) err
 		return fmt.Errorf("failed to configure greetd: %w", err)
 	}
 
-	logFunc("Synchronizing DMS configurations...")
+	logFunc("Synchronizing HypeShell configurations...")
 	if err := SyncDMSConfigs(dmsPath, compositor, logFunc, sudoPassword); err != nil {
 		logFunc(fmt.Sprintf("⚠ Warning: config sync error: %v", err))
 	}
@@ -1979,6 +1979,6 @@ func AutoSetupGreeter(compositor, sudoPassword string, logFunc func(string)) err
 		logFunc(fmt.Sprintf("⚠ Warning: %v", err))
 	}
 
-	logFunc("✓ DMS greeter setup complete")
+	logFunc("✓ HypeShell greeter setup complete")
 	return nil
 }

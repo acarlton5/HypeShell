@@ -96,8 +96,8 @@ var (
 
 var doctorCmd = &cobra.Command{
 	Use:   "doctor",
-	Short: "Diagnose DMS installation and dependencies",
-	Long:  "Check system health, verify dependencies, and diagnose configuration issues for DMS",
+	Short: "Diagnose HypeShell installation and dependencies",
+	Long:  "Check system health, verify dependencies, and diagnose configuration issues for HypeShell",
 	Run:   runDoctor,
 }
 
@@ -154,7 +154,7 @@ func (c category) String() string {
 
 const (
 	checkNameMaxLength = 21
-	doctorDocsURL      = "https://danklinux.com/docs/dankmaterialshell/cli-doctor"
+	doctorDocsURL      = "https://github.com/acarlton5/HypeShell"
 )
 
 type checkResult struct {
@@ -260,7 +260,7 @@ func checkSystemInfo() []checkResult {
 				details = "Supported for runtime (install via NixOS module or Flake)"
 			case osRelease["PRETTY_NAME"] != "":
 				message = fmt.Sprintf("%s (not supported by dms setup)", osRelease["PRETTY_NAME"])
-				details = "DMS may work but automatic installation is not available"
+				details = "HypeShell may work but automatic installation is not available"
 			}
 		}
 
@@ -300,7 +300,7 @@ func checkSystemInfo() []checkResult {
 			doctorDocsURL + "#display-server",
 		})
 	case xdgSessionType == "x11":
-		results = append(results, checkResult{catSystem, "Display Server", statusError, "X11 (DMS requires Wayland)", "", doctorDocsURL + "#display-server"})
+		results = append(results, checkResult{catSystem, "Display Server", statusError, "X11 (HypeShell requires Wayland)", "", doctorDocsURL + "#display-server"})
 	default:
 		results = append(results, checkResult{
 			catSystem, "Display Server", statusWarn, "Unknown (ensure you're running Wayland)",
@@ -352,7 +352,7 @@ func checkVersions(qsMissingFeatures bool) []checkResult {
 	}
 
 	results := []checkResult{
-		{catVersions, "DMS CLI", statusOK, formatVersion(Version), dmsCliDetails, doctorDocsURL + "#dms-cli"},
+		{catVersions, "Hype CLI", statusOK, formatVersion(Version), dmsCliDetails, doctorDocsURL + "#dms-cli"},
 	}
 
 	qsVersion, qsStatus, qsPath := getQuickshellVersionInfo(qsMissingFeatures)
@@ -364,9 +364,9 @@ func checkVersions(qsMissingFeatures bool) []checkResult {
 
 	dmsVersion, dmsPath := getDMSShellVersion()
 	if dmsVersion != "" {
-		results = append(results, checkResult{catVersions, "DMS Shell", statusOK, dmsVersion, dmsPath, doctorDocsURL + "#dms-shell"})
+		results = append(results, checkResult{catVersions, "HypeShell Shell", statusOK, dmsVersion, dmsPath, doctorDocsURL + "#dms-shell"})
 	} else {
-		results = append(results, checkResult{catVersions, "DMS Shell", statusError, "Not installed or not detected", "Run 'dms setup' to install", doctorDocsURL + "#dms-shell"})
+		results = append(results, checkResult{catVersions, "HypeShell Shell", statusError, "Not installed or not detected", "Run './install.sh' to install", doctorDocsURL + "#dms-shell"})
 	}
 
 	return results
@@ -429,10 +429,10 @@ func checkDMSInstallation() []checkResult {
 	}
 
 	if dmsPath == "" {
-		return []checkResult{{catInstallation, "DMS Configuration", statusError, "Not found", "shell.qml not found in any config path", doctorDocsURL + "#dms-configuration"}}
+		return []checkResult{{catInstallation, "HypeShell Configuration", statusError, "Not found", "shell.qml not found in any config path", doctorDocsURL + "#dms-configuration"}}
 	}
 
-	results = append(results, checkResult{catInstallation, "DMS Configuration", statusOK, "Found", dmsPath, doctorDocsURL + "#dms-configuration"})
+	results = append(results, checkResult{catInstallation, "HypeShell Configuration", statusOK, "Found", dmsPath, doctorDocsURL + "#dms-configuration"})
 
 	shellQml := filepath.Join(dmsPath, "shell.qml")
 	if _, err := os.Stat(shellQml); err != nil {
@@ -902,7 +902,7 @@ func checkOptionalDependencies() []checkResult {
 func checkConfigurationFiles() []checkResult {
 	configDir, _ := os.UserConfigDir()
 	cacheDir, _ := os.UserCacheDir()
-	dmsDir := "DankMaterialShell"
+	dmsDir := "HypeShell"
 
 	configFiles := []struct{ name, path string }{
 		{"settings.json", filepath.Join(configDir, dmsDir, "settings.json")},
@@ -1102,7 +1102,7 @@ func printSummary(results []checkResult, qsMissingFeatures bool) {
 
 func formatResultsPlain(results []checkResult) string {
 	var sb strings.Builder
-	sb.WriteString("## DMS Doctor Report\n\n")
+	sb.WriteString("## HypeShell Doctor Report\n\n")
 
 	currentCategory := category(-1)
 	for _, r := range results {

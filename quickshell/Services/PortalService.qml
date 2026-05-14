@@ -21,7 +21,7 @@ Singleton {
     property string colorSchemeCommand: ""
     property string pendingProfileImage: ""
 
-    readonly property string socketPath: Quickshell.env("DMS_SOCKET")
+    readonly property string socketPath: Quickshell.env("HYPE_SOCKET") || Quickshell.env("DMS_SOCKET")
 
     function init() {
     }
@@ -171,7 +171,7 @@ Singleton {
         if (socketPath && socketPath.length > 0) {
             checkDMSCapabilities();
         } else {
-            log.info("DMS_SOCKET not set");
+            log.info("HYPE_SOCKET not set");
         }
         colorSchemeDetector.running = true;
     }
@@ -209,7 +209,7 @@ Singleton {
             checkAccountsService();
             checkSettingsPortal();
         } else {
-            log.info("freedesktop capability not available in DMS");
+            log.info("freedesktop capability not available in HypeShell");
         }
     }
 

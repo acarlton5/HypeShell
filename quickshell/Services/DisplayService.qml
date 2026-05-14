@@ -282,7 +282,7 @@ Singleton {
         const clampedValue = Math.max(minValue, Math.min(maxValue, percentage));
 
         if (!DMSService.isConnected) {
-            log.warn("Not connected to DMS");
+            log.warn("Not connected to HypeShell");
             return;
         }
 
@@ -444,7 +444,7 @@ Singleton {
     // Night Mode Functions - Simplified
     function enableNightMode() {
         if (!gammaControlAvailable) {
-            ToastService.showWarning(I18n.tr("Night mode failed: DMS gamma control not available"));
+            ToastService.showWarning(I18n.tr("Night mode failed: HypeShell gamma control not available"));
             return;
         }
 

@@ -188,7 +188,7 @@ Singleton {
             return;
         }
 
-        // The DMS backend actually implements a bluez agent, so we can pair anything
+        // The HypeShell backend actually implements a bluez agent, so we can pair anything
         if (enhancedPairingAvailable) {
             const devicePath = getDevicePath(device);
             DMSService.bluetoothPair(devicePath, callback);

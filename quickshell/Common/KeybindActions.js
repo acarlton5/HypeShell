@@ -1,7 +1,7 @@
 .pragma library
 
 const ACTION_TYPES = [
-    { id: "dms", label: "DMS Action", icon: "widgets" },
+    { id: "dms", label: "HypeShell Action", icon: "widgets" },
     { id: "compositor", label: "Compositor", icon: "desktop_windows" },
     { id: "spawn", label: "Run Command", icon: "terminal" },
     { id: "shell", label: "Shell Command", icon: "code" }

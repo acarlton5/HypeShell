@@ -78,7 +78,7 @@ Singleton {
     readonly property string _homeUrl: StandardPaths.writableLocation(StandardPaths.HomeLocation)
     readonly property string _configUrl: StandardPaths.writableLocation(StandardPaths.ConfigLocation)
     readonly property string _configDir: Paths.strip(_configUrl)
-    readonly property string pluginSettingsPath: _configDir + "/DankMaterialShell/plugin_settings.json"
+    readonly property string pluginSettingsPath: _configDir + "/HypeShell/plugin_settings.json"
 
     property bool _loading: false
     property bool _pluginSettingsLoading: false
@@ -2317,7 +2317,7 @@ Singleton {
     }
 
     function sendTestNotification(index) {
-        const notifications = [["Notification Position Test", "DMS test notification 1 of 3 ~ Hi there!", "preferences-system"], ["Second Test", "DMS Notification 2 of 3 ~ Check it out!", "applications-graphics"], ["Third Test", "DMS notification 3 of 3 ~ Enjoy!", "face-smile"]];
+        const notifications = [["Notification Position Test", "HypeShell test notification 1 of 3 ~ Hi there!", "preferences-system"], ["Second Test", "HypeShell notification 2 of 3 ~ Check it out!", "applications-graphics"], ["Third Test", "HypeShell notification 3 of 3 ~ Enjoy!", "face-smile"]];
 
         if (index < 0 || index >= notifications.length) {
             return;
@@ -3103,7 +3103,7 @@ Singleton {
     FileView {
         id: settingsFile
 
-        path: isGreeterMode ? "" : StandardPaths.writableLocation(StandardPaths.ConfigLocation) + "/DankMaterialShell/settings.json"
+        path: isGreeterMode ? "" : StandardPaths.writableLocation(StandardPaths.ConfigLocation) + "/HypeShell/settings.json"
         blockLoading: true
         blockWrites: true
         atomicWrites: true

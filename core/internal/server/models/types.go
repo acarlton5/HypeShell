@@ -30,7 +30,7 @@ type Response[T any] struct {
 }
 
 func RespondError(conn net.Conn, id int, errMsg string) {
-	log.Errorf("DMS API Error: id=%d error=%s", id, errMsg)
+	log.Errorf("Hype API Error: id=%d error=%s", id, errMsg)
 	resp := Response[any]{ID: id, Error: errMsg}
 	json.NewEncoder(conn).Encode(resp)
 }

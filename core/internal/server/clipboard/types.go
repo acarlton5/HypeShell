@@ -38,7 +38,7 @@ func getConfigPath() (string, error) {
 	if err != nil {
 		return "", err
 	}
-	return filepath.Join(configDir, "DankMaterialShell", "clsettings.json"), nil
+	return filepath.Join(configDir, "HypeShell", "clsettings.json"), nil
 }
 
 func LoadConfig() Config {

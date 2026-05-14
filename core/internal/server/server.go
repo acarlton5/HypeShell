@@ -105,7 +105,7 @@ func getSocketDir() string {
 }
 
 func GetSocketPath() string {
-	return filepath.Join(getSocketDir(), fmt.Sprintf("danklinux-%d.sock", os.Getpid()))
+	return filepath.Join(getSocketDir(), fmt.Sprintf("HYPESHELL-%d.sock", os.Getpid()))
 }
 
 func FindSocket() (string, error) {
@@ -116,11 +116,11 @@ func FindSocket() (string, error) {
 	}
 
 	for _, entry := range entries {
-		if strings.HasPrefix(entry.Name(), "danklinux-") && strings.HasSuffix(entry.Name(), ".sock") {
+		if (strings.HasPrefix(entry.Name(), "HYPESHELL-") || strings.HasPrefix(entry.Name(), "danklinux-")) && strings.HasSuffix(entry.Name(), ".sock") {
 			return filepath.Join(dir, entry.Name()), nil
 		}
 	}
-	return "", fmt.Errorf("no dms socket found")
+	return "", fmt.Errorf("no HypeShell socket found")
 }
 
 func cleanupStaleSockets() {
@@ -131,11 +131,11 @@ func cleanupStaleSockets() {
 	}
 
 	for _, entry := range entries {
-		if !strings.HasPrefix(entry.Name(), "danklinux-") || !strings.HasSuffix(entry.Name(), ".sock") {
+		if !(strings.HasPrefix(entry.Name(), "HYPESHELL-") || strings.HasPrefix(entry.Name(), "danklinux-")) || !strings.HasSuffix(entry.Name(), ".sock") {
 			continue
 		}
 
-		pidStr := strings.TrimPrefix(entry.Name(), "danklinux-")
+		pidStr := strings.TrimPrefix(strings.TrimPrefix(entry.Name(), "HYPESHELL-"), "danklinux-")
 		pidStr = strings.TrimSuffix(pidStr, ".sock")
 		pid, err := strconv.Atoi(pidStr)
 		if err != nil {
@@ -1477,8 +1477,8 @@ func Start(printDocs bool) error {
 	defer listener.Close()
 	defer cleanupManagers()
 
-	log.Infof("DMS API Server listening on: %s", socketPath)
-	log.Infof("API Version: %d", APIVersion)
+	log.Infof("Hype API Server listening on: %s", socketPath)
+	log.Infof("Hype API Version: %d", APIVersion)
 	log.Info("Protocol: JSON over Unix socket")
 	log.Info("Request format: {\"id\": <any>, \"method\": \"...\", \"params\": {...}}")
 	log.Info("Response format: {\"id\": <any>, \"result\": {...}} or {\"id\": <any>, \"error\": \"...\"}")

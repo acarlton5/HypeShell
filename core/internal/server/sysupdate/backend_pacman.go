@@ -104,10 +104,10 @@ func (b archHelperBackend) Upgrade(ctx context.Context, opts UpgradeOptions, onL
 	}
 	term := findTerminal(opts.Terminal)
 	if term == "" {
-		return fmt.Errorf("no terminal found (pick one in DMS settings, set $TERMINAL, or install kitty/ghostty/foot/alacritty)")
+		return fmt.Errorf("no terminal found (pick one in HypeShell settings, set $TERMINAL, or install kitty/ghostty/foot/alacritty)")
 	}
 	cmd := strings.Join(archHelperUpgradeArgv(b.id, opts.IncludeAUR), " ")
-	title := fmt.Sprintf("DMS — System Update (%s)", b.id)
+	title := fmt.Sprintf("HypeShell - System Update (%s)", b.id)
 	return Run(ctx, wrapInTerminal(term, title, cmd), RunOptions{OnLine: onLine})
 }
 

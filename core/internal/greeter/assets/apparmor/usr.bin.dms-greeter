@@ -1,6 +1,6 @@
 # AppArmor profile for dms-greeter
 #
-# Managed by DMS — regenerated on every `dms greeter install` / `dms greeter sync`.
+# Managed by HypeShell - regenerated on every `hype greeter install` / `hype greeter sync`.
 # Manual edits will be overwritten on next sync.
 #
 # Mode: complain  (denials are logged, nothing is blocked)
@@ -16,17 +16,17 @@ profile dms-greeter /usr/bin/dms-greeter flags=(complain) {
   # The launcher script itself
   /usr/bin/dms-greeter r,
 
-  # Cache directory — created by dms greeter sync/enable with greeter:greeter ownership
+  # Cache directory — created by hype greeter sync/enable with greeter:greeter ownership
   /var/cache/dms-greeter/     rw,
   /var/cache/dms-greeter/**   rwlk,
 
-  # DMS config — packaged path
+  # HypeShell config — packaged path
   /usr/share/quickshell/dms-greeter/    r,
   /usr/share/quickshell/dms-greeter/**  r,
   /usr/share/quickshell/               r,
   /usr/share/quickshell/**             r,
 
-  # DMS config — system and user overrides
+  # HypeShell config — system and user overrides
   /etc/dms/    r,
   /etc/dms/**  r,
   /usr/share/dms/    r,

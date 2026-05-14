@@ -268,7 +268,7 @@ func requireMutableSystemCommand(cmd *cobra.Command, _ []string) error {
 		reason = "Detected immutable system: " + policy.ImmutableReason + "\n"
 	}
 
-	return fmt.Errorf("%s%s\nCommand: dms %s\nPolicy files:\n  %s\n  %s", reason, policy.Message, commandPath, cliPolicyPackagedPath, cliPolicyAdminPath)
+	return fmt.Errorf("%s%s\nCommand: hype %s\nPolicy files:\n  %s\n  %s", reason, policy.Message, commandPath, cliPolicyPackagedPath, cliPolicyAdminPath)
 }
 
 // preRunPrivileged combines the immutable-system check with a privesc tool

@@ -820,16 +820,16 @@ Item {
     Connections {
         target: DMSService
         function onOpenUrlRequested(url) {
-            if (url.startsWith("dms://theme/install/")) {
-                var themeId = url.replace("dms://theme/install/", "").split(/[?#]/)[0];
+            if (url.startsWith("hype://theme/install/") || url.startsWith("dms://theme/install/")) {
+                var themeId = url.replace(/^hype:\/\/theme\/install\//, "").replace(/^dms:\/\/theme\/install\//, "").split(/[?#]/)[0];
                 if (themeId) {
                     PopoutService.pendingThemeInstall = themeId;
                     PopoutService.openSettingsWithTab("theme");
                 }
                 return;
             }
-            if (url.startsWith("dms://plugin/install/")) {
-                var pluginId = url.replace("dms://plugin/install/", "").split(/[?#]/)[0];
+            if (url.startsWith("hype://plugin/install/") || url.startsWith("dms://plugin/install/")) {
+                var pluginId = url.replace(/^hype:\/\/plugin\/install\//, "").replace(/^dms:\/\/plugin\/install\//, "").split(/[?#]/)[0];
                 if (pluginId) {
                     PopoutService.pendingPluginInstall = pluginId;
                     PopoutService.openSettingsWithTab("plugins");

@@ -20,8 +20,8 @@ var versionCmd = &cobra.Command{
 
 var runCmd = &cobra.Command{
 	Use:     "run",
-	Short:   "Launch quickshell with DMS configuration",
-	Long:    "Launch quickshell with DMS configuration (qs -c dms)",
+	Short:   "Launch quickshell with HypeShell configuration",
+	Long:    "Launch quickshell with HypeShell configuration",
 	PreRunE: findConfig,
 	Run: func(cmd *cobra.Command, args []string) {
 		daemon, _ := cmd.Flags().GetBool("daemon")
@@ -47,8 +47,8 @@ var runCmd = &cobra.Command{
 
 var restartCmd = &cobra.Command{
 	Use:     "restart",
-	Short:   "Restart quickshell with DMS configuration",
-	Long:    "Kill existing DMS shell processes and restart quickshell with DMS configuration",
+	Short:   "Restart quickshell with HypeShell configuration",
+	Long:    "Kill existing HypeShell processes and restart quickshell with HypeShell configuration",
 	PreRunE: findConfig,
 	Run: func(cmd *cobra.Command, args []string) {
 		restartShell()
@@ -67,8 +67,8 @@ var restartDetachedCmd = &cobra.Command{
 
 var killCmd = &cobra.Command{
 	Use:   "kill",
-	Short: "Kill running DMS shell processes",
-	Long:  "Kill all running quickshell processes with DMS configuration",
+	Short: "Kill running HypeShell processes",
+	Long:  "Kill all running quickshell processes with HypeShell configuration",
 	Run: func(cmd *cobra.Command, args []string) {
 		killShell()
 	},
@@ -76,7 +76,7 @@ var killCmd = &cobra.Command{
 
 var ipcCmd = &cobra.Command{
 	Use:   "ipc [target] [function] [args...]",
-	Short: "Send IPC commands to running DMS shell",
+	Short: "Send IPC commands to running HypeShell",
 	ValidArgsFunction: func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
 		_ = findConfig(cmd, args)
 		return getShellIPCCompletions(args, toComplete), cobra.ShellCompDirectiveNoFileComp
@@ -96,7 +96,7 @@ func init() {
 var debugSrvCmd = &cobra.Command{
 	Use:   "debug-srv",
 	Short: "Start the debug server",
-	Long:  "Start the Unix socket debug server for DMS",
+	Long:  "Start the Unix socket debug server for HypeShell",
 	Run: func(cmd *cobra.Command, args []string) {
 		if err := startDebugServer(); err != nil {
 			log.Fatalf("Error starting debug server: %v", err)
@@ -106,14 +106,14 @@ var debugSrvCmd = &cobra.Command{
 
 var pluginsCmd = &cobra.Command{
 	Use:   "plugins",
-	Short: "Manage DMS plugins",
-	Long:  "Browse and manage DMS plugins from the registry",
+	Short: "Manage HypeShell plugins",
+	Long:  "Browse and manage HypeShell plugins from the registry",
 }
 
 var pluginsBrowseCmd = &cobra.Command{
 	Use:   "browse",
 	Short: "Browse available plugins",
-	Long:  "Browse available plugins from the DMS plugin registry",
+	Long:  "Browse available plugins from the HypeShell plugin registry",
 	Run: func(cmd *cobra.Command, args []string) {
 		if err := browsePlugins(); err != nil {
 			log.Fatalf("Error browsing plugins: %v", err)
@@ -124,7 +124,7 @@ var pluginsBrowseCmd = &cobra.Command{
 var pluginsListCmd = &cobra.Command{
 	Use:   "list",
 	Short: "List installed plugins",
-	Long:  "List all installed DMS plugins",
+	Long:  "List all installed HypeShell plugins",
 	Run: func(cmd *cobra.Command, args []string) {
 		if err := listInstalledPlugins(); err != nil {
 			log.Fatalf("Error listing plugins: %v", err)
@@ -135,7 +135,7 @@ var pluginsListCmd = &cobra.Command{
 var pluginsInstallCmd = &cobra.Command{
 	Use:   "install <plugin-id>",
 	Short: "Install a plugin by ID",
-	Long:  "Install a DMS plugin from the registry using its ID (e.g., 'myPlugin'). Plugin names with spaces are also supported for backward compatibility.",
+	Long:  "Install a HypeShell plugin from the registry using its ID (e.g., 'myPlugin'). Plugin names with spaces are also supported for backward compatibility.",
 	Args:  cobra.ExactArgs(1),
 	ValidArgsFunction: func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
 		if len(args) != 0 {
@@ -153,7 +153,7 @@ var pluginsInstallCmd = &cobra.Command{
 var pluginsUninstallCmd = &cobra.Command{
 	Use:   "uninstall <plugin-id>",
 	Short: "Uninstall a plugin by ID",
-	Long:  "Uninstall a DMS plugin using its ID (e.g., 'myPlugin'). Plugin names with spaces are also supported for backward compatibility.",
+	Long:  "Uninstall a HypeShell plugin using its ID (e.g., 'myPlugin'). Plugin names with spaces are also supported for backward compatibility.",
 	Args:  cobra.ExactArgs(1),
 	ValidArgsFunction: func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
 		if len(args) != 0 {
@@ -171,7 +171,7 @@ var pluginsUninstallCmd = &cobra.Command{
 var pluginsUpdateCmd = &cobra.Command{
 	Use:   "update <plugin-id>",
 	Short: "Update a plugin by ID",
-	Long:  "Update an installed DMS plugin using its ID (e.g., 'myPlugin'). Plugin names are also supported.",
+	Long:  "Update an installed HypeShell plugin using its ID (e.g., 'myPlugin'). Plugin names are also supported.",
 	Args:  cobra.ExactArgs(1),
 	ValidArgsFunction: func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
 		if len(args) != 0 {
@@ -212,7 +212,7 @@ func formatVersion(version string) string {
 		return fmt.Sprintf("dms v%s", matches[1])
 	}
 
-	return fmt.Sprintf("dms %s", version)
+	return fmt.Sprintf("hype %s", version)
 }
 
 func getBaseVersion() string {

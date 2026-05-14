@@ -18,7 +18,7 @@ const (
 	agentManagerIface = "org.bluez.AgentManager1"
 	agent1Iface       = "org.bluez.Agent1"
 	device1Iface      = "org.bluez.Device1"
-	agentPath         = "/com/danklinux/bluez/agent"
+	agentPath         = "/com/hypeshell/bluez/agent"
 	agentCapability   = "KeyboardDisplay"
 )
 

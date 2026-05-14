@@ -7,6 +7,7 @@ import (
 	"net"
 	"os"
 	"path/filepath"
+	"strings"
 
 	"github.com/acarlton5/HypeShell/core/internal/server"
 	"github.com/acarlton5/HypeShell/core/internal/server/models"
@@ -97,15 +98,15 @@ func getServerSocketPath() string {
 
 	entries, err := os.ReadDir(runtimeDir)
 	if err != nil {
-		return filepath.Join(runtimeDir, "danklinux.sock")
+		return filepath.Join(runtimeDir, "HYPESHELL.sock")
 	}
 
 	for _, entry := range entries {
 		name := entry.Name()
-		if name == "danklinux.sock" {
+		if name == "HYPESHELL.sock" || name == "danklinux.sock" {
 			return filepath.Join(runtimeDir, name)
 		}
-		if len(name) > 10 && name[:10] == "danklinux-" && filepath.Ext(name) == ".sock" {
+		if (strings.HasPrefix(name, "HYPESHELL-") || strings.HasPrefix(name, "danklinux-")) && filepath.Ext(name) == ".sock" {
 			return filepath.Join(runtimeDir, name)
 		}
 	}

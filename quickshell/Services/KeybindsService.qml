@@ -342,7 +342,7 @@ Singleton {
             const binds = bindsData[cat];
             for (var i = 0; i < binds.length; i++) {
                 const bind = binds[i];
-                const targetCat = Actions.isDmsAction(bind.action) ? "DMS" : cat;
+                const targetCat = Actions.isDmsAction(bind.action) ? "HypeShell" : cat;
                 if (!processed[targetCat])
                     processed[targetCat] = [];
                 processed[targetCat].push(bind);

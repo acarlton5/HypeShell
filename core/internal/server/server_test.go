@@ -42,7 +42,7 @@ func TestGetSocketDir(t *testing.T) {
 
 func TestGetSocketPath(t *testing.T) {
 	path := GetSocketPath()
-	assert.Contains(t, path, "danklinux-")
+	assert.Contains(t, path, "HYPESHELL-")
 	assert.Contains(t, path, ".sock")
 	assert.Contains(t, path, fmt.Sprintf("%d", os.Getpid()))
 }
@@ -162,11 +162,11 @@ func TestCleanupStaleSockets(t *testing.T) {
 	tempDir := t.TempDir()
 	t.Setenv("XDG_RUNTIME_DIR", tempDir)
 
-	staleSocket := filepath.Join(tempDir, "danklinux-4194305.sock")
+	staleSocket := filepath.Join(tempDir, "HYPESHELL-4194305.sock")
 	err := os.WriteFile(staleSocket, []byte{}, 0o600)
 	require.NoError(t, err)
 
-	activeSocket := filepath.Join(tempDir, fmt.Sprintf("danklinux-%d.sock", os.Getpid()))
+	activeSocket := filepath.Join(tempDir, fmt.Sprintf("HYPESHELL-%d.sock", os.Getpid()))
 	err = os.WriteFile(activeSocket, []byte{}, 0o600)
 	require.NoError(t, err)
 

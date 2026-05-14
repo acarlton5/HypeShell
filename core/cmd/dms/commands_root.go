@@ -44,7 +44,10 @@ func findConfig(cmd *cobra.Command, args []string) error {
 		return fmt.Errorf("path is a directory, not a file: %s", shellPath)
 	}
 
-	configStateFile := filepath.Join(getRuntimeDir(), "danklinux.path")
+	configStateFile := filepath.Join(getRuntimeDir(), "HYPESHELL.path")
+	if _, err := os.Stat(configStateFile); os.IsNotExist(err) {
+		configStateFile = filepath.Join(getRuntimeDir(), "danklinux.path")
+	}
 	if data, readErr := os.ReadFile(configStateFile); readErr == nil {
 		if len(getAllDMSPIDs()) == 0 {
 			os.Remove(configStateFile)

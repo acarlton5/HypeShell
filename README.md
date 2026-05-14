@@ -71,7 +71,7 @@ https://github.com/user-attachments/assets/1200a739-7770-4601-8b85-695ca527819a
 curl -fsSL https://raw.githubusercontent.com/acarlton5/HypeShell/main/install.sh | bash -s -- --yes --install-greeter --clean
 ```
 
-The installer clones this HypeShell repo, builds the shell from source, installs the HypeShell-owned Hyprland session/config files, and can switch SDDM/GDM/LightDM to the HypeShell greeter on `greetd`. It treats Hyprland as the compositor dependency and does not install upstream `dms-shell`, `dms-shell-hyprland`, or `dms-hyprland` packages.
+The installer clones this HypeShell repo, installs missing build tools such as Go and make, builds the shell from source, installs the HypeShell-owned Hyprland session/config files, and can switch SDDM/GDM/LightDM to the HypeShell greeter on `greetd`. It treats Hyprland as the compositor dependency and does not install upstream `dms-shell`, `dms-shell-hyprland`, or `dms-hyprland` packages.
 
 Manual source install on a clean Arch install:
 
@@ -128,7 +128,7 @@ hype brightness list  # List available displays
 hype plugins search   # Browse plugin registry
 ```
 
-The legacy `dms` command remains as a compatibility alias during migration.
+The legacy `dms` command remains as a temporary compatibility alias during the HypeShell transition.
 
 ## Documentation
 

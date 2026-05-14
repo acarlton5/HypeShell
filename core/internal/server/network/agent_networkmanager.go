@@ -20,7 +20,7 @@ const (
 	nmAgentManagerIface = "org.freedesktop.NetworkManager.AgentManager"
 	nmSecretAgentIface  = "org.freedesktop.NetworkManager.SecretAgent"
 	agentObjectPath     = "/org/freedesktop/NetworkManager/SecretAgent"
-	agentIdentifier     = "com.danklinux.NMAgent"
+	agentIdentifier     = "com.hypeshell.NMAgent"
 )
 
 const (

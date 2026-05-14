@@ -36,7 +36,7 @@ func TestResolveGreeterThemeSyncState(t *testing.T) {
   "iconTheme": "Papirus"
 }`,
 			sessionJSON:             `{"isLightMode":true}`,
-			wantSourcePath:          filepath.Join(".cache", "DankMaterialShell", "greeter-colors", "dms-colors.json"),
+			wantSourcePath:          filepath.Join(".cache", "HypeShell", "greeter-colors", "dms-colors.json"),
 			wantResolvedWallpaper:   filepath.Join("Pictures", "blue.jpg"),
 			wantDynamicOverrideUsed: true,
 		},
@@ -47,7 +47,7 @@ func TestResolveGreeterThemeSyncState(t *testing.T) {
   "greeterWallpaperPath": ""
 }`,
 			sessionJSON:             `{"isLightMode":false}`,
-			wantSourcePath:          filepath.Join(".cache", "DankMaterialShell", "dms-colors.json"),
+			wantSourcePath:          filepath.Join(".cache", "HypeShell", "dms-colors.json"),
 			wantResolvedWallpaper:   "",
 			wantDynamicOverrideUsed: false,
 		},
@@ -58,7 +58,7 @@ func TestResolveGreeterThemeSyncState(t *testing.T) {
   "greeterWallpaperPath": "/tmp/blue.jpg"
 }`,
 			sessionJSON:             `{"isLightMode":false}`,
-			wantSourcePath:          filepath.Join(".cache", "DankMaterialShell", "dms-colors.json"),
+			wantSourcePath:          filepath.Join(".cache", "HypeShell", "dms-colors.json"),
 			wantResolvedWallpaper:   "/tmp/blue.jpg",
 			wantDynamicOverrideUsed: false,
 		},
@@ -70,8 +70,8 @@ func TestResolveGreeterThemeSyncState(t *testing.T) {
 			t.Parallel()
 
 			homeDir := t.TempDir()
-			writeTestFile(t, filepath.Join(homeDir, ".config", "DankMaterialShell", "settings.json"), tt.settingsJSON)
-			writeTestFile(t, filepath.Join(homeDir, ".local", "state", "DankMaterialShell", "session.json"), tt.sessionJSON)
+			writeTestFile(t, filepath.Join(homeDir, ".config", "HypeShell", "settings.json"), tt.settingsJSON)
+			writeTestFile(t, filepath.Join(homeDir, ".local", "state", "HypeShell", "session.json"), tt.sessionJSON)
 
 			state, err := resolveGreeterThemeSyncState(homeDir)
 			if err != nil {

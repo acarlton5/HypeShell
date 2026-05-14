@@ -15,12 +15,12 @@ usage() {
 Usage: install.sh [options]
 
 Clean-install HypeShell from source. This works on a fresh Arch install and can
-also replace old HypeShell/DMS-era installs when --clean is supplied.
+also repair or replace existing HypeShell installs when --clean is supplied.
 
 Common options:
   --yes                 Actually make changes. Without this, dry-run only.
   --install-greeter     Install/configure greetd and the HypeShell greeter.
-  --clean               Remove upstream DMS/Dank packages and remove sddm after
+  --clean               Remove legacy upstream packages and remove sddm after
                         greeter setup succeeds.
   --repo URL            HypeShell git repository to install from.
                         Default: $DEFAULT_REPO_URL
@@ -66,7 +66,7 @@ done
 
 SCRIPT_PATH="${BASH_SOURCE[0]:-$0}"
 SCRIPT_DIR="$(cd -- "$(dirname -- "$SCRIPT_PATH")" >/dev/null 2>&1 && pwd -P || true)"
-if [ -z "$SOURCE_DIR" ] && [ -n "$SCRIPT_DIR" ] && [ -f "$SCRIPT_DIR/scripts/migrate-from-hypeshell.sh" ]; then
+if [ -z "$SOURCE_DIR" ] && [ -n "$SCRIPT_DIR" ] && [ -f "$SCRIPT_DIR/scripts/install-hypeshell.sh" ]; then
     SOURCE_DIR="$SCRIPT_DIR"
 fi
 
@@ -82,13 +82,13 @@ if [ -z "$SOURCE_DIR" ]; then
     SOURCE_DIR="$WORK_DIR/HypeShell"
 fi
 
-if [ ! -f "$SOURCE_DIR/scripts/migrate-from-hypeshell.sh" ]; then
+if [ ! -f "$SOURCE_DIR/scripts/install-hypeshell.sh" ]; then
     echo "Error: $SOURCE_DIR is not a HypeShell checkout." >&2
     exit 1
 fi
 
 if has_arg "--source"; then
-    exec "$SOURCE_DIR/scripts/migrate-from-hypeshell.sh" "${ARGS[@]}"
+    exec "$SOURCE_DIR/scripts/install-hypeshell.sh" "${ARGS[@]}"
 fi
 
-exec "$SOURCE_DIR/scripts/migrate-from-hypeshell.sh" --source "$SOURCE_DIR" "${ARGS[@]}"
+exec "$SOURCE_DIR/scripts/install-hypeshell.sh" --source "$SOURCE_DIR" "${ARGS[@]}"

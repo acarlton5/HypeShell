@@ -39,7 +39,7 @@ var genericNotifyActionCmd = &cobra.Command{
 }
 
 func init() {
-	notifyCmd.Flags().StringVar(&notifyAppName, "app", "DMS", "Application name")
+	notifyCmd.Flags().StringVar(&notifyAppName, "app", "HypeShell", "Application name")
 	notifyCmd.Flags().StringVar(&notifyIcon, "icon", "", "Icon name or path")
 	notifyCmd.Flags().StringVar(&notifyFile, "file", "", "File path (enables Open/Open Folder actions)")
 	notifyCmd.Flags().IntVar(&notifyTimeout, "timeout", 5000, "Timeout in milliseconds")

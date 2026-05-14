@@ -503,7 +503,7 @@ Singleton {
                 ToastService.showInfo(message, "", "", "auth-sync");
             } else {
                 let details = (root.authApplyTerminalFallbackStderr || "").trim();
-                ToastService.showError(I18n.tr("Terminal fallback failed. Install a supported terminal emulator or run 'dms auth sync' manually.") + " (exit " + exitCode + ")", details, "", "auth-sync");
+                ToastService.showError(I18n.tr("Terminal fallback failed. Install a supported terminal emulator or run 'hype auth sync' manually.") + " (exit " + exitCode + ")", details, "", "auth-sync");
             }
             root.finishAuthApply();
         }

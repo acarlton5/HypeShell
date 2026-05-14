@@ -126,7 +126,7 @@ func wrapInTerminal(term, title, shellCmd string) []string {
 		title, shellCmd,
 	)
 	closer := `printf '\n\033[1;32m=== Done. Press Enter to close. ===\033[0m\n'; read`
-	export := `export SUDO_PROMPT="[DMS] sudo password for %u: "; `
+	export := `export SUDO_PROMPT="[HypeShell] sudo password for %u: "; `
 	full := export + banner + "; " + shellCmd + "; " + closer
 
 	switch term {

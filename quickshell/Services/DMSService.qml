@@ -9,7 +9,7 @@ import qs.Services
 
 Singleton {
     id: root
-    readonly property var log: Log.scoped("DMSService")
+    readonly property var log: Log.scoped("HypeService")
 
     property bool dmsAvailable: false
     property var capabilities: []
@@ -25,13 +25,13 @@ Singleton {
     property bool subscribeConnected: false
     readonly property bool forceExtWorkspace: false
 
-    readonly property string socketPath: Quickshell.env("DMS_SOCKET")
+    readonly property string socketPath: Quickshell.env("HYPE_SOCKET") || Quickshell.env("DMS_SOCKET")
 
     property var pendingRequests: ({})
     property var clipboardRequestIds: ({})
     property int requestIdCounter: 0
     property bool shownOutdatedError: false
-    property string updateCommand: "dms update"
+    property string updateCommand: "hype update"
     property bool checkingUpdateCommand: false
 
     signal pluginsListReceived(var plugins)
@@ -104,7 +104,7 @@ Singleton {
                     checkDmsPackage.helper = "yay";
                     checkDmsPackage.running = true;
                 } else {
-                    updateCommand = "dms update";
+                    updateCommand = "hype update";
                     checkingUpdateCommand = false;
                     startSocketConnection();
                 }
@@ -113,7 +113,7 @@ Singleton {
 
         onExited: exitCode => {
             if (exitCode !== 0) {
-                updateCommand = "dms update";
+                updateCommand = "hype update";
                 checkingUpdateCommand = false;
                 startSocketConnection();
             }
@@ -133,7 +133,7 @@ Singleton {
                 } else if (text.includes("dms-shell-bin")) {
                     updateCommand = checkDmsPackage.helper + " -S dms-shell-bin";
                 } else {
-                    updateCommand = "dms update";
+                    updateCommand = "hype update";
                 }
                 checkingUpdateCommand = false;
                 startSocketConnection();
@@ -142,7 +142,7 @@ Singleton {
 
         onExited: exitCode => {
             if (exitCode !== 0) {
-                updateCommand = "dms update";
+                updateCommand = "hype update";
                 checkingUpdateCommand = false;
                 startSocketConnection();
             }
@@ -320,7 +320,7 @@ Singleton {
             if (response.error.includes("unknown method") && response.error.includes("subscribe")) {
                 if (!shownOutdatedError) {
                     log.error("Server does not support subscribe method");
-                    ToastService.showError(I18n.tr("DMS out of date"), I18n.tr("To update, run the following command:"), updateCommand);
+                    ToastService.showError(I18n.tr("HypeShell out of date"), I18n.tr("To update, run the following command:"), updateCommand);
                     shownOutdatedError = true;
                 }
             }
@@ -342,7 +342,7 @@ Singleton {
             log.info("Connected (API v" + apiVersion + ", CLI " + cliVersion + ") -", JSON.stringify(capabilities));
 
             if (apiVersion < expectedApiVersion) {
-                ToastService.showError(I18n.tr("DMS server is outdated (API v%1, expected v%2)").arg(apiVersion).arg(expectedApiVersion));
+                ToastService.showError(I18n.tr("Hype API is outdated (API v%1, expected v%2)").arg(apiVersion).arg(expectedApiVersion));
             }
 
             capabilitiesReceived();
@@ -406,10 +406,10 @@ Singleton {
 
     function sendRequest(method, params, callback) {
         if (!isConnected) {
-            log.warn("DMSService.sendRequest: Not connected, method:", method);
+            log.warn("HypeService.sendRequest: Not connected, method:", method);
             if (callback) {
                 callback({
-                    "error": "not connected to DMS socket"
+                    "error": "not connected to HypeShell socket"
                 });
             }
             return;
@@ -432,7 +432,7 @@ Singleton {
         if (method.startsWith("clipboard")) {
             clipboardRequestIds[id] = true;
         } else {
-            log.debug("DMSService.sendRequest: Sending request id=" + id + " method=" + method);
+            log.debug("HypeService.sendRequest: Sending request id=" + id + " method=" + method);
         }
         requestSocket.send(request);
     }

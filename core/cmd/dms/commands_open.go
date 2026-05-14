@@ -22,15 +22,15 @@ var (
 var openCmd = &cobra.Command{
 	Use:   "open [target]",
 	Short: "Open a file, URL, or resource with an application picker",
-	Long: `Open a target (URL, file, or other resource) using the DMS application picker.
+	Long: `Open a target (URL, file, or other resource) using the HypeShell application picker.
 By default, this opens URLs with the browser picker. You can customize the behavior
 with flags to handle different MIME types or application categories.
 
 Examples:
-  dms open https://example.com                    # Open URL with browser picker
-  dms open file.pdf --mime application/pdf        # Open PDF with compatible apps
-  dms open document.odt --category Office         # Open with office applications
-  dms open --mime image/png image.png             # Open image with image viewers`,
+  hype open https://example.com                    # Open URL with browser picker
+  hype open file.pdf --mime application/pdf        # Open PDF with compatible apps
+  hype open document.odt --category Office         # Open with office applications
+  hype open --mime image/png image.png             # Open image with image viewers`,
 	Args: cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		runOpen(args[0])
@@ -131,12 +131,12 @@ func runOpen(target string) {
 			detectedRequestType = "url"
 		}
 		log.Infof("Detected HTTP(S) URL")
-	} else if strings.HasPrefix(target, "dms://") {
-		// Handle DMS internal URLs (theme/plugin install, etc.)
+	} else if strings.HasPrefix(target, "hype://") || strings.HasPrefix(target, "dms://") {
+		// Handle HypeShell internal URLs (theme/plugin install, etc.). dms:// is accepted for legacy links.
 		if detectedRequestType == "" {
 			detectedRequestType = "url"
 		}
-		log.Infof("Detected DMS internal URL")
+		log.Infof("Detected HypeShell internal URL")
 	} else if _, err := os.Stat(target); err == nil {
 		// Handle local file paths directly (not file:// URIs)
 		// Convert to absolute path
@@ -183,7 +183,7 @@ func runOpen(target string) {
 	}
 
 	method := "apppicker.open"
-	if detectedMimeType == "" && len(detectedCategories) == 0 && (strings.HasPrefix(target, "http://") || strings.HasPrefix(target, "https://") || strings.HasPrefix(target, "dms://")) {
+	if detectedMimeType == "" && len(detectedCategories) == 0 && (strings.HasPrefix(target, "http://") || strings.HasPrefix(target, "https://") || strings.HasPrefix(target, "hype://") || strings.HasPrefix(target, "dms://")) {
 		method = "browser.open"
 		params["url"] = target
 	}
@@ -197,7 +197,7 @@ func runOpen(target string) {
 	log.Infof("Sending request - Method: %s, Params: %+v", method, params)
 
 	if err := sendServerRequestFireAndForget(req); err != nil {
-		fmt.Println("DMS is not running. Please start DMS first.")
+		fmt.Println("HypeShell is not running. Please start HypeShell first.")
 		os.Exit(1)
 	}
 

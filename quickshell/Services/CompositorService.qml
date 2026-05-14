@@ -674,7 +674,7 @@ Singleton {
             isMiracle = false;
             isLabwc = false;
             compositor = "dwl";
-            log.info("Detected DWL via DMS capability");
+            log.info("Detected DWL via HypeShell capability");
         }
     }
 

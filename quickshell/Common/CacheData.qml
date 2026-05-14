@@ -200,7 +200,7 @@ Singleton {
     FileView {
         id: launcherCacheFile
 
-        path: isGreeterMode ? "" : _stateDir + "/DankMaterialShell/launcher_cache.json"
+        path: isGreeterMode ? "" : _stateDir + "/HypeShell/launcher_cache.json"
         blockLoading: true
         blockWrites: true
         atomicWrites: true
@@ -210,7 +210,7 @@ Singleton {
     FileView {
         id: cacheFile
 
-        path: isGreeterMode ? "" : _stateDir + "/DankMaterialShell/cache.json"
+        path: isGreeterMode ? "" : _stateDir + "/HypeShell/cache.json"
         blockLoading: true
         blockWrites: true
         atomicWrites: true

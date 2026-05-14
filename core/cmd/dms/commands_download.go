@@ -50,7 +50,7 @@ func runDownload(url string) error {
 	case dlUserAgent != "":
 		req.Header.Set("User-Agent", dlUserAgent)
 	default:
-		req.Header.Set("User-Agent", "DankMaterialShell/1.0 (Linux)")
+		req.Header.Set("User-Agent", "HypeShell/1.0 (Linux)")
 	}
 
 	dialer := &net.Dialer{Timeout: 5 * time.Second}

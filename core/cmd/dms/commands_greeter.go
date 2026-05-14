@@ -24,8 +24,8 @@ import (
 
 var greeterCmd = &cobra.Command{
 	Use:   "greeter",
-	Short: "Manage DMS greeter",
-	Long:  "Manage DMS greeter (greetd)",
+	Short: "Manage HypeShell greeter",
+	Long:  "Manage HypeShell greeter (greetd)",
 }
 
 var (
@@ -35,14 +35,14 @@ var (
 
 var greeterInstallCmd = &cobra.Command{
 	Use:     "install",
-	Short:   "Install and configure DMS greeter",
-	Long:    "Install greetd and configure it to use DMS as the greeter interface",
+	Short:   "Install and configure HypeShell greeter",
+	Long:    "Install greetd and configure it to use HypeShell as the greeter interface",
 	PreRunE: preRunPrivileged,
 	Run: func(cmd *cobra.Command, args []string) {
 		yes, _ := cmd.Flags().GetBool("yes")
 		term, _ := cmd.Flags().GetBool("terminal")
 		if term {
-			installCmd := "dms greeter install"
+			installCmd := "hype greeter install"
 			if yes {
 				installCmd += " --yes"
 			}
@@ -60,8 +60,8 @@ var greeterInstallCmd = &cobra.Command{
 
 var greeterSyncCmd = &cobra.Command{
 	Use:     "sync",
-	Short:   "Sync DMS theme and settings with greeter",
-	Long:    "Synchronize your current user's DMS theme, settings, and wallpaper configuration with the login greeter screen",
+	Short:   "Sync HypeShell theme and settings with greeter",
+	Long:    "Synchronize your current user's HypeShell theme, settings, and wallpaper configuration with the login greeter screen",
 	PreRunE: preRunPrivileged,
 	Run: func(cmd *cobra.Command, args []string) {
 		yes, _ := cmd.Flags().GetBool("yes")
@@ -84,19 +84,19 @@ func init() {
 	greeterSyncCmd.Flags().BoolP("yes", "y", false, "Non-interactive mode: skip prompts, use defaults (for UI)")
 	greeterSyncCmd.Flags().BoolP("terminal", "t", false, "Run sync in a new terminal (for entering sudo password); terminal auto-closes when done")
 	greeterSyncCmd.Flags().BoolP("auth", "a", false, "Configure PAM for fingerprint and U2F (adds both if modules exist); overrides UI toggles")
-	greeterSyncCmd.Flags().BoolP("local", "l", false, "Developer mode: force greetd config to use a local DMS checkout path")
+	greeterSyncCmd.Flags().BoolP("local", "l", false, "Developer mode: force greetd config to use a local HypeShell checkout path")
 }
 
 var greeterEnableCmd = &cobra.Command{
 	Use:     "enable",
-	Short:   "Enable DMS greeter in greetd config",
-	Long:    "Configure greetd to use DMS as the greeter",
+	Short:   "Enable HypeShell greeter in greetd config",
+	Long:    "Configure greetd to use HypeShell as the greeter",
 	PreRunE: preRunPrivileged,
 	Run: func(cmd *cobra.Command, args []string) {
 		yes, _ := cmd.Flags().GetBool("yes")
 		term, _ := cmd.Flags().GetBool("terminal")
 		if term {
-			enableCmd := "dms greeter enable"
+			enableCmd := "hype greeter enable"
 			if yes {
 				enableCmd += " --yes"
 			}
@@ -125,14 +125,14 @@ var greeterStatusCmd = &cobra.Command{
 
 var greeterUninstallCmd = &cobra.Command{
 	Use:     "uninstall",
-	Short:   "Remove DMS greeter configuration and restore previous display manager",
-	Long:    "Disable greetd, remove DMS managed configs, and restore the system to its pre-DMS-greeter state",
+	Short:   "Remove HypeShell greeter configuration and restore previous display manager",
+	Long:    "Disable greetd, remove HypeShell managed configs, and restore the system to its pre-HypeShell-greeter state",
 	PreRunE: preRunPrivileged,
 	Run: func(cmd *cobra.Command, args []string) {
 		yes, _ := cmd.Flags().GetBool("yes")
 		term, _ := cmd.Flags().GetBool("terminal")
 		if term {
-			uninstallCmd := "dms greeter uninstall"
+			uninstallCmd := "hype greeter uninstall"
 			if yes {
 				uninstallCmd += " --yes"
 			}
@@ -168,14 +168,14 @@ func syncGreeterConfigsAndAuth(dmsPath, compositor string, logFunc func(string),
 }
 
 func installGreeter(nonInteractive bool) error {
-	fmt.Println("=== DMS Greeter Installation ===")
+	fmt.Println("=== HypeShell Greeter Installation ===")
 
 	logFunc := func(msg string) {
 		fmt.Println(msg)
 	}
 
 	if !nonInteractive {
-		fmt.Print("\nThis will install greetd (if needed), configure the DMS greeter, and enable it. Continue? [Y/n]: ")
+		fmt.Print("\nThis will install greetd (if needed), configure the HypeShell greeter, and enable it. Continue? [Y/n]: ")
 		var response string
 		fmt.Scanln(&response)
 		if strings.ToLower(strings.TrimSpace(response)) == "n" || strings.ToLower(strings.TrimSpace(response)) == "no" {
@@ -203,18 +203,18 @@ func installGreeter(nonInteractive bool) error {
 		fmt.Scanln(&response)
 		response = strings.TrimSpace(strings.ToLower(response))
 		if response == "n" || response == "no" {
-			fmt.Println("Run 'dms greeter sync' to re-sync theme and settings at any time.")
+			fmt.Println("Run 'hype greeter sync' to re-sync theme and settings at any time.")
 			return nil
 		}
 		fmt.Println()
 	}
 
-	fmt.Println("\nDetecting DMS installation...")
+	fmt.Println("\nDetecting HypeShell installation...")
 	dmsPath, err := greeter.DetectDMSPath()
 	if err != nil {
 		return err
 	}
-	fmt.Printf("✓ Found DMS at: %s\n", dmsPath)
+	fmt.Printf("✓ Found HypeShell at: %s\n", dmsPath)
 
 	fmt.Println("\nDetecting installed compositors...")
 	compositors := greeter.DetectCompositors()
@@ -261,7 +261,7 @@ func installGreeter(nonInteractive bool) error {
 		return err
 	}
 
-	fmt.Println("\nSynchronizing DMS configurations...")
+	fmt.Println("\nSynchronizing HypeShell configurations...")
 	if err := syncGreeterConfigsAndAuth(dmsPath, selectedCompositor, logFunc, sharedpam.SyncAuthOptions{}, func() {
 		fmt.Println("\nConfiguring authentication...")
 	}); err != nil {
@@ -289,17 +289,17 @@ func installGreeter(nonInteractive bool) error {
 }
 
 func uninstallGreeter(nonInteractive bool) error {
-	fmt.Println("=== DMS Greeter Uninstall ===")
+	fmt.Println("=== HypeShell Greeter Uninstall ===")
 
 	logFunc := func(msg string) { fmt.Println(msg) }
 
 	if !isGreeterEnabled() {
-		fmt.Println("ℹ DMS greeter is not currently configured in /etc/greetd/config.toml.")
+		fmt.Println("ℹ HypeShell greeter is not currently configured in /etc/greetd/config.toml.")
 		fmt.Println("  Nothing to undo for greetd configuration.")
 	}
 
 	if !nonInteractive {
-		fmt.Print("\nThis will:\n  • Stop and disable greetd\n  • Remove the DMS-managed greeter auth block\n  • Remove the DMS AppArmor profile\n  • Restore the most recent pre-DMS greetd config (if available)\n\nContinue? [y/N]: ")
+		fmt.Print("\nThis will:\n  • Stop and disable greetd\n  • Remove the HypeShell-managed greeter auth block\n  • Remove the HypeShell AppArmor profile\n  • Restore the most recent pre-HypeShell greetd config (if available)\n\nContinue? [y/N]: ")
 		var response string
 		fmt.Scanln(&response)
 		if strings.ToLower(strings.TrimSpace(response)) != "y" {
@@ -315,12 +315,12 @@ func uninstallGreeter(nonInteractive bool) error {
 		fmt.Println("  ✓ greetd disabled")
 	}
 
-	fmt.Println("\nRemoving DMS authentication configuration...")
+	fmt.Println("\nRemoving HypeShell authentication configuration...")
 	if err := sharedpam.RemoveManagedGreeterPamBlock(logFunc, ""); err != nil {
 		fmt.Printf("  ⚠ PAM cleanup failed: %v\n", err)
 	}
 
-	fmt.Println("\nRemoving DMS AppArmor profile...")
+	fmt.Println("\nRemoving HypeShell AppArmor profile...")
 	if err := greeter.UninstallAppArmorProfile(logFunc, ""); err != nil {
 		fmt.Printf("  ⚠ AppArmor cleanup failed: %v\n", err)
 	}
@@ -336,7 +336,7 @@ func uninstallGreeter(nonInteractive bool) error {
 
 	fmt.Println("\n=== Uninstall Complete ===")
 	fmt.Println("\nReboot to complete the uninstallation and switch to your previous display manager.")
-	fmt.Println("To re-enable DMS greeter at any time, run: dms greeter enable")
+	fmt.Println("To re-enable HypeShell greeter at any time, run: hype greeter enable")
 
 	return nil
 }
@@ -388,7 +388,7 @@ func restorePreDMSGreetdConfig(sudoPassword string) error {
 	minimal := `[terminal]
 vt = 1
 
-# DMS greeter has been uninstalled.
+# HypeShell greeter has been uninstalled.
 # Configure a greeter command here or re-enable a display manager.
 [default_session]
 user = "greeter"
@@ -523,7 +523,7 @@ func syncInTerminal(nonInteractive bool, forceAuth bool, local bool) error {
 	if local {
 		syncFlags = append(syncFlags, "--local")
 	}
-	shellSyncCmd := "dms greeter sync"
+	shellSyncCmd := "hype greeter sync"
 	if len(syncFlags) > 0 {
 		shellSyncCmd += " " + strings.Join(syncFlags, " ")
 	}
@@ -543,7 +543,7 @@ func resolveLocalWrapperShell() (string, error) {
 
 func syncGreeter(nonInteractive bool, forceAuth bool, local bool) error {
 	if !nonInteractive {
-		fmt.Println("=== DMS Greeter Sync ===")
+		fmt.Println("=== HypeShell Greeter Sync ===")
 		fmt.Println()
 	}
 
@@ -552,7 +552,7 @@ func syncGreeter(nonInteractive bool, forceAuth bool, local bool) error {
 	}
 
 	if !nonInteractive {
-		fmt.Println("Detecting DMS installation...")
+		fmt.Println("Detecting HypeShell installation...")
 	}
 	var dmsPath string
 	var err error
@@ -562,7 +562,7 @@ func syncGreeter(nonInteractive bool, forceAuth bool, local bool) error {
 			return err
 		}
 		if !nonInteractive {
-			fmt.Printf("✓ Using local DMS path: %s\n", dmsPath)
+			fmt.Printf("✓ Using local HypeShell path: %s\n", dmsPath)
 		}
 	} else {
 		dmsPath, err = greeter.DetectDMSPath()
@@ -570,15 +570,15 @@ func syncGreeter(nonInteractive bool, forceAuth bool, local bool) error {
 			return err
 		}
 		if !nonInteractive {
-			fmt.Printf("✓ Found DMS at: %s\n", dmsPath)
+			fmt.Printf("✓ Found HypeShell at: %s\n", dmsPath)
 		}
 	}
 
 	if !isGreeterEnabled() {
 		if nonInteractive {
-			return fmt.Errorf("greeter is not enabled; run 'dms greeter install' or 'dms greeter enable' first")
+			return fmt.Errorf("greeter is not enabled; run 'hype greeter install' or 'hype greeter enable' first")
 		}
-		fmt.Println("\n⚠ DMS greeter is not enabled in greetd config.")
+		fmt.Println("\n⚠ HypeShell greeter is not enabled in greetd config.")
 		fmt.Print("Would you like to enable it now? (Y/n): ")
 
 		var response string
@@ -695,14 +695,14 @@ func syncGreeter(nonInteractive bool, forceAuth bool, local bool) error {
 			fmt.Printf("ℹ Local wrapper script not found at %s; using system wrapper.\n", localWrapperScript)
 		}
 
-		fmt.Println("\nUpdating greetd command to use local DMS path...")
+		fmt.Println("\nUpdating greetd command to use local HypeShell path...")
 		err := greeter.ConfigureGreetd(dmsPath, compositor, logFunc, "")
 		restoreWrapperOverride()
 		if err != nil {
 			return fmt.Errorf("failed to apply local greeter path: %w", err)
 		}
 		if !nonInteractive {
-			fmt.Println("ℹ Local mode applies both DMS path override (-p) and local wrapper behavior when available.")
+			fmt.Println("ℹ Local mode applies both HypeShell path override (-p) and local wrapper behavior when available.")
 		}
 	} else {
 		greeterPathForConfig := ""
@@ -725,7 +725,7 @@ func syncGreeter(nonInteractive bool, forceAuth bool, local bool) error {
 		return fmt.Errorf("failed to ensure greeter cache directory at %s: %w\nRun: sudo mkdir -p %s && sudo chown root:%s %s && sudo chmod 2770 %s", cacheDir, err, cacheDir, greeterGroup, cacheDir, cacheDir)
 	}
 
-	fmt.Println("\nSynchronizing DMS configurations...")
+	fmt.Println("\nSynchronizing HypeShell configurations...")
 	if err := syncGreeterConfigsAndAuth(dmsPath, compositor, logFunc, sharedpam.SyncAuthOptions{
 		ForceGreeterAuth: forceAuth,
 	}, func() {
@@ -782,11 +782,18 @@ func resolveDMSLocalCandidate(path string) (string, bool) {
 }
 
 func resolveLocalDMSPath() (string, error) {
+	if override := strings.TrimSpace(os.Getenv("HYPESHELL_LOCAL_PATH")); override != "" {
+		if resolved, ok := resolveDMSLocalCandidate(override); ok {
+			return resolved, nil
+		}
+		return "", fmt.Errorf("HYPESHELL_LOCAL_PATH is set but does not point to a valid HypeShell quickshell path: %s", override)
+	}
+
 	if override := strings.TrimSpace(os.Getenv("DMS_LOCAL_PATH")); override != "" {
 		if resolved, ok := resolveDMSLocalCandidate(override); ok {
 			return resolved, nil
 		}
-		return "", fmt.Errorf("DMS_LOCAL_PATH is set but does not point to a valid DMS quickshell path: %s", override)
+		return "", fmt.Errorf("DMS_LOCAL_PATH is set but does not point to a valid HypeShell quickshell path: %s", override)
 	}
 
 	wd, err := os.Getwd()
@@ -811,7 +818,7 @@ func resolveLocalDMSPath() (string, error) {
 	if err == nil && homeDir != "" {
 		for _, candidate := range []string{
 			filepath.Join(homeDir, "dms"),
-			filepath.Join(homeDir, "DankMaterialShell"),
+			filepath.Join(homeDir, "HypeShell"),
 			filepath.Join(homeDir, "dankmaterialshell"),
 			filepath.Join(homeDir, "projects", "dms"),
 			filepath.Join(homeDir, "src", "dms"),
@@ -837,7 +844,7 @@ func resolveLocalDMSPath() (string, error) {
 		}
 	}
 
-	return "", fmt.Errorf("could not locate a local DMS checkout from %s; run from repo root or set DMS_LOCAL_PATH=/absolute/path/to/repo", wd)
+	return "", fmt.Errorf("could not locate a local HypeShell checkout from %s; run from repo root or set HYPESHELL_LOCAL_PATH=/absolute/path/to/repo", wd)
 }
 
 func disableDisplayManager(dmName string) (bool, error) {
@@ -1023,7 +1030,7 @@ func handleConflictingDisplayManagers() error {
 }
 
 func enableGreeter(nonInteractive bool) error {
-	fmt.Println("=== DMS Greeter Enable ===")
+	fmt.Println("=== HypeShell Greeter Enable ===")
 	fmt.Println()
 
 	configPath := "/etc/greetd/config.toml"
@@ -1058,7 +1065,7 @@ func enableGreeter(nonInteractive bool) error {
 		if !greeter.IsGreeterPackaged() {
 			dmsPath, err := greeter.DetectDMSPath()
 			if err != nil {
-				return fmt.Errorf("failed to detect DMS path for manual greeter configuration: %w", err)
+				return fmt.Errorf("failed to detect HypeShell path for manual greeter configuration: %w", err)
 			}
 			if err := greeter.CopyGreeterFiles(dmsPath, configuredCompositor, logFunc, ""); err != nil {
 				return fmt.Errorf("failed to install local greeter wrapper: %w", err)
@@ -1099,7 +1106,7 @@ func enableGreeter(nonInteractive bool) error {
 	}
 
 	if !nonInteractive {
-		fmt.Print("\nThis will configure greetd to use the DMS greeter and may disable other display managers. Continue? [Y/n]: ")
+		fmt.Print("\nThis will configure greetd to use the HypeShell greeter and may disable other display managers. Continue? [Y/n]: ")
 		var response string
 		fmt.Scanln(&response)
 		if strings.ToLower(strings.TrimSpace(response)) == "n" || strings.ToLower(strings.TrimSpace(response)) == "no" {
@@ -1137,7 +1144,7 @@ func enableGreeter(nonInteractive bool) error {
 	if !greeter.IsGreeterPackaged() {
 		dmsPath, err := greeter.DetectDMSPath()
 		if err != nil {
-			return fmt.Errorf("failed to detect DMS path for manual greeter configuration: %w", err)
+			return fmt.Errorf("failed to detect HypeShell path for manual greeter configuration: %w", err)
 		}
 		if err := greeter.CopyGreeterFiles(dmsPath, selectedCompositor, logFunc, ""); err != nil {
 			return fmt.Errorf("failed to install local greeter wrapper: %w", err)
@@ -1341,7 +1348,7 @@ func packageInstallHint() string {
 	case distros.FamilyArch:
 		return "Install from AUR with 'paru -S greetd-dms-greeter-git' or 'yay -S greetd-dms-greeter-git'"
 	default:
-		return "Run 'dms greeter install' to install greeter"
+		return "Run 'hype greeter install' to install greeter"
 	}
 }
 
@@ -1403,7 +1410,7 @@ func promptCompositorChoice(compositors []string) (string, error) {
 }
 
 func checkGreeterStatus() error {
-	fmt.Println("=== DMS Greeter Status ===")
+	fmt.Println("=== HypeShell Greeter Status ===")
 	fmt.Println()
 
 	homeDir, err := os.UserHomeDir()
@@ -1428,7 +1435,7 @@ func checkGreeterStatus() error {
 				fmt.Printf("  Wrapper: %s\n", wrapper)
 			}
 			if pathOverride := extractGreeterPathOverrideFromCommand(configuredCommand); pathOverride != "" {
-				fmt.Printf("  DMS path override: %s\n", pathOverride)
+				fmt.Printf("  HypeShell path override: %s\n", pathOverride)
 			}
 
 			compositor := detectConfiguredCompositor()
@@ -1444,7 +1451,7 @@ func checkGreeterStatus() error {
 			}
 		} else {
 			fmt.Println("  ✗ Greeter is NOT enabled")
-			fmt.Println("    Run 'dms greeter enable' to enable it, or use the Activate button in Settings → Greeter, then Sync.")
+			fmt.Println("    Run 'hype greeter enable' to enable it, or use the Activate button in Settings → Greeter, then Sync.")
 			allGood = false
 		}
 	} else {
@@ -1466,7 +1473,7 @@ func checkGreeterStatus() error {
 		fmt.Printf("  ✓ User is in %s group\n", greeterGroup)
 	} else {
 		fmt.Printf("  ✗ User is NOT in %s group\n", greeterGroup)
-		fmt.Println("    Run 'dms greeter sync' to set up group membership and permissions")
+		fmt.Println("    Run 'hype greeter sync' to set up group membership and permissions")
 	}
 
 	cacheDir := extractGreeterCacheDirFromCommand(configuredCommand)
@@ -1487,7 +1494,7 @@ func checkGreeterStatus() error {
 			}
 		}
 		if missingSubdirs {
-			fmt.Println("    Run 'dms greeter sync' to initialize the cache directory structure.")
+			fmt.Println("    Run 'hype greeter sync' to initialize the cache directory structure.")
 			allGood = false
 		}
 	} else {
@@ -1502,7 +1509,7 @@ func checkGreeterStatus() error {
 		fmt.Printf("  ✗ Failed to resolve expected greeter color source: %v\n", colorSyncErr)
 		allGood = false
 		colorSyncInfo = greeter.GreeterColorSyncInfo{
-			SourcePath: filepath.Join(homeDir, ".cache", "DankMaterialShell", "dms-colors.json"),
+			SourcePath: filepath.Join(homeDir, ".cache", "HypeShell", "dms-colors.json"),
 		}
 	}
 
@@ -1517,12 +1524,12 @@ func checkGreeterStatus() error {
 		desc   string
 	}{
 		{
-			source: filepath.Join(homeDir, ".config", "DankMaterialShell", "settings.json"),
+			source: filepath.Join(homeDir, ".config", "HypeShell", "settings.json"),
 			target: filepath.Join(cacheDir, "settings.json"),
 			desc:   "Settings",
 		},
 		{
-			source: filepath.Join(homeDir, ".local", "state", "DankMaterialShell", "session.json"),
+			source: filepath.Join(homeDir, ".local", "state", "HypeShell", "session.json"),
 			target: filepath.Join(cacheDir, "session.json"),
 			desc:   "Session state",
 		},
@@ -1564,7 +1571,7 @@ func checkGreeterStatus() error {
 
 		if _, err := os.Stat(link.source); os.IsNotExist(err) {
 			fmt.Printf("  ⚠ %s: symlink OK, but source file doesn't exist yet\n", link.desc)
-			fmt.Printf("    Will be created when you run DMS\n")
+			fmt.Printf("    Will be created when you run HypeShell\n")
 			continue
 		}
 
@@ -1589,7 +1596,7 @@ func checkGreeterStatus() error {
 		allGood = false
 	}
 
-	fmt.Println("\nGreeter PAM Authentication (DMS-managed block):")
+	fmt.Println("\nGreeter PAM Authentication (HypeShell-managed block):")
 	if greeter.IsNixOS() {
 		fmt.Println("  ℹ NixOS detected: PAM is managed by NixOS modules.")
 		fmt.Println("    Configure fingerprint/U2F via your greetd NixOS module (security.pam.services.greetd).")
@@ -1597,9 +1604,9 @@ func checkGreeterStatus() error {
 		if allGood && inGreeterGroup {
 			fmt.Println("✓ All checks passed! Greeter is properly configured.")
 		} else if !allGood {
-			fmt.Println("⚠ Some issues detected. Run 'dms greeter sync' to repair configuration.")
+			fmt.Println("⚠ Some issues detected. Run 'hype greeter sync' to repair configuration.")
 		} else if !inGreeterGroup {
-			fmt.Printf("⚠ User is not in %s group. Run 'dms greeter sync' after adding group membership.\n", greeterGroup)
+			fmt.Printf("⚠ User is not in %s group. Run 'hype greeter sync' after adding group membership.\n", greeterGroup)
 		}
 		return nil
 	}
@@ -1623,10 +1630,10 @@ func checkGreeterStatus() error {
 				fmt.Println("    - security key (U2F): disabled")
 			}
 		} else {
-			fmt.Println("  ℹ No managed auth block present (DMS-managed fingerprint/U2F lines are disabled)")
+			fmt.Println("  ℹ No managed auth block present (HypeShell-managed fingerprint/U2F lines are disabled)")
 		}
 		if legacyManaged {
-			fmt.Println("  ⚠ Legacy unmanaged DMS PAM lines detected. Run 'dms auth sync' to normalize.")
+			fmt.Println("  ⚠ Legacy unmanaged HypeShell PAM lines detected. Run 'hype auth sync' to normalize.")
 			allGood = false
 		}
 		enableFprintToggle, enableU2fToggle := false, false
@@ -1642,13 +1649,13 @@ func checkGreeterStatus() error {
 		fprintAvailableForCurrentUser := sharedpam.FingerprintAuthAvailableForCurrentUser()
 
 		if managedFprint && includedFprintFile != "" {
-			fmt.Printf("  ⚠ pam_fprintd found in both DMS managed block and %s.\n", includedFprintFile)
-			fmt.Println("    Double fingerprint auth detected — run 'dms auth sync' to resolve.")
+			fmt.Printf("  ⚠ pam_fprintd found in both HypeShell managed block and %s.\n", includedFprintFile)
+			fmt.Println("    Double fingerprint auth detected — run 'hype auth sync' to resolve.")
 			allGood = false
 		}
 		if managedU2f && includedU2fFile != "" {
-			fmt.Printf("  ⚠ pam_u2f found in both DMS managed block and %s.\n", includedU2fFile)
-			fmt.Println("    Double security-key auth detected — run 'dms auth sync' to resolve.")
+			fmt.Printf("  ⚠ pam_u2f found in both HypeShell managed block and %s.\n", includedU2fFile)
+			fmt.Println("    Double security-key auth detected — run 'hype auth sync' to resolve.")
 			allGood = false
 		}
 
@@ -1656,13 +1663,13 @@ func checkGreeterStatus() error {
 			if enableFprintToggle {
 				fmt.Printf("  ℹ Fingerprint auth is enabled via included %s.\n", includedFprintFile)
 				if fprintAvailableForCurrentUser {
-					fmt.Println("    DMS toggle is enabled, and effective auth is coming from the included PAM stack.")
+					fmt.Println("    HypeShell toggle is enabled, and effective auth is coming from the included PAM stack.")
 				} else {
 					fmt.Println("    No enrolled fingerprints detected for the current user; password auth remains the effective path.")
 				}
 			} else {
 				if fprintAvailableForCurrentUser {
-					fmt.Printf("  ℹ Fingerprint auth is active via included %s while DMS fingerprint toggle is off.\n", includedFprintFile)
+					fmt.Printf("  ℹ Fingerprint auth is active via included %s while HypeShell fingerprint toggle is off.\n", includedFprintFile)
 					fmt.Println("    Password login will work but may be delayed while the fingerprint module runs first.")
 					fmt.Printf("    To eliminate the delay, %s\n", systemPamManagerRemediationHint())
 				} else {
@@ -1674,9 +1681,9 @@ func checkGreeterStatus() error {
 		if includedU2fFile != "" && !managedU2f {
 			if enableU2fToggle {
 				fmt.Printf("  ℹ Security-key auth is enabled via included %s.\n", includedU2fFile)
-				fmt.Println("    DMS toggle is enabled, but effective auth is coming from the included PAM stack.")
+				fmt.Println("    HypeShell toggle is enabled, but effective auth is coming from the included PAM stack.")
 			} else {
-				fmt.Printf("  ⚠ Security-key auth is active via included %s while DMS security-key toggle is off.\n", includedU2fFile)
+				fmt.Printf("  ⚠ Security-key auth is active via included %s while HypeShell security-key toggle is off.\n", includedU2fFile)
 				fmt.Printf("    %s\n", systemPamManagerRemediationHint())
 			}
 		}
@@ -1690,15 +1697,15 @@ func checkGreeterStatus() error {
 
 		const appArmorProfilePath = "/etc/apparmor.d/usr.bin.dms-greeter"
 		if _, err := os.Stat(appArmorProfilePath); os.IsNotExist(err) {
-			fmt.Println("  ⚠ DMS AppArmor profile not installed")
-			fmt.Println("    Run 'dms greeter sync' to install it and prevent potential TTY fallback")
+			fmt.Println("  ⚠ HypeShell AppArmor profile not installed")
+			fmt.Println("    Run 'hype greeter sync' to install it and prevent potential TTY fallback")
 			allGood = false
 		} else {
 			mode := appArmorProfileMode("dms-greeter")
 			if mode != "" {
-				fmt.Printf("  ✓ DMS AppArmor profile installed (%s mode)\n", mode)
+				fmt.Printf("  ✓ HypeShell AppArmor profile installed (%s mode)\n", mode)
 			} else {
-				fmt.Println("  ✓ DMS AppArmor profile installed")
+				fmt.Println("  ✓ HypeShell AppArmor profile installed")
 			}
 		}
 
@@ -1724,9 +1731,9 @@ func checkGreeterStatus() error {
 	if allGood && inGreeterGroup {
 		fmt.Println("✓ All checks passed! Greeter is properly configured.")
 	} else if !allGood {
-		fmt.Println("⚠ Some issues detected. Run 'dms greeter sync' to repair configuration.")
+		fmt.Println("⚠ Some issues detected. Run 'hype greeter sync' to repair configuration.")
 	} else if !inGreeterGroup {
-		fmt.Printf("⚠ User is not in %s group. Run 'dms greeter sync' after adding group membership.\n", greeterGroup)
+		fmt.Printf("⚠ User is not in %s group. Run 'hype greeter sync' after adding group membership.\n", greeterGroup)
 	}
 
 	return nil

@@ -22,7 +22,7 @@ var windowrulesCmd = &cobra.Command{
 var windowrulesListCmd = &cobra.Command{
 	Use:   "list [compositor]",
 	Short: "List all window rules",
-	Long:  "List all window rules from compositor config file. Returns JSON with rules and DMS status.",
+	Long:  "List all window rules from compositor config file. Returns JSON with rules and HypeShell status.",
 	Args:  cobra.MaximumNArgs(1),
 	ValidArgsFunction: func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
 		if len(args) == 0 {
@@ -35,8 +35,8 @@ var windowrulesListCmd = &cobra.Command{
 
 var windowrulesAddCmd = &cobra.Command{
 	Use:   "add <compositor> '<json>'",
-	Short: "Add a window rule to DMS file",
-	Long:  "Add a new window rule to the DMS-managed rules file.",
+	Short: "Add a window rule to HypeShell file",
+	Long:  "Add a new window rule to the HypeShell-managed rules file.",
 	Args:  cobra.ExactArgs(2),
 	ValidArgsFunction: func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
 		if len(args) == 0 {
@@ -50,8 +50,8 @@ var windowrulesAddCmd = &cobra.Command{
 
 var windowrulesUpdateCmd = &cobra.Command{
 	Use:   "update <compositor> <id> '<json>'",
-	Short: "Update a window rule in DMS file",
-	Long:  "Update an existing window rule in the DMS-managed rules file.",
+	Short: "Update a window rule in HypeShell file",
+	Long:  "Update an existing window rule in the HypeShell-managed rules file.",
 	Args:  cobra.ExactArgs(3),
 	ValidArgsFunction: func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
 		if len(args) == 0 {
@@ -64,8 +64,8 @@ var windowrulesUpdateCmd = &cobra.Command{
 
 var windowrulesRemoveCmd = &cobra.Command{
 	Use:   "remove <compositor> <id>",
-	Short: "Remove a window rule from DMS file",
-	Long:  "Remove a window rule from the DMS-managed rules file.",
+	Short: "Remove a window rule from HypeShell file",
+	Long:  "Remove a window rule from the HypeShell-managed rules file.",
 	Args:  cobra.ExactArgs(2),
 	ValidArgsFunction: func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
 		if len(args) == 0 {
@@ -78,7 +78,7 @@ var windowrulesRemoveCmd = &cobra.Command{
 
 var windowrulesReorderCmd = &cobra.Command{
 	Use:   "reorder <compositor> '<json-array-of-ids>'",
-	Short: "Reorder window rules in DMS file",
+	Short: "Reorder window rules in HypeShell file",
 	Long:  "Reorder window rules by providing a JSON array of rule IDs in the desired order.",
 	Args:  cobra.ExactArgs(2),
 	ValidArgsFunction: func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {

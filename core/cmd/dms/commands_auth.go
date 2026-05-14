@@ -11,14 +11,14 @@ import (
 
 var authCmd = &cobra.Command{
 	Use:   "auth",
-	Short: "Manage DMS authentication sync",
-	Long:  "Manage shared PAM/authentication setup for DMS greeter and lock screen",
+	Short: "Manage HypeShell authentication sync",
+	Long:  "Manage shared PAM/authentication setup for HypeShell greeter and lock screen",
 }
 
 var authSyncCmd = &cobra.Command{
 	Use:     "sync",
-	Short:   "Sync DMS authentication configuration",
-	Long:    "Apply shared PAM/authentication changes for the lock screen and greeter based on current DMS settings",
+	Short:   "Sync HypeShell authentication configuration",
+	Long:    "Apply shared PAM/authentication changes for the lock screen and greeter based on current HypeShell settings",
 	PreRunE: preRunPrivileged,
 	Run: func(cmd *cobra.Command, args []string) {
 		yes, _ := cmd.Flags().GetBool("yes")
@@ -42,7 +42,7 @@ func init() {
 
 func syncAuth(nonInteractive bool) error {
 	if !nonInteractive {
-		fmt.Println("=== DMS Authentication Sync ===")
+		fmt.Println("=== HypeShell Authentication Sync ===")
 		fmt.Println()
 	}
 
@@ -68,7 +68,7 @@ func syncAuthInTerminal(nonInteractive bool) error {
 		syncFlags = append(syncFlags, "--yes")
 	}
 
-	shellSyncCmd := "dms auth sync"
+	shellSyncCmd := "hype auth sync"
 	if len(syncFlags) > 0 {
 		shellSyncCmd += " " + strings.Join(syncFlags, " ")
 	}

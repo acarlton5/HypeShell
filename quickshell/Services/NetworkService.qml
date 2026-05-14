@@ -96,15 +96,15 @@ Singleton {
     property bool usingLegacy: false
     property var activeService: null
 
-    readonly property string socketPath: Quickshell.env("DMS_SOCKET")
+    readonly property string socketPath: Quickshell.env("HYPE_SOCKET") || Quickshell.env("DMS_SOCKET")
 
     Component.onCompleted: {
         log.info("Initializing...");
         if (!socketPath || socketPath.length === 0) {
-            log.info("DMS_SOCKET not set, using LegacyNetworkService");
+            log.info("HYPE_SOCKET not set, using LegacyNetworkService");
             useLegacyService();
         } else {
-            log.debug("DMS_SOCKET found, waiting for capabilities...");
+            log.debug("HYPE_SOCKET found, waiting for capabilities...");
         }
     }
 
@@ -119,7 +119,7 @@ Singleton {
                 log.info("Switched to DMSNetworkService, networkAvailable:", networkAvailable);
                 connectSignals();
             } else if (!activeService && !DMSNetworkService.networkAvailable && socketPath && socketPath.length > 0) {
-                log.info("Network capability not available in DMS, using LegacyNetworkService");
+                log.info("Network capability not available in HypeShell, using LegacyNetworkService");
                 useLegacyService();
             }
         }

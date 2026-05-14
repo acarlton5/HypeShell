@@ -24,8 +24,8 @@ import (
 
 var updateCmd = &cobra.Command{
 	Use:     "update",
-	Short:   "Update DankMaterialShell to the latest version",
-	Long:    "Update DankMaterialShell to the latest version using the appropriate package manager for your distribution",
+	Short:   "Update HypeShell to the latest version",
+	Long:    "Update HypeShell to the latest version using the appropriate package manager for your distribution",
 	PreRunE: findConfig,
 	Run: func(cmd *cobra.Command, args []string) {
 		runUpdate()
@@ -34,7 +34,7 @@ var updateCmd = &cobra.Command{
 
 var updateCheckCmd = &cobra.Command{
 	Use:   "check",
-	Short: "Check if updates are available for DankMaterialShell",
+	Short: "Check if updates are available for HypeShell",
 	Long:  "Check for available updates without performing the actual update",
 	Run: func(cmd *cobra.Command, args []string) {
 		runUpdateCheck()
@@ -42,7 +42,7 @@ var updateCheckCmd = &cobra.Command{
 }
 
 func runUpdateCheck() {
-	fmt.Println("Checking for DankMaterialShell updates...")
+	fmt.Println("Checking for HypeShell updates...")
 	fmt.Println()
 
 	versionInfo, err := version.GetDMSVersionInfo()
@@ -57,7 +57,7 @@ func runUpdateCheck() {
 	if versionInfo.HasUpdate {
 		fmt.Println("✓ Update available!")
 		fmt.Println()
-		fmt.Println("Run 'dms update' to install the latest version.")
+		fmt.Println("Run 'hype update' to install the latest version.")
 		os.Exit(0)
 	} else {
 		fmt.Println("✓ You are running the latest version.")
@@ -94,10 +94,10 @@ func runUpdate() {
 		if errors.Is(updateErr, errdefs.ErrNoUpdateNeeded) {
 			return
 		}
-		log.Fatalf("Error updating DMS: %v", updateErr)
+		log.Fatalf("Error updating HypeShell: %v", updateErr)
 	}
 
-	log.Info("Update complete! Restarting DMS...")
+	log.Info("Update complete! Restarting HypeShell...")
 	restartShell()
 }
 
@@ -121,7 +121,7 @@ func updateArchLinux() error {
 		packageName = "dms-shell-bin"
 		isAUR = true
 	} else {
-		fmt.Println("Info: No dms-shell package found.")
+		fmt.Println("Info: No HypeShell package found.")
 		fmt.Println("Info: Falling back to git-based update method...")
 		return updateOtherDistros()
 	}
@@ -138,7 +138,7 @@ func updateArchLinux() error {
 			return err
 		}
 
-		fmt.Println("dms successfully updated")
+		fmt.Println("hype successfully updated")
 		return nil
 	}
 
@@ -157,7 +157,7 @@ func updateArchLinux() error {
 		return updateOtherDistros()
 	}
 
-	fmt.Printf("This will update DankMaterialShell using %s.\n", helper)
+	fmt.Printf("This will update HypeShell using %s.\n", helper)
 	if !confirmUpdate() {
 		return errdefs.ErrUpdateCancelled
 	}
@@ -170,7 +170,7 @@ func updateArchLinux() error {
 		fmt.Printf("Error: Failed to update using %s: %v\n", helper, err)
 	}
 
-	fmt.Println("dms successfully updated")
+	fmt.Println("hype successfully updated")
 	return nil
 }
 
@@ -183,10 +183,10 @@ func updateOtherDistros() error {
 	dmsPath := filepath.Join(homeDir, ".config", "quickshell", "dms")
 
 	if _, err := os.Stat(dmsPath); os.IsNotExist(err) {
-		return fmt.Errorf("DMS configuration directory not found at %s", dmsPath)
+		return fmt.Errorf("HypeShell configuration directory not found at %s", dmsPath)
 	}
 
-	fmt.Printf("Found DMS configuration at %s\n", dmsPath)
+	fmt.Printf("Found HypeShell configuration at %s\n", dmsPath)
 
 	versionInfo, err := version.GetDMSVersionInfo()
 	if err == nil && !versionInfo.HasUpdate {
@@ -199,24 +199,24 @@ func updateOtherDistros() error {
 	}
 
 	fmt.Println("\nThis will update:")
-	fmt.Println("  1. The dms binary from GitHub releases")
-	fmt.Println("  2. DankMaterialShell configuration using git")
+	fmt.Println("  1. The hype binary from GitHub releases")
+	fmt.Println("  2. HypeShell configuration using git")
 	if !confirmUpdate() {
 		return errdefs.ErrUpdateCancelled
 	}
 
-	fmt.Println("\n=== Updating dms binary ===")
+	fmt.Println("\n=== Updating hype binary ===")
 	if err := updateDMSBinary(); err != nil {
-		fmt.Printf("Warning: Failed to update dms binary: %v\n", err)
+		fmt.Printf("Warning: Failed to update hype binary: %v\n", err)
 		fmt.Println("Continuing with shell configuration update...")
 	} else {
-		fmt.Println("dms binary successfully updated")
+		fmt.Println("hype binary successfully updated")
 	}
 
-	fmt.Println("\n=== Updating DMS shell configuration ===")
+	fmt.Println("\n=== Updating HypeShell shell configuration ===")
 
 	if err := os.Chdir(dmsPath); err != nil {
-		return fmt.Errorf("failed to change to DMS directory: %w", err)
+		return fmt.Errorf("failed to change to HypeShell directory: %w", err)
 	}
 
 	statusCmd := exec.Command("git", "status", "--porcelain")
@@ -272,7 +272,7 @@ func updateOtherDistros() error {
 		fmt.Printf("Latest tag: %s\n", latestTag)
 
 		if hasLocalChanges {
-			fmt.Println("\nWarning: You have local changes in your DMS configuration.")
+			fmt.Println("\nWarning: You have local changes in your HypeShell configuration.")
 			if offerReclone(dmsPath) {
 				return nil
 			}
@@ -302,7 +302,7 @@ func updateOtherDistros() error {
 	fmt.Printf("Current branch: %s\n", currentBranch)
 
 	if hasLocalChanges {
-		fmt.Println("\nWarning: You have local changes in your DMS configuration.")
+		fmt.Println("\nWarning: You have local changes in your HypeShell configuration.")
 		if offerReclone(dmsPath) {
 			return nil
 		}
@@ -342,7 +342,7 @@ func offerReclone(dmsPath string) bool {
 	}
 
 	fmt.Println("Cloning fresh copy...")
-	cloneCmd := exec.Command("git", "clone", "https://github.com/AvengeMedia/DankMaterialShell.git", dmsPath)
+	cloneCmd := exec.Command("git", "clone", "https://github.com/acarlton5/HypeShell.git", dmsPath)
 	cloneCmd.Stdout = os.Stdout
 	cloneCmd.Stderr = os.Stderr
 	if err := cloneCmd.Run(); err != nil {
@@ -393,7 +393,7 @@ func updateDMSBinary() error {
 	}
 
 	fmt.Println("Fetching latest release version...")
-	cmd := exec.Command("curl", "-s", "https://api.github.com/repos/AvengeMedia/DankMaterialShell/releases/latest")
+	cmd := exec.Command("curl", "-s", "https://api.github.com/repos/acarlton5/HypeShell/releases/latest")
 	output, err := cmd.Output()
 	if err != nil {
 		return fmt.Errorf("failed to fetch latest release: %w", err)
@@ -416,19 +416,19 @@ func updateDMSBinary() error {
 
 	fmt.Printf("Latest version: %s\n", version)
 
-	tempDir, err := os.MkdirTemp("", "dms-update-*")
+	tempDir, err := os.MkdirTemp("", "hype-update-*")
 	if err != nil {
 		return fmt.Errorf("failed to create temp directory: %w", err)
 	}
 	defer os.RemoveAll(tempDir)
 
-	binaryURL := fmt.Sprintf("https://github.com/AvengeMedia/DankMaterialShell/releases/download/%s/dms-cli-%s.gz", version, arch)
-	checksumURL := fmt.Sprintf("https://github.com/AvengeMedia/DankMaterialShell/releases/download/%s/dms-cli-%s.gz.sha256", version, arch)
+	binaryURL := fmt.Sprintf("https://github.com/acarlton5/HypeShell/releases/download/%s/hype-cli-%s.gz", version, arch)
+	checksumURL := fmt.Sprintf("https://github.com/acarlton5/HypeShell/releases/download/%s/hype-cli-%s.gz.sha256", version, arch)
 
-	binaryPath := filepath.Join(tempDir, "dms.gz")
-	checksumPath := filepath.Join(tempDir, "dms.gz.sha256")
+	binaryPath := filepath.Join(tempDir, "hype.gz")
+	checksumPath := filepath.Join(tempDir, "hype.gz.sha256")
 
-	fmt.Println("Downloading dms binary...")
+	fmt.Println("Downloading hype binary...")
 	downloadCmd := exec.Command("curl", "-L", binaryURL, "-o", binaryPath)
 	if err := downloadCmd.Run(); err != nil {
 		return fmt.Errorf("failed to download binary: %w", err)
@@ -464,15 +464,15 @@ func updateDMSBinary() error {
 		return fmt.Errorf("failed to decompress binary: %w", err)
 	}
 
-	decompressedPath := filepath.Join(tempDir, "dms")
+	decompressedPath := filepath.Join(tempDir, "hype")
 
 	if err := os.Chmod(decompressedPath, 0o755); err != nil {
 		return fmt.Errorf("failed to make binary executable: %w", err)
 	}
 
-	currentPath, err := exec.LookPath("dms")
+	currentPath, err := exec.LookPath("hype")
 	if err != nil {
-		return fmt.Errorf("could not find current dms binary: %w", err)
+		return fmt.Errorf("could not find current hype binary: %w", err)
 	}
 
 	fmt.Printf("Installing to %s...\n", currentPath)

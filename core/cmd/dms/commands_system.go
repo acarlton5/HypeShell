@@ -19,7 +19,7 @@ import (
 var systemCmd = &cobra.Command{
 	Use:   "system",
 	Short: "System operations",
-	Long:  "System-level operations (updates, etc.). Runs against installed package managers directly; does not require the DMS server.",
+	Long:  "System-level operations (updates, etc.). Runs against installed package managers directly; does not require the HypeShell server.",
 }
 
 var systemUpdateCmd = &cobra.Command{
@@ -58,7 +58,7 @@ func init() {
 	systemUpdateCmd.Flags().BoolVar(&sysUpdateJSON, "json", false, "Output as JSON (with --check)")
 	systemUpdateCmd.Flags().BoolVar(&sysUpdateNoFlatpak, "no-flatpak", false, "Skip the Flatpak overlay")
 	systemUpdateCmd.Flags().BoolVar(&sysUpdateNoAUR, "no-aur", false, "Skip the AUR (paru/yay only)")
-	systemUpdateCmd.Flags().IntVar(&sysUpdateIntervalS, "interval", -1, "Set the DMS server poll interval in seconds and exit (requires running server)")
+	systemUpdateCmd.Flags().IntVar(&sysUpdateIntervalS, "interval", -1, "Set the HypeShell server poll interval in seconds and exit (requires running server)")
 
 	systemCmd.AddCommand(systemUpdateCmd)
 }

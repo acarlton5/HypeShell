@@ -96,7 +96,7 @@ func hasSystemdRun() bool {
 }
 
 func getPIDFilePath() string {
-	return filepath.Join(getRuntimeDir(), fmt.Sprintf("danklinux-%d.pid", os.Getpid()))
+	return filepath.Join(getRuntimeDir(), fmt.Sprintf("HYPESHELL-%d.pid", os.Getpid()))
 }
 
 func writePIDFile(childPID int) error {
@@ -119,7 +119,7 @@ func getAllDMSPIDs() []int {
 	var pids []int
 
 	for _, entry := range entries {
-		if !strings.HasPrefix(entry.Name(), "danklinux-") || !strings.HasSuffix(entry.Name(), ".pid") {
+		if !(strings.HasPrefix(entry.Name(), "HYPESHELL-") || strings.HasPrefix(entry.Name(), "danklinux-")) || !strings.HasSuffix(entry.Name(), ".pid") {
 			continue
 		}
 
@@ -148,7 +148,7 @@ func getAllDMSPIDs() []int {
 
 		pids = append(pids, childPID)
 
-		parentPIDStr := strings.TrimPrefix(entry.Name(), "danklinux-")
+		parentPIDStr := strings.TrimPrefix(strings.TrimPrefix(entry.Name(), "HYPESHELL-"), "danklinux-")
 		parentPIDStr = strings.TrimSuffix(parentPIDStr, ".pid")
 		if parentPID, err := strconv.Atoi(parentPIDStr); err == nil {
 			if parentProc, err := os.FindProcess(parentPID); err == nil {
@@ -165,14 +165,14 @@ func getAllDMSPIDs() []int {
 func runShellInteractive(session bool) {
 	isSessionManaged = session
 	go printASCII()
-	fmt.Fprintf(os.Stderr, "dms %s\n", Version)
+	fmt.Fprintf(os.Stderr, "hype %s\n", Version)
 
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
 	socketPath := server.GetSocketPath()
 
-	configStateFile := filepath.Join(getRuntimeDir(), "danklinux.path")
+	configStateFile := filepath.Join(getRuntimeDir(), "HYPESHELL.path")
 	if err := os.WriteFile(configStateFile, []byte(configPath), 0o644); err != nil {
 		log.Warnf("Failed to write config state file: %v", err)
 	}
@@ -195,7 +195,7 @@ func runShellInteractive(session bool) {
 	log.Infof("Spawning quickshell with -p %s", configPath)
 
 	cmd := exec.CommandContext(ctx, "qs", "-p", configPath)
-	cmd.Env = append(os.Environ(), "DMS_SOCKET="+socketPath)
+	cmd.Env = append(os.Environ(), "HYPE_SOCKET="+socketPath, "DMS_SOCKET="+socketPath)
 	if os.Getenv("QT_LOGGING_RULES") == "" {
 		if qtRules := log.GetQtLoggingRules(); qtRules != "" {
 			cmd.Env = append(cmd.Env, "QT_LOGGING_RULES="+qtRules)
@@ -303,7 +303,7 @@ func restartShell() {
 	pids := getAllDMSPIDs()
 
 	if len(pids) == 0 {
-		log.Info("No running DMS shell instances found. Starting daemon...")
+		log.Info("No running HypeShell instances found. Starting daemon...")
 		runShellDaemon(false)
 		return
 	}
@@ -331,7 +331,7 @@ func restartShell() {
 		if err := proc.Signal(syscall.SIGUSR1); err != nil {
 			log.Errorf("Error sending SIGUSR1 to process %d: %v", pid, err)
 		} else {
-			log.Infof("Sent SIGUSR1 to DMS process with PID %d", pid)
+			log.Infof("Sent SIGUSR1 to HypeShell process with PID %d", pid)
 		}
 	}
 }
@@ -340,7 +340,7 @@ func killShell() {
 	pids := getAllDMSPIDs()
 
 	if len(pids) == 0 {
-		log.Info("No running DMS shell instances found.")
+		log.Info("No running HypeShell instances found.")
 		return
 	}
 
@@ -367,7 +367,7 @@ func killShell() {
 		if err := proc.Kill(); err != nil {
 			log.Errorf("Error killing process %d: %v", pid, err)
 		} else {
-			log.Infof("Killed DMS process with PID %d", pid)
+			log.Infof("Killed HypeShell process with PID %d", pid)
 		}
 	}
 
@@ -378,7 +378,7 @@ func killShell() {
 	}
 
 	for _, entry := range entries {
-		if strings.HasPrefix(entry.Name(), "danklinux-") && strings.HasSuffix(entry.Name(), ".pid") {
+		if (strings.HasPrefix(entry.Name(), "HYPESHELL-") || strings.HasPrefix(entry.Name(), "danklinux-")) && strings.HasSuffix(entry.Name(), ".pid") {
 			pidFile := filepath.Join(dir, entry.Name())
 			os.Remove(pidFile)
 		}
@@ -390,7 +390,7 @@ func runShellDaemon(session bool) {
 	isDaemonChild := slices.Contains(os.Args, "--daemon-child")
 
 	if !isDaemonChild {
-		fmt.Fprintf(os.Stderr, "dms %s\n", Version)
+		fmt.Fprintf(os.Stderr, "hype %s\n", Version)
 
 		cmd := exec.Command(os.Args[0], "run", "-d", "--daemon-child")
 		cmd.Env = os.Environ()
@@ -403,18 +403,18 @@ func runShellDaemon(session bool) {
 			log.Fatalf("Error starting daemon: %v", err)
 		}
 
-		log.Infof("DMS shell daemon started (PID: %d)", cmd.Process.Pid)
+		log.Infof("HypeShell daemon started (PID: %d)", cmd.Process.Pid)
 		return
 	}
 
-	fmt.Fprintf(os.Stderr, "dms %s\n", Version)
+	fmt.Fprintf(os.Stderr, "hype %s\n", Version)
 
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
 	socketPath := server.GetSocketPath()
 
-	configStateFile := filepath.Join(getRuntimeDir(), "danklinux.path")
+	configStateFile := filepath.Join(getRuntimeDir(), "HYPESHELL.path")
 	if err := os.WriteFile(configStateFile, []byte(configPath), 0o644); err != nil {
 		log.Warnf("Failed to write config state file: %v", err)
 	}
@@ -437,7 +437,7 @@ func runShellDaemon(session bool) {
 	log.Infof("Spawning quickshell with -p %s", configPath)
 
 	cmd := exec.CommandContext(ctx, "qs", "-p", configPath)
-	cmd.Env = append(os.Environ(), "DMS_SOCKET="+socketPath)
+	cmd.Env = append(os.Environ(), "HYPE_SOCKET="+socketPath, "DMS_SOCKET="+socketPath)
 	if os.Getenv("QT_LOGGING_RULES") == "" {
 		if qtRules := log.GetQtLoggingRules(); qtRules != "" {
 			cmd.Env = append(cmd.Env, "QT_LOGGING_RULES="+qtRules)
@@ -445,7 +445,7 @@ func runShellDaemon(session bool) {
 	}
 
 	// ! TODO - remove when QS 0.3 is up and we can use the pragma
-	cmd.Env = append(cmd.Env, "QS_APP_ID=com.danklinux.dms")
+	cmd.Env = append(cmd.Env, "QS_APP_ID=com.hypeshell.shell")
 
 	if isSessionManaged && hasSystemdRun() {
 		cmd.Env = append(cmd.Env, "DMS_DEFAULT_LAUNCH_PREFIX=systemd-run --user --scope")
@@ -641,7 +641,7 @@ func getFirstDMSPID() (int, bool) {
 	}
 
 	for _, entry := range entries {
-		if !strings.HasPrefix(entry.Name(), "danklinux-") || !strings.HasSuffix(entry.Name(), ".pid") {
+		if !(strings.HasPrefix(entry.Name(), "HYPESHELL-") || strings.HasPrefix(entry.Name(), "danklinux-")) || !strings.HasSuffix(entry.Name(), ".pid") {
 			continue
 		}
 
@@ -720,7 +720,7 @@ func printIPCHelp() {
 
 	output, err := cmd.Output()
 	if err != nil {
-		fmt.Println("Could not retrieve available IPC targets (is DMS running?)")
+		fmt.Println("Could not retrieve available IPC targets (is HypeShell running?)")
 		return
 	}
 

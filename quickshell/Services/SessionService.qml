@@ -45,7 +45,7 @@ Singleton {
     property bool prepareForSleepSubscriptionPending: false
     property double lastResumeSignalTimestamp: 0
 
-    readonly property string socketPath: Quickshell.env("DMS_SOCKET")
+    readonly property string socketPath: Quickshell.env("HYPE_SOCKET") || Quickshell.env("DMS_SOCKET")
 
     Timer {
         id: sessionInitTimer
@@ -64,7 +64,7 @@ Singleton {
             if (socketPath && socketPath.length > 0) {
                 checkDMSCapabilities();
             } else {
-                log.debug("DMS_SOCKET not set");
+                log.debug("HYPE_SOCKET not set");
             }
         }
     }
@@ -495,7 +495,7 @@ Singleton {
             }
         } else {
             loginctlAvailable = false;
-            log.debug("loginctl capability not available in DMS");
+            log.debug("loginctl capability not available in HypeShell");
         }
 
         if (DMSService.capabilities.includes("dbus")) {
