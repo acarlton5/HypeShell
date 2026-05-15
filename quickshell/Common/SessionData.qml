@@ -16,7 +16,7 @@ Singleton {
 
     readonly property int sessionConfigVersion: 3
 
-    readonly property bool isGreeterMode: Quickshell.env("DMS_RUN_GREETER") === "1" || Quickshell.env("DMS_RUN_GREETER") === "true"
+    readonly property bool isGreeterMode: Quickshell.env("HYPE_RUN_GREETER") === "1" || Quickshell.env("HYPE_RUN_GREETER") === "true"
     property bool _parseError: false
     property bool _hasLoaded: false
     property bool _isReadOnly: false
@@ -1345,7 +1345,7 @@ Singleton {
         id: greeterSessionFile
 
         path: {
-            const greetCfgDir = Quickshell.env("DMS_GREET_CFG_DIR") || "/var/cache/dms-greeter";
+            const greetCfgDir = Quickshell.env("HYPE_GREET_CFG_DIR") || "/var/cache/hype-greeter";
             return greetCfgDir + "/session.json";
         }
         preload: isGreeterMode

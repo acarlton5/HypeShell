@@ -4,17 +4,17 @@ set -e
 
 COMPOSITOR=""
 COMPOSITOR_CONFIG=""
-DMS_PATH="hype"
-CACHE_DIR="/var/cache/dms-greeter"
+HYPE_PATH="hype"
+CACHE_DIR="/var/cache/hype-greeter"
 REMEMBER_LAST_SESSION=""
 REMEMBER_LAST_USER=""
 DEBUG_MODE=0
 
 show_help() {
     cat << EOF
-dms-greeter - HypeShell greeter launcher
+hype-greeter - HypeShell greeter launcher
 
-Usage: dms-greeter --command COMPOSITOR [OPTIONS]
+Usage: hype-greeter --command COMPOSITOR [OPTIONS]
 
 Required:
     --command COMPOSITOR    Compositor to use (niri, hyprland, sway, scroll, miracle, mango, or labwc)
@@ -24,7 +24,7 @@ Options:
     -p, --path PATH         HypeShell path (config name or absolute path)
                            (default: hype)
     --cache-dir PATH        Cache directory for greeter data
-                           (default: /var/cache/dms-greeter)
+                           (default: /var/cache/hype-greeter)
     --remember-last-session BOOL
                            Persist selected session to greeter memory
                            (BOOL: true/false, default: from settings.json)
@@ -37,14 +37,10 @@ Options:
     -h, --help             Show this help message
 
 Examples:
-    dms-greeter --command niri
-    dms-greeter --command hyprland -C /etc/greetd/custom-hypr.conf
-    dms-greeter --command sway -p /home/user/.config/quickshell/custom-hype
-    dms-greeter --command scroll -p /home/user/.config/quickshell/custom-hype
-    dms-greeter --command niri --cache-dir /tmp/dmsgreeter
-    dms-greeter --command niri --no-save-session --no-save-username
-    dms-greeter --command mango
-    dms-greeter --command labwc
+    hype-greeter --command hyprland
+    hype-greeter --command hyprland -C /etc/greetd/custom-hypr.conf
+    hype-greeter --command hyprland -p /home/user/.config/quickshell/custom-hype
+    hype-greeter --command hyprland --cache-dir /tmp/hype-greeter
 EOF
 }
 
@@ -84,7 +80,7 @@ exec_compositor() {
     fi
 
     if command -v systemd-cat >/dev/null 2>&1; then
-        exec "$@" > >(systemd-cat -t "dms-greeter/$log_tag" -p info) 2>&1
+        exec "$@" > >(systemd-cat -t "hype-greeter/$log_tag" -p info) 2>&1
     fi
 
     exec "$@"
@@ -101,7 +97,7 @@ while [[ $# -gt 0 ]]; do
             shift 2
             ;;
         -p|--path)
-            DMS_PATH="$2"
+            HYPE_PATH="$2"
             shift 2
             ;;
         --cache-dir)
@@ -146,7 +142,7 @@ if [[ -z "$COMPOSITOR" ]]; then
     exit 1
 fi
 
-locate_dms_config() {
+locate_hype_config() {
     local config_name="$1"
     local search_paths=()
 
@@ -178,7 +174,7 @@ export XDG_SESSION_TYPE=wayland
 export QT_QPA_PLATFORM=wayland
 export QT_WAYLAND_DISABLE_WINDOWDECORATION=1
 export EGL_PLATFORM=gbm
-export DMS_RUN_GREETER=1
+export HYPE_RUN_GREETER=1
 
 if [[ ! -d "$CACHE_DIR" ]]; then
     echo "Error: cache directory '$CACHE_DIR' does not exist." >&2
@@ -186,28 +182,28 @@ if [[ ! -d "$CACHE_DIR" ]]; then
     exit 1
 fi
 
-export DMS_GREET_CFG_DIR="$CACHE_DIR"
+export HYPE_GREET_CFG_DIR="$CACHE_DIR"
 
 if [[ -n "$REMEMBER_LAST_SESSION" ]]; then
-    DMS_GREET_REMEMBER_LAST_SESSION=$(normalize_bool_flag "--remember-last-session" "$REMEMBER_LAST_SESSION")
-    export DMS_GREET_REMEMBER_LAST_SESSION
-    if [[ "$DMS_GREET_REMEMBER_LAST_SESSION" == "1" ]]; then
-        DMS_SAVE_SESSION=true
+        HYPE_GREET_REMEMBER_LAST_SESSION=$(normalize_bool_flag "--remember-last-session" "$REMEMBER_LAST_SESSION")
+        export HYPE_GREET_REMEMBER_LAST_SESSION
+    if [[ "$HYPE_GREET_REMEMBER_LAST_SESSION" == "1" ]]; then
+        HYPE_SAVE_SESSION=true
     else
-        DMS_SAVE_SESSION=false
+        HYPE_SAVE_SESSION=false
     fi
-    export DMS_SAVE_SESSION
+    export HYPE_SAVE_SESSION
 fi
 
 if [[ -n "$REMEMBER_LAST_USER" ]]; then
-    DMS_GREET_REMEMBER_LAST_USER=$(normalize_bool_flag "--remember-last-user" "$REMEMBER_LAST_USER")
-    export DMS_GREET_REMEMBER_LAST_USER
-    if [[ "$DMS_GREET_REMEMBER_LAST_USER" == "1" ]]; then
-        DMS_SAVE_USERNAME=true
+    HYPE_GREET_REMEMBER_LAST_USER=$(normalize_bool_flag "--remember-last-user" "$REMEMBER_LAST_USER")
+    export HYPE_GREET_REMEMBER_LAST_USER
+    if [[ "$HYPE_GREET_REMEMBER_LAST_USER" == "1" ]]; then
+        HYPE_SAVE_USERNAME=true
     else
-        DMS_SAVE_USERNAME=false
+        HYPE_SAVE_USERNAME=false
     fi
-    export DMS_SAVE_USERNAME
+    export HYPE_SAVE_USERNAME
 fi
 
 export HOME="$CACHE_DIR"
@@ -234,17 +230,17 @@ else
 fi
 
 QS_CMD="$QS_BIN"
-if [[ "$DMS_PATH" == /* ]]; then
-    QS_CMD="$QS_BIN -p $DMS_PATH"
+if [[ "$HYPE_PATH" == /* ]]; then
+    QS_CMD="$QS_BIN -p $HYPE_PATH"
 else
-    RESOLVED_PATH=$(locate_dms_config "$DMS_PATH")
+    RESOLVED_PATH=$(locate_hype_config "$HYPE_PATH")
     if [[ $? -eq 0 && -n "$RESOLVED_PATH" ]]; then
         if [[ "$DEBUG_MODE" == "1" ]]; then
-            echo "Located DMS config at: $RESOLVED_PATH" >&2
+            echo "Located HypeShell config at: $RESOLVED_PATH" >&2
         fi
         QS_CMD="$QS_BIN -p $RESOLVED_PATH"
     else
-        echo "Error: Could not find DMS config '$DMS_PATH' (shell.qml) in any valid config path" >&2
+        echo "Error: Could not find HypeShell config '$HYPE_PATH' (shell.qml) in any valid config path" >&2
         exit 1
     fi
 fi
@@ -261,7 +257,7 @@ hotkey-overlay {
 }
 
 environment {
-    DMS_RUN_GREETER "1"
+    HYPE_RUN_GREETER "1"
 }
 
 debug {
@@ -307,14 +303,14 @@ NIRI_EOF
         ;;
 
     hyprland)
-        if ! command -v start-hyprland >/dev/null 2>&1 && ! command -v Hyprland >/dev/null 2>&1; then
-            echo "Error: neither 'start-hyprland' nor 'Hyprland' was found in PATH" >&2
+        if ! command -v hypeshell-hyprland-session >/dev/null 2>&1 && ! command -v start-hyprland >/dev/null 2>&1 && ! command -v Hyprland >/dev/null 2>&1; then
+            echo "Error: neither 'hypeshell-hyprland-session' nor 'Hyprland' was found in PATH" >&2
             exit 1
         fi
         if [[ -z "$COMPOSITOR_CONFIG" ]]; then
             TEMP_CONFIG=$(mktemp)
             cat > "$TEMP_CONFIG" << HYPRLAND_EOF
-env = DMS_RUN_GREETER,1
+env = HYPE_RUN_GREETER,1
 
 misc {
     disable_hyprland_logo = true
@@ -332,7 +328,9 @@ exec-once = sh -c "$QS_CMD; hyprctl dispatch exit"
 HYPRLAND_EOF
             COMPOSITOR_CONFIG="$TEMP_CONFIG"
         fi
-        if command -v start-hyprland >/dev/null 2>&1; then
+        if command -v hypeshell-hyprland-session >/dev/null 2>&1; then
+            exec_compositor "hyprland" hypeshell-hyprland-session -- --config "$COMPOSITOR_CONFIG"
+        elif command -v start-hyprland >/dev/null 2>&1; then
             exec_compositor "hyprland" start-hyprland -- --config "$COMPOSITOR_CONFIG"
         else
             exec_compositor "hyprland" Hyprland -c "$COMPOSITOR_CONFIG"

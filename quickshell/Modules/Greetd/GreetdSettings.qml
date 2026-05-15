@@ -13,7 +13,7 @@ Singleton {
     readonly property var log: Log.scoped("GreetdSettings")
 
     readonly property string configPath: {
-        const greetCfgDir = Quickshell.env("DMS_GREET_CFG_DIR") || "/var/cache/dms-greeter";
+        const greetCfgDir = Quickshell.env("HYPE_GREET_CFG_DIR") || "/var/cache/hype-greeter";
         return greetCfgDir + "/settings.json";
     }
 
@@ -78,8 +78,8 @@ Singleton {
                 settings = JSON.parse(content);
             }
 
-            const envRememberLastSession = GreetdEnv.readBoolOverride(Quickshell.env, ["DMS_GREET_REMEMBER_LAST_SESSION", "DMS_SAVE_SESSION"], undefined);
-            const envRememberLastUser = GreetdEnv.readBoolOverride(Quickshell.env, ["DMS_GREET_REMEMBER_LAST_USER", "DMS_SAVE_USERNAME"], undefined);
+            const envRememberLastSession = GreetdEnv.readBoolOverride(Quickshell.env, ["HYPE_GREET_REMEMBER_LAST_SESSION", "HYPE_SAVE_SESSION"], undefined);
+            const envRememberLastUser = GreetdEnv.readBoolOverride(Quickshell.env, ["HYPE_GREET_REMEMBER_LAST_USER", "HYPE_SAVE_USERNAME"], undefined);
 
             currentThemeName = settings.currentThemeName !== undefined ? settings.currentThemeName : "purple";
             customThemeFile = settings.customThemeFile !== undefined ? settings.customThemeFile : "";

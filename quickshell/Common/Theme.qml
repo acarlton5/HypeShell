@@ -2082,7 +2082,7 @@ Singleton {
     FileView {
         id: dynamicColorsFileView
         path: {
-            const greetCfgDir = Quickshell.env("DMS_GREET_CFG_DIR") || "/var/cache/dms-greeter";
+            const greetCfgDir = Quickshell.env("HYPE_GREET_CFG_DIR") || "/var/cache/hype-greeter";
             const colorsPath = SessionData.isGreeterMode ? greetCfgDir + "/colors.json" : stateDir + "/dms-colors.json";
             return colorsPath;
         }

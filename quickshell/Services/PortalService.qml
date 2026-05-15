@@ -52,7 +52,7 @@ Singleton {
             profileImage = "";
             return;
         }
-        if (Quickshell.env("DMS_RUN_GREETER") === "1" || Quickshell.env("DMS_RUN_GREETER") === "true") {
+        if (Quickshell.env("HYPE_RUN_GREETER") === "1" || Quickshell.env("HYPE_RUN_GREETER") === "true") {
             profileImage = "";
             return;
         }

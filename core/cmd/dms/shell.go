@@ -100,7 +100,7 @@ func getPIDFilePath() string {
 }
 
 func ensureWaylandSession() {
-	if os.Getenv("WAYLAND_DISPLAY") != "" || os.Getenv("DMS_RUN_GREETER") != "" {
+	if os.Getenv("WAYLAND_DISPLAY") != "" || os.Getenv("HYPE_RUN_GREETER") != "" {
 		return
 	}
 
@@ -127,7 +127,7 @@ func getAllDMSPIDs() []int {
 	var pids []int
 
 	for _, entry := range entries {
-		if !(strings.HasPrefix(entry.Name(), "HYPESHELL-") || strings.HasPrefix(entry.Name(), "danklinux-")) || !strings.HasSuffix(entry.Name(), ".pid") {
+		if !(strings.HasPrefix(entry.Name(), "HYPESHELL-")) || !strings.HasSuffix(entry.Name(), ".pid") {
 			continue
 		}
 
@@ -156,7 +156,7 @@ func getAllDMSPIDs() []int {
 
 		pids = append(pids, childPID)
 
-		parentPIDStr := strings.TrimPrefix(strings.TrimPrefix(entry.Name(), "HYPESHELL-"), "danklinux-")
+		parentPIDStr := strings.TrimPrefix(entry.Name(), "HYPESHELL-")
 		parentPIDStr = strings.TrimSuffix(parentPIDStr, ".pid")
 		if parentPID, err := strconv.Atoi(parentPIDStr); err == nil {
 			if parentProc, err := os.FindProcess(parentPID); err == nil {
@@ -392,7 +392,7 @@ func killShell() {
 	}
 
 	for _, entry := range entries {
-		if (strings.HasPrefix(entry.Name(), "HYPESHELL-") || strings.HasPrefix(entry.Name(), "danklinux-")) && strings.HasSuffix(entry.Name(), ".pid") {
+		if (strings.HasPrefix(entry.Name(), "HYPESHELL-")) && strings.HasSuffix(entry.Name(), ".pid") {
 			pidFile := filepath.Join(dir, entry.Name())
 			os.Remove(pidFile)
 		}
@@ -661,7 +661,7 @@ func getFirstDMSPID() (int, bool) {
 	}
 
 	for _, entry := range entries {
-		if !(strings.HasPrefix(entry.Name(), "HYPESHELL-") || strings.HasPrefix(entry.Name(), "danklinux-")) || !strings.HasSuffix(entry.Name(), ".pid") {
+		if !(strings.HasPrefix(entry.Name(), "HYPESHELL-")) || !strings.HasSuffix(entry.Name(), ".pid") {
 			continue
 		}
 

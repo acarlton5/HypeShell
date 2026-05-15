@@ -17,7 +17,7 @@ Singleton {
 
     readonly property int settingsConfigVersion: 11
 
-    readonly property bool isGreeterMode: Quickshell.env("DMS_RUN_GREETER") === "1" || Quickshell.env("DMS_RUN_GREETER") === "true"
+    readonly property bool isGreeterMode: Quickshell.env("HYPE_RUN_GREETER") === "1" || Quickshell.env("HYPE_RUN_GREETER") === "true"
 
     enum Position {
         Top,

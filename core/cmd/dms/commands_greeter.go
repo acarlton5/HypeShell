@@ -191,10 +191,10 @@ func installGreeter(nonInteractive bool) error {
 
 	greeter.TryInstallGreeterPackage(logFunc, "")
 	if isPackageOnlyGreeterDistro() && !greeter.IsGreeterPackaged() {
-		return fmt.Errorf("dms-greeter must be installed from distro packages on this distribution. %s", packageInstallHint())
+		return fmt.Errorf("hype-greeter must be installed from the HypeShell source wrapper. %s", packageInstallHint())
 	}
 	if greeter.IsGreeterPackaged() && greeter.HasLegacyLocalGreeterWrapper() {
-		return fmt.Errorf("legacy manual wrapper detected at /usr/local/bin/dms-greeter; remove it before using packaged dms-greeter: sudo rm -f /usr/local/bin/dms-greeter")
+		return fmt.Errorf("legacy greeter wrapper detected; rerun install.sh --update to replace it with hype-greeter")
 	}
 
 	if isGreeterEnabled() {
@@ -235,7 +235,7 @@ func installGreeter(nonInteractive bool) error {
 		fmt.Printf("✓ Selected compositor: %s\n", selectedCompositor)
 	}
 
-	fmt.Println("\nSetting up dms-greeter group and permissions...")
+	fmt.Println("\nSetting up HypeShell greeter group and permissions...")
 	if err := greeter.SetupDMSGroup(logFunc, ""); err != nil {
 		return err
 	}
@@ -360,7 +360,7 @@ func restorePreDMSGreetdConfig(sudoPassword string) error {
 		if err != nil {
 			continue
 		}
-		if strings.Contains(string(data), "dms-greeter") {
+		if strings.Contains(string(data), "hype-greeter") {
 			continue
 		}
 		tmp, err := os.CreateTemp("", "greetd-restore-*")
@@ -595,7 +595,7 @@ func syncGreeter(nonInteractive bool, forceAuth bool, local bool) error {
 	}
 
 	if greeter.IsGreeterPackaged() && greeter.HasLegacyLocalGreeterWrapper() {
-		return fmt.Errorf("legacy manual wrapper detected at /usr/local/bin/dms-greeter; remove it before using packaged dms-greeter: sudo rm -f /usr/local/bin/dms-greeter")
+		return fmt.Errorf("legacy greeter wrapper detected; rerun install.sh --update to replace it with hype-greeter")
 	}
 
 	cacheDir := greeter.GreeterCacheDir
@@ -671,9 +671,9 @@ func syncGreeter(nonInteractive bool, forceAuth bool, local bool) error {
 	}
 
 	if local {
-		localWrapperScript := filepath.Join(dmsPath, "Modules", "Greetd", "assets", "dms-greeter")
+		localWrapperScript := filepath.Join(dmsPath, "Modules", "Greetd", "assets", "hype-greeter")
 		if info, statErr := os.Stat(localWrapperScript); statErr != nil || info.IsDir() {
-			localWrapperScript = filepath.Join(dmsPath, "quickshell", "Modules", "Greetd", "assets", "dms-greeter")
+			localWrapperScript = filepath.Join(dmsPath, "quickshell", "Modules", "Greetd", "assets", "hype-greeter")
 		}
 		restoreWrapperOverride := func() {}
 		if info, statErr := os.Stat(localWrapperScript); statErr == nil && !info.IsDir() {
@@ -681,14 +681,14 @@ func syncGreeter(nonInteractive bool, forceAuth bool, local bool) error {
 			if shellErr != nil {
 				return shellErr
 			}
-			previousWrapperOverride, hadWrapperOverride := os.LookupEnv("DMS_GREETER_WRAPPER_CMD")
+			previousWrapperOverride, hadWrapperOverride := os.LookupEnv("HYPE_GREETER_WRAPPER_CMD")
 			wrapperCmdOverride := wrapperShell + " " + localWrapperScript
-			_ = os.Setenv("DMS_GREETER_WRAPPER_CMD", wrapperCmdOverride)
+			_ = os.Setenv("HYPE_GREETER_WRAPPER_CMD", wrapperCmdOverride)
 			restoreWrapperOverride = func() {
 				if hadWrapperOverride {
-					_ = os.Setenv("DMS_GREETER_WRAPPER_CMD", previousWrapperOverride)
+					_ = os.Setenv("HYPE_GREETER_WRAPPER_CMD", previousWrapperOverride)
 				} else {
-					_ = os.Unsetenv("DMS_GREETER_WRAPPER_CMD")
+					_ = os.Unsetenv("HYPE_GREETER_WRAPPER_CMD")
 				}
 			}
 			if !nonInteractive {
@@ -1044,7 +1044,7 @@ func enableGreeter(nonInteractive bool) error {
 	}
 
 	if greeter.IsGreeterPackaged() && greeter.HasLegacyLocalGreeterWrapper() {
-		return fmt.Errorf("legacy manual wrapper detected at /usr/local/bin/dms-greeter; remove it before using packaged dms-greeter: sudo rm -f /usr/local/bin/dms-greeter")
+		return fmt.Errorf("legacy greeter wrapper detected; rerun install.sh --update to replace it with hype-greeter")
 	}
 
 	configAlreadyCorrect := isGreeterEnabled()
@@ -1056,12 +1056,12 @@ func enableGreeter(nonInteractive bool) error {
 	greeterGroup := greeter.DetectGreeterGroup()
 
 	if configAlreadyCorrect {
-		fmt.Println("✓ Greeter is already configured with dms-greeter")
+		fmt.Println("✓ Greeter is already configured with hype-greeter")
 		if configuredCompositor != "" {
 			fmt.Printf("✓ Configured compositor: %s\n", configuredCompositor)
 		}
 
-		fmt.Println("\nSetting up dms-greeter group and permissions...")
+		fmt.Println("\nSetting up HypeShell greeter group and permissions...")
 		if err := greeter.SetupDMSGroup(logFunc, ""); err != nil {
 			return err
 		}
@@ -1073,7 +1073,7 @@ func enableGreeter(nonInteractive bool) error {
 			if err := greeter.CopyGreeterFiles(dmsPath, configuredCompositor, logFunc, ""); err != nil {
 				return fmt.Errorf("failed to install local greeter wrapper: %w", err)
 			}
-			if strings.Contains(readDefaultSessionCommand(configPath), "/usr/bin/dms-greeter") {
+			if strings.Contains(readDefaultSessionCommand(configPath), "/usr/bin/hype-greeter") {
 				compositor := configuredCompositor
 				if compositor == "" {
 					compositor = "hyprland"
@@ -1158,7 +1158,7 @@ func enableGreeter(nonInteractive bool) error {
 		return fmt.Errorf("failed to configure greetd: %w", err)
 	}
 
-	fmt.Println("\nSetting up dms-greeter group and permissions...")
+	fmt.Println("\nSetting up HypeShell greeter group and permissions...")
 	if err := greeter.SetupDMSGroup(logFunc, ""); err != nil {
 		return err
 	}
@@ -1194,7 +1194,7 @@ func enableGreeter(nonInteractive bool) error {
 
 func isGreeterEnabled() bool {
 	command := readDefaultSessionCommand("/etc/greetd/config.toml")
-	return command != "" && strings.Contains(command, "dms-greeter")
+	return command != "" && strings.Contains(command, "hype-greeter")
 }
 
 func detectConfiguredCompositor() string {
@@ -1297,7 +1297,7 @@ func extractGreeterWrapperFromCommand(command string) string {
 	}
 	if len(tokens) > 1 {
 		next := strings.Trim(tokens[1], "\"")
-		if next != "" && (filepath.Base(wrapper) == "bash" || filepath.Base(wrapper) == "sh") && strings.Contains(filepath.Base(next), "dms-greeter") {
+		if next != "" && (filepath.Base(wrapper) == "bash" || filepath.Base(wrapper) == "sh") && strings.Contains(filepath.Base(next), "hype-greeter") {
 			return fmt.Sprintf("%s (script: %s)", wrapper, next)
 		}
 	}
@@ -1330,29 +1330,7 @@ func parseManagedGreeterPamAuth(pamText string) (managed bool, fingerprint bool,
 }
 
 func packageInstallHint() string {
-	osInfo, err := distros.GetOSInfo()
-	if err != nil {
-		return "Install package: dms-greeter"
-	}
-	config, exists := distros.Registry[osInfo.Distribution.ID]
-	if !exists {
-		return "Install package: dms-greeter"
-	}
-
-	switch config.Family {
-	case distros.FamilyDebian:
-		return "Install with 'sudo apt install dms-greeter' (requires DankLinux OBS repo — see https://danklinux.com/docs/dankgreeter/installation#debian)"
-	case distros.FamilySUSE:
-		return "Install with 'sudo zypper install dms-greeter' (requires DankLinux OBS repo — see https://danklinux.com/docs/dankgreeter/installation#opensuse)"
-	case distros.FamilyUbuntu:
-		return "Install with 'sudo apt install dms-greeter' (requires ppa:avengemedia/danklinux: sudo add-apt-repository ppa:avengemedia/danklinux)"
-	case distros.FamilyFedora:
-		return "Install with 'sudo dnf install dms-greeter' (requires COPR: sudo dnf copr enable avengemedia/danklinux)"
-	case distros.FamilyArch:
-		return "Install from AUR with 'paru -S greetd-dms-greeter-git' or 'yay -S greetd-dms-greeter-git'"
-	default:
-		return "Run 'hype greeter install' to install greeter"
-	}
+	return "Run the HypeShell installer again with --update to install the source-owned hype-greeter wrapper"
 }
 
 func systemPamManagerRemediationHint() string {
@@ -1376,19 +1354,7 @@ func systemPamManagerRemediationHint() string {
 }
 
 func isPackageOnlyGreeterDistro() bool {
-	osInfo, err := distros.GetOSInfo()
-	if err != nil {
-		return false
-	}
-	config, exists := distros.Registry[osInfo.Distribution.ID]
-	if !exists {
-		return false
-	}
-	return config.Family == distros.FamilyDebian ||
-		config.Family == distros.FamilySUSE ||
-		config.Family == distros.FamilyUbuntu ||
-		config.Family == distros.FamilyFedora ||
-		config.Family == distros.FamilyArch
+	return false
 }
 
 func promptCompositorChoice(compositors []string) (string, error) {
@@ -1432,7 +1398,7 @@ func checkGreeterStatus() error {
 	fmt.Println("Greeter Configuration:")
 	if _, err := os.ReadFile(configPath); err == nil {
 		configuredCommand = readDefaultSessionCommand(configPath)
-		if configuredCommand != "" && strings.Contains(configuredCommand, "dms-greeter") {
+		if configuredCommand != "" && strings.Contains(configuredCommand, "hype-greeter") {
 			fmt.Println("  ✓ Greeter is enabled")
 			if wrapper := extractGreeterWrapperFromCommand(configuredCommand); wrapper != "" {
 				fmt.Printf("  Wrapper: %s\n", wrapper)
@@ -1698,13 +1664,13 @@ func checkGreeterStatus() error {
 	} else {
 		fmt.Println("  ℹ AppArmor is enabled")
 
-		const appArmorProfilePath = "/etc/apparmor.d/usr.bin.dms-greeter"
+		const appArmorProfilePath = "/etc/apparmor.d/usr.bin.hype-greeter"
 		if _, err := os.Stat(appArmorProfilePath); os.IsNotExist(err) {
 			fmt.Println("  ⚠ HypeShell AppArmor profile not installed")
 			fmt.Println("    Run 'hype greeter sync' to install it and prevent potential TTY fallback")
 			allGood = false
 		} else {
-			mode := appArmorProfileMode("dms-greeter")
+			mode := appArmorProfileMode("hype-greeter")
 			if mode != "" {
 				fmt.Printf("  ✓ HypeShell AppArmor profile installed (%s mode)\n", mode)
 			} else {
@@ -1805,8 +1771,8 @@ func isGreeterRelatedAppArmorDenial(line string) bool {
 	}
 
 	greeterTokens := []string{
-		"dms-greeter",
-		"/usr/bin/dms-greeter",
+		"hype-greeter",
+		"/usr/bin/hype-greeter",
 		"greetd",
 		"quickshell",
 		"/usr/bin/qs",

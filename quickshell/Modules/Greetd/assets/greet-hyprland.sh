@@ -4,8 +4,10 @@ export XDG_SESSION_TYPE=wayland
 export QT_QPA_PLATFORM=wayland
 export QT_WAYLAND_DISABLE_WINDOWDECORATION=1
 export EGL_PLATFORM=gbm
-if command -v start-hyprland >/dev/null 2>&1; then
-    exec start-hyprland -- -c /etc/greetd/dms-hypr.conf
+if command -v hypeshell-hyprland-session >/dev/null 2>&1; then
+    exec hypeshell-hyprland-session -- --config /etc/greetd/hype-hypr.conf
+elif command -v start-hyprland >/dev/null 2>&1; then
+    exec start-hyprland -- -c /etc/greetd/hype-hypr.conf
 else
-    exec Hyprland -c /etc/greetd/dms-hypr.conf
+    exec Hyprland -c /etc/greetd/hype-hypr.conf
 fi

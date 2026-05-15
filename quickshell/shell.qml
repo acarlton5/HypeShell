@@ -13,7 +13,7 @@ import Quickshell
 ShellRoot {
     id: entrypoint
 
-    readonly property bool runGreeter: Quickshell.env("DMS_RUN_GREETER") === "1" || Quickshell.env("DMS_RUN_GREETER") === "true"
+    readonly property bool runGreeter: Quickshell.env("HYPE_RUN_GREETER") === "1" || Quickshell.env("HYPE_RUN_GREETER") === "true"
     readonly property bool disableHotReload: Quickshell.env("DMS_DISABLE_HOT_RELOAD") === "1" || Quickshell.env("DMS_DISABLE_HOT_RELOAD") === "true"
 
     Component.onCompleted: {

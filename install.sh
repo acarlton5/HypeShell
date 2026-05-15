@@ -4,7 +4,7 @@ set -euo pipefail
 
 SCRIPT_NAME="$(basename "$0")"
 DEFAULT_REPO_URL="https://github.com/acarlton5/HypeShell.git"
-INSTALLER_BUILD_ID="fingerprint-v2"
+INSTALLER_BUILD_ID="hype-greeter-v1"
 
 YES=1
 PURGE_USER_DATA=0
@@ -45,11 +45,10 @@ Options:
   --remove-upstream-packages
                         Remove installed legacy upstream shell packages too.
   --install-method MODE Install method for the replacement system:
-                        source   build/install this HypeShell repo from source (default)
-                        package  install legacy upstream distro packages.
-                                Requires --allow-upstream-packages and is not recommended.
+                        source   build/install this HypeShell repo from source (default).
+                        Package installs are intentionally disabled.
   --allow-upstream-packages
-                        Permit --install-method package. Not recommended for HypeShell.
+                        Compatibility no-op; upstream package installs remain disabled.
   --skip-greeter        Do not install/configure greetd and the HypeShell greeter.
   --install-greeter     Compatibility no-op; greeter install is enabled by default.
                         This replaces SDDM/GDM/LightDM with greetd.
@@ -153,18 +152,9 @@ done
 
 FINGERPRINT_PATH="$PREFIX/share/hypeshell/install-fingerprint"
 
-case "$INSTALL_METHOD" in
-    source|package)
-        ;;
-    *)
-        echo "Error: --install-method must be 'source' or 'package'." >&2
-        exit 2
-        ;;
-esac
-
-if [ "$INSTALL_METHOD" = "package" ] && [ "$ALLOW_UPSTREAM_PACKAGES" -ne 1 ]; then
-    echo "Error: --install-method package pulls legacy upstream packages." >&2
-    echo "For HypeShell, use the default source install. If you really want packages, add --allow-upstream-packages." >&2
+if [ "$INSTALL_METHOD" != "source" ]; then
+    echo "Error: HypeShell installs only from the HypeShell source repo." >&2
+    echo "Use the default source install; upstream package installs are disabled." >&2
     exit 2
 fi
 
@@ -474,10 +464,14 @@ remove_legacy_system_artifacts() {
     remove_if_exists /usr/local/bin/hype-shell
     remove_if_exists /usr/local/bin/hypeupdater
     remove_if_exists /usr/local/bin/hype-updater
+    remove_if_exists /usr/local/bin/dms
+    remove_if_exists /usr/local/bin/dms-greeter
     remove_if_exists /usr/bin/hypeshell
     remove_if_exists /usr/bin/hype-shell
     remove_if_exists /usr/bin/hypeupdater
     remove_if_exists /usr/bin/hype-updater
+    remove_if_exists /usr/bin/dms
+    remove_if_exists /usr/bin/dms-greeter
     remove_if_exists /usr/local/share/quickshell/hype-shell
     remove_if_exists /usr/local/share/quickshell/hypeshell
     remove_if_exists /usr/local/share/quickshell/dms
@@ -675,8 +669,8 @@ write_install_fingerprint() {
         echo "prefix=$PREFIX"
         echo "hype_binary=$(command -v hype 2>/dev/null || true)"
         echo "shell_path=$PREFIX/share/quickshell/hype"
-        echo "greeter_wrapper_local=/usr/local/bin/dms-greeter sha256=$(file_sha256 /usr/local/bin/dms-greeter)"
-        echo "greeter_wrapper_compat=/usr/bin/dms-greeter sha256=$(file_sha256 /usr/bin/dms-greeter)"
+        echo "greeter_wrapper_local=/usr/local/bin/hype-greeter sha256=$(file_sha256 /usr/local/bin/hype-greeter)"
+        echo "greeter_wrapper_system=/usr/bin/hype-greeter sha256=$(file_sha256 /usr/bin/hype-greeter)"
         echo "greetd_command=${greetd_command:-missing}"
     } > "$tmp_file"
 
@@ -705,29 +699,6 @@ install_greetd_if_needed() {
 
     echo "Installing greetd only. No legacy upstream shell packages will be installed."
     install_package_if_available greetd
-}
-
-install_dms_package() {
-    echo "Installing legacy upstream distro packages..."
-    echo "This is not the HypeShell-owned path and will pull upstream package names."
-
-    if have pacman; then
-        install_package_if_available dms-shell
-    elif have dnf; then
-        if [ "$YES" -eq 1 ] && ! sudo dnf repolist 2>/dev/null | grep -q "avengemedia.*dms"; then
-            sudo_run dnf copr enable -y avengemedia/dms || true
-        elif [ "$YES" -eq 0 ]; then
-            run sudo dnf copr enable -y avengemedia/dms
-        fi
-        install_package_if_available dms
-    elif have apt-get; then
-        install_package_if_available dms
-    elif have zypper; then
-        install_package_if_available dms
-    else
-        echo "Error: no supported package manager found for package install." >&2
-        exit 1
-    fi
 }
 
 prepare_source() {
@@ -768,6 +739,7 @@ verify_hypeshell_source_payload() {
         "$SOURCE_DIR/core/internal/config/embedded/hypr-colors.conf" \
         "$SOURCE_DIR/core/internal/config/embedded/hypr-layout.conf" \
         "$SOURCE_DIR/core/internal/config/embedded/hypr-binds.conf" \
+        "$SOURCE_DIR/quickshell/Modules/Greetd/assets/hype-greeter" \
         "$SOURCE_DIR/assets/sessions/hypeshell-hyprland.desktop" \
         "$SOURCE_DIR/assets/sessions/hypeshell-hyprland-session"; do
         if [ ! -f "$required" ]; then
@@ -890,11 +862,6 @@ install_hype() {
         return 0
     fi
 
-    if [ "$INSTALL_METHOD" = "package" ]; then
-        install_dms_package
-        return 0
-    fi
-
     prepare_source
 
     install_build_dependencies
@@ -911,15 +878,14 @@ install_greeter_wrapper_from_source() {
     [ "$INSTALL_METHOD" = "source" ] || return 0
 
     if [ "$YES" -eq 0 ]; then
-        run sudo install -D -m 755 "$PREFIX/share/quickshell/hype/Modules/Greetd/assets/dms-greeter" /usr/local/bin/dms-greeter
+        run sudo install -D -m 755 "$PREFIX/share/quickshell/hype/Modules/Greetd/assets/hype-greeter" /usr/local/bin/hype-greeter
         return 0
     fi
 
     wrapper_src=""
     for candidate in \
-        "$PREFIX/share/quickshell/hype/Modules/Greetd/assets/dms-greeter" \
-        "$PREFIX/share/quickshell/dms/Modules/Greetd/assets/dms-greeter" \
-        "$SOURCE_DIR/quickshell/Modules/Greetd/assets/dms-greeter"
+        "$PREFIX/share/quickshell/hype/Modules/Greetd/assets/hype-greeter" \
+        "$SOURCE_DIR/quickshell/Modules/Greetd/assets/hype-greeter"
     do
         if [ -f "$candidate" ]; then
             wrapper_src="$candidate"
@@ -928,13 +894,14 @@ install_greeter_wrapper_from_source() {
     done
 
     if [ -z "$wrapper_src" ]; then
-        echo "Error: dms-greeter wrapper not found after source install." >&2
-        echo "Expected it at $PREFIX/share/quickshell/hype/Modules/Greetd/assets/dms-greeter" >&2
+        echo "Error: hype-greeter wrapper not found after source install." >&2
+        echo "Expected it at $PREFIX/share/quickshell/hype/Modules/Greetd/assets/hype-greeter" >&2
         exit 1
     fi
 
-    sudo_run install -D -m 755 "$wrapper_src" /usr/local/bin/dms-greeter
-    sudo_run install -D -m 755 "$wrapper_src" /usr/bin/dms-greeter
+    sudo_run install -D -m 755 "$wrapper_src" /usr/local/bin/hype-greeter
+    sudo_run install -D -m 755 "$wrapper_src" /usr/bin/hype-greeter
+    sudo_run rm -f /usr/local/bin/dms-greeter /usr/bin/dms-greeter
 }
 
 detect_greeter_user() {
@@ -961,9 +928,9 @@ force_repair_greetd_config() {
     [ "$INSTALL_METHOD" = "source" ] || return 0
 
     greeter_user="$(detect_greeter_user)"
-    wrapper="/usr/local/bin/dms-greeter"
+    wrapper="/usr/local/bin/hype-greeter"
     shell_path="$PREFIX/share/quickshell/hype"
-    command_value="$wrapper --command hyprland --cache-dir /var/cache/dms-greeter -p $shell_path"
+    command_value="$wrapper --command hyprland --cache-dir /var/cache/hype-greeter -p $shell_path"
     tmp_file="$(mktemp)"
 
     cat > "$tmp_file" <<EOF
@@ -981,11 +948,11 @@ EOF
     sudo_run install -D -m 644 "$tmp_file" /etc/greetd/config.toml
     rm -f "$tmp_file"
 
-    sudo_run mkdir -p /var/cache/dms-greeter
+    sudo_run mkdir -p /var/cache/hype-greeter
     if getent group greeter >/dev/null 2>&1; then
-        sudo_run chgrp greeter /var/cache/dms-greeter || true
+        sudo_run chgrp greeter /var/cache/hype-greeter || true
     fi
-    sudo_run chmod 2770 /var/cache/dms-greeter || true
+    sudo_run chmod 2770 /var/cache/hype-greeter || true
 
     echo "Forced greetd command:"
     echo "  command = \"$command_value\""
@@ -1131,8 +1098,6 @@ EOF
         echo "  systemctl --user enable --now hype"
         echo "or:"
         echo "  hype run"
-        echo
-        echo "Note: the legacy command remains as a compatibility alias."
     else
         echo
         echo "Dry run complete. No changes were made."

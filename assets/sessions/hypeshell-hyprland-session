@@ -7,6 +7,26 @@ HYPE_DIR="$CONFIG_DIR/hype"
 CONFIG_FILE="${HYPESHELL_HYPRLAND_CONFIG:-$CONFIG_DIR/hyprland.conf}"
 DEFAULT_DIR="${HYPESHELL_HYPRLAND_DEFAULTS:-/usr/local/share/hypeshell/hyprland}"
 
+while [ "$#" -gt 0 ]; do
+    case "$1" in
+        --)
+            shift
+            ;;
+        -c|--config)
+            if [ "$#" -lt 2 ]; then
+                echo "Error: $1 requires a config path." >&2
+                exit 2
+            fi
+            CONFIG_FILE="$2"
+            shift 2
+            ;;
+        *)
+            echo "Warning: ignoring unknown Hyprland session option: $1" >&2
+            shift
+            ;;
+    esac
+done
+
 seed_config() {
     local source_file="$1"
     local target_file="$2"

@@ -5,4 +5,4 @@ export QT_QPA_PLATFORM=wayland
 export QT_WAYLAND_DISABLE_WINDOWDECORATION=1
 export EGL_PLATFORM=gbm
 
-exec niri -c /etc/greetd/dms-niri.kdl
+exec niri -c /etc/greetd/hype-niri.kdl

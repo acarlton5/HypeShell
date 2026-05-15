@@ -3,7 +3,6 @@
 
 # Build configuration
 BINARY_NAME=hype
-COMPAT_BINARY_NAME=dms
 CORE_DIR=core
 BUILD_DIR=$(CORE_DIR)/bin
 PREFIX ?= /usr/local
@@ -40,7 +39,7 @@ lint-qml:
 install-bin:
 	@echo "Installing $(BINARY_NAME) to $(INSTALL_DIR)..."
 	@install -D -m 755 $(BUILD_DIR)/$(BINARY_NAME) $(INSTALL_DIR)/$(BINARY_NAME)
-	@ln -sf $(BINARY_NAME) $(INSTALL_DIR)/$(COMPAT_BINARY_NAME)
+	@rm -f $(INSTALL_DIR)/dms
 	@echo "Binary installed"
 
 install-shell:
@@ -58,9 +57,7 @@ install-completions:
 	@$(BUILD_DIR)/$(BINARY_NAME) completion bash > $(DATA_DIR)/bash-completion/completions/hype 2>/dev/null || true
 	@$(BUILD_DIR)/$(BINARY_NAME) completion zsh > $(DATA_DIR)/zsh/site-functions/_hype 2>/dev/null || true
 	@$(BUILD_DIR)/$(BINARY_NAME) completion fish > $(DATA_DIR)/fish/vendor_completions.d/hype.fish 2>/dev/null || true
-	@ln -sf hype $(DATA_DIR)/bash-completion/completions/dms 2>/dev/null || true
-	@ln -sf _hype $(DATA_DIR)/zsh/site-functions/_dms 2>/dev/null || true
-	@ln -sf hype.fish $(DATA_DIR)/fish/vendor_completions.d/dms.fish 2>/dev/null || true
+	@rm -f $(DATA_DIR)/bash-completion/completions/dms $(DATA_DIR)/zsh/site-functions/_dms $(DATA_DIR)/fish/vendor_completions.d/dms.fish
 	@echo "Shell completions installed"
 
 install-systemd:
@@ -97,7 +94,7 @@ install: install-bin install-shell install-completions install-systemd install-i
 uninstall-bin:
 	@echo "Removing $(BINARY_NAME) from $(INSTALL_DIR)..."
 	@rm -f $(INSTALL_DIR)/$(BINARY_NAME)
-	@rm -f $(INSTALL_DIR)/$(COMPAT_BINARY_NAME)
+	@rm -f $(INSTALL_DIR)/dms
 	@echo "Binary removed"
 
 uninstall-shell:

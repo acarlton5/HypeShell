@@ -104,7 +104,7 @@ Singleton {
 
     function getAppIcon(appId: string, desktopEntry: var): string {
         // ! TODO - after QS 0.3, we can install our icon properly
-        if (appId === "org.quickshell" || appId === "com.danklinux.dms" || appId === "com.hypeshell.shell") {
+        if (appId === "org.quickshell" || appId === "com.hypeshell.shell") {
             return Qt.resolvedUrl("../assets/hypeshell-logo.svg");
         }
 
@@ -124,8 +124,8 @@ Singleton {
     }
 
     function getAppName(appId: string, desktopEntry: var): string {
-        if (appId === "org.quickshell" || appId === "com.danklinux.dms") {
-            return "dms";
+        if (appId === "org.quickshell" || appId === "com.hypeshell.shell") {
+            return "hype";
         }
 
         return desktopEntry && desktopEntry.name ? desktopEntry.name : appId;
