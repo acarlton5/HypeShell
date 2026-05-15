@@ -4,7 +4,7 @@ set -e
 
 COMPOSITOR=""
 COMPOSITOR_CONFIG=""
-DMS_PATH="dms-greeter"
+DMS_PATH="hype"
 CACHE_DIR="/var/cache/dms-greeter"
 REMEMBER_LAST_SESSION=""
 REMEMBER_LAST_USER=""
@@ -12,7 +12,7 @@ DEBUG_MODE=0
 
 show_help() {
     cat << EOF
-dms-greeter - DankMaterialShell greeter launcher
+dms-greeter - HypeShell greeter launcher
 
 Usage: dms-greeter --command COMPOSITOR [OPTIONS]
 
@@ -21,8 +21,8 @@ Required:
 
 Options:
     -C, --config PATH       Custom compositor config file
-    -p, --path PATH         DMS path (config name or absolute path)
-                           (default: dms-greeter)
+    -p, --path PATH         HypeShell path (config name or absolute path)
+                           (default: hype)
     --cache-dir PATH        Cache directory for greeter data
                            (default: /var/cache/dms-greeter)
     --remember-last-session BOOL
@@ -39,8 +39,8 @@ Options:
 Examples:
     dms-greeter --command niri
     dms-greeter --command hyprland -C /etc/greetd/custom-hypr.conf
-    dms-greeter --command sway -p /home/user/.config/quickshell/custom-dms
-    dms-greeter --command scroll -p /home/user/.config/quickshell/custom-dms
+    dms-greeter --command sway -p /home/user/.config/quickshell/custom-hype
+    dms-greeter --command scroll -p /home/user/.config/quickshell/custom-hype
     dms-greeter --command niri --cache-dir /tmp/dmsgreeter
     dms-greeter --command niri --no-save-session --no-save-username
     dms-greeter --command mango
@@ -153,6 +153,7 @@ locate_dms_config() {
     local config_home="${XDG_CONFIG_HOME:-$HOME/.config}"
     search_paths+=("$config_home/quickshell/$config_name")
 
+    search_paths+=("/usr/local/share/quickshell/$config_name")
     search_paths+=("/usr/share/quickshell/$config_name")
 
     local config_dirs="${XDG_CONFIG_DIRS:-/etc/xdg}"

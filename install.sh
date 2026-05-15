@@ -937,6 +937,60 @@ install_greeter_wrapper_from_source() {
     sudo_run install -D -m 755 "$wrapper_src" /usr/bin/dms-greeter
 }
 
+detect_greeter_user() {
+    if [ -r /etc/greetd/config.toml ]; then
+        configured_user="$(awk -F'"' '/^[[:space:]]*user[[:space:]]*=/{print $2; exit}' /etc/greetd/config.toml)"
+        if [ -n "$configured_user" ] && getent passwd "$configured_user" >/dev/null 2>&1; then
+            echo "$configured_user"
+            return 0
+        fi
+    fi
+
+    for candidate in greeter greetd _greeter; do
+        if getent passwd "$candidate" >/dev/null 2>&1; then
+            echo "$candidate"
+            return 0
+        fi
+    done
+
+    echo "greeter"
+}
+
+force_repair_greetd_config() {
+    [ "$INSTALL_GREETER" -eq 1 ] || return 0
+    [ "$INSTALL_METHOD" = "source" ] || return 0
+
+    greeter_user="$(detect_greeter_user)"
+    wrapper="/usr/local/bin/dms-greeter"
+    shell_path="$PREFIX/share/quickshell/hype"
+    command_value="$wrapper --command hyprland --cache-dir /var/cache/dms-greeter -p $shell_path"
+    tmp_file="$(mktemp)"
+
+    cat > "$tmp_file" <<EOF
+[terminal]
+vt = 1
+
+[default_session]
+user = "$greeter_user"
+command = "$command_value"
+EOF
+
+    if [ -f /etc/greetd/config.toml ]; then
+        sudo_run cp /etc/greetd/config.toml "/etc/greetd/config.toml.hypeshell-pre-force-repair-$TIMESTAMP"
+    fi
+    sudo_run install -D -m 644 "$tmp_file" /etc/greetd/config.toml
+    rm -f "$tmp_file"
+
+    sudo_run mkdir -p /var/cache/dms-greeter
+    if getent group greeter >/dev/null 2>&1; then
+        sudo_run chgrp greeter /var/cache/dms-greeter || true
+    fi
+    sudo_run chmod 2770 /var/cache/dms-greeter || true
+
+    echo "Forced greetd command:"
+    echo "  command = \"$command_value\""
+}
+
 install_greeter() {
     if [ "$INSTALL_GREETER" -eq 0 ]; then
         return 0
@@ -967,8 +1021,9 @@ install_greeter() {
     if [ "$INSTALL_METHOD" = "source" ]; then
         install_greetd_if_needed
         install_greeter_wrapper_from_source
-        run hype greeter enable --yes
-        run hype greeter sync --yes --local
+        run hype greeter enable --yes || echo "Warning: hype greeter enable failed; forcing greetd config repair."
+        run hype greeter sync --yes --local || echo "Warning: hype greeter sync failed; forcing greetd config repair."
+        force_repair_greetd_config
     else
         run hype greeter install --yes
         run hype greeter sync --yes
