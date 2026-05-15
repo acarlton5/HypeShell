@@ -6,6 +6,7 @@ CONFIG_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/hypr"
 HYPE_DIR="$CONFIG_DIR/hype"
 CONFIG_FILE="${HYPESHELL_HYPRLAND_CONFIG:-$CONFIG_DIR/hyprland.conf}"
 DEFAULT_DIR="${HYPESHELL_HYPRLAND_DEFAULTS:-/usr/local/share/hypeshell/hyprland}"
+export PATH="/usr/local/bin:/usr/bin:/bin:${PATH:-}"
 
 while [ "$#" -gt 0 ]; do
     case "$1" in
@@ -39,12 +40,22 @@ seed_config() {
     cp "$source_file" "$target_file"
 }
 
+repair_config_placeholders() {
+    local target_file="$1"
+
+    if [ -f "$target_file" ] && grep -q '{{TERMINAL_COMMAND}}' "$target_file"; then
+        sed -i 's/{{TERMINAL_COMMAND}}/kitty/g' "$target_file"
+    fi
+}
+
 mkdir -p "$CONFIG_DIR" "$HYPE_DIR"
 seed_config "$DEFAULT_DIR/hyprland.conf" "$CONFIG_FILE"
 seed_config "$DEFAULT_DIR/hype/colors.conf" "$HYPE_DIR/colors.conf"
 seed_config "$DEFAULT_DIR/hype/layout.conf" "$HYPE_DIR/layout.conf"
 seed_config "$DEFAULT_DIR/hype/binds.conf" "$HYPE_DIR/binds.conf"
 touch "$HYPE_DIR/outputs.conf" "$HYPE_DIR/cursor.conf" "$HYPE_DIR/windowrules.conf"
+repair_config_placeholders "$CONFIG_FILE"
+repair_config_placeholders "$HYPE_DIR/binds.conf"
 
 if command -v dbus-update-activation-environment >/dev/null 2>&1; then
     dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP XDG_SESSION_DESKTOP XDG_SESSION_TYPE || true
@@ -58,12 +69,13 @@ export XDG_CURRENT_DESKTOP="${XDG_CURRENT_DESKTOP:-Hyprland}"
 export XDG_SESSION_DESKTOP="${XDG_SESSION_DESKTOP:-hypeshell-hyprland}"
 export XDG_SESSION_TYPE="${XDG_SESSION_TYPE:-wayland}"
 
-if command -v Hyprland >/dev/null 2>&1; then
-    exec Hyprland -c "$CONFIG_FILE"
+if command -v start-hyprland >/dev/null 2>&1; then
+    exec start-hyprland -- --config "$CONFIG_FILE"
 fi
 
-if command -v hyprland >/dev/null 2>&1; then
-    exec hyprland -c "$CONFIG_FILE"
+if command -v Hyprland >/dev/null 2>&1; then
+    echo "Warning: start-hyprland was not found; falling back to Hyprland directly." >&2
+    exec Hyprland -c "$CONFIG_FILE"
 fi
 
 echo "Error: Hyprland is not installed or not in PATH." >&2
