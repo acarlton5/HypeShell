@@ -1,113 +1,113 @@
 .pragma library
 
 const ACTION_TYPES = [
-    { id: "dms", label: "HypeShell Action", icon: "widgets" },
+    { id: "hype", label: "HypeShell Action", icon: "widgets" },
     { id: "compositor", label: "Compositor", icon: "desktop_windows" },
     { id: "spawn", label: "Run Command", icon: "terminal" },
     { id: "shell", label: "Shell Command", icon: "code" }
 ];
 
 const DMS_ACTIONS = [
-    { id: "spawn dms ipc call spotlight toggle", label: "App Launcher: Toggle" },
-    { id: "spawn dms ipc call spotlight open", label: "App Launcher: Open" },
-    { id: "spawn dms ipc call spotlight close", label: "App Launcher: Close" },
-    { id: "spawn dms ipc call clipboard toggle", label: "Clipboard: Toggle" },
-    { id: "spawn dms ipc call clipboard open", label: "Clipboard: Open" },
-    { id: "spawn dms ipc call clipboard close", label: "Clipboard: Close" },
-    { id: "spawn dms ipc call notifications toggle", label: "Notifications: Toggle" },
-    { id: "spawn dms ipc call notifications open", label: "Notifications: Open" },
-    { id: "spawn dms ipc call notifications close", label: "Notifications: Close" },
-    { id: "spawn dms ipc call processlist toggle", label: "Task Manager: Toggle" },
-    { id: "spawn dms ipc call processlist open", label: "Task Manager: Open" },
-    { id: "spawn dms ipc call processlist close", label: "Task Manager: Close" },
-    { id: "spawn dms ipc call processlist focusOrToggle", label: "Task Manager: Focus or Toggle" },
-    { id: "spawn dms ipc call settings toggle", label: "Settings: Toggle" },
-    { id: "spawn dms ipc call settings open", label: "Settings: Open" },
-    { id: "spawn dms ipc call settings close", label: "Settings: Close" },
-    { id: "spawn dms ipc call settings focusOrToggle", label: "Settings: Focus or Toggle" },
-    { id: "spawn dms ipc call powermenu toggle", label: "Power Menu: Toggle" },
-    { id: "spawn dms ipc call powermenu open", label: "Power Menu: Open" },
-    { id: "spawn dms ipc call powermenu close", label: "Power Menu: Close" },
-    { id: "spawn dms ipc call control-center toggle", label: "Control Center: Toggle" },
-    { id: "spawn dms ipc call control-center open", label: "Control Center: Open" },
-    { id: "spawn dms ipc call control-center close", label: "Control Center: Close" },
-    { id: "spawn dms ipc call notepad toggle", label: "Notepad: Toggle" },
-    { id: "spawn dms ipc call notepad open", label: "Notepad: Open" },
-    { id: "spawn dms ipc call notepad close", label: "Notepad: Close" },
-    { id: "spawn dms ipc call notepad expand", label: "Notepad: Expand" },
-    { id: "spawn dms ipc call notepad collapse", label: "Notepad: Collapse" },
-    { id: "spawn dms ipc call notepad toggleExpand", label: "Notepad: Toggle Expand" },
-    { id: "spawn dms ipc call dash toggle \"\"", label: "Dashboard: Toggle" },
-    { id: "spawn dms ipc call dash open overview", label: "Dashboard: Overview" },
-    { id: "spawn dms ipc call dash open media", label: "Dashboard: Media" },
-    { id: "spawn dms ipc call dash open weather", label: "Dashboard: Weather" },
-    { id: "spawn dms ipc call dankdash wallpaper", label: "Wallpaper Browser" },
-    { id: "spawn dms ipc call file browse wallpaper", label: "File: Browse Wallpaper" },
-    { id: "spawn dms ipc call file browse profile", label: "File: Browse Profile" },
-    { id: "spawn dms ipc call keybinds toggle niri", label: "Keybinds Cheatsheet: Toggle", compositor: "niri" },
-    { id: "spawn dms ipc call keybinds open niri", label: "Keybinds Cheatsheet: Open", compositor: "niri" },
-    { id: "spawn dms ipc call keybinds close", label: "Keybinds Cheatsheet: Close" },
-    { id: "spawn dms ipc call lock lock", label: "Lock Screen" },
-    { id: "spawn dms ipc call lock demo", label: "Lock Screen: Demo" },
-    { id: "spawn dms ipc call inhibit toggle", label: "Idle Inhibit: Toggle" },
-    { id: "spawn dms ipc call inhibit enable", label: "Idle Inhibit: Enable" },
-    { id: "spawn dms ipc call inhibit disable", label: "Idle Inhibit: Disable" },
-    { id: "spawn dms ipc call audio increment 5", label: "Volume Up" },
-    { id: "spawn dms ipc call audio increment 1", label: "Volume Up (1%)" },
-    { id: "spawn dms ipc call audio increment 5", label: "Volume Up (5%)" },
-    { id: "spawn dms ipc call audio increment 10", label: "Volume Up (10%)" },
-    { id: "spawn dms ipc call audio decrement 5", label: "Volume Down" },
-    { id: "spawn dms ipc call audio decrement 1", label: "Volume Down (1%)" },
-    { id: "spawn dms ipc call audio decrement 5", label: "Volume Down (5%)" },
-    { id: "spawn dms ipc call audio decrement 10", label: "Volume Down (10%)" },
-    { id: "spawn dms ipc call mpris increment 5", label: "Player Volume Up (5%)" },
-    { id: "spawn dms ipc call mpris decrement 5", label: "Player Volume Down (5%)" },
-    { id: "spawn dms ipc call audio mute", label: "Volume Mute Toggle" },
-    { id: "spawn dms ipc call audio micmute", label: "Microphone Mute Toggle" },
-    { id: "spawn dms ipc call audio cycleoutput", label: "Audio Output: Cycle" },
-    { id: "spawn dms ipc call brightness increment 5 \"\"", label: "Brightness Up" },
-    { id: "spawn dms ipc call brightness increment 1 \"\"", label: "Brightness Up (1%)" },
-    { id: "spawn dms ipc call brightness increment 5 \"\"", label: "Brightness Up (5%)" },
-    { id: "spawn dms ipc call brightness increment 10 \"\"", label: "Brightness Up (10%)" },
-    { id: "spawn dms ipc call brightness decrement 5 \"\"", label: "Brightness Down" },
-    { id: "spawn dms ipc call brightness decrement 1 \"\"", label: "Brightness Down (1%)" },
-    { id: "spawn dms ipc call brightness decrement 5 \"\"", label: "Brightness Down (5%)" },
-    { id: "spawn dms ipc call brightness decrement 10 \"\"", label: "Brightness Down (10%)" },
-    { id: "spawn dms ipc call brightness toggleExponential \"\"", label: "Brightness: Toggle Exponential" },
-    { id: "spawn dms ipc call theme toggle", label: "Theme: Toggle Light/Dark" },
-    { id: "spawn dms ipc call theme light", label: "Theme: Light Mode" },
-    { id: "spawn dms ipc call theme dark", label: "Theme: Dark Mode" },
-    { id: "spawn dms ipc call night toggle", label: "Night Mode: Toggle" },
-    { id: "spawn dms ipc call night enable", label: "Night Mode: Enable" },
-    { id: "spawn dms ipc call night disable", label: "Night Mode: Disable" },
-    { id: "spawn dms ipc call bar toggle index 0", label: "Bar: Toggle (Primary)" },
-    { id: "spawn dms ipc call bar reveal index 0", label: "Bar: Reveal (Primary)" },
-    { id: "spawn dms ipc call bar hide index 0", label: "Bar: Hide (Primary)" },
-    { id: "spawn dms ipc call bar toggleReveal index 0", label: "Bar: Toggle Autohide Reveal (Primary)" },
-    { id: "spawn dms ipc call bar toggleAutoHide index 0", label: "Bar: Toggle Auto-Hide (Primary)" },
-    { id: "spawn dms ipc call bar autoHide index 0", label: "Bar: Enable Auto-Hide (Primary)" },
-    { id: "spawn dms ipc call bar manualHide index 0", label: "Bar: Disable Auto-Hide (Primary)" },
-    { id: "spawn dms ipc call dock toggle", label: "Dock: Toggle" },
-    { id: "spawn dms ipc call dock reveal", label: "Dock: Reveal" },
-    { id: "spawn dms ipc call dock hide", label: "Dock: Hide" },
-    { id: "spawn dms ipc call dock toggleAutoHide", label: "Dock: Toggle Auto-Hide" },
-    { id: "spawn dms ipc call dock autoHide", label: "Dock: Enable Auto-Hide" },
-    { id: "spawn dms ipc call dock manualHide", label: "Dock: Disable Auto-Hide" },
-    { id: "spawn dms ipc call mpris playPause", label: "Media: Play/Pause" },
-    { id: "spawn dms ipc call mpris play", label: "Media: Play" },
-    { id: "spawn dms ipc call mpris pause", label: "Media: Pause" },
-    { id: "spawn dms ipc call mpris previous", label: "Media: Previous Track" },
-    { id: "spawn dms ipc call mpris next", label: "Media: Next Track" },
-    { id: "spawn dms ipc call mpris stop", label: "Media: Stop" },
-    { id: "spawn dms ipc call niri screenshot", label: "Screenshot: Interactive", compositor: "niri" },
-    { id: "spawn dms ipc call niri screenshotScreen", label: "Screenshot: Full Screen", compositor: "niri" },
-    { id: "spawn dms ipc call niri screenshotWindow", label: "Screenshot: Window", compositor: "niri" },
-    { id: "spawn dms ipc call hypr toggleOverview", label: "Hyprland: Toggle Overview", compositor: "hyprland" },
-    { id: "spawn dms ipc call hypr openOverview", label: "Hyprland: Open Overview", compositor: "hyprland" },
-    { id: "spawn dms ipc call hypr closeOverview", label: "Hyprland: Close Overview", compositor: "hyprland" },
-    { id: "spawn dms ipc call wallpaper next", label: "Wallpaper: Next" },
-    { id: "spawn dms ipc call wallpaper prev", label: "Wallpaper: Previous" },
-    { id: "spawn dms ipc call workspace-rename open", label: "Workspace: Rename" }
+    { id: "spawn hype ipc call spotlight toggle", label: "App Launcher: Toggle" },
+    { id: "spawn hype ipc call spotlight open", label: "App Launcher: Open" },
+    { id: "spawn hype ipc call spotlight close", label: "App Launcher: Close" },
+    { id: "spawn hype ipc call clipboard toggle", label: "Clipboard: Toggle" },
+    { id: "spawn hype ipc call clipboard open", label: "Clipboard: Open" },
+    { id: "spawn hype ipc call clipboard close", label: "Clipboard: Close" },
+    { id: "spawn hype ipc call notifications toggle", label: "Notifications: Toggle" },
+    { id: "spawn hype ipc call notifications open", label: "Notifications: Open" },
+    { id: "spawn hype ipc call notifications close", label: "Notifications: Close" },
+    { id: "spawn hype ipc call processlist toggle", label: "Task Manager: Toggle" },
+    { id: "spawn hype ipc call processlist open", label: "Task Manager: Open" },
+    { id: "spawn hype ipc call processlist close", label: "Task Manager: Close" },
+    { id: "spawn hype ipc call processlist focusOrToggle", label: "Task Manager: Focus or Toggle" },
+    { id: "spawn hype ipc call settings toggle", label: "Settings: Toggle" },
+    { id: "spawn hype ipc call settings open", label: "Settings: Open" },
+    { id: "spawn hype ipc call settings close", label: "Settings: Close" },
+    { id: "spawn hype ipc call settings focusOrToggle", label: "Settings: Focus or Toggle" },
+    { id: "spawn hype ipc call powermenu toggle", label: "Power Menu: Toggle" },
+    { id: "spawn hype ipc call powermenu open", label: "Power Menu: Open" },
+    { id: "spawn hype ipc call powermenu close", label: "Power Menu: Close" },
+    { id: "spawn hype ipc call control-center toggle", label: "Control Center: Toggle" },
+    { id: "spawn hype ipc call control-center open", label: "Control Center: Open" },
+    { id: "spawn hype ipc call control-center close", label: "Control Center: Close" },
+    { id: "spawn hype ipc call notepad toggle", label: "Notepad: Toggle" },
+    { id: "spawn hype ipc call notepad open", label: "Notepad: Open" },
+    { id: "spawn hype ipc call notepad close", label: "Notepad: Close" },
+    { id: "spawn hype ipc call notepad expand", label: "Notepad: Expand" },
+    { id: "spawn hype ipc call notepad collapse", label: "Notepad: Collapse" },
+    { id: "spawn hype ipc call notepad toggleExpand", label: "Notepad: Toggle Expand" },
+    { id: "spawn hype ipc call dash toggle \"\"", label: "Dashboard: Toggle" },
+    { id: "spawn hype ipc call dash open overview", label: "Dashboard: Overview" },
+    { id: "spawn hype ipc call dash open media", label: "Dashboard: Media" },
+    { id: "spawn hype ipc call dash open weather", label: "Dashboard: Weather" },
+    { id: "spawn hype ipc call dankdash wallpaper", label: "Wallpaper Browser" },
+    { id: "spawn hype ipc call file browse wallpaper", label: "File: Browse Wallpaper" },
+    { id: "spawn hype ipc call file browse profile", label: "File: Browse Profile" },
+    { id: "spawn hype ipc call keybinds toggle niri", label: "Keybinds Cheatsheet: Toggle", compositor: "niri" },
+    { id: "spawn hype ipc call keybinds open niri", label: "Keybinds Cheatsheet: Open", compositor: "niri" },
+    { id: "spawn hype ipc call keybinds close", label: "Keybinds Cheatsheet: Close" },
+    { id: "spawn hype ipc call lock lock", label: "Lock Screen" },
+    { id: "spawn hype ipc call lock demo", label: "Lock Screen: Demo" },
+    { id: "spawn hype ipc call inhibit toggle", label: "Idle Inhibit: Toggle" },
+    { id: "spawn hype ipc call inhibit enable", label: "Idle Inhibit: Enable" },
+    { id: "spawn hype ipc call inhibit disable", label: "Idle Inhibit: Disable" },
+    { id: "spawn hype ipc call audio increment 5", label: "Volume Up" },
+    { id: "spawn hype ipc call audio increment 1", label: "Volume Up (1%)" },
+    { id: "spawn hype ipc call audio increment 5", label: "Volume Up (5%)" },
+    { id: "spawn hype ipc call audio increment 10", label: "Volume Up (10%)" },
+    { id: "spawn hype ipc call audio decrement 5", label: "Volume Down" },
+    { id: "spawn hype ipc call audio decrement 1", label: "Volume Down (1%)" },
+    { id: "spawn hype ipc call audio decrement 5", label: "Volume Down (5%)" },
+    { id: "spawn hype ipc call audio decrement 10", label: "Volume Down (10%)" },
+    { id: "spawn hype ipc call mpris increment 5", label: "Player Volume Up (5%)" },
+    { id: "spawn hype ipc call mpris decrement 5", label: "Player Volume Down (5%)" },
+    { id: "spawn hype ipc call audio mute", label: "Volume Mute Toggle" },
+    { id: "spawn hype ipc call audio micmute", label: "Microphone Mute Toggle" },
+    { id: "spawn hype ipc call audio cycleoutput", label: "Audio Output: Cycle" },
+    { id: "spawn hype ipc call brightness increment 5 \"\"", label: "Brightness Up" },
+    { id: "spawn hype ipc call brightness increment 1 \"\"", label: "Brightness Up (1%)" },
+    { id: "spawn hype ipc call brightness increment 5 \"\"", label: "Brightness Up (5%)" },
+    { id: "spawn hype ipc call brightness increment 10 \"\"", label: "Brightness Up (10%)" },
+    { id: "spawn hype ipc call brightness decrement 5 \"\"", label: "Brightness Down" },
+    { id: "spawn hype ipc call brightness decrement 1 \"\"", label: "Brightness Down (1%)" },
+    { id: "spawn hype ipc call brightness decrement 5 \"\"", label: "Brightness Down (5%)" },
+    { id: "spawn hype ipc call brightness decrement 10 \"\"", label: "Brightness Down (10%)" },
+    { id: "spawn hype ipc call brightness toggleExponential \"\"", label: "Brightness: Toggle Exponential" },
+    { id: "spawn hype ipc call theme toggle", label: "Theme: Toggle Light/Dark" },
+    { id: "spawn hype ipc call theme light", label: "Theme: Light Mode" },
+    { id: "spawn hype ipc call theme dark", label: "Theme: Dark Mode" },
+    { id: "spawn hype ipc call night toggle", label: "Night Mode: Toggle" },
+    { id: "spawn hype ipc call night enable", label: "Night Mode: Enable" },
+    { id: "spawn hype ipc call night disable", label: "Night Mode: Disable" },
+    { id: "spawn hype ipc call bar toggle index 0", label: "Bar: Toggle (Primary)" },
+    { id: "spawn hype ipc call bar reveal index 0", label: "Bar: Reveal (Primary)" },
+    { id: "spawn hype ipc call bar hide index 0", label: "Bar: Hide (Primary)" },
+    { id: "spawn hype ipc call bar toggleReveal index 0", label: "Bar: Toggle Autohide Reveal (Primary)" },
+    { id: "spawn hype ipc call bar toggleAutoHide index 0", label: "Bar: Toggle Auto-Hide (Primary)" },
+    { id: "spawn hype ipc call bar autoHide index 0", label: "Bar: Enable Auto-Hide (Primary)" },
+    { id: "spawn hype ipc call bar manualHide index 0", label: "Bar: Disable Auto-Hide (Primary)" },
+    { id: "spawn hype ipc call dock toggle", label: "Dock: Toggle" },
+    { id: "spawn hype ipc call dock reveal", label: "Dock: Reveal" },
+    { id: "spawn hype ipc call dock hide", label: "Dock: Hide" },
+    { id: "spawn hype ipc call dock toggleAutoHide", label: "Dock: Toggle Auto-Hide" },
+    { id: "spawn hype ipc call dock autoHide", label: "Dock: Enable Auto-Hide" },
+    { id: "spawn hype ipc call dock manualHide", label: "Dock: Disable Auto-Hide" },
+    { id: "spawn hype ipc call mpris playPause", label: "Media: Play/Pause" },
+    { id: "spawn hype ipc call mpris play", label: "Media: Play" },
+    { id: "spawn hype ipc call mpris pause", label: "Media: Pause" },
+    { id: "spawn hype ipc call mpris previous", label: "Media: Previous Track" },
+    { id: "spawn hype ipc call mpris next", label: "Media: Next Track" },
+    { id: "spawn hype ipc call mpris stop", label: "Media: Stop" },
+    { id: "spawn hype ipc call niri screenshot", label: "Screenshot: Interactive", compositor: "niri" },
+    { id: "spawn hype ipc call niri screenshotScreen", label: "Screenshot: Full Screen", compositor: "niri" },
+    { id: "spawn hype ipc call niri screenshotWindow", label: "Screenshot: Window", compositor: "niri" },
+    { id: "spawn hype ipc call hypr toggleOverview", label: "Hyprland: Toggle Overview", compositor: "hyprland" },
+    { id: "spawn hype ipc call hypr openOverview", label: "Hyprland: Open Overview", compositor: "hyprland" },
+    { id: "spawn hype ipc call hypr closeOverview", label: "Hyprland: Close Overview", compositor: "hyprland" },
+    { id: "spawn hype ipc call wallpaper next", label: "Wallpaper: Next" },
+    { id: "spawn hype ipc call wallpaper prev", label: "Wallpaper: Previous" },
+    { id: "spawn hype ipc call workspace-rename open", label: "Workspace: Rename" }
 ];
 
 const NIRI_ACTIONS = {
@@ -724,43 +724,43 @@ const ACTION_ARGS = {
 
 const DMS_ACTION_ARGS = {
     "audio increment": {
-        base: "spawn dms ipc call audio increment",
+        base: "spawn hype ipc call audio increment",
         args: [{ name: "amount", type: "number", label: "Amount %", placeholder: "5", default: "5" }]
     },
     "audio decrement": {
-        base: "spawn dms ipc call audio decrement",
+        base: "spawn hype ipc call audio decrement",
         args: [{ name: "amount", type: "number", label: "Amount %", placeholder: "5", default: "5" }]
     },
     "player increment": {
-        base: "spawn dms ipc call mpris increment",
+        base: "spawn hype ipc call mpris increment",
         args: [{ name: "amount", type: "number", label: "Amount %", placeholder: "5", default: "5" }]
     },
     "player decrement": {
-        base: "spawn dms ipc call mpris decrement",
+        base: "spawn hype ipc call mpris decrement",
         args: [{ name: "amount", type: "number", label: "Amount %", placeholder: "5", default: "5" }]
     },
     "brightness increment": {
-        base: "spawn dms ipc call brightness increment",
+        base: "spawn hype ipc call brightness increment",
         args: [
             { name: "amount", type: "number", label: "Amount %", placeholder: "5", default: "5" },
             { name: "device", type: "text", label: "Device", placeholder: "leave empty for default", default: "" }
         ]
     },
     "brightness decrement": {
-        base: "spawn dms ipc call brightness decrement",
+        base: "spawn hype ipc call brightness decrement",
         args: [
             { name: "amount", type: "number", label: "Amount %", placeholder: "5", default: "5" },
             { name: "device", type: "text", label: "Device", placeholder: "leave empty for default", default: "" }
         ]
     },
     "brightness toggleExponential": {
-        base: "spawn dms ipc call brightness toggleExponential",
+        base: "spawn hype ipc call brightness toggleExponential",
         args: [
             { name: "device", type: "text", label: "Device", placeholder: "leave empty for default", default: "" }
         ]
     },
     "dash toggle": {
-        base: "spawn dms ipc call dash toggle",
+        base: "spawn hype ipc call dash toggle",
         args: [
             { name: "tab", type: "text", label: "Tab", placeholder: "overview, media, wallpaper, weather", default: "" }
         ]
@@ -865,8 +865,8 @@ function getActionLabel(action, compositor) {
 function getActionType(action) {
     if (!action)
         return "compositor";
-    if (action.startsWith("spawn dms ipc call "))
-        return "dms";
+    if (action.startsWith("spawn hype ipc call "))
+        return "hype";
     if (/^spawn \w+ -c /.test(action) || action.startsWith("spawn_shell "))
         return "shell";
     if (action.startsWith("spawn "))
@@ -877,7 +877,7 @@ function getActionType(action) {
 function isDmsAction(action) {
     if (!action)
         return false;
-    return action.startsWith("spawn dms ipc call ");
+    return action.startsWith("spawn hype ipc call ");
 }
 
 function isValidAction(action) {
@@ -967,7 +967,7 @@ function getActionArgConfig(compositor, action) {
 
     for (var key in DMS_ACTION_ARGS) {
         if (action.startsWith(DMS_ACTION_ARGS[key].base))
-            return { type: "dms", base: key, config: DMS_ACTION_ARGS[key] };
+            return { type: "hype", base: key, config: DMS_ACTION_ARGS[key] };
     }
 
     return null;

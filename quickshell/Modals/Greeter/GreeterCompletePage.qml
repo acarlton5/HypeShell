@@ -26,7 +26,7 @@ Item {
         })
 
     function getFeatureDesc(action) {
-        const match = action.match(/dms\s+ipc\s+call\s+(\w+)/);
+        const match = action.match(/hype\s+ipc\s+call\s+(\w+)/);
         if (match && featureNames[match[1]])
             return featureNames[match[1]];
         return null;
@@ -44,7 +44,7 @@ Item {
                 const bind = categoryBinds[i];
                 if (!bind.key || !bind.action)
                     continue;
-                if (!bind.action.includes("dms"))
+                if (!bind.action.includes("hype"))
                     continue;
                 if (!(bind.action.includes("spawn") || bind.action.includes("exec")))
                     continue;

@@ -254,7 +254,7 @@ func runSystemUpdateSetInterval(seconds int) {
 		Params: map[string]any{"seconds": float64(seconds)},
 	})
 	if err != nil {
-		log.Fatalf("Failed: %v (is dms server running?)", err)
+		log.Fatalf("Failed: %v (is hype server running?)", err)
 	}
 	if resp.Error != "" {
 		log.Fatalf("Error: %s", resp.Error)

@@ -376,7 +376,7 @@ func (h *HyprlandProvider) buildKeyString(mods, key string) string {
 
 func (h *HyprlandProvider) getBindSortPriority(action string) int {
 	switch {
-	case strings.HasPrefix(action, "exec") && strings.Contains(action, "dms"):
+	case strings.HasPrefix(action, "exec") && (strings.Contains(action, "hype") || strings.Contains(action, "dms")):
 		return 0
 	case strings.Contains(action, "workspace"):
 		return 1

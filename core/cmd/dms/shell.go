@@ -728,7 +728,7 @@ func runShellIPCCommand(args []string) {
 }
 
 func printIPCHelp() {
-	fmt.Println("Usage: dms ipc <target> <function> [args...]")
+	fmt.Println("Usage: hype ipc <target> <function> [args...]")
 	fmt.Println()
 
 	cmdArgs := []string{"ipc"}

@@ -193,7 +193,7 @@ Column {
     function renderPreviewHtml() {
         if (!inlinePreviewVisible)
             return "";
-        return pluginHighlightedHtml.length > 0 ? pluginHighlightedHtml : "<p><i>Rendering preview…</i></p>";
+        return pluginHighlightedHtml.length > 0 ? pluginHighlightedHtml : "<p><i>Rendering preview...</i></p>";
     }
 
     function syncContentToPlugin() {
@@ -262,7 +262,7 @@ Column {
         id: clipboardCopyProcComp
         Process {
             property string content: ""
-            command: ["sh", "-c", "printf '%s' \"$CONTENT\" | dms clipboard copy"]
+            command: ["sh", "-c", "printf '%s' \"$CONTENT\" | hype clipboard copy"]
             environment: ({
                     "CONTENT": content
                 })

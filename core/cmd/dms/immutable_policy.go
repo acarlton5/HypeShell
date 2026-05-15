@@ -43,6 +43,7 @@ type cliPolicyFile struct {
 
 func normalizeCommandSpec(raw string) string {
 	normalized := strings.ToLower(strings.TrimSpace(raw))
+	normalized = strings.TrimPrefix(normalized, "hype ")
 	normalized = strings.TrimPrefix(normalized, "dms ")
 	return strings.Join(strings.Fields(normalized), " ")
 }

@@ -839,9 +839,13 @@ ensure_hyprland_shell_startup() {
         sed -i -e 's#source = \./dms/#source = ./hype/#g' "$config_file"
     fi
 
-    if [ -f "$hype_config_dir/binds.conf" ] && grep -q '{{TERMINAL_COMMAND}}' "$hype_config_dir/binds.conf"; then
-        cp "$hype_config_dir/binds.conf" "$hype_config_dir/binds.conf.hypeshell-pre-terminal-repair.bak"
-        sed -i -e 's/{{TERMINAL_COMMAND}}/kitty/g' "$hype_config_dir/binds.conf"
+    if [ -f "$hype_config_dir/binds.conf" ] && { grep -q '{{TERMINAL_COMMAND}}' "$hype_config_dir/binds.conf" || grep -q 'dms ipc call' "$hype_config_dir/binds.conf" || grep -q 'dms clipboard copy' "$hype_config_dir/binds.conf"; }; then
+        cp "$hype_config_dir/binds.conf" "$hype_config_dir/binds.conf.hypeshell-pre-command-repair.bak"
+        sed -i \
+            -e 's/{{TERMINAL_COMMAND}}/kitty/g' \
+            -e 's/dms ipc call/hype ipc call/g' \
+            -e 's/dms clipboard copy/hype clipboard copy/g' \
+            "$hype_config_dir/binds.conf"
     fi
 
     if [ -f "$config_file" ] && ! grep -Eq '(^|[[:space:]])(hype run|hype\.service)' "$config_file"; then

@@ -819,7 +819,7 @@ Item {
                                 required property int index
 
                                 readonly property var tooltipTexts: ({
-                                        "dms": I18n.tr("HypeShell actions (launcher, clipboard, etc.)"),
+                                        "hype": I18n.tr("HypeShell actions (launcher, clipboard, etc.)"),
                                         "compositor": I18n.tr("Niri compositor actions (focus, move, etc.)"),
                                         "spawn": I18n.tr("Run a program (e.g., firefox, kitty)"),
                                         "shell": I18n.tr("Run a shell command (e.g., notify-send)")
@@ -857,7 +857,7 @@ Item {
                                     cursorShape: Qt.PointingHandCursor
                                     onClicked: {
                                         switch (typeDelegate.modelData.id) {
-                                        case "dms":
+                                        case "hype":
                                             root.updateEdit({
                                                 "action": KeybindsService.dmsActions[0].id,
                                                 "desc": KeybindsService.dmsActions[0].label
@@ -903,7 +903,7 @@ Item {
                 RowLayout {
                     Layout.fillWidth: true
                     spacing: Theme.spacingM
-                    visible: root._actionType === "dms"
+                    visible: root._actionType === "hype"
 
                     StyledText {
                         text: I18n.tr("Action")
@@ -941,13 +941,13 @@ Item {
                     spacing: Theme.spacingM
 
                     readonly property var argConfig: Actions.getActionArgConfig(KeybindsService.currentProvider, root.editAction)
-                    readonly property var parsedArgs: argConfig?.type === "dms" ? Actions.parseDmsActionArgs(root.editAction) : null
+                    readonly property var parsedArgs: argConfig?.type === "hype" ? Actions.parseDmsActionArgs(root.editAction) : null
                     readonly property var dmsActionArgs: Actions.getDmsActionArgs()
                     readonly property bool hasAmountArg: parsedArgs?.base ? (dmsActionArgs[parsedArgs.base]?.args?.some(a => a.name === "amount") ?? false) : false
                     readonly property bool hasDeviceArg: parsedArgs?.base ? (dmsActionArgs[parsedArgs.base]?.args?.some(a => a.name === "device") ?? false) : false
                     readonly property bool hasTabArg: parsedArgs?.base ? (dmsActionArgs[parsedArgs.base]?.args?.some(a => a.name === "tab") ?? false) : false
 
-                    visible: root._actionType === "dms" && argConfig?.type === "dms"
+                    visible: root._actionType === "hype" && argConfig?.type === "hype"
 
                     StyledText {
                         text: I18n.tr("Amount")

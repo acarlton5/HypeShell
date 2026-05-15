@@ -238,7 +238,7 @@ Item {
 
     Process {
         id: greeterBinaryCheckProcess
-        command: ["sh", "-c", "test -f /usr/bin/dms-greeter || test -f /usr/local/bin/dms-greeter"]
+        command: ["sh", "-c", "test -f /usr/bin/hype-greeter || test -f /usr/local/bin/hype-greeter"]
         running: false
 
         onExited: exitCode => {
@@ -754,7 +754,7 @@ Item {
                 settingKey: "greeterDeps"
 
                 StyledText {
-                    text: I18n.tr("HypeShell greeter needs: greetd, dms-greeter. Fingerprint: fprintd, pam_fprintd. Security keys: pam_u2f. Add your user to the greeter group. Authentication changes apply automatically and may open a terminal when sudo authentication is required.")
+                    text: I18n.tr("HypeShell greeter needs: greetd, hype-greeter. Fingerprint: fprintd, pam_fprintd. Security keys: pam_u2f. Add your user to the greeter group. Authentication changes apply automatically and may open a terminal when sudo authentication is required.")
                     font.pixelSize: Theme.fontSizeSmall
                     color: Theme.surfaceVariantText
                     width: parent.width

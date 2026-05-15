@@ -404,7 +404,7 @@ SettingsCard {
 
                         StyledText {
                             id: ipcText
-                            text: "dms ipc call desktopWidget toggleOverlay " + root.instanceId
+                            text: "hype ipc call desktopWidget toggleOverlay " + root.instanceId
                             font.pixelSize: Theme.fontSizeSmall
                             font.family: Theme.monoFontFamily
                             color: Theme.surfaceVariantText
@@ -422,7 +422,7 @@ SettingsCard {
                             horizontalPadding: 4
                             anchors.verticalCenter: parent.verticalCenter
                             onClicked: {
-                                Quickshell.execDetached(["hype", "cl", "copy", "dms ipc call desktopWidget toggleOverlay " + root.instanceId]);
+                                Quickshell.execDetached(["hype", "cl", "copy", "hype ipc call desktopWidget toggleOverlay " + root.instanceId]);
                                 ToastService.showInfo(I18n.tr("Copied to clipboard"));
                             }
                         }
