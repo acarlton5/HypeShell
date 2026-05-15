@@ -621,6 +621,15 @@ install_terminal_dependency() {
     install_package_if_available kitty
 }
 
+install_visualizer_dependency() {
+    if have cava; then
+        return 0
+    fi
+
+    echo "Installing cava audio visualizer dependency..."
+    install_package_if_available cava || echo "Warning: could not install cava automatically; audio visualizers may be disabled." >&2
+}
+
 source_fingerprint() {
     if [ -n "$SOURCE_DIR" ] && [ -d "$SOURCE_DIR/.git" ] && have git; then
         git -C "$SOURCE_DIR" rev-parse --short=12 HEAD 2>/dev/null && return 0
@@ -877,6 +886,7 @@ install_hype() {
     install_quickshell_dependency
     install_qt_wayland_dependency
     install_terminal_dependency
+    install_visualizer_dependency
 
     run make -C "$SOURCE_DIR" build
     sudo_run make -C "$SOURCE_DIR" PREFIX="$PREFIX" install
