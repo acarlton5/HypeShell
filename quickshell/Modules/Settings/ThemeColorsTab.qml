@@ -18,6 +18,8 @@ Item {
     property var cachedCursorThemes: SettingsData.availableCursorThemes
     property var cachedMatugenSchemes: Theme.availableMatugenSchemes.map(option => option.label)
     property var installedRegistryThemes: []
+    property bool registryThemeUpdateRunning: false
+    property int registryThemeUpdatePending: 0
     property var templateDetection: []
 
     property var cursorIncludeStatus: ({
@@ -794,6 +796,17 @@ Item {
                             iconName: "store"
                             anchors.horizontalCenter: parent.horizontalCenter
                             onClicked: showThemeBrowser()
+                        }
+
+                        DankButton {
+                            text: registryThemeUpdateRunning ? I18n.tr("Updating...", "theme update button running") : I18n.tr("Update Installed Themes", "theme update button")
+                            iconName: "refresh"
+                            enabled: !registryThemeUpdateRunning
+                            visible: themeColorsTab.installedRegistryThemes.length > 0
+                            anchors.horizontalCenter: parent.horizontalCenter
+                            backgroundColor: Theme.surfaceContainerHigh
+                            textColor: Theme.surfaceText
+                            onClicked: updateInstalledRegistryThemes()
                         }
                     }
 
@@ -3072,5 +3085,32 @@ Item {
         themeBrowserLoader.active = true;
         if (themeBrowserLoader.item)
             themeBrowserLoader.item.show();
+    }
+
+    function updateInstalledRegistryThemes() {
+        if (registryThemeUpdateRunning || installedRegistryThemes.length === 0)
+            return;
+
+        registryThemeUpdateRunning = true;
+        registryThemeUpdatePending = installedRegistryThemes.length;
+        ToastService.showInfo(I18n.tr("Updating installed themes...", "theme update progress"));
+
+        for (var i = 0; i < installedRegistryThemes.length; i++) {
+            const themeId = installedRegistryThemes[i].id;
+            DMSService.updateTheme(themeId, response => {
+                registryThemeUpdatePending--;
+                if (response.error)
+                    ToastService.showError(I18n.tr("Theme update failed: %1", "theme update error").arg(response.error));
+
+                if (registryThemeUpdatePending > 0)
+                    return;
+
+                registryThemeUpdateRunning = false;
+                ToastService.showInfo(I18n.tr("Installed themes updated", "theme update success"));
+                DMSService.listInstalledThemes();
+                if (Theme.currentThemeCategory === "registry" && SettingsData.customThemeFile)
+                    Theme.switchTheme("custom", true, true);
+            });
+        }
     }
 }
