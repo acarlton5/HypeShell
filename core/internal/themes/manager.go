@@ -109,7 +109,7 @@ func (m *Manager) Install(theme Theme, registryThemeDir string) error {
 }
 
 func (m *Manager) copyThemeAssets(srcDir, dstDir string, theme Theme) {
-	assets := []string{"preview-dark.svg", "preview-light.svg"}
+	assets := []string{"preview.svg", "preview-dark.svg", "preview-light.svg"}
 
 	if theme.Variants != nil {
 		for _, v := range theme.Variants.Options {
@@ -186,7 +186,7 @@ func (m *Manager) InstallFromRegistry(registry *Registry, themeID string) error 
 	return m.Install(*theme, registryThemeDir)
 }
 
-func (m *Manager) Update(theme Theme) error {
+func (m *Manager) Update(theme Theme, registryThemeDir string) error {
 	themePath := m.findInstalledPath(theme.ID)
 
 	exists, err := afero.Exists(m.fs, themePath)
@@ -207,6 +207,7 @@ func (m *Manager) Update(theme Theme) error {
 		return fmt.Errorf("failed to write theme file: %w", err)
 	}
 
+	m.copyThemeAssets(registryThemeDir, filepath.Dir(themePath), theme)
 	return nil
 }
 

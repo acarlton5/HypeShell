@@ -45,7 +45,8 @@ func HandleUpdate(conn net.Conn, req models.Request) {
 		return
 	}
 
-	if err := manager.Update(*theme); err != nil {
+	registryThemeDir := registry.GetThemeDir(theme.SourceDir)
+	if err := manager.Update(*theme, registryThemeDir); err != nil {
 		models.RespondError(conn, req.ID, fmt.Sprintf("failed to update theme: %v", err))
 		return
 	}

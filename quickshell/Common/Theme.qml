@@ -1347,6 +1347,7 @@ Singleton {
                     baseColors = mergeColors(baseColors, accentColors);
                 }
                 customThemeData = baseColors;
+                applyCustomThemeExtras(themeData);
                 generateSystemThemesFromCurrentTheme();
                 return;
             }
@@ -1358,6 +1359,7 @@ Singleton {
                 if (variant) {
                     const variantColors = variant[colorMode] || variant.dark || variant.light || {};
                     customThemeData = mergeColors(baseColors, variantColors);
+                    applyCustomThemeExtras(themeData);
                     generateSystemThemesFromCurrentTheme();
                     return;
                 }
@@ -1365,7 +1367,99 @@ Singleton {
         }
 
         customThemeData = baseColors;
+        applyCustomThemeExtras(themeData);
         generateSystemThemesFromCurrentTheme();
+    }
+
+    function applyCustomThemeExtras(themeData) {
+        if (!themeData || typeof SessionData === "undefined" || typeof SettingsData === "undefined")
+            return;
+        if (SessionData.isGreeterMode)
+            return;
+
+        applyCustomThemeWallpaper(themeData);
+        applyCustomThemeWindowStyle(themeData);
+    }
+
+    function applyCustomThemeWallpaper(themeData) {
+        const wallpaper = selectCustomThemeWallpaper(themeData);
+        if (!wallpaper || !wallpaper.path)
+            return;
+
+        if (wallpaper.fillMode)
+            SettingsData.set("wallpaperFillMode", wallpaper.fillMode);
+
+        if (wallpaper.lightPath || wallpaper.darkPath) {
+            const fallback = wallpaper.path;
+            const lightPath = wallpaper.lightPath || fallback;
+            const darkPath = wallpaper.darkPath || fallback;
+            SessionData.perModeWallpaper = true;
+            SessionData.wallpaperPathLight = lightPath;
+            SessionData.wallpaperPathDark = darkPath;
+            SessionData.wallpaperPath = SessionData.isLightMode ? lightPath : darkPath;
+            SessionData.saveSettings();
+            return;
+        }
+
+        SessionData.perModeWallpaper = false;
+        if (wallpaper.path.startsWith("#"))
+            SessionData.setWallpaperColor(wallpaper.path);
+        else
+            SessionData.setWallpaper(wallpaper.path);
+    }
+
+    function selectCustomThemeWallpaper(themeData) {
+        const wallpapers = themeData.wallpapers || (themeData.wallpaper ? [themeData.wallpaper] : []);
+        if (!wallpapers || wallpapers.length === 0)
+            return null;
+
+        const item = wallpapers[0] || {};
+        const mode = (typeof SessionData !== "undefined" && SessionData.isLightMode) ? "light" : "dark";
+        const modePath = mode === "light" ? item.lightPath : item.darkPath;
+        const fallbackPath = item.path || item.lightPath || item.darkPath || "";
+        const selectedPath = modePath || fallbackPath;
+        if (!selectedPath)
+            return null;
+
+        return {
+            "path": resolveCustomThemeAssetPath(selectedPath),
+            "lightPath": item.lightPath ? resolveCustomThemeAssetPath(item.lightPath) : "",
+            "darkPath": item.darkPath ? resolveCustomThemeAssetPath(item.darkPath) : "",
+            "fillMode": item.fillMode || ""
+        };
+    }
+
+    function resolveCustomThemeAssetPath(assetPath) {
+        if (!assetPath)
+            return "";
+        if (String(assetPath).startsWith("#") || String(assetPath).startsWith("/"))
+            return assetPath;
+        if (String(assetPath).startsWith("file://"))
+            return Paths.strip(assetPath);
+
+        const themeFile = customThemeFileView.path || (typeof SettingsData !== "undefined" ? SettingsData.customThemeFile : "");
+        if (!themeFile)
+            return assetPath;
+        const normalizedThemeFile = Paths.strip(themeFile);
+        const slash = normalizedThemeFile.lastIndexOf("/");
+        if (slash < 0)
+            return assetPath;
+        return normalizedThemeFile.substring(0, slash) + "/" + String(assetPath).replace(/\\/g, "/").replace(/^\.\//, "");
+    }
+
+    function applyCustomThemeWindowStyle(themeData) {
+        const style = themeData.window || themeData.borders;
+        if (!style || typeof CompositorService === "undefined" || !CompositorService.isHyprland)
+            return;
+
+        if (style.gapsIn !== undefined || style.gapsOut !== undefined) {
+            const gaps = style.gapsIn !== undefined ? style.gapsIn : style.gapsOut;
+            SettingsData.set("hyprlandLayoutGapsOverride", Number(gaps));
+        }
+        if (style.rounding !== undefined)
+            SettingsData.set("hyprlandLayoutRadiusOverride", Number(style.rounding));
+        if (style.borderSize !== undefined)
+            SettingsData.set("hyprlandLayoutBorderSize", Number(style.borderSize));
     }
 
     function findVariant(options, variantId) {
