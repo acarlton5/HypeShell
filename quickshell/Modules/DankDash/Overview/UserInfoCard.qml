@@ -12,6 +12,15 @@ Card {
     Component.onCompleted: DgopService.addRef("system")
     Component.onDestruction: DgopService.removeRef("system")
 
+    function uptimeLabel() {
+        const shortUptime = DgopService.shortUptime || "";
+        if (!shortUptime)
+            return I18n.tr("Uptime unknown", "overview uptime fallback");
+
+        const duration = shortUptime.replace(/^up\s*/, "");
+        return duration ? I18n.tr("Uptime %1", "overview uptime label").arg(duration) : I18n.tr("Uptime", "overview uptime label empty");
+    }
+
     Row {
         anchors.left: parent.left
         anchors.leftMargin: Theme.spacingM
@@ -99,7 +108,7 @@ Card {
                 }
 
                 StyledText {
-                    text: DgopService.shortUptime || I18n.tr("up")
+                    text: root.uptimeLabel()
                     font.pixelSize: Theme.fontSizeSmall
                     color: Qt.rgba(Theme.surfaceText.r, Theme.surfaceText.g, Theme.surfaceText.b, 0.7)
                     anchors.verticalCenter: parent.verticalCenter
