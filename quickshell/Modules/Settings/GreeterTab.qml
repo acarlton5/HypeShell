@@ -91,7 +91,7 @@ Item {
         browserIcon: "wallpaper"
         browserType: "wallpaper"
         showHiddenFiles: true
-        fileExtensions: ["*.jpg", "*.jpeg", "*.png", "*.bmp", "*.gif", "*.webp", "*.jxl", "*.avif", "*.heif"]
+        fileExtensions: ["*.jpg", "*.jpeg", "*.png", "*.bmp", "*.gif", "*.webp", "*.svg", "*.jxl", "*.avif", "*.heif"]
         onFileSelected: path => {
             SettingsData.set("greeterWallpaperPath", path);
             close();

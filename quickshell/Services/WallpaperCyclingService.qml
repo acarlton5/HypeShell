@@ -266,7 +266,7 @@ Singleton {
             }
 
             if (process) {
-                process.command = ["sh", "-c", `find -L "${wallpaperDir}" -maxdepth 1 -type f \\( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" -o -iname "*.bmp" -o -iname "*.gif" -o -iname "*.webp" -o -iname "*.jxl" -o -iname "*.avif" -o -iname "*.heif" -o -iname "*.exr" \\) 2>/dev/null | sort`];
+                process.command = ["sh", "-c", `find -L "${wallpaperDir}" -maxdepth 1 -type f \\( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" -o -iname "*.bmp" -o -iname "*.gif" -o -iname "*.webp" -o -iname "*.svg" -o -iname "*.jxl" -o -iname "*.avif" -o -iname "*.heif" -o -iname "*.exr" \\) 2>/dev/null | sort`];
                 process.targetScreenName = screenName;
                 process.currentWallpaper = currentWallpaper;
                 process.goToPrevious = false;
@@ -274,7 +274,7 @@ Singleton {
             }
         } else {
             // Use global process for fallback
-            cyclingProcess.command = ["sh", "-c", `find -L "${wallpaperDir}" -maxdepth 1 -type f \\( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" -o -iname "*.bmp" -o -iname "*.gif" -o -iname "*.webp" -o -iname "*.jxl" -o -iname "*.avif" -o -iname "*.heif" -o -iname "*.exr" \\) 2>/dev/null | sort`];
+            cyclingProcess.command = ["sh", "-c", `find -L "${wallpaperDir}" -maxdepth 1 -type f \\( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" -o -iname "*.bmp" -o -iname "*.gif" -o -iname "*.webp" -o -iname "*.svg" -o -iname "*.jxl" -o -iname "*.avif" -o -iname "*.heif" -o -iname "*.exr" \\) 2>/dev/null | sort`];
             cyclingProcess.targetScreenName = screenName || "";
             cyclingProcess.currentWallpaper = currentWallpaper;
             cyclingProcess.running = true;
@@ -299,7 +299,7 @@ Singleton {
             }
 
             if (process) {
-                process.command = ["sh", "-c", `find -L "${wallpaperDir}" -maxdepth 1 -type f \\( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" -o -iname "*.bmp" -o -iname "*.gif" -o -iname "*.webp" -o -iname "*.jxl" -o -iname "*.avif" -o -iname "*.heif" -o -iname "*.exr" \\) 2>/dev/null | sort`];
+                process.command = ["sh", "-c", `find -L "${wallpaperDir}" -maxdepth 1 -type f \\( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" -o -iname "*.bmp" -o -iname "*.gif" -o -iname "*.webp" -o -iname "*.svg" -o -iname "*.jxl" -o -iname "*.avif" -o -iname "*.heif" -o -iname "*.exr" \\) 2>/dev/null | sort`];
                 process.targetScreenName = screenName;
                 process.currentWallpaper = currentWallpaper;
                 process.goToPrevious = true;
@@ -307,7 +307,7 @@ Singleton {
             }
         } else {
             // Use global process for fallback
-            prevCyclingProcess.command = ["sh", "-c", `find -L "${wallpaperDir}" -maxdepth 1 -type f \\( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" -o -iname "*.bmp" -o -iname "*.gif" -o -iname "*.webp" -o -iname "*.jxl" -o -iname "*.avif" -o -iname "*.heif" -o -iname "*.exr" \\) 2>/dev/null | sort`];
+            prevCyclingProcess.command = ["sh", "-c", `find -L "${wallpaperDir}" -maxdepth 1 -type f \\( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" -o -iname "*.bmp" -o -iname "*.gif" -o -iname "*.webp" -o -iname "*.svg" -o -iname "*.jxl" -o -iname "*.avif" -o -iname "*.heif" -o -iname "*.exr" \\) 2>/dev/null | sort`];
             prevCyclingProcess.targetScreenName = screenName || "";
             prevCyclingProcess.currentWallpaper = currentWallpaper;
             prevCyclingProcess.running = true;
