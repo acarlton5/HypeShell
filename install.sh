@@ -927,6 +927,11 @@ restart_hype_service() {
 
     run systemctl --user enable hype.service >/dev/null 2>&1 || true
 
+    if [ -z "${WAYLAND_DISPLAY:-}" ]; then
+        echo "HypeShell service is enabled. It will start from the Hyprland session."
+        return 0
+    fi
+
     if systemctl --user is-active --quiet hype.service; then
         echo "Restarting HypeShell user service..."
         nohup sh -c 'sleep 1; systemctl --user restart hype.service' >/dev/null 2>&1 &

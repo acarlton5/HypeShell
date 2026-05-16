@@ -594,7 +594,7 @@ func (b *BaseDistribution) WriteHyprlandSessionTarget() error {
 	targetPath := filepath.Join(targetDir, "hyprland-session.target")
 	content := `[Unit]
 Description=Hyprland Session Target
-Requires=graphical-session.target
+Wants=graphical-session.target
 After=graphical-session.target
 `
 
