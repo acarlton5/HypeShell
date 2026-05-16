@@ -4,7 +4,7 @@ set -euo pipefail
 
 SCRIPT_NAME="$(basename "$0")"
 DEFAULT_REPO_URL="https://github.com/acarlton5/HypeShell.git"
-INSTALLER_BUILD_ID="hype-greeter-v1"
+INSTALLER_BUILD_ID="hype-about-updater-v1"
 
 YES=1
 PURGE_USER_DATA=0
@@ -710,6 +710,18 @@ install_greetd_if_needed() {
     install_package_if_available greetd
 }
 
+install_source_dependency() {
+    [ "$INSTALL_METHOD" = "source" ] || return 0
+    have git && return 0
+
+    echo "Installing git source dependency..."
+    if ! install_package_if_available git; then
+        echo "Error: git is required to clone $REPO_URL." >&2
+        echo "Install git with your package manager, then rerun install.sh." >&2
+        exit 1
+    fi
+}
+
 prepare_source() {
     if [ -n "$SOURCE_DIR" ]; then
         if have realpath; then
@@ -725,6 +737,12 @@ prepare_source() {
     fi
 
     if ! have git; then
+        if [ "$YES" -eq 0 ]; then
+            SOURCE_DIR="$WORK_DIR/Hype"
+            run mkdir -p "$WORK_DIR"
+            run git clone --depth 1 --branch "$BRANCH" "$REPO_URL" "$SOURCE_DIR"
+            return 0
+        fi
         echo "Error: git is required to clone $REPO_URL." >&2
         exit 1
     fi
@@ -880,6 +898,7 @@ install_hype() {
         return 0
     fi
 
+    install_source_dependency
     prepare_source
 
     install_build_dependencies
@@ -891,6 +910,78 @@ install_hype() {
     run make -C "$SOURCE_DIR" build
     sudo_run make -C "$SOURCE_DIR" PREFIX="$PREFIX" install
     run systemctl --user daemon-reload || true
+}
+
+restart_hype_service() {
+    [ "$YES" -eq 1 ] || {
+        echo "[dry-run] restart HypeShell user service after install/update"
+        return 0
+    }
+
+    run systemctl --user daemon-reload || true
+
+    if ! systemctl --user cat hype.service >/dev/null 2>&1; then
+        echo "Warning: hype.service is not installed; start HypeShell manually with 'hype run'." >&2
+        return 0
+    fi
+
+    run systemctl --user enable hype.service >/dev/null 2>&1 || true
+
+    if systemctl --user is-active --quiet hype.service; then
+        echo "Restarting HypeShell user service..."
+        nohup sh -c 'sleep 1; systemctl --user restart hype.service' >/dev/null 2>&1 &
+    else
+        echo "Starting HypeShell user service..."
+        run systemctl --user start hype.service || echo "Warning: failed to start hype.service; run 'hype run' from Hyprland to debug." >&2
+    fi
+}
+
+refresh_installed_registry_assets() {
+    [ "$SKIP_INSTALL" -eq 0 ] || return 0
+
+    if [ "$YES" -eq 0 ]; then
+        echo "[dry-run] refresh installed Hype themes and plugins from HypeRegistry"
+        return 0
+    fi
+
+    if ! have git; then
+        echo "Warning: git is not available; skipping HypeRegistry theme/plugin refresh." >&2
+        return 0
+    fi
+
+    registry_dir="$WORK_DIR/HypeRegistry"
+    echo "Refreshing installed Hype themes and plugins from HypeRegistry..."
+    if ! git clone --depth 1 https://github.com/acarlton5/HypeRegistry.git "$registry_dir" >/dev/null 2>&1; then
+        echo "Warning: could not clone HypeRegistry; installed themes/plugins were not refreshed." >&2
+        return 0
+    fi
+
+    theme_root="${XDG_CONFIG_HOME:-$HOME/.config}/HypeShell/themes"
+    if [ -d "$theme_root" ]; then
+        for theme_dir in "$theme_root"/*; do
+            [ -f "$theme_dir/theme.json" ] || continue
+            theme_id="$(basename "$theme_dir")"
+            registry_theme="$registry_dir/themes/$theme_id"
+            [ -d "$registry_theme" ] || continue
+            echo "Updating installed theme: $theme_id"
+            cp -a "$registry_theme"/. "$theme_dir"/
+        done
+    fi
+
+    hype_cmd="$PREFIX/bin/hype"
+    if [ ! -x "$hype_cmd" ]; then
+        hype_cmd="$(command -v hype || true)"
+    fi
+
+    plugin_root="${XDG_CONFIG_HOME:-$HOME/.config}/HypeShell/plugins"
+    if [ -n "$hype_cmd" ] && [ -d "$plugin_root" ]; then
+        for plugin_dir in "$plugin_root"/*; do
+            [ -f "$plugin_dir/plugin.json" ] || continue
+            plugin_id="$(basename "$plugin_dir")"
+            echo "Updating installed plugin: $plugin_id"
+            "$hype_cmd" plugins update "$plugin_id" >/dev/null 2>&1 || echo "Warning: could not update plugin $plugin_id" >&2
+        done
+    fi
 }
 
 install_greeter_wrapper_from_source() {
@@ -1082,6 +1173,8 @@ EOF
 
     write_install_fingerprint "started"
 
+    install_source_dependency
+
     if [ "$INSTALL_METHOD" = "source" ] && { [ "$REMOVE_DMS_PACKAGES" -eq 1 ] || [ "$INSTALL_HYPRLAND_SESSION" -eq 1 ]; }; then
         prepare_source
         verify_hypeshell_source_payload
@@ -1097,10 +1190,12 @@ EOF
     remove_legacy_system_artifacts
     install_hype
     install_hyprland_session
+    refresh_installed_registry_assets
     ensure_hyprland_shell_startup
     install_greeter
     clean_display_manager
     write_install_fingerprint "complete"
+    restart_hype_service
     trap - ERR
 
     if [ "$YES" -eq 1 ]; then
@@ -1113,10 +1208,7 @@ EOF
         if [ "$PURGE_USER_DATA" -eq 0 ]; then
             echo "Legacy user data backup: $BACKUP_DIR"
         fi
-        echo "Start HypeShell with:"
-        echo "  systemctl --user enable --now hype"
-        echo "or:"
-        echo "  hype run"
+        echo "HypeShell service has been started/restarted."
     else
         echo
         echo "Dry run complete. No changes were made."

@@ -31,7 +31,7 @@ Singleton {
     property var clipboardRequestIds: ({})
     property int requestIdCounter: 0
     property bool shownOutdatedError: false
-    property string updateCommand: "hype update"
+    property string updateCommand: ShellVersionService.installerUpdateCommand()
     property bool checkingUpdateCommand: false
 
     signal pluginsListReceived(var plugins)
@@ -79,73 +79,14 @@ Singleton {
     }
 
     function detectUpdateCommand() {
-        checkingUpdateCommand = true;
-        checkAurHelper.running = true;
+        updateCommand = ShellVersionService.installerUpdateCommand();
+        checkingUpdateCommand = false;
+        startSocketConnection();
     }
 
     function startSocketConnection() {
         if (socketPath && socketPath.length > 0) {
             testProcess.running = true;
-        }
-    }
-
-    Process {
-        id: checkAurHelper
-        command: ["sh", "-c", "command -v paru || command -v yay"]
-        running: false
-
-        stdout: StdioCollector {
-            onStreamFinished: {
-                const helper = text.trim();
-                if (helper.includes("paru")) {
-                    checkDmsPackage.helper = "paru";
-                    checkDmsPackage.running = true;
-                } else if (helper.includes("yay")) {
-                    checkDmsPackage.helper = "yay";
-                    checkDmsPackage.running = true;
-                } else {
-                    updateCommand = "hype update";
-                    checkingUpdateCommand = false;
-                    startSocketConnection();
-                }
-            }
-        }
-
-        onExited: exitCode => {
-            if (exitCode !== 0) {
-                updateCommand = "hype update";
-                checkingUpdateCommand = false;
-                startSocketConnection();
-            }
-        }
-    }
-
-    Process {
-        id: checkDmsPackage
-        property string helper: ""
-        command: ["sh", "-c", "pacman -Qi dms-shell-git 2>/dev/null || pacman -Qi dms-shell-bin 2>/dev/null"]
-        running: false
-
-        stdout: StdioCollector {
-            onStreamFinished: {
-                if (text.includes("dms-shell-git")) {
-                    updateCommand = checkDmsPackage.helper + " -S dms-shell-git";
-                } else if (text.includes("dms-shell-bin")) {
-                    updateCommand = checkDmsPackage.helper + " -S dms-shell-bin";
-                } else {
-                    updateCommand = "hype update";
-                }
-                checkingUpdateCommand = false;
-                startSocketConnection();
-            }
-        }
-
-        onExited: exitCode => {
-            if (exitCode !== 0) {
-                updateCommand = "hype update";
-                checkingUpdateCommand = false;
-                startSocketConnection();
-            }
         }
     }
 

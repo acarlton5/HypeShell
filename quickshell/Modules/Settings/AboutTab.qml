@@ -1,5 +1,6 @@
 import QtQuick
 import QtQuick.Effects
+import Quickshell
 import qs.Common
 import qs.Services
 import qs.Widgets
@@ -82,8 +83,8 @@ Item {
         return I18n.tr("niri GitHub");
     }
 
-    property string dmsDiscordUrl: "https://discord.gg/ppWTpKmPgT"
-    property string dmsDiscordTooltip: I18n.tr("niri/dms Discord")
+    property string dmsDiscordUrl: "https://github.com/acarlton5/HypeShell"
+    property string dmsDiscordTooltip: I18n.tr("HypeShell GitHub")
 
     property string compositorDiscordUrl: {
         if (isHyprland)
@@ -111,6 +112,44 @@ Item {
     property bool showCompositorDiscord: isHyprland || isDwl
     property bool showReddit: isNiri && !isHyprland && !isSway && !isScroll && !isMiracle && !isDwl && !isLabwc
     property bool showIrc: isLabwc
+
+    function displayVersion() {
+        if (ShellVersionService.installedCommit)
+            return "HypeShell " + ShellVersionService.installedCommit;
+        if (ShellVersionService.shellVersion)
+            return "HypeShell " + ShellVersionService.shellVersion.replace(/^dms\s*/i, "").replace(/^hype\s*/i, "");
+        if (DMSService.cliVersion)
+            return "HypeShell " + DMSService.cliVersion;
+        return "HypeShell source build";
+    }
+
+    function updateStatusText() {
+        switch (ShellVersionService.updateStatus) {
+        case "checking":
+            return I18n.tr("Checking for updates...");
+        case "current":
+            return I18n.tr("HypeShell is up to date");
+        case "available":
+            return I18n.tr("Update available");
+        case "error":
+            return ShellVersionService.updateError || I18n.tr("Could not check for updates");
+        default:
+            return I18n.tr("Update status has not been checked");
+        }
+    }
+
+    function updateStatusColor() {
+        switch (ShellVersionService.updateStatus) {
+        case "current":
+            return Theme.success;
+        case "available":
+            return Theme.warning;
+        case "error":
+            return Theme.error;
+        default:
+            return Theme.surfaceVariantText;
+        }
+    }
 
     DankFlickable {
         anchors.fill: parent
@@ -188,63 +227,7 @@ Item {
                     }
 
                     StyledText {
-                        text: {
-                            if (!ShellVersionService.shellVersion && !DMSService.cliVersion)
-                                return "dms";
-
-                            let version = ShellVersionService.shellVersion || "";
-                            let cliVersion = DMSService.cliVersion || "";
-
-                            // Debian/Ubuntu/OpenSUSE git format: 1.0.3+git2264.c5c5ce84
-                            let match = version.match(/^([\d.]+)\+git(\d+)\./);
-                            if (match) {
-                                return `hype (git) v${match[1]}-${match[2]}`;
-                            }
-
-                            // Fedora COPR git format: 0.0.git.2267.d430cae9
-                            match = version.match(/^[\d.]+\.git\.(\d+)\./);
-                            if (match) {
-                                function extractBaseVersion(value) {
-                                    if (!value)
-                                        return "";
-                                    let baseMatch = value.match(/(\d+\.\d+\.\d+)/);
-                                    if (baseMatch)
-                                        return baseMatch[1];
-                                    baseMatch = value.match(/(\d+\.\d+)/);
-                                    if (baseMatch)
-                                        return baseMatch[1];
-                                    return "";
-                                }
-
-                                let baseVersion = extractBaseVersion(cliVersion);
-                                if (!baseVersion)
-                                    baseVersion = extractBaseVersion(ShellVersionService.semverVersion);
-                                if (baseVersion) {
-                                    return `hype (git) v${baseVersion}-${match[1]}`;
-                                }
-                                return `hype (git) v${match[1]}`;
-                            }
-
-                            // Stable release format: 1.0.3
-                            match = version.match(/^([\d.]+)$/);
-                            if (match) {
-                                return `dms v${match[1]}`;
-                            }
-
-                            if (!version && cliVersion) {
-                                match = cliVersion.match(/^([\d.]+)\+git(\d+)\./);
-                                if (match) {
-                                    return `hype (git) v${match[1]}-${match[2]}`;
-                                }
-                                match = cliVersion.match(/^([\d.]+)$/);
-                                if (match) {
-                                    return `dms v${match[1]}`;
-                                }
-                                return `dms ${cliVersion}`;
-                            }
-
-                            return `dms ${version}`;
-                        }
+                        text: aboutTab.displayVersion()
                         font.pixelSize: Theme.fontSizeXLarge
                         font.weight: Font.Bold
                         color: Theme.surfaceText
@@ -319,15 +302,15 @@ Item {
 
                         DankButton {
                             id: kofiButton
-                            text: resourceButtonsRow.compactMode ? "" : I18n.tr("Ko-fi")
-                            iconName: "favorite"
+                            text: resourceButtonsRow.compactMode ? "" : I18n.tr("Issues")
+                            iconName: "bug_report"
                             iconSize: 18
                             backgroundColor: Qt.rgba(Theme.primary.r, Theme.primary.g, Theme.primary.b, 0.12)
                             textColor: Theme.primary
-                            onClicked: Qt.openUrlExternally("https://github.com/acarlton5/HypeShell")
+                            onClicked: Qt.openUrlExternally("https://github.com/acarlton5/HypeShell/issues")
                             onHoveredChanged: {
                                 if (hovered)
-                                    resourceTooltip.show(resourceButtonsRow.compactMode ? I18n.tr("Support") + " - github.com/acarlton5/HypeShell" : "github.com/acarlton5/HypeShell", kofiButton, 0, 0, "bottom");
+                                    resourceTooltip.show(resourceButtonsRow.compactMode ? I18n.tr("Issues") + " - github.com/acarlton5/HypeShell/issues" : "github.com/acarlton5/HypeShell/issues", kofiButton, 0, 0, "bottom");
                                 else
                                     resourceTooltip.hide();
                             }
@@ -466,12 +449,11 @@ Item {
                             property bool hovered: false
                             property string tooltipText: dmsDiscordTooltip
 
-                            Image {
-                                anchors.fill: parent
-                                source: Qt.resolvedUrl(".").toString().replace("file://", "").replace("/Modules/Settings/", "") + "/assets/discord.svg"
-                                sourceSize: Qt.size(20, 20)
-                                smooth: true
-                                fillMode: Image.PreserveAspectFit
+                            DankIcon {
+                                anchors.centerIn: parent
+                                name: "code"
+                                size: 20
+                                color: Theme.surfaceText
                             }
 
                             MouseArea {
@@ -582,7 +564,7 @@ Item {
                     }
 
                     StyledText {
-                        text: I18n.tr('dms is a highly customizable, modern desktop shell with a <a href="https://m3.material.io/" style="text-decoration:none; color:%1;">material 3 inspired</a> design.<br /><br/>It is built with <a href="https://quickshell.org" style="text-decoration:none; color:%1;">Quickshell</a>, a QT6 framework for building desktop shells, and <a href="https://go.dev" style="text-decoration:none; color:%1;">Go</a>, a statically typed, compiled programming language.').arg(Theme.primary)
+                        text: I18n.tr('HypeShell is a Hyprland-focused desktop shell for DSS-OS and Hype systems with a <a href="https://m3.material.io/" style="text-decoration:none; color:%1;">Material 3 inspired</a> interface.<br /><br/>It is built with <a href="https://quickshell.org" style="text-decoration:none; color:%1;">Quickshell</a> for the desktop UI and <a href="https://go.dev" style="text-decoration:none; color:%1;">Go</a> for the HypeShell backend.').arg(Theme.primary)
                         textFormat: Text.RichText
                         font.pixelSize: Theme.fontSizeMedium
                         linkColor: Theme.primary
@@ -596,6 +578,120 @@ Item {
                             cursorShape: parent.hoveredLink ? Qt.PointingHandCursor : Qt.ArrowCursor
                             acceptedButtons: Qt.NoButton
                             propagateComposedEvents: true
+                        }
+                    }
+                }
+            }
+
+            StyledRect {
+                width: parent.width
+                height: updatesSection.implicitHeight + Theme.spacingL * 2
+                radius: Theme.cornerRadius
+                color: Theme.surfaceContainerHigh
+                border.color: Qt.rgba(Theme.outline.r, Theme.outline.g, Theme.outline.b, 0.2)
+                border.width: 0
+
+                Column {
+                    id: updatesSection
+
+                    anchors.fill: parent
+                    anchors.margins: Theme.spacingL
+                    spacing: Theme.spacingM
+
+                    Row {
+                        width: parent.width
+                        spacing: Theme.spacingM
+
+                        DankIcon {
+                            name: "system_update"
+                            size: Theme.iconSize
+                            color: Theme.primary
+                            anchors.verticalCenter: parent.verticalCenter
+                        }
+
+                        StyledText {
+                            text: I18n.tr("Updates")
+                            font.pixelSize: Theme.fontSizeLarge
+                            font.weight: Font.Medium
+                            color: Theme.surfaceText
+                            anchors.verticalCenter: parent.verticalCenter
+                        }
+                    }
+
+                    StyledText {
+                        text: aboutTab.updateStatusText()
+                        font.pixelSize: Theme.fontSizeMedium
+                        color: aboutTab.updateStatusColor()
+                        width: parent.width
+                        wrapMode: Text.WordWrap
+                    }
+
+                    Row {
+                        width: parent.width
+                        spacing: Theme.spacingM
+
+                        Column {
+                            width: (parent.width - Theme.spacingM) / 2
+                            spacing: Theme.spacingXS
+
+                            StyledText {
+                                text: I18n.tr("Installed")
+                                font.pixelSize: Theme.fontSizeSmall
+                                color: Theme.surfaceVariantText
+                            }
+
+                            StyledText {
+                                text: ShellVersionService.installedCommit || I18n.tr("Unknown")
+                                font.pixelSize: Theme.fontSizeMedium
+                                color: Theme.surfaceText
+                                elide: Text.ElideRight
+                                width: parent.width
+                            }
+                        }
+
+                        Column {
+                            width: (parent.width - Theme.spacingM) / 2
+                            spacing: Theme.spacingXS
+
+                            StyledText {
+                                text: I18n.tr("Latest")
+                                font.pixelSize: Theme.fontSizeSmall
+                                color: Theme.surfaceVariantText
+                            }
+
+                            StyledText {
+                                text: ShellVersionService.latestCommit || (ShellVersionService.updateStatus === "checking" ? I18n.tr("Checking") : I18n.tr("Not checked"))
+                                font.pixelSize: Theme.fontSizeMedium
+                                color: Theme.surfaceText
+                                elide: Text.ElideRight
+                                width: parent.width
+                            }
+                        }
+                    }
+
+                    Row {
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        spacing: Theme.spacingS
+
+                        DankButton {
+                            text: ShellVersionService.updateStatus === "checking" ? I18n.tr("Checking") : I18n.tr("Check for Updates")
+                            iconName: "refresh"
+                            enabled: ShellVersionService.updateStatus !== "checking"
+                            backgroundColor: Theme.primary
+                            textColor: Theme.primaryText
+                            onClicked: ShellVersionService.checkForUpdates()
+                        }
+
+                        DankButton {
+                            text: I18n.tr("Copy Command")
+                            iconName: "content_copy"
+                            visible: ShellVersionService.updateStatus === "available"
+                            backgroundColor: Qt.rgba(Theme.surfaceText.r, Theme.surfaceText.g, Theme.surfaceText.b, 0.08)
+                            textColor: Theme.surfaceText
+                            onClicked: {
+                                Quickshell.execDetached(["hype", "cl", "copy", ShellVersionService.installerUpdateCommand()]);
+                                ToastService.showInfo(I18n.tr("Copied update command"));
+                            }
                         }
                     }
                 }

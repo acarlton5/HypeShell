@@ -11,9 +11,105 @@ Singleton {
     property string shellVersion: ""
     property string shellCodename: ""
     property string semverVersion: ""
+    property string installFingerprint: ""
+    property string installedCommit: ""
+    property string latestCommit: ""
+    property string updateStatus: "idle"
+    property string updateError: ""
+    property bool updateChecked: false
 
     function getParsedShellVersion() {
         return parseVersion(semverVersion);
+    }
+
+    function shortCommit(commit) {
+        if (!commit)
+            return "";
+        return commit.length > 12 ? commit.substring(0, 12) : commit;
+    }
+
+    function parseInstallFingerprint(text) {
+        installFingerprint = text.trim();
+        installedCommit = "";
+        const lines = installFingerprint.split("\n");
+        for (var i = 0; i < lines.length; i++) {
+            const line = lines[i].trim();
+            if (!line.startsWith("source_commit="))
+                continue;
+            const value = line.substring("source_commit=".length).trim();
+            if (value && value !== "unknown" && !value.startsWith("failed:"))
+                installedCommit = shortCommit(value);
+            break;
+        }
+    }
+
+    function refreshInstallFingerprint() {
+        if (!fingerprintDetection.running)
+            fingerprintDetection.running = true;
+    }
+
+    function checkForUpdates() {
+        updateChecked = true;
+        updateError = "";
+        latestCommit = "";
+
+        if (!installedCommit) {
+            updateStatus = "checking";
+            refreshInstallFingerprint();
+            return;
+        }
+
+        updateStatus = "checking";
+        latestCommitDetection.running = true;
+    }
+
+    function isUpdateAvailable() {
+        return updateStatus === "available";
+    }
+
+    function installerUpdateCommand() {
+        return 'curl -fsSL "https://raw.githubusercontent.com/acarlton5/HypeShell/main/install.sh?cache=$(date +%s)" | bash -s -- --update';
+    }
+
+    Process {
+        id: fingerprintDetection
+        running: true
+        command: ["sh", "-c", `for f in /usr/local/share/hypeshell/install-fingerprint /usr/share/hypeshell/install-fingerprint; do if [ -r "$f" ]; then cat "$f"; exit 0; fi; done; exit 1`]
+
+        stdout: StdioCollector {
+            onStreamFinished: root.parseInstallFingerprint(text)
+        }
+
+        onExited: exitCode => {
+            if (root.updateStatus !== "checking")
+                return;
+            if (exitCode !== 0 || !root.installedCommit) {
+                root.updateStatus = "error";
+                root.updateError = "Install fingerprint not found";
+                return;
+            }
+            latestCommitDetection.running = true;
+        }
+    }
+
+    Process {
+        id: latestCommitDetection
+        running: false
+        command: ["sh", "-c", `git ls-remote https://github.com/acarlton5/HypeShell.git refs/heads/main 2>/dev/null | awk '{print substr($1,1,12)}'`]
+
+        stdout: StdioCollector {
+            onStreamFinished: root.latestCommit = root.shortCommit(text.trim())
+        }
+
+        onExited: exitCode => {
+            if (exitCode !== 0 || !root.latestCommit) {
+                root.updateStatus = "error";
+                root.updateError = "Could not reach GitHub";
+                return;
+            }
+
+            root.updateStatus = root.latestCommit === root.installedCommit ? "current" : "available";
+        }
     }
 
     Process {
