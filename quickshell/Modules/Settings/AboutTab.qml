@@ -151,6 +151,44 @@ Item {
         }
     }
 
+    function terminalLaunchArgs(terminal, title, shellCmd) {
+        const appId = "hypeshell-update";
+        const full = `export SUDO_PROMPT="[HypeShell] sudo password for %u: "; printf '\\033[1;36m=== ${title} ===\\033[0m\\n'; printf '\\033[2m$ ${shellCmd}\\033[0m\\n\\n'; ${shellCmd}; status=$?; printf '\\n\\033[1;32m=== Update finished. Press Enter to close. ===\\033[0m\\n'; read _; exit $status`;
+        switch (terminal) {
+        case "kitty":
+            return [terminal, "--class", appId, "-T", title, "-e", "sh", "-c", full];
+        case "alacritty":
+            return [terminal, "--class", appId, "-T", title, "-e", "sh", "-c", full];
+        case "foot":
+            return [terminal, "--app-id=" + appId, "--title=" + title, "-e", "sh", "-c", full];
+        case "ghostty":
+            return [terminal, "--class=" + appId, "--title=" + title, "-e", "sh", "-c", full];
+        case "wezterm":
+            return [terminal, "--class", appId, "-T", title, "-e", "sh", "-c", full];
+        case "konsole":
+            return [terminal, "-p", "tabtitle=" + title, "-e", "sh", "-c", full];
+        case "gnome-terminal":
+            return [terminal, "--title=" + title, "--", "sh", "-c", full];
+        case "xterm":
+            return [terminal, "-class", appId, "-T", title, "-e", "sh", "-c", full];
+        default:
+            return [terminal, "-e", "sh", "-c", full];
+        }
+    }
+
+    function runHypeUpdate() {
+        const installed = SessionData.installedTerminals || [];
+        const terminal = SessionData.resolveTerminal() || (installed.length > 0 ? installed[0] : "");
+        if (!terminal || terminal.length === 0) {
+            ToastService.showError(I18n.tr("No terminal configured"), I18n.tr("Pick a terminal in Settings or install kitty."));
+            return;
+        }
+
+        const command = ShellVersionService.installerUpdateCommand("--reboot-if-needed");
+        Quickshell.execDetached(aboutTab.terminalLaunchArgs(terminal, "HypeShell Update", command));
+        ToastService.showInfo(I18n.tr("HypeShell update started"), I18n.tr("Follow the terminal window to finish the update."));
+    }
+
     DankFlickable {
         anchors.fill: parent
         clip: true
@@ -683,15 +721,12 @@ Item {
                         }
 
                         DankButton {
-                            text: I18n.tr("Copy Command")
-                            iconName: "content_copy"
+                            text: I18n.tr("Update Now")
+                            iconName: "system_update"
                             visible: ShellVersionService.updateStatus === "available"
                             backgroundColor: Qt.rgba(Theme.surfaceText.r, Theme.surfaceText.g, Theme.surfaceText.b, 0.08)
                             textColor: Theme.surfaceText
-                            onClicked: {
-                                Quickshell.execDetached(["hype", "cl", "copy", ShellVersionService.installerUpdateCommand()]);
-                                ToastService.showInfo(I18n.tr("Copied update command"));
-                            }
+                            onClicked: aboutTab.runHypeUpdate()
                         }
                     }
                 }

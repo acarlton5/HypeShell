@@ -67,8 +67,9 @@ Singleton {
         return updateStatus === "available";
     }
 
-    function installerUpdateCommand() {
-        return 'curl -fsSL "https://raw.githubusercontent.com/acarlton5/HypeShell/main/install.sh?cache=$(date +%s)" | bash -s -- --update';
+    function installerUpdateCommand(extraArgs) {
+        const args = extraArgs && extraArgs.length > 0 ? " " + extraArgs : "";
+        return 'curl -fsSL "https://raw.githubusercontent.com/acarlton5/HypeShell/main/install.sh?cache=$(date +%s)" | bash -s -- --update' + args;
     }
 
     Process {

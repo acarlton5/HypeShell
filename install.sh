@@ -17,6 +17,9 @@ INSTALL_HYPRLAND_SESSION=1
 INSTALL_METHOD="source"
 CLEAN_DISPLAY_MANAGER=1
 ALLOW_UPSTREAM_PACKAGES=0
+REBOOT_IF_NEEDED=0
+AUTO_REBOOT_IF_NEEDED=0
+NEEDS_REBOOT=0
 REPO_URL="$DEFAULT_REPO_URL"
 BRANCH="main"
 PREFIX="/usr/local"
@@ -57,6 +60,10 @@ Options:
                         This is only for recovery/debugging; HypeShell targets Hyprland.
   --clean               Remove old upstream packages and remove the sddm package
                         after greeter setup succeeds.
+  --reboot-if-needed    Prompt to reboot at the end if the install changed boot/login
+                        components or the system reports that a reboot is required.
+  --auto-reboot-if-needed
+                        Reboot automatically at the end when a reboot is required.
   --repo URL            HypeShell git repository to install from.
                         Default: $DEFAULT_REPO_URL
   --branch NAME         Branch to clone when --source is not used. Default: main.
@@ -117,6 +124,13 @@ while [ "$#" -gt 0 ]; do
         --clean)
             CLEAN_DISPLAY_MANAGER=1
             REMOVE_DMS_PACKAGES=1
+            ;;
+        --reboot-if-needed)
+            REBOOT_IF_NEEDED=1
+            ;;
+        --auto-reboot-if-needed)
+            REBOOT_IF_NEEDED=1
+            AUTO_REBOOT_IF_NEEDED=1
             ;;
         --remove-sddm-package)
             CLEAN_DISPLAY_MANAGER=1
@@ -1125,6 +1139,7 @@ clean_display_manager() {
 
     if have pacman && pacman -Q sddm >/dev/null 2>&1; then
         sudo_run pacman -Rns --noconfirm sddm
+        NEEDS_REBOOT=1
     elif have rpm && rpm -q sddm >/dev/null 2>&1; then
         if have dnf; then
             sudo_run dnf remove -y sddm
@@ -1133,10 +1148,48 @@ clean_display_manager() {
         else
             sudo_run rpm -e sddm
         fi
+        NEEDS_REBOOT=1
     elif have dpkg-query && dpkg-query -W -f='${Status}' sddm 2>/dev/null | grep -q "install ok installed"; then
         sudo_run apt-get remove -y sddm
+        NEEDS_REBOOT=1
     else
         echo "sddm package not installed or no supported package manager found."
+    fi
+}
+
+system_reboot_required() {
+    [ "$NEEDS_REBOOT" -eq 1 ] && return 0
+    [ -f /run/reboot-required ] && return 0
+    [ -f /var/run/reboot-required ] && return 0
+    return 1
+}
+
+maybe_reboot_if_needed() {
+    [ "$YES" -eq 1 ] || return 0
+    [ "$REBOOT_IF_NEEDED" -eq 1 ] || return 0
+    system_reboot_required || return 0
+
+    echo
+    echo "A reboot is recommended to finish applying HypeShell system changes."
+    if [ "$AUTO_REBOOT_IF_NEEDED" -eq 1 ]; then
+        echo "Rebooting now..."
+        sudo_run systemctl reboot
+        return 0
+    fi
+
+    if [ -t 0 ]; then
+        printf 'Reboot now? [y/N] '
+        read -r reply
+        case "$reply" in
+            y|Y|yes|YES)
+                sudo_run systemctl reboot
+                ;;
+            *)
+                echo "Reboot skipped. Reboot manually when ready."
+                ;;
+        esac
+    else
+        echo "Run 'sudo systemctl reboot' when ready."
     fi
 }
 
@@ -1214,6 +1267,7 @@ EOF
             echo "Legacy user data backup: $BACKUP_DIR"
         fi
         echo "HypeShell service has been started/restarted."
+        maybe_reboot_if_needed
     else
         echo
         echo "Dry run complete. No changes were made."
