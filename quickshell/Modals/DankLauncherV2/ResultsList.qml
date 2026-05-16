@@ -481,7 +481,7 @@ Item {
                     switch (mode) {
                     case "files":
                         if (!DSearchService.dsearchAvailable)
-                            return I18n.tr("File search requires dsearch\nInstall from github.com/AvengeMedia/danksearch");
+                            return I18n.tr("File search needs the dsearch backend\nInstall the Hype file search plugin from the plugin store");
                         if (!hasQuery)
                             return I18n.tr("Type to search files");
                         if (root.controller.searchQuery.length < 2)

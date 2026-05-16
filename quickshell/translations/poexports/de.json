@@ -2711,8 +2711,8 @@
   "File received from": {
     "File received from": "Datei empfangen von"
   },
-  "File search requires dsearch\nInstall from github.com/AvengeMedia/danksearch": {
-    "File search requires dsearch\nInstall from github.com/AvengeMedia/danksearch": "Dateisuche erfordert dsearch\nVon github.com/AvengeMedia/danksearch installieren"
+  "File search needs the dsearch backend\nInstall the Hype file search plugin from the plugin store": {
+    "File search needs the dsearch backend\nInstall the Hype file search plugin from the plugin store": "Dateisuche erfordert dsearch\nVon the Hype plugin store installieren"
   },
   "Files": {
     "Files": "Dateien"

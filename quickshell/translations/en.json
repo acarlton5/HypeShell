@@ -5382,8 +5382,8 @@
     "comment": "Phone Connect file share notification"
   },
   {
-    "term": "File search requires dsearch\nInstall from github.com/AvengeMedia/danksearch",
-    "context": "File search requires dsearch\nInstall from github.com/AvengeMedia/danksearch",
+    "term": "File search needs the dsearch backend\nInstall the Hype file search plugin from the plugin store",
+    "context": "File search needs the dsearch backend\nInstall the Hype file search plugin from the plugin store",
     "reference": "Modals/DankLauncherV2/ResultsList.qml:484",
     "comment": ""
   },

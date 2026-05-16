@@ -879,7 +879,6 @@ func checkOptionalDependencies() []checkResult {
 		{"dgop", "dgop", "System monitoring", true},
 		{"cava", "cava", "Audio visualizer", true},
 		{"khal", "khal", "Calendar events", false},
-		{"danksearch", "dsearch", "File search", false},
 		{"fprintd", "fprintd-list", "Fingerprint auth", false},
 	}
 
@@ -894,6 +893,10 @@ func checkOptionalDependencies() []checkResult {
 		default:
 			results = append(results, checkResult{catOptionalFeatures, d.name, statusInfo, "Not installed", d.desc, optionalFeaturesURL})
 		}
+	}
+
+	if utils.CommandExists("dsearch") {
+		results = append(results, checkResult{catOptionalFeatures, "File Search Backend", statusOK, "Installed", "Used by file search plugins", optionalFeaturesURL})
 	}
 
 	return results
