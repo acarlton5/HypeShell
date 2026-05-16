@@ -938,21 +938,30 @@ func checkSystemdServices() []checkResult {
 
 	var results []checkResult
 
-	dmsState := getServiceState("dms", true)
-	if !dmsState.exists {
-		results = append(results, checkResult{catServices, "dms.service", statusInfo, "Not installed", "Optional user service", doctorDocsURL + "#services"})
+	hypeState := getServiceState("hype", true)
+	if !hypeState.exists {
+		results = append(results, checkResult{catServices, "hype.service", statusInfo, "Not installed", "Optional user service", doctorDocsURL + "#services"})
 	} else {
-		status, message := statusOK, dmsState.enabled
-		if dmsState.active != "" {
-			message = fmt.Sprintf("%s, %s", dmsState.enabled, dmsState.active)
+		status, message := statusOK, hypeState.enabled
+		if hypeState.active != "" {
+			message = fmt.Sprintf("%s, %s", hypeState.enabled, hypeState.active)
 		}
 		switch {
-		case dmsState.enabled == "disabled":
+		case hypeState.enabled == "disabled":
 			status, message = statusWarn, "Disabled"
-		case dmsState.active == "failed" || dmsState.active == "inactive":
+		case hypeState.active == "failed" || hypeState.active == "inactive":
 			status = statusError
 		}
-		results = append(results, checkResult{catServices, "dms.service", status, message, "", doctorDocsURL + "#services"})
+		results = append(results, checkResult{catServices, "hype.service", status, message, "", doctorDocsURL + "#services"})
+	}
+
+	legacyState := getServiceState("dms", true)
+	if legacyState.exists {
+		message := legacyState.enabled
+		if legacyState.active != "" {
+			message = fmt.Sprintf("%s, %s", legacyState.enabled, legacyState.active)
+		}
+		results = append(results, checkResult{catServices, "dms.service", statusWarn, message, "Legacy upstream service still exists; HypeShell uses hype.service", doctorDocsURL + "#services"})
 	}
 
 	greetdState := getServiceState("greetd", false)

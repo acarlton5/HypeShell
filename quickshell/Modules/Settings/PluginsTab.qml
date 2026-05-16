@@ -143,7 +143,7 @@ FocusScope {
                             }
 
                             StyledText {
-                                text: I18n.tr("The DMS_SOCKET environment variable is not set or the socket is unavailable. Automated plugin management requires the DMS_SOCKET.")
+                                text: I18n.tr("The HYPE_SOCKET environment variable is not set or the socket is unavailable. Automated plugin management requires HypeShell to be running.")
                                 font.pixelSize: Theme.fontSizeSmall - 1
                                 color: Theme.surfaceVariantText
                                 wrapMode: Text.WordWrap

@@ -285,11 +285,11 @@ Column {
             height: 60
             primaryMessage: {
                 if (!DMSService.dmsAvailable) {
-                    return I18n.tr("DMS_SOCKET not available");
+                    return I18n.tr("HypeShell socket not available");
                 }
                 return I18n.tr("NM not supported");
             }
-            secondaryMessage: I18n.tr("update dms for NM integration.")
+            secondaryMessage: I18n.tr("Update HypeShell for NM integration.")
         }
     }
 
