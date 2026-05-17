@@ -63,7 +63,7 @@ func (hypeShellBackend) Upgrade(ctx context.Context, opts UpgradeOptions, onLine
 }
 
 func hypeShellUpdateArgv(shellCmd string) []string {
-	argv := []string{"bash", "-lc", shellCmd}
+	argv := []string{"pkexec", "bash", "-lc", shellCmd}
 	if !commandExists("systemd-run") {
 		return argv
 	}
@@ -84,6 +84,15 @@ func hypeShellSelfUpdateScript() string {
 tmp="$(mktemp -d "${TMPDIR:-/tmp}/hypeshell-self-update-XXXXXX")"
 trap 'rm -rf "$tmp"' EXIT
 
+invoking_uid="${PKEXEC_UID:-}"
+if [ -n "$invoking_uid" ]; then
+    update_user=$(id -un "$invoking_uid")
+    update_home=$(getent passwd "$invoking_uid" | cut -d: -f6)
+else
+    update_user="${USER:-$(id -un)}"
+    update_home="${HOME:-}"
+fi
+
 echo "Cloning HypeShell main..."
 git clone --depth 1 --branch main %s "$tmp/source"
 commit="$(git -C "$tmp/source" rev-parse HEAD)"
@@ -99,16 +108,23 @@ source_commit=$commit
 installer_build=hype-shade-self-update-v2
 EOF
 
-update_user="${USER:-$(id -un)}"
-update_home="${HOME:-}"
-echo "Installing HypeShell. One authentication prompt may appear..."
-pkexec env SUDO_USER="$update_user" HOME="$update_home" sh -c 'make -C "$1" PREFIX="/usr/local" install && install -D -m 644 "$2" "/usr/local/share/hypeshell/install-fingerprint"' sh "$tmp/source" "$tmp/install-fingerprint"
+echo "Installing HypeShell..."
+make -C "$tmp/source" PREFIX="/usr/local" install
+install -D -m 644 "$tmp/install-fingerprint" "/usr/local/share/hypeshell/install-fingerprint"
 
 echo "Restarting HypeShell service..."
-systemctl --user daemon-reload || true
-systemctl --user import-environment WAYLAND_DISPLAY DISPLAY XDG_CURRENT_DESKTOP XDG_SESSION_DESKTOP XDG_SESSION_TYPE HYPRLAND_INSTANCE_SIGNATURE XDG_RUNTIME_DIR DBUS_SESSION_BUS_ADDRESS || true
-if ! systemctl --user restart hype.service && ! systemctl --user start hype.service; then
-    nohup /usr/local/bin/hype run --session >/tmp/hypeshell-update-restart.log 2>&1 &
+if [ -n "$invoking_uid" ]; then
+    runuser -u "$update_user" -- env HOME="$update_home" systemctl --user daemon-reload || true
+    runuser -u "$update_user" -- env HOME="$update_home" systemctl --user import-environment WAYLAND_DISPLAY DISPLAY XDG_CURRENT_DESKTOP XDG_SESSION_DESKTOP XDG_SESSION_TYPE HYPRLAND_INSTANCE_SIGNATURE XDG_RUNTIME_DIR DBUS_SESSION_BUS_ADDRESS || true
+    if ! runuser -u "$update_user" -- env HOME="$update_home" systemctl --user restart hype.service && ! runuser -u "$update_user" -- env HOME="$update_home" systemctl --user start hype.service; then
+        runuser -u "$update_user" -- env HOME="$update_home" nohup /usr/local/bin/hype run --session >/tmp/hypeshell-update-restart.log 2>&1 &
+    fi
+else
+    systemctl --user daemon-reload || true
+    systemctl --user import-environment WAYLAND_DISPLAY DISPLAY XDG_CURRENT_DESKTOP XDG_SESSION_DESKTOP XDG_SESSION_TYPE HYPRLAND_INSTANCE_SIGNATURE XDG_RUNTIME_DIR DBUS_SESSION_BUS_ADDRESS || true
+    if ! systemctl --user restart hype.service && ! systemctl --user start hype.service; then
+        nohup /usr/local/bin/hype run --session >/tmp/hypeshell-update-restart.log 2>&1 &
+    fi
 fi
 echo "HypeShell self-update complete."
 `, shellQuote(hypeShellRepoURL), shellQuote(hypeShellRepoURL))
