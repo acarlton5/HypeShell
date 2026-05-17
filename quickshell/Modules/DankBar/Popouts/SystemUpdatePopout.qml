@@ -88,7 +88,11 @@ DankPopout {
 
             focus: true
 
-            readonly property bool hasTerminalBackend: (SystemUpdateService.backends || []).some(b => b.runsInTerminal === true)
+            readonly property var hypeShellUpdate: (SystemUpdateService.availableUpdates || []).find(pkg => pkg.backend === "hypeshell" || pkg.repo === "hypeshell" || pkg.name === "HypeShell") || null
+            readonly property bool hasHypeShellUpdate: hypeShellUpdate !== null
+            readonly property int hypeShellUpdateCount: hasHypeShellUpdate ? 1 : 0
+            readonly property var hypeShellUpdates: hasHypeShellUpdate ? [hypeShellUpdate] : []
+            readonly property bool hasTerminalBackend: !hasHypeShellUpdate && (SystemUpdateService.backends || []).some(b => b.runsInTerminal === true)
             readonly property bool isTerminalOperation: hasTerminalBackend || (SystemUpdateService.recentLog || []).some(line => String(line).indexOf("Running in terminal:") >= 0)
             readonly property color statusColor: SystemUpdateService.hasError ? Theme.error : (SystemUpdateService.isUpgrading ? Theme.primary : Theme.surfaceVariantText)
 
@@ -103,6 +107,17 @@ DankPopout {
                     includeAUR: SettingsData.updaterAllowAUR,
                     terminal: SessionData.terminalOverride
                 };
+                if (hasHypeShellUpdate) {
+                    opts.targets = [hypeShellUpdate];
+                    DMSService.sysupdateUpgrade(opts, response => {
+                        if (response?.error) {
+                            ToastService.showError(I18n.tr("Update failed to start"), response.error);
+                            return;
+                        }
+                        SystemUpdateService.requestState();
+                    });
+                    return;
+                }
                 if (updaterPanel.hasTerminalBackend) {
                     systemUpdatePopout._reopenAfterUpgrade = true;
                     SystemUpdateService.runUpdates(opts);
@@ -120,12 +135,12 @@ DankPopout {
                     return I18n.tr("Checking");
                 case SystemUpdateService.hasError:
                     return I18n.tr("Error");
-                case SystemUpdateService.updateCount === 0:
+                case hypeShellUpdateCount === 0:
                     return I18n.tr("Current");
-                case SystemUpdateService.updateCount === 1:
-                    return I18n.tr("%1 update").arg(SystemUpdateService.updateCount);
+                case hypeShellUpdateCount === 1:
+                    return I18n.tr("HypeShell update");
                 default:
-                    return I18n.tr("%1 updates").arg(SystemUpdateService.updateCount);
+                    return I18n.tr("%1 updates").arg(hypeShellUpdateCount);
                 }
             }
 
@@ -137,11 +152,11 @@ DankPopout {
                     return "$ hype update\nerror: " + SystemUpdateService.errorMessage;
                 if (SystemUpdateService.isChecking)
                     return "$ hype update --check\nresolving HypeShell and system update state...";
-                if (SystemUpdateService.updateCount > 0)
-                    return "$ hype update\nready: " + SystemUpdateService.updateCount + " pending update" + (SystemUpdateService.updateCount === 1 ? "" : "s");
+                if (hypeShellUpdateCount > 0)
+                    return "$ hype update --self\nready: HypeShell " + hypeShellUpdate.fromVersion + " -> " + hypeShellUpdate.toVersion;
                 if (!SystemUpdateService.helperAvailable)
                     return "$ hype update\nno supported update backend is available";
-                return "$ hype update\nsystem current";
+                return "$ hype update --self\nHypeShell current";
             }
 
             function repoLabel(pkg) {
@@ -209,7 +224,7 @@ DankPopout {
 
                             StyledText {
                                 width: parent.width
-                                text: "hype update"
+                                text: "hype update --self"
                                 font.family: Theme.monoFontFamily || "monospace"
                                 font.pixelSize: Theme.fontSizeLarge
                                 font.weight: Font.Medium
@@ -410,7 +425,7 @@ DankPopout {
                         anchors.margins: Theme.spacingM
                         horizontalAlignment: Text.AlignHCenter
                         verticalAlignment: Text.AlignVCenter
-                        visible: !SystemUpdateService.isUpgrading && (SystemUpdateService.updateCount === 0 || SystemUpdateService.hasError || SystemUpdateService.isChecking)
+                        visible: !SystemUpdateService.isUpgrading && (updaterPanel.hypeShellUpdateCount === 0 || SystemUpdateService.hasError || SystemUpdateService.isChecking)
                         text: {
                             switch (true) {
                             case SystemUpdateService.hasError:
@@ -420,7 +435,7 @@ DankPopout {
                             case SystemUpdateService.isChecking:
                                 return I18n.tr("Checking...");
                             default:
-                                return I18n.tr("Nothing pending");
+                                return I18n.tr("HypeShell current");
                             }
                         }
                         font.pixelSize: Theme.fontSizeSmall
@@ -435,10 +450,10 @@ DankPopout {
                         anchors.top: listTitle.bottom
                         anchors.bottom: parent.bottom
                         anchors.margins: Theme.spacingS
-                        visible: SystemUpdateService.updateCount > 0 && !SystemUpdateService.hasError && !SystemUpdateService.isChecking
+                        visible: updaterPanel.hypeShellUpdateCount > 0 && !SystemUpdateService.hasError && !SystemUpdateService.isChecking
                         clip: true
                         spacing: Theme.spacingXS
-                        model: SystemUpdateService.availableUpdates
+                        model: updaterPanel.hypeShellUpdates
 
                         delegate: Rectangle {
                             width: ListView.view.width
@@ -547,7 +562,11 @@ DankPopout {
 
                             StyledText {
                                 anchors.verticalCenter: parent.verticalCenter
-                                text: SystemUpdateService.isUpgrading ? I18n.tr("Cancel") : I18n.tr("Update All")
+                                text: {
+                                    if (SystemUpdateService.isUpgrading)
+                                        return I18n.tr("Cancel");
+                                    return I18n.tr("Update HypeShell");
+                                }
                                 font.pixelSize: Theme.fontSizeMedium
                                 font.weight: Font.Medium
                                 color: Theme.primary
@@ -559,7 +578,7 @@ DankPopout {
                             anchors.fill: parent
                             hoverEnabled: true
                             cursorShape: Qt.PointingHandCursor
-                            enabled: SystemUpdateService.isUpgrading || SystemUpdateService.updateCount > 0
+                            enabled: SystemUpdateService.isUpgrading || updaterPanel.hasHypeShellUpdate
                             onClicked: updaterPanel.runUpdate()
                         }
 

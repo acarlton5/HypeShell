@@ -55,7 +55,7 @@ func (hypeShellBackend) CheckUpdates(ctx context.Context) ([]Package, error) {
 }
 
 func (hypeShellBackend) Upgrade(ctx context.Context, opts UpgradeOptions, onLine func(string)) error {
-	cmd := fmt.Sprintf(`curl -fsSL "%s?cache=$(date +%%s)" | bash -s -- --update --reboot-if-needed`, hypeShellRawInstall)
+	cmd := fmt.Sprintf(`curl -fsSL "%s?cache=$(date +%%s)" | bash -s -- --update --skip-package-removal --skip-greeter --skip-hyprland-session`, hypeShellRawInstall)
 	if onLine != nil {
 		onLine("$ " + cmd)
 		onLine("Streaming HypeShell update in the Hype updater shade")
