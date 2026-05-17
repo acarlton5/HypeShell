@@ -920,6 +920,7 @@ type GreeterColorSyncInfo struct {
 
 type greeterThemeSyncSettings struct {
 	CurrentThemeName     string `json:"currentThemeName"`
+	CustomThemeFile      string `json:"customThemeFile"`
 	GreeterWallpaperPath string `json:"greeterWallpaperPath"`
 	MatugenScheme        string `json:"matugenScheme"`
 	IconTheme            string `json:"iconTheme"`
@@ -1182,6 +1183,10 @@ func SyncDMSConfigs(dmsPath, compositor string, logFunc func(string), sudoPasswo
 
 	if err := syncGreeterColorSource(homeDir, cacheDir, state, logFunc, sudoPassword); err != nil {
 		return err
+	}
+
+	if err := SyncCurrentThemeCachePrivileged(logFunc, sudoPassword); err != nil {
+		logFunc(fmt.Sprintf("Warning: Failed to sync active theme to greeter cache: %v", err))
 	}
 
 	if err := syncGreeterWallpaperOverride(cacheDir, logFunc, sudoPassword, state); err != nil {

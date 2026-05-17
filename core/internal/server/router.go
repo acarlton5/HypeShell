@@ -15,6 +15,7 @@ import (
 	"github.com/acarlton5/HypeShell/core/internal/server/evdev"
 	"github.com/acarlton5/HypeShell/core/internal/server/extworkspace"
 	"github.com/acarlton5/HypeShell/core/internal/server/freedesktop"
+	serverGreeter "github.com/acarlton5/HypeShell/core/internal/server/greeter"
 	"github.com/acarlton5/HypeShell/core/internal/server/location"
 	"github.com/acarlton5/HypeShell/core/internal/server/loginctl"
 	"github.com/acarlton5/HypeShell/core/internal/server/models"
@@ -45,6 +46,11 @@ func RouteRequest(conn net.Conn, req models.Request) {
 
 	if strings.HasPrefix(req.Method, "themes.") {
 		serverThemes.HandleRequest(conn, req)
+		return
+	}
+
+	if strings.HasPrefix(req.Method, "greeter.") {
+		serverGreeter.HandleRequest(conn, req)
 		return
 	}
 

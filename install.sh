@@ -986,11 +986,6 @@ EOF
 refresh_installed_registry_assets() {
     [ "$SKIP_INSTALL" -eq 0 ] || return 0
 
-    if [ "$UPDATE_EXISTING" -eq 1 ]; then
-        echo "Skipping installed theme/plugin refresh during core update to preserve user-managed assets."
-        return 0
-    fi
-
     if [ "$YES" -eq 0 ]; then
         echo "[dry-run] refresh installed Hype themes and plugins from HypeRegistry"
         return 0
@@ -1003,6 +998,7 @@ refresh_installed_registry_assets() {
 
     registry_dir="$WORK_DIR/HypeRegistry"
     echo "Refreshing installed Hype themes and plugins from HypeRegistry..."
+    echo "Existing local-only theme/plugin directories are preserved."
     if ! git clone --depth 1 https://github.com/acarlton5/HypeRegistry.git "$registry_dir" >/dev/null 2>&1; then
         echo "Warning: could not clone HypeRegistry; installed themes/plugins were not refreshed." >&2
         return 0

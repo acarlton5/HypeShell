@@ -461,7 +461,7 @@ func handleConnection(conn net.Conn) {
 }
 
 func getCapabilities() Capabilities {
-	caps := []string{"plugins"}
+	caps := []string{"plugins", "greeter"}
 
 	if networkManager != nil {
 		caps = append(caps, "network")
@@ -535,7 +535,7 @@ func getCapabilities() Capabilities {
 }
 
 func getServerInfo() ServerInfo {
-	caps := []string{"plugins"}
+	caps := []string{"plugins", "greeter"}
 
 	if networkManager != nil {
 		caps = append(caps, "network")

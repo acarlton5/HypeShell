@@ -1242,6 +1242,7 @@ Singleton {
         if (savePrefs && typeof SettingsData !== "undefined" && !isGreeterMode) {
             SettingsData.set("currentThemeCategory", currentThemeCategory);
             SettingsData.set("currentThemeName", currentTheme);
+            syncGreeterThemeCache();
         }
 
         if (!isGreeterMode) {
@@ -1499,6 +1500,24 @@ Singleton {
         if (currentTheme !== "custom" || !customThemeRawData)
             return;
         loadCustomTheme(customThemeRawData);
+    }
+
+    function reloadCustomThemeFile() {
+        if (currentTheme !== "custom")
+            return;
+        if (!customThemeFileView.path)
+            return;
+        customThemeFileView.reload();
+    }
+
+    function syncGreeterThemeCache() {
+        const isGreeterMode = (typeof SessionData !== "undefined" && SessionData.isGreeterMode);
+        if (isGreeterMode || typeof DMSService === "undefined" || !DMSService.isConnected)
+            return;
+        DMSService.sendRequest("greeter.syncTheme", {}, response => {
+            if (response?.error)
+                log.debug("Greeter theme cache sync skipped:", response.error);
+        });
     }
 
     property alias availableThemeNames: root._availableThemeNames
@@ -2167,6 +2186,20 @@ Singleton {
         }
 
         onLoadFailed: function (error) {
+            const isGreeterMode = (typeof SessionData !== "undefined" && SessionData.isGreeterMode);
+            if (isGreeterMode && currentTheme === "custom" && customThemeFileView.path) {
+                const normalized = Paths.strip(customThemeFileView.path);
+                const slash = normalized.lastIndexOf("/");
+                const parent = slash >= 0 ? normalized.substring(0, slash) : "";
+                const parentSlash = parent.lastIndexOf("/");
+                const themeId = parentSlash >= 0 ? parent.substring(parentSlash + 1) : "";
+                const greetCfgDir = Quickshell.env("HYPE_GREET_CFG_DIR") || "/var/cache/hype-greeter";
+                const fallbackPath = themeId ? greetCfgDir + "/themes/" + themeId + "/theme.json" : "";
+                if (fallbackPath && normalized !== fallbackPath) {
+                    customThemeFileView.path = fallbackPath;
+                    return;
+                }
+            }
             if (typeof ToastService !== "undefined") {
                 ToastService.showError(I18n.tr("Failed to read theme file: %1").arg(error));
             }

@@ -3108,8 +3108,10 @@ Item {
                 registryThemeUpdateRunning = false;
                 ToastService.showInfo(I18n.tr("Installed themes updated", "theme update success"));
                 DMSService.listInstalledThemes();
-                if (Theme.currentThemeCategory === "registry" && SettingsData.customThemeFile)
-                    Theme.switchTheme("custom", true, true);
+                if (Theme.currentThemeCategory === "registry" && SettingsData.customThemeFile) {
+                    Theme.reloadCustomThemeFile();
+                    Theme.switchTheme("custom", true, false);
+                }
             });
         }
     }
