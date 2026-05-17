@@ -20,6 +20,20 @@ FloatingWindow {
     parentWindow: parentModal
     property bool pendingInstallHandled: false
     property string pendingApplyThemeId: ""
+    property var installingThemes: ({})
+
+    function isThemeInstalling(themeId) {
+        return installingThemes[themeId] === true;
+    }
+
+    function setThemeInstalling(themeId, installing) {
+        var next = Object.assign({}, installingThemes);
+        if (installing)
+            next[themeId] = true;
+        else
+            delete next[themeId];
+        installingThemes = next;
+    }
 
     function updateFilteredThemes() {
         var filtered = [];
@@ -63,8 +77,12 @@ FloatingWindow {
     }
 
     function installTheme(themeId, themeName, applyAfterInstall) {
+        if (isThemeInstalling(themeId))
+            return;
+        setThemeInstalling(themeId, true);
         ToastService.showInfo(I18n.tr("Installing: %1", "installation progress").arg(themeName));
         DMSService.installTheme(themeId, response => {
+            setThemeInstalling(themeId, false);
             if (response.error) {
                 ToastService.showError(I18n.tr("Install failed: %1", "installation error").arg(response.error));
                 return;
@@ -167,6 +185,7 @@ FloatingWindow {
         selectedIndex = -1;
         keyboardNavigationActive = false;
         isLoading = false;
+        installingThemes = ({});
     }
 
     ConfirmModal {
@@ -386,6 +405,7 @@ FloatingWindow {
                         radius: Theme.cornerRadius
                         property bool isSelected: root.keyboardNavigationActive && index === root.selectedIndex
                         property bool isInstalled: modelData.installed || false
+                        property bool isInstalling: root.isThemeInstalling(modelData.id)
                         property bool isFirstParty: modelData.firstParty || false
                         property bool hasVariants: modelData.hasVariants || false
                         property var variants: modelData.variants || null
@@ -611,12 +631,13 @@ FloatingWindow {
 
                             Rectangle {
                                 id: installButton
-                                width: 90
+                                width: isInstalling ? 118 : 90
                                 height: 36
                                 radius: Theme.cornerRadius
                                 anchors.verticalCenter: parent.verticalCenter
+                                clip: true
                                 color: isInstalled ? (uninstallMouseArea.containsMouse ? Theme.error : Theme.surfaceVariant) : Theme.primary
-                                opacity: installMouseArea.containsMouse || uninstallMouseArea.containsMouse ? 0.9 : 1
+                                opacity: !isInstalling && (installMouseArea.containsMouse || uninstallMouseArea.containsMouse) ? 0.9 : 1
                                 border.width: isInstalled ? 1 : 0
                                 border.color: isInstalled ? (uninstallMouseArea.containsMouse ? Theme.error : Theme.outline) : "transparent"
 
@@ -638,14 +659,25 @@ FloatingWindow {
                                     spacing: Theme.spacingXS
 
                                     DankIcon {
-                                        name: isInstalled ? (uninstallMouseArea.containsMouse ? "delete" : "check") : "download"
+                                        id: installButtonIcon
+                                        name: isInstalling ? "sync" : (isInstalled ? (uninstallMouseArea.containsMouse ? "delete" : "check") : "download")
                                         size: 16
                                         color: isInstalled ? (uninstallMouseArea.containsMouse ? "white" : Theme.surfaceText) : Theme.surface
                                         anchors.verticalCenter: parent.verticalCenter
+
+                                        RotationAnimator on rotation {
+                                            from: 0
+                                            to: 360
+                                            duration: 900
+                                            loops: Animation.Infinite
+                                            running: themeDelegate.isInstalling
+                                        }
                                     }
 
                                     StyledText {
                                         text: {
+                                            if (isInstalling)
+                                                return I18n.tr("Installing...", "install action running");
                                             if (!isInstalled)
                                                 return I18n.tr("Install", "install action button");
                                             if (uninstallMouseArea.containsMouse)
@@ -663,8 +695,9 @@ FloatingWindow {
                                     id: installMouseArea
                                     anchors.fill: parent
                                     hoverEnabled: true
-                                    cursorShape: Qt.PointingHandCursor
+                                    cursorShape: !isInstalling ? Qt.PointingHandCursor : Qt.ArrowCursor
                                     visible: !isInstalled
+                                    enabled: !isInstalling
                                     onClicked: root.installTheme(modelData.id, modelData.name, false)
                                 }
 
@@ -675,6 +708,35 @@ FloatingWindow {
                                     cursorShape: Qt.PointingHandCursor
                                     visible: isInstalled
                                     onClicked: root.uninstallTheme(modelData.id, modelData.name)
+                                }
+
+                                Rectangle {
+                                    id: installProgressTrack
+                                    anchors.left: parent.left
+                                    anchors.right: parent.right
+                                    anchors.bottom: parent.bottom
+                                    height: 3
+                                    visible: themeDelegate.isInstalling
+                                    color: Qt.rgba(1, 1, 1, 0.22)
+
+                                    Rectangle {
+                                        id: installProgressBar
+                                        width: parent.width * 0.45
+                                        height: parent.height
+                                        radius: parent.height / 2
+                                        color: Theme.surface
+
+                                        SequentialAnimation on x {
+                                            loops: Animation.Infinite
+                                            running: themeDelegate.isInstalling
+                                            NumberAnimation {
+                                                from: -installProgressBar.width
+                                                to: installProgressTrack.width
+                                                duration: 1100
+                                                easing.type: Easing.InOutQuad
+                                            }
+                                        }
+                                    }
                                 }
                             }
                         }

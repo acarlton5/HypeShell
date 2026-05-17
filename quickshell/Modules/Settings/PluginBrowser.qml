@@ -20,6 +20,20 @@ FloatingWindow {
     parentWindow: parentModal
     property bool pendingInstallHandled: false
     property string typeFilter: ""
+    property var installingPlugins: ({})
+
+    function isPluginInstalling(pluginName) {
+        return installingPlugins[pluginName] === true;
+    }
+
+    function setPluginInstalling(pluginName, installing) {
+        var next = Object.assign({}, installingPlugins);
+        if (installing)
+            next[pluginName] = true;
+        else
+            delete next[pluginName];
+        installingPlugins = next;
+    }
 
     function updateFilteredPlugins() {
         var filtered = [];
@@ -80,8 +94,12 @@ FloatingWindow {
     }
 
     function installPlugin(pluginName, enableAfterInstall) {
+        if (isPluginInstalling(pluginName))
+            return;
+        setPluginInstalling(pluginName, true);
         ToastService.showInfo(I18n.tr("Installing: %1", "installation progress").arg(pluginName));
         DMSService.install(pluginName, response => {
+            setPluginInstalling(pluginName, false);
             if (response.error) {
                 ToastService.showError(I18n.tr("Install failed: %1", "installation error").arg(response.error));
                 return;
@@ -168,6 +186,7 @@ FloatingWindow {
         selectedIndex = -1;
         keyboardNavigationActive = false;
         isLoading = false;
+        installingPlugins = ({});
     }
 
     Connections {
@@ -423,6 +442,7 @@ FloatingWindow {
                         radius: Theme.cornerRadius
                         property bool isSelected: root.keyboardNavigationActive && index === root.selectedIndex
                         property bool isInstalled: modelData.installed || false
+                        property bool isInstalling: root.isPluginInstalling(modelData.name)
                         property bool isFirstParty: modelData.firstParty || false
                         property bool isFeatured: modelData.featured || false
                         property bool isCompatible: PluginService.checkPluginCompatibility(modelData.requires_dms)
@@ -563,6 +583,8 @@ FloatingWindow {
                                     id: installButton
 
                                     property string buttonState: {
+                                        if (isInstalling)
+                                            return "installing";
                                         if (isInstalled)
                                             return "installed";
                                         if (!isCompatible)
@@ -570,12 +592,15 @@ FloatingWindow {
                                         return "available";
                                     }
 
-                                    width: buttonState === "incompatible" ? incompatRow.implicitWidth + Theme.spacingM * 2 : 80
+                                    width: buttonState === "incompatible" ? incompatRow.implicitWidth + Theme.spacingM * 2 : buttonState === "installing" ? 112 : 80
                                     height: 32
                                     radius: Theme.cornerRadius
                                     anchors.verticalCenter: parent.verticalCenter
+                                    clip: true
                                     color: {
                                         switch (buttonState) {
+                                        case "installing":
+                                            return Theme.primary;
                                         case "installed":
                                             return Theme.surfaceVariant;
                                         case "incompatible":
@@ -586,7 +611,7 @@ FloatingWindow {
                                     }
                                     opacity: buttonState === "available" && installMouseArea.containsMouse ? 0.9 : 1
                                     border.width: buttonState !== "available" ? 1 : 0
-                                    border.color: buttonState === "incompatible" ? Theme.warning : Theme.outline
+                                    border.color: buttonState === "incompatible" ? Theme.warning : buttonState === "installing" ? "transparent" : Theme.outline
 
                                     Behavior on opacity {
                                         NumberAnimation {
@@ -601,8 +626,11 @@ FloatingWindow {
                                         spacing: Theme.spacingXS
 
                                         DankIcon {
+                                            id: pluginInstallButtonIcon
                                             name: {
                                                 switch (installButton.buttonState) {
+                                                case "installing":
+                                                    return "sync";
                                                 case "installed":
                                                     return "check";
                                                 case "incompatible":
@@ -614,6 +642,8 @@ FloatingWindow {
                                             size: 14
                                             color: {
                                                 switch (installButton.buttonState) {
+                                                case "installing":
+                                                    return Theme.surface;
                                                 case "installed":
                                                     return Theme.surfaceText;
                                                 case "incompatible":
@@ -623,11 +653,21 @@ FloatingWindow {
                                                 }
                                             }
                                             anchors.verticalCenter: parent.verticalCenter
+
+                                            RotationAnimator on rotation {
+                                                from: 0
+                                                to: 360
+                                                duration: 900
+                                                loops: Animation.Infinite
+                                                running: installButton.buttonState === "installing"
+                                            }
                                         }
 
                                         StyledText {
                                             text: {
                                                 switch (installButton.buttonState) {
+                                                case "installing":
+                                                    return I18n.tr("Installing...", "install action running");
                                                 case "installed":
                                                     return I18n.tr("Installed", "installed status");
                                                 case "incompatible":
@@ -640,6 +680,8 @@ FloatingWindow {
                                             font.weight: Font.Medium
                                             color: {
                                                 switch (installButton.buttonState) {
+                                                case "installing":
+                                                    return Theme.surface;
                                                 case "installed":
                                                     return Theme.surfaceText;
                                                 case "incompatible":
@@ -661,6 +703,35 @@ FloatingWindow {
                                         onClicked: {
                                             const isDesktop = modelData.type === "desktop";
                                             root.installPlugin(modelData.name, isDesktop);
+                                        }
+                                    }
+
+                                    Rectangle {
+                                        id: pluginInstallProgressTrack
+                                        anchors.left: parent.left
+                                        anchors.right: parent.right
+                                        anchors.bottom: parent.bottom
+                                        height: 3
+                                        visible: installButton.buttonState === "installing"
+                                        color: Qt.rgba(1, 1, 1, 0.22)
+
+                                        Rectangle {
+                                            id: pluginInstallProgressBar
+                                            width: parent.width * 0.45
+                                            height: parent.height
+                                            radius: parent.height / 2
+                                            color: Theme.surface
+
+                                            SequentialAnimation on x {
+                                                loops: Animation.Infinite
+                                                running: installButton.buttonState === "installing"
+                                                NumberAnimation {
+                                                    from: -pluginInstallProgressBar.width
+                                                    to: pluginInstallProgressTrack.width
+                                                    duration: 1100
+                                                    easing.type: Easing.InOutQuad
+                                                }
+                                            }
                                         }
                                     }
                                 }
