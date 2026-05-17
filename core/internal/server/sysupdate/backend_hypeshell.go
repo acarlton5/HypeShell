@@ -22,7 +22,7 @@ type hypeShellBackend struct{}
 func (hypeShellBackend) ID() string             { return "hypeshell" }
 func (hypeShellBackend) DisplayName() string    { return "HypeShell" }
 func (hypeShellBackend) Repo() RepoKind         { return RepoHypeShell }
-func (hypeShellBackend) NeedsAuth() bool        { return false }
+func (hypeShellBackend) NeedsAuth() bool        { return true }
 func (hypeShellBackend) RunsInTerminal() bool   { return false }
 func (hypeShellBackend) IsAvailable(ctx context.Context) bool {
 	return commandExists("git") && (commandExists("hype") || installedHypeShellCommit() != "")
@@ -55,17 +55,29 @@ func (hypeShellBackend) CheckUpdates(ctx context.Context) ([]Package, error) {
 }
 
 func (hypeShellBackend) Upgrade(ctx context.Context, opts UpgradeOptions, onLine func(string)) error {
-	term := findTerminal(opts.Terminal)
-	if term == "" {
-		return fmt.Errorf("no terminal found (pick one in HypeShell settings, set $TERMINAL, or install kitty/ghostty/foot/alacritty)")
-	}
-
 	cmd := fmt.Sprintf(`curl -fsSL "%s?cache=$(date +%%s)" | bash -s -- --update --reboot-if-needed`, hypeShellRawInstall)
 	if onLine != nil {
-		onLine("Running in terminal: " + term)
-		onLine("Updating HypeShell from GitHub main")
+		onLine("$ " + cmd)
+		onLine("Streaming HypeShell update in the Hype updater shade")
 	}
-	return Run(ctx, wrapInTerminal(term, "HypeShell Update", cmd), RunOptions{OnLine: onLine})
+	return Run(ctx, hypeShellUpdateArgv(cmd), RunOptions{OnLine: onLine})
+}
+
+func hypeShellUpdateArgv(shellCmd string) []string {
+	argv := []string{"sh", "-c", "export HYPESHELL_INSTALL_PRIVESC=pkexec; " + shellCmd}
+	if !commandExists("systemd-run") {
+		return argv
+	}
+	scoped := []string{
+		"systemd-run",
+		"--user",
+		"--scope",
+		"--collect",
+		"--unit",
+		fmt.Sprintf("hypeshell-self-update-%d", os.Getpid()),
+		"--",
+	}
+	return append(scoped, argv...)
 }
 
 func latestHypeShellCommit(ctx context.Context) (string, error) {

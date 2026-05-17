@@ -4,7 +4,7 @@ set -euo pipefail
 
 SCRIPT_NAME="$(basename "$0")"
 DEFAULT_REPO_URL="https://github.com/acarlton5/HypeShell.git"
-INSTALLER_BUILD_ID="hype-safe-update-v2"
+INSTALLER_BUILD_ID="hype-shade-update-v1"
 
 YES=1
 PURGE_USER_DATA=0
@@ -203,6 +203,15 @@ have() {
 }
 
 sudo_run() {
+    if [ "${HYPESHELL_INSTALL_PRIVESC:-}" = "pkexec" ]; then
+        if have pkexec; then
+            run pkexec "$@"
+            return
+        fi
+        echo "Error: pkexec is required for HypeShell GUI updater privileged steps." >&2
+        exit 1
+    fi
+
     if have sudo; then
         run sudo "$@"
     else
