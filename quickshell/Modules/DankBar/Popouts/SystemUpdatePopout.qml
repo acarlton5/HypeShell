@@ -51,23 +51,22 @@ DankPopout {
     Connections {
         target: SystemUpdateService
         function onIsUpgradingChanged() {
-            if (SystemUpdateService.isUpgrading) {
+            if (SystemUpdateService.isUpgrading)
                 return;
-            }
-            if (!systemUpdatePopout._reopenAfterUpgrade) {
+            if (!systemUpdatePopout._reopenAfterUpgrade)
                 return;
-            }
             systemUpdatePopout._reopenAfterUpgrade = false;
             systemUpdatePopout.open();
         }
     }
 
-    popupWidth: 440
-    popupHeight: 560
+    popupWidth: 720
+    popupHeight: 540
     triggerWidth: 55
     positioning: ""
     screen: triggerScreen
     shouldBeVisible: false
+    contentHandlesKeys: true
 
     onBackgroundClicked: {
         if (anyModalOpen)
@@ -76,87 +75,187 @@ DankPopout {
     }
 
     onShouldBeVisibleChanged: {
-        if (!shouldBeVisible) {
+        if (!shouldBeVisible)
             return;
-        }
         const stale = !SystemUpdateService.lastCheckUnix || (Date.now() / 1000 - SystemUpdateService.lastCheckUnix) > 300;
-        if (stale && !SystemUpdateService.isChecking && !SystemUpdateService.isUpgrading) {
+        if (stale && !SystemUpdateService.isChecking && !SystemUpdateService.isUpgrading)
             SystemUpdateService.checkForUpdates();
-        }
     }
 
     content: Component {
-        Rectangle {
+        FocusScope {
             id: updaterPanel
 
-            color: "transparent"
             focus: true
 
             readonly property bool hasTerminalBackend: (SystemUpdateService.backends || []).some(b => b.runsInTerminal === true)
             readonly property bool isTerminalOperation: hasTerminalBackend || (SystemUpdateService.recentLog || []).some(line => String(line).indexOf("Running in terminal:") >= 0)
+            readonly property color statusColor: SystemUpdateService.hasError ? Theme.error : (SystemUpdateService.isUpgrading ? Theme.primary : Theme.surfaceVariantText)
+
+            function runUpdate() {
+                if (SystemUpdateService.isUpgrading) {
+                    SystemUpdateService.cancelUpdates();
+                    return;
+                }
+
+                const opts = {
+                    includeFlatpak: SettingsData.updaterIncludeFlatpak,
+                    includeAUR: SettingsData.updaterAllowAUR,
+                    terminal: SessionData.terminalOverride
+                };
+                if (updaterPanel.hasTerminalBackend) {
+                    systemUpdatePopout._reopenAfterUpgrade = true;
+                    SystemUpdateService.runUpdates(opts);
+                    systemUpdatePopout.close();
+                    return;
+                }
+                SystemUpdateService.runUpdates(opts);
+            }
+
+            function statusText() {
+                switch (true) {
+                case SystemUpdateService.isUpgrading:
+                    return I18n.tr("Updating");
+                case SystemUpdateService.isChecking:
+                    return I18n.tr("Checking");
+                case SystemUpdateService.hasError:
+                    return I18n.tr("Error");
+                case SystemUpdateService.updateCount === 0:
+                    return I18n.tr("Current");
+                case SystemUpdateService.updateCount === 1:
+                    return I18n.tr("%1 update").arg(SystemUpdateService.updateCount);
+                default:
+                    return I18n.tr("%1 updates").arg(SystemUpdateService.updateCount);
+                }
+            }
+
+            function terminalText() {
+                const log = SystemUpdateService.recentLog || [];
+                if (log.length > 0)
+                    return log.join("\n");
+                if (SystemUpdateService.hasError)
+                    return "$ hype update\nerror: " + SystemUpdateService.errorMessage;
+                if (SystemUpdateService.isChecking)
+                    return "$ hype update --check\nresolving HypeShell and system update state...";
+                if (SystemUpdateService.updateCount > 0)
+                    return "$ hype update\nready: " + SystemUpdateService.updateCount + " pending update" + (SystemUpdateService.updateCount === 1 ? "" : "s");
+                if (!SystemUpdateService.helperAvailable)
+                    return "$ hype update\nno supported update backend is available";
+                return "$ hype update\nsystem current";
+            }
+
+            function repoLabel(pkg) {
+                if (!pkg)
+                    return "";
+                if (pkg.repo === "hypeshell")
+                    return "hype";
+                return pkg.repo || "";
+            }
 
             Keys.onPressed: event => {
                 if (event.key === Qt.Key_Escape) {
                     systemUpdatePopout.close();
                     event.accepted = true;
+                    return;
+                }
+                if ((event.key === Qt.Key_Return || event.key === Qt.Key_Enter) && primaryMouseArea.enabled) {
+                    updaterPanel.runUpdate();
+                    event.accepted = true;
                 }
             }
 
             Component.onCompleted: {
-                if (systemUpdatePopout.shouldBeVisible) {
+                if (systemUpdatePopout.shouldBeVisible)
                     forceActiveFocus();
-                }
             }
 
-            Item {
-                id: header
-                anchors.left: parent.left
-                anchors.right: parent.right
-                anchors.top: parent.top
-                anchors.leftMargin: Theme.spacingL
-                anchors.rightMargin: Theme.spacingL
-                anchors.topMargin: Theme.spacingL
-                height: 40
+            Rectangle {
+                anchors.fill: parent
+                color: "transparent"
 
-                StyledText {
-                    text: I18n.tr("System Updates")
-                    font.pixelSize: Theme.fontSizeLarge
-                    color: Theme.surfaceText
-                    font.weight: Font.Medium
+                Rectangle {
+                    id: commandShade
                     anchors.left: parent.left
-                    anchors.verticalCenter: parent.verticalCenter
-                }
-
-                Row {
                     anchors.right: parent.right
-                    anchors.verticalCenter: parent.verticalCenter
-                    spacing: Theme.spacingS
+                    anchors.top: parent.top
+                    anchors.leftMargin: Theme.spacingL
+                    anchors.rightMargin: Theme.spacingL
+                    anchors.topMargin: Theme.spacingL
+                    height: 58
+                    radius: Theme.cornerRadius
+                    color: Theme.withAlpha(Theme.surfaceContainerHigh, 0.86)
+                    border.color: Theme.withAlpha(Theme.outline, 0.16)
+                    border.width: 1
 
-                    StyledText {
+                    Row {
+                        anchors.left: parent.left
+                        anchors.right: statusPill.left
                         anchors.verticalCenter: parent.verticalCenter
-                        text: {
-                            switch (true) {
-                            case SystemUpdateService.isUpgrading:
-                                return I18n.tr("Upgrading...");
-                            case SystemUpdateService.isChecking:
-                                return I18n.tr("Checking...");
-                            case SystemUpdateService.hasError:
-                                return I18n.tr("Error");
-                            case SystemUpdateService.updateCount === 0:
-                                return I18n.tr("Up to date");
-                            case SystemUpdateService.updateCount === 1:
-                                return I18n.tr("%1 update").arg(SystemUpdateService.updateCount);
-                            default:
-                                return I18n.tr("%1 updates").arg(SystemUpdateService.updateCount);
+                        anchors.leftMargin: Theme.spacingM
+                        anchors.rightMargin: Theme.spacingM
+                        spacing: Theme.spacingM
+
+                        DankIcon {
+                            anchors.verticalCenter: parent.verticalCenter
+                            name: "terminal"
+                            size: 24
+                            color: Theme.primary
+                        }
+
+                        Column {
+                            anchors.verticalCenter: parent.verticalCenter
+                            width: parent.width - 24 - Theme.spacingM
+                            spacing: 2
+
+                            StyledText {
+                                width: parent.width
+                                text: "hype update"
+                                font.family: Theme.monoFontFamily || "monospace"
+                                font.pixelSize: Theme.fontSizeLarge
+                                font.weight: Font.Medium
+                                color: Theme.surfaceText
+                                elide: Text.ElideRight
+                            }
+
+                            StyledText {
+                                width: parent.width
+                                text: {
+                                    const names = (SystemUpdateService.backends || []).map(b => b.displayName).join(", ");
+                                    return names.length > 0 ? names : I18n.tr("Waiting for update service");
+                                }
+                                font.pixelSize: Theme.fontSizeSmall
+                                color: Theme.surfaceVariantText
+                                elide: Text.ElideRight
                             }
                         }
-                        font.pixelSize: Theme.fontSizeMedium
-                        color: SystemUpdateService.hasError ? Theme.error : Theme.surfaceVariantText
+                    }
+
+                    Rectangle {
+                        id: statusPill
+                        anchors.right: refreshButton.left
+                        anchors.rightMargin: Theme.spacingS
+                        anchors.verticalCenter: parent.verticalCenter
+                        width: Math.max(92, statusTextLabel.implicitWidth + Theme.spacingL)
+                        height: 30
+                        radius: 15
+                        color: Theme.withAlpha(updaterPanel.statusColor, 0.16)
+
+                        StyledText {
+                            id: statusTextLabel
+                            anchors.centerIn: parent
+                            text: updaterPanel.statusText()
+                            font.pixelSize: Theme.fontSizeSmall
+                            font.weight: Font.Medium
+                            color: updaterPanel.statusColor
+                        }
                     }
 
                     DankActionButton {
                         id: refreshButton
-                        buttonSize: 28
+                        anchors.right: parent.right
+                        anchors.rightMargin: Theme.spacingM
+                        anchors.verticalCenter: parent.verticalCenter
+                        buttonSize: 32
                         iconName: "refresh"
                         iconSize: 18
                         iconColor: Theme.surfaceText
@@ -178,306 +277,328 @@ DankPopout {
                         }
                     }
                 }
-            }
-
-            StyledText {
-                id: backendsRow
-                anchors.left: parent.left
-                anchors.right: parent.right
-                anchors.top: header.bottom
-                anchors.leftMargin: Theme.spacingL
-                anchors.rightMargin: Theme.spacingL
-                anchors.topMargin: Theme.spacingS
-                visible: SystemUpdateService.backends.length > 0 && !SystemUpdateService.isUpgrading
-                text: {
-                    const names = (SystemUpdateService.backends || []).map(b => b.displayName).join(", ");
-                    return I18n.tr("Backends: %1").arg(names);
-                }
-                font.pixelSize: Theme.fontSizeSmall
-                color: Theme.surfaceVariantText
-                wrapMode: Text.WordWrap
-                elide: Text.ElideRight
-            }
-
-            Row {
-                id: buttonsRow
-                anchors.left: parent.left
-                anchors.right: parent.right
-                anchors.bottom: parent.bottom
-                anchors.leftMargin: Theme.spacingL
-                anchors.rightMargin: Theme.spacingL
-                anchors.bottomMargin: Theme.spacingL
-                spacing: Theme.spacingM
-                height: 44
 
                 Rectangle {
-                    width: (parent.width - Theme.spacingM) / 2
-                    height: parent.height
+                    id: terminalShade
+                    anchors.left: parent.left
+                    anchors.right: packageShade.left
+                    anchors.top: commandShade.bottom
+                    anchors.bottom: buttonsRow.top
+                    anchors.leftMargin: Theme.spacingL
+                    anchors.rightMargin: Theme.spacingM
+                    anchors.topMargin: Theme.spacingM
+                    anchors.bottomMargin: Theme.spacingM
                     radius: Theme.cornerRadius
-                    color: primaryMouseArea.containsMouse && primaryMouseArea.enabled ? Theme.primaryHover : Theme.secondaryHover
-                    opacity: primaryMouseArea.enabled ? 1.0 : 0.5
+                    color: "#0c0f14"
+                    border.color: Theme.withAlpha(Theme.primary, 0.35)
+                    border.width: 1
+                    clip: true
 
-                    StyledText {
-                        anchors.centerIn: parent
-                        text: SystemUpdateService.isUpgrading ? I18n.tr("Cancel") : I18n.tr("Update All")
-                        font.pixelSize: Theme.fontSizeMedium
-                        font.weight: Font.Medium
-                        color: Theme.primary
-                    }
+                    Rectangle {
+                        id: terminalHeader
+                        anchors.left: parent.left
+                        anchors.right: parent.right
+                        anchors.top: parent.top
+                        height: 34
+                        color: "#111722"
 
-                    MouseArea {
-                        id: primaryMouseArea
-                        anchors.fill: parent
-                        hoverEnabled: true
-                        cursorShape: Qt.PointingHandCursor
-                        enabled: SystemUpdateService.isUpgrading || SystemUpdateService.updateCount > 0
-                        onClicked: {
-                            if (SystemUpdateService.isUpgrading) {
-                                SystemUpdateService.cancelUpdates();
-                                return;
+                        Row {
+                            anchors.left: parent.left
+                            anchors.verticalCenter: parent.verticalCenter
+                            anchors.leftMargin: Theme.spacingM
+                            spacing: 6
+
+                            Repeater {
+                                model: ["#ff5f57", "#ffbd2e", "#28c840"]
+
+                                Rectangle {
+                                    required property string modelData
+                                    width: 9
+                                    height: 9
+                                    radius: 5
+                                    color: modelData
+                                }
                             }
-                            const opts = {
-                                includeFlatpak: SettingsData.updaterIncludeFlatpak,
-                                includeAUR: SettingsData.updaterAllowAUR,
-                                terminal: SessionData.terminalOverride
-                            };
-                            if (updaterPanel.hasTerminalBackend) {
-                                systemUpdatePopout._reopenAfterUpgrade = true;
-                                SystemUpdateService.runUpdates(opts);
-                                systemUpdatePopout.close();
-                                return;
-                            }
-                            SystemUpdateService.runUpdates(opts);
+                        }
+
+                        StyledText {
+                            anchors.centerIn: parent
+                            text: "kitty - hypeshell-update"
+                            font.family: Theme.monoFontFamily || "monospace"
+                            font.pixelSize: Theme.fontSizeSmall
+                            color: Theme.withAlpha(Theme.surfaceText, 0.7)
                         }
                     }
 
-                    Behavior on color {
-                        ColorAnimation {
-                            duration: Theme.shortDuration
-                            easing.type: Theme.standardEasing
+                    DankFlickable {
+                        id: terminalScroll
+                        anchors.left: parent.left
+                        anchors.right: parent.right
+                        anchors.top: terminalHeader.bottom
+                        anchors.bottom: parent.bottom
+                        anchors.margins: Theme.spacingM
+                        contentWidth: width
+                        contentHeight: Math.max(height, terminalLog.implicitHeight)
+                        clip: true
+
+                        onContentHeightChanged: {
+                            if (contentHeight > height)
+                                contentY = contentHeight - height;
+                        }
+
+                        StyledText {
+                            id: terminalLog
+                            width: parent.width
+                            text: updaterPanel.terminalText()
+                            font.family: Theme.monoFontFamily || "monospace"
+                            font.pixelSize: Theme.fontSizeSmall
+                            lineHeight: 1.18
+                            color: SystemUpdateService.hasError ? Theme.error : "#d6e4ff"
+                            wrapMode: Text.WrapAnywhere
+                        }
+                    }
+
+                    Rectangle {
+                        anchors.left: parent.left
+                        anchors.right: parent.right
+                        anchors.bottom: parent.bottom
+                        height: 32
+                        visible: updaterPanel.isTerminalOperation && SystemUpdateService.isUpgrading
+                        color: Theme.withAlpha(Theme.primary, 0.18)
+
+                        StyledText {
+                            anchors.centerIn: parent
+                            text: I18n.tr("Interactive terminal is running")
+                            font.pixelSize: Theme.fontSizeSmall
+                            color: Theme.primary
+                            font.weight: Font.Medium
                         }
                     }
                 }
 
                 Rectangle {
-                    width: (parent.width - Theme.spacingM) / 2
-                    height: parent.height
+                    id: packageShade
+                    anchors.right: parent.right
+                    anchors.top: commandShade.bottom
+                    anchors.bottom: buttonsRow.top
+                    anchors.rightMargin: Theme.spacingL
+                    anchors.topMargin: Theme.spacingM
+                    anchors.bottomMargin: Theme.spacingM
+                    width: 230
                     radius: Theme.cornerRadius
-                    color: closeMouseArea.containsMouse ? Theme.errorPressed : Theme.secondaryHover
+                    color: Theme.withAlpha(Theme.surfaceContainerHigh, 0.72)
+                    border.color: Theme.withAlpha(Theme.outline, 0.14)
+                    border.width: 1
 
                     StyledText {
-                        anchors.centerIn: parent
-                        text: I18n.tr("Close")
+                        id: listTitle
+                        anchors.left: parent.left
+                        anchors.right: parent.right
+                        anchors.top: parent.top
+                        anchors.margins: Theme.spacingM
+                        text: I18n.tr("Queue")
                         font.pixelSize: Theme.fontSizeMedium
                         font.weight: Font.Medium
                         color: Theme.surfaceText
                     }
 
-                    MouseArea {
-                        id: closeMouseArea
-                        anchors.fill: parent
-                        hoverEnabled: true
-                        cursorShape: Qt.PointingHandCursor
-                        onClicked: systemUpdatePopout.close()
-                    }
-
-                    Behavior on color {
-                        ColorAnimation {
-                            duration: Theme.shortDuration
-                            easing.type: Theme.standardEasing
-                        }
-                    }
-                }
-            }
-
-            Rectangle {
-                id: bodyArea
-                anchors.left: parent.left
-                anchors.right: parent.right
-                anchors.top: backendsRow.visible ? backendsRow.bottom : header.bottom
-                anchors.bottom: buttonsRow.top
-                anchors.leftMargin: Theme.spacingL
-                anchors.rightMargin: Theme.spacingL
-                anchors.topMargin: Theme.spacingM
-                anchors.bottomMargin: Theme.spacingM
-                radius: Theme.cornerRadius
-                color: Qt.rgba(Theme.surfaceVariant.r, Theme.surfaceVariant.g, Theme.surfaceVariant.b, 0.1)
-
-                StyledText {
-                    id: statusText
-                    anchors.fill: parent
-                    anchors.margins: Theme.spacingM
-                    horizontalAlignment: Text.AlignHCenter
-                    verticalAlignment: Text.AlignVCenter
-                    visible: !SystemUpdateService.isUpgrading && (SystemUpdateService.updateCount === 0 || SystemUpdateService.hasError || SystemUpdateService.isChecking)
-                    text: {
-                        switch (true) {
-                        case SystemUpdateService.hasError:
-                            return I18n.tr("Failed: %1").arg(SystemUpdateService.errorMessage);
-                        case !SystemUpdateService.helperAvailable:
-                            return I18n.tr("No supported package manager found.");
-                        case SystemUpdateService.isChecking:
-                            return I18n.tr("Checking for updates...");
-                        default:
-                            return I18n.tr("Your system is up to date!");
-                        }
-                    }
-                    font.pixelSize: Theme.fontSizeMedium
-                    color: SystemUpdateService.hasError ? Theme.error : Theme.surfaceText
-                    wrapMode: Text.WordWrap
-                }
-
-                DankListView {
-                    id: packagesList
-                    anchors.fill: parent
-                    anchors.margins: Theme.spacingS
-                    visible: !SystemUpdateService.isUpgrading && SystemUpdateService.updateCount > 0 && !SystemUpdateService.hasError && !SystemUpdateService.isChecking
-                    clip: true
-                    spacing: Theme.spacingXS
-                    model: SystemUpdateService.availableUpdates
-
-                    delegate: Rectangle {
-                        width: ListView.view.width
-                        height: 48
-                        radius: Theme.cornerRadius
-                        color: packageMouseArea.containsMouse ? Theme.primaryHoverLight : "transparent"
-
-                        required property var modelData
-
-                        Row {
-                            anchors.left: parent.left
-                            anchors.right: parent.right
-                            anchors.verticalCenter: parent.verticalCenter
-                            anchors.leftMargin: Theme.spacingM
-                            anchors.rightMargin: Theme.spacingM
-                            spacing: Theme.spacingS
-
-                            Rectangle {
-                                anchors.verticalCenter: parent.verticalCenter
-                                width: 64
-                                height: 18
-                                radius: 9
-                                color: Qt.rgba(Theme.primary.r, Theme.primary.g, Theme.primary.b, 0.18)
-
-                                StyledText {
-                                    anchors.centerIn: parent
-                                    text: modelData.repo || ""
-                                    font.pixelSize: Theme.fontSizeSmall
-                                    color: Theme.primary
-                                }
+                    StyledText {
+                        anchors.left: parent.left
+                        anchors.right: parent.right
+                        anchors.top: listTitle.bottom
+                        anchors.bottom: parent.bottom
+                        anchors.margins: Theme.spacingM
+                        horizontalAlignment: Text.AlignHCenter
+                        verticalAlignment: Text.AlignVCenter
+                        visible: !SystemUpdateService.isUpgrading && (SystemUpdateService.updateCount === 0 || SystemUpdateService.hasError || SystemUpdateService.isChecking)
+                        text: {
+                            switch (true) {
+                            case SystemUpdateService.hasError:
+                                return I18n.tr("Failed: %1").arg(SystemUpdateService.errorMessage);
+                            case !SystemUpdateService.helperAvailable:
+                                return I18n.tr("No update backend");
+                            case SystemUpdateService.isChecking:
+                                return I18n.tr("Checking...");
+                            default:
+                                return I18n.tr("Nothing pending");
                             }
+                        }
+                        font.pixelSize: Theme.fontSizeSmall
+                        color: SystemUpdateService.hasError ? Theme.error : Theme.surfaceVariantText
+                        wrapMode: Text.WordWrap
+                    }
 
-                            Column {
+                    DankListView {
+                        id: packagesList
+                        anchors.left: parent.left
+                        anchors.right: parent.right
+                        anchors.top: listTitle.bottom
+                        anchors.bottom: parent.bottom
+                        anchors.margins: Theme.spacingS
+                        visible: SystemUpdateService.updateCount > 0 && !SystemUpdateService.hasError && !SystemUpdateService.isChecking
+                        clip: true
+                        spacing: Theme.spacingXS
+                        model: SystemUpdateService.availableUpdates
+
+                        delegate: Rectangle {
+                            width: ListView.view.width
+                            height: 58
+                            radius: Theme.cornerRadius
+                            color: packageMouseArea.containsMouse ? Theme.primaryHoverLight : "transparent"
+
+                            required property var modelData
+
+                            Row {
+                                anchors.left: parent.left
+                                anchors.right: parent.right
                                 anchors.verticalCenter: parent.verticalCenter
-                                width: parent.width - 64 - Theme.spacingS
-                                spacing: 2
+                                anchors.leftMargin: Theme.spacingS
+                                anchors.rightMargin: Theme.spacingS
+                                spacing: Theme.spacingS
 
-                                StyledText {
-                                    width: parent.width
-                                    text: modelData.name || ""
-                                    font.pixelSize: Theme.fontSizeMedium
-                                    color: Theme.surfaceText
-                                    font.weight: Font.Medium
-                                    elide: Text.ElideRight
-                                }
-
-                                Row {
-                                    width: parent.width
-                                    spacing: 4
+                                Rectangle {
+                                    anchors.verticalCenter: parent.verticalCenter
+                                    width: 42
+                                    height: 22
+                                    radius: 11
+                                    color: Theme.withAlpha(Theme.primary, 0.18)
 
                                     StyledText {
+                                        anchors.centerIn: parent
+                                        text: updaterPanel.repoLabel(modelData)
+                                        font.pixelSize: Theme.fontSizeSmall
+                                        color: Theme.primary
+                                        elide: Text.ElideRight
+                                    }
+                                }
+
+                                Column {
+                                    anchors.verticalCenter: parent.verticalCenter
+                                    width: parent.width - 42 - Theme.spacingS
+                                    spacing: 2
+
+                                    StyledText {
+                                        width: parent.width
+                                        text: modelData.name || ""
+                                        font.pixelSize: Theme.fontSizeSmall
+                                        color: Theme.surfaceText
+                                        font.weight: Font.Medium
+                                        elide: Text.ElideRight
+                                    }
+
+                                    StyledText {
+                                        width: parent.width
                                         text: {
                                             const from = modelData.fromVersion || "";
                                             const to = modelData.toVersion || "";
                                             if (from && to)
-                                                return `${from} →`;
-                                            return "";
+                                                return `${from} -> ${to}`;
+                                            return to || from || "";
                                         }
                                         font.pixelSize: Theme.fontSizeSmall
                                         color: Theme.surfaceVariantText
-                                        visible: text !== ""
-                                    }
-
-                                    StyledText {
-                                        text: modelData.toVersion || modelData.fromVersion || ""
-                                        font.pixelSize: Theme.fontSizeSmall
-                                        color: Theme.primary
-                                        font.weight: Font.Medium
                                         elide: Text.ElideRight
-                                        width: parent.width - (parent.children[0].visible ? parent.children[0].implicitWidth + 4 : 0)
                                     }
                                 }
+                            }
+
+                            MouseArea {
+                                id: packageMouseArea
+                                anchors.fill: parent
+                                hoverEnabled: true
+                                cursorShape: modelData.changelogUrl ? Qt.PointingHandCursor : Qt.ArrowCursor
+                                onClicked: {
+                                    if (modelData.changelogUrl)
+                                        Qt.openUrlExternally(modelData.changelogUrl);
+                                }
+                            }
+                        }
+                    }
+                }
+
+                Row {
+                    id: buttonsRow
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    anchors.bottom: parent.bottom
+                    anchors.leftMargin: Theme.spacingL
+                    anchors.rightMargin: Theme.spacingL
+                    anchors.bottomMargin: Theme.spacingL
+                    spacing: Theme.spacingM
+                    height: 44
+
+                    Rectangle {
+                        width: Math.max(210, (parent.width - Theme.spacingM) * 0.42)
+                        height: parent.height
+                        radius: Theme.cornerRadius
+                        color: primaryMouseArea.containsMouse && primaryMouseArea.enabled ? Theme.primaryHover : Theme.withAlpha(Theme.primary, 0.14)
+                        opacity: primaryMouseArea.enabled ? 1.0 : 0.5
+
+                        Row {
+                            anchors.centerIn: parent
+                            spacing: Theme.spacingS
+
+                            DankIcon {
+                                anchors.verticalCenter: parent.verticalCenter
+                                name: SystemUpdateService.isUpgrading ? "close" : "system_update_alt"
+                                size: 18
+                                color: Theme.primary
+                            }
+
+                            StyledText {
+                                anchors.verticalCenter: parent.verticalCenter
+                                text: SystemUpdateService.isUpgrading ? I18n.tr("Cancel") : I18n.tr("Update All")
+                                font.pixelSize: Theme.fontSizeMedium
+                                font.weight: Font.Medium
+                                color: Theme.primary
                             }
                         }
 
                         MouseArea {
-                            id: packageMouseArea
+                            id: primaryMouseArea
                             anchors.fill: parent
                             hoverEnabled: true
-                            cursorShape: modelData.changelogUrl ? Qt.PointingHandCursor : Qt.ArrowCursor
-                            onClicked: {
-                                if (modelData.changelogUrl) {
-                                    Qt.openUrlExternally(modelData.changelogUrl);
-                                }
+                            cursorShape: Qt.PointingHandCursor
+                            enabled: SystemUpdateService.isUpgrading || SystemUpdateService.updateCount > 0
+                            onClicked: updaterPanel.runUpdate()
+                        }
+
+                        Behavior on color {
+                            ColorAnimation {
+                                duration: Theme.shortDuration
+                                easing.type: Theme.standardEasing
                             }
                         }
                     }
-                }
 
-                Column {
-                    anchors.fill: parent
-                    anchors.margins: Theme.spacingM
-                    spacing: Theme.spacingS
-                    visible: SystemUpdateService.isUpgrading && updaterPanel.isTerminalOperation
+                    Rectangle {
+                        width: parent.width - parent.children[0].width - Theme.spacingM
+                        height: parent.height
+                        radius: Theme.cornerRadius
+                        color: closeMouseArea.containsMouse ? Theme.errorPressed : Theme.secondaryHover
 
-                    DankIcon {
-                        anchors.horizontalCenter: parent.horizontalCenter
-                        name: "terminal"
-                        size: 32
-                        color: Theme.primary
-                    }
-
-                    StyledText {
-                        width: parent.width
-                        text: I18n.tr("Running in terminal")
-                        font.pixelSize: Theme.fontSizeLarge
-                        font.weight: Font.Medium
-                        color: Theme.surfaceText
-                        horizontalAlignment: Text.AlignHCenter
-                    }
-
-                    StyledText {
-                        width: parent.width
-                        text: I18n.tr("AUR helpers are interactive — see the terminal window for prompts. This popout will return to idle when the upgrade exits.")
-                        font.pixelSize: Theme.fontSizeSmall
-                        color: Theme.surfaceVariantText
-                        wrapMode: Text.WordWrap
-                        horizontalAlignment: Text.AlignHCenter
-                    }
-                }
-
-                DankFlickable {
-                    anchors.fill: parent
-                    anchors.margins: Theme.spacingM
-                    visible: SystemUpdateService.isUpgrading && !updaterPanel.isTerminalOperation
-                    contentWidth: width
-                    contentHeight: logText.implicitHeight
-                    clip: true
-
-                    onContentHeightChanged: {
-                        if (contentHeight > height) {
-                            contentY = contentHeight - height;
+                        StyledText {
+                            anchors.centerIn: parent
+                            text: I18n.tr("Close")
+                            font.pixelSize: Theme.fontSizeMedium
+                            font.weight: Font.Medium
+                            color: Theme.surfaceText
                         }
-                    }
 
-                    StyledText {
-                        id: logText
-                        width: parent.width
-                        text: (SystemUpdateService.recentLog || []).join("\n")
-                        font.family: Theme.monoFontFamily || "monospace"
-                        font.pixelSize: Theme.fontSizeSmall
-                        color: Theme.surfaceText
-                        wrapMode: Text.NoWrap
+                        MouseArea {
+                            id: closeMouseArea
+                            anchors.fill: parent
+                            hoverEnabled: true
+                            cursorShape: Qt.PointingHandCursor
+                            onClicked: systemUpdatePopout.close()
+                        }
+
+                        Behavior on color {
+                            ColorAnimation {
+                                duration: Theme.shortDuration
+                                easing.type: Theme.standardEasing
+                            }
+                        }
                     }
                 }
             }
