@@ -1,4 +1,4 @@
-﻿package log
+package log
 
 import (
 	"bufio"
@@ -23,8 +23,8 @@ type FileLogger struct {
 func NewFileLogger() (*FileLogger, error) {
 	timestamp := time.Now().Unix()
 
-	// Use DANKINSTALL_LOG_DIR if set, otherwise fall back to /tmp.
-	logDir := os.Getenv("DANKINSTALL_LOG_DIR")
+	// Use HYPEINSTALL_LOG_DIR if set, otherwise fall back to /tmp.
+	logDir := os.Getenv("HYPEINSTALL_LOG_DIR")
 	if logDir == "" {
 		logDir = "/tmp"
 	}

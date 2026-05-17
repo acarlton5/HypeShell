@@ -1,4 +1,4 @@
-﻿# HYPE Backend & CLI
+# HYPE Backend & CLI
 
 Go-based backend for HypeMaterialShell providing system integration, IPC, and installation tools.
 
@@ -189,7 +189,7 @@ Headless mode activates when `--compositor` or `--term` is provided.
 ### Log file location
 
 `hypeinstall` writes logs to `/tmp` by default.
-Set the `DANKINSTALL_LOG_DIR` environment variable to override the log directory.
+Set the `HYPEINSTALL_LOG_DIR` environment variable to override the log directory.
 
 ## Supported Distributions
 
