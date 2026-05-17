@@ -137,6 +137,7 @@ type Theme struct {
 	Wallpapers  []ThemeWallpaper  `json:"wallpapers,omitempty"`
 	Window      *ThemeWindowStyle `json:"window,omitempty"`
 	Borders     *ThemeWindowStyle `json:"borders,omitempty"`
+	AssetBaseURL string            `json:"assetBaseUrl,omitempty"`
 	PreviewPath string            `json:"-"`
 	SourceDir   string            `json:"sourceDir,omitempty"`
 }

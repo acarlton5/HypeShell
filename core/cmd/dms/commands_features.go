@@ -17,6 +17,7 @@ import (
 	"github.com/acarlton5/HypeShell/core/internal/errdefs"
 	"github.com/acarlton5/HypeShell/core/internal/log"
 	"github.com/acarlton5/HypeShell/core/internal/privesc"
+	shellthemes "github.com/acarlton5/HypeShell/core/internal/themes"
 	"github.com/acarlton5/HypeShell/core/internal/utils"
 	"github.com/acarlton5/HypeShell/core/internal/version"
 	"github.com/spf13/cobra"
@@ -195,6 +196,9 @@ func updateOtherDistros() error {
 		fmt.Printf("Latest version:  %s\n", versionInfo.Latest)
 		fmt.Println()
 		fmt.Println("✓ You are already running the latest version.")
+		if err := refreshThemeRegistryAssets(); err != nil {
+			fmt.Printf("Warning: Failed to refresh HypeRegistry: %v\n", err)
+		}
 		return errdefs.ErrNoUpdateNeeded
 	}
 
@@ -321,6 +325,79 @@ func updateOtherDistros() error {
 	}
 
 	fmt.Println("\nUpdate complete!")
+	if err := refreshThemeRegistryAssets(); err != nil {
+		fmt.Printf("Warning: Failed to refresh HypeRegistry: %v\n", err)
+	}
+	return nil
+}
+
+func refreshThemeRegistryAssets() error {
+	fmt.Println()
+	fmt.Println("=== Refreshing HypeRegistry themes ===")
+
+	registry, err := shellthemes.NewRegistry()
+	if err != nil {
+		return err
+	}
+
+	if err := registry.Update(); err != nil {
+		return err
+	}
+
+	themeList, err := registry.List()
+	if err != nil {
+		return err
+	}
+
+	fmt.Printf("Theme registry refreshed: %d themes available.\n", len(themeList))
+
+	manager, err := shellthemes.NewManager()
+	if err != nil {
+		return err
+	}
+
+	installed, err := manager.ListInstalled()
+	if err != nil {
+		return err
+	}
+
+	if len(installed) == 0 {
+		fmt.Println("No installed registry themes to refresh.")
+		return nil
+	}
+
+	updated := 0
+	skipped := 0
+	for _, installedID := range installed {
+		theme := findRegistryThemeForInstall(installedID, themeList)
+		if theme == nil {
+			skipped++
+			continue
+		}
+
+		registryThemeDir := registry.GetThemeDir(theme.SourceDir)
+		if err := manager.Update(*theme, registryThemeDir); err != nil {
+			fmt.Printf("Warning: Could not refresh installed theme %s: %v\n", installedID, err)
+			skipped++
+			continue
+		}
+		updated++
+	}
+
+	fmt.Printf("Installed themes refreshed: %d", updated)
+	if skipped > 0 {
+		fmt.Printf(" (%d skipped)", skipped)
+	}
+	fmt.Println()
+	return nil
+}
+
+func findRegistryThemeForInstall(installedID string, themes []shellthemes.Theme) *shellthemes.Theme {
+	for i := range themes {
+		if themes[i].ID == installedID || themes[i].SourceDir == installedID || themes[i].Name == installedID {
+			return &themes[i]
+		}
+	}
 	return nil
 }
 

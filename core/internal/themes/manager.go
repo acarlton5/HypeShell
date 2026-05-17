@@ -3,9 +3,13 @@ package themes
 import (
 	"encoding/json"
 	"fmt"
+	"io"
+	"net/http"
+	"net/url"
 	"os"
 	"path/filepath"
 	"strings"
+	"time"
 
 	"github.com/acarlton5/HypeShell/core/internal/log"
 	"github.com/spf13/afero"
@@ -142,6 +146,7 @@ func (m *Manager) copyThemeAssets(srcDir, dstDir string, theme Theme) {
 	}
 
 	m.copyThemeAssetDir(srcDir, dstDir, "wallpapers")
+	m.downloadRemoteThemeAssets(dstDir, theme)
 }
 
 func appendThemeAsset(assets []string, asset string) []string {
@@ -174,6 +179,73 @@ func (m *Manager) copyThemeAssetDir(srcDir, dstDir, name string) {
 		_ = afero.WriteFile(m.fs, dstPath, data, 0o644)
 		return nil
 	})
+}
+
+func (m *Manager) downloadRemoteThemeAssets(dstDir string, theme Theme) {
+	if theme.AssetBaseURL == "" {
+		return
+	}
+
+	seen := make(map[string]bool)
+	for _, wallpaper := range theme.Wallpapers {
+		for _, asset := range []string{wallpaper.Path, wallpaper.LightPath, wallpaper.DarkPath} {
+			if asset == "" || seen[asset] {
+				continue
+			}
+			seen[asset] = true
+			if err := m.downloadRemoteThemeAsset(dstDir, theme.AssetBaseURL, asset); err != nil {
+				log.Warn("failed to download theme asset", "theme", theme.ID, "asset", asset, "err", err)
+			}
+		}
+	}
+}
+
+func (m *Manager) downloadRemoteThemeAsset(dstDir, baseURL, asset string) error {
+	if filepath.IsAbs(asset) || strings.Contains(asset, "..") {
+		return fmt.Errorf("unsafe asset path: %s", asset)
+	}
+
+	dstPath := filepath.Join(dstDir, filepath.Clean(asset))
+	if exists, _ := afero.Exists(m.fs, dstPath); exists {
+		return nil
+	}
+
+	assetURL, err := joinThemeAssetURL(baseURL, asset)
+	if err != nil {
+		return err
+	}
+
+	client := http.Client{Timeout: 60 * time.Second}
+	resp, err := client.Get(assetURL)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode < 200 || resp.StatusCode >= 300 {
+		return fmt.Errorf("download failed: %s", resp.Status)
+	}
+
+	data, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return err
+	}
+
+	if err := m.fs.MkdirAll(filepath.Dir(dstPath), 0o755); err != nil {
+		return err
+	}
+	return afero.WriteFile(m.fs, dstPath, data, 0o644)
+}
+
+func joinThemeAssetURL(baseURL, asset string) (string, error) {
+	baseURL = strings.TrimRight(baseURL, "/")
+	if baseURL == "" {
+		return "", fmt.Errorf("empty asset base URL")
+	}
+
+	parts := strings.Split(filepath.ToSlash(filepath.Clean(asset)), "/")
+	args := append([]string{baseURL}, parts...)
+	return url.JoinPath(args...)
 }
 
 func (m *Manager) InstallFromRegistry(registry *Registry, themeID string) error {
