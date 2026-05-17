@@ -934,6 +934,10 @@ restart_hype_service() {
 
     run systemctl --user daemon-reload || true
 
+    if [ -n "${WAYLAND_DISPLAY:-}" ]; then
+        run systemctl --user import-environment WAYLAND_DISPLAY DISPLAY XDG_CURRENT_DESKTOP XDG_SESSION_DESKTOP XDG_SESSION_TYPE HYPRLAND_INSTANCE_SIGNATURE XDG_RUNTIME_DIR DBUS_SESSION_BUS_ADDRESS || true
+    fi
+
     if ! systemctl --user cat hype.service >/dev/null 2>&1; then
         echo "Warning: hype.service is not installed; start HypeShell manually with 'hype run'." >&2
         return 0
@@ -947,8 +951,32 @@ restart_hype_service() {
     fi
 
     if systemctl --user is-active --quiet hype.service; then
-        echo "Restarting HypeShell user service..."
-        nohup sh -c 'sleep 1; systemctl --user restart hype.service' >/dev/null 2>&1 &
+        echo "Scheduling HypeShell user service restart..."
+        restart_script="$WORK_DIR/restart-hype-service.sh"
+        cat > "$restart_script" <<EOF
+#!/bin/sh
+sleep 2
+systemctl --user daemon-reload >/dev/null 2>&1 || true
+systemctl --user import-environment WAYLAND_DISPLAY DISPLAY XDG_CURRENT_DESKTOP XDG_SESSION_DESKTOP XDG_SESSION_TYPE HYPRLAND_INSTANCE_SIGNATURE XDG_RUNTIME_DIR DBUS_SESSION_BUS_ADDRESS >/dev/null 2>&1 || true
+if systemctl --user restart hype.service >/dev/null 2>&1; then
+    exit 0
+fi
+systemctl --user reset-failed hype.service >/dev/null 2>&1 || true
+if systemctl --user start hype.service >/dev/null 2>&1; then
+    exit 0
+fi
+if [ -n "\${WAYLAND_DISPLAY:-}" ] && [ -x "$PREFIX/bin/hype" ]; then
+    nohup "$PREFIX/bin/hype" run --session >/tmp/hypeshell-update-restart.log 2>&1 &
+fi
+EOF
+        chmod +x "$restart_script"
+        if command -v systemd-run >/dev/null 2>&1; then
+            if ! systemd-run --user --unit=hypeshell-post-update-restart --collect "$restart_script" >/dev/null 2>&1; then
+                nohup "$restart_script" >/dev/null 2>&1 &
+            fi
+        else
+            nohup "$restart_script" >/dev/null 2>&1 &
+        fi
     else
         echo "Starting HypeShell user service..."
         run systemctl --user start hype.service || echo "Warning: failed to start hype.service; run 'hype run' from Hyprland to debug." >&2
@@ -957,6 +985,11 @@ restart_hype_service() {
 
 refresh_installed_registry_assets() {
     [ "$SKIP_INSTALL" -eq 0 ] || return 0
+
+    if [ "$UPDATE_EXISTING" -eq 1 ]; then
+        echo "Skipping installed theme/plugin refresh during core update to preserve user-managed assets."
+        return 0
+    fi
 
     if [ "$YES" -eq 0 ]; then
         echo "[dry-run] refresh installed Hype themes and plugins from HypeRegistry"
