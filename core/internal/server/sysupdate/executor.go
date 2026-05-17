@@ -120,7 +120,7 @@ func findTerminal(override string) string {
 }
 
 func wrapInTerminal(term, title, shellCmd string) []string {
-	const appID = "dms-sysupdate"
+	const appID = "hypeshell-update"
 	banner := fmt.Sprintf(
 		`printf '\033[1;36m=== %s ===\033[0m\n'; printf '\033[2m$ %s\033[0m\n'; printf '\033[33mYou may be prompted for your sudo password to apply system updates.\033[0m\n\n'`,
 		title, shellCmd,
@@ -129,24 +129,39 @@ func wrapInTerminal(term, title, shellCmd string) []string {
 	export := `export SUDO_PROMPT="[HypeShell] sudo password for %u: "; `
 	full := export + banner + "; " + shellCmd + "; " + closer
 
+	var argv []string
 	switch term {
 	case "kitty":
-		return []string{term, "--class", appID, "-T", title, "-e", "sh", "-c", full}
+		argv = []string{term, "--class", appID, "-T", title, "-e", "sh", "-c", full}
 	case "alacritty":
-		return []string{term, "--class", appID, "-T", title, "-e", "sh", "-c", full}
+		argv = []string{term, "--class", appID, "-T", title, "-e", "sh", "-c", full}
 	case "foot":
-		return []string{term, "--app-id=" + appID, "--title=" + title, "-e", "sh", "-c", full}
+		argv = []string{term, "--app-id=" + appID, "--title=" + title, "-e", "sh", "-c", full}
 	case "ghostty":
-		return []string{term, "--class=" + appID, "--title=" + title, "-e", "sh", "-c", full}
+		argv = []string{term, "--class=" + appID, "--title=" + title, "-e", "sh", "-c", full}
 	case "wezterm":
-		return []string{term, "--class", appID, "-T", title, "-e", "sh", "-c", full}
+		argv = []string{term, "--class", appID, "-T", title, "-e", "sh", "-c", full}
 	case "xterm":
-		return []string{term, "-class", appID, "-T", title, "-e", "sh", "-c", full}
+		argv = []string{term, "-class", appID, "-T", title, "-e", "sh", "-c", full}
 	case "konsole":
-		return []string{term, "-p", "tabtitle=" + title, "-e", "sh", "-c", full}
+		argv = []string{term, "-p", "tabtitle=" + title, "-e", "sh", "-c", full}
 	case "gnome-terminal":
-		return []string{term, "--title=" + title, "--", "sh", "-c", full}
+		argv = []string{term, "--title=" + title, "--", "sh", "-c", full}
 	default:
-		return []string{term, "-e", "sh", "-c", full}
+		argv = []string{term, "-e", "sh", "-c", full}
 	}
+
+	if commandExists("systemd-run") {
+		scoped := []string{
+			"systemd-run",
+			"--user",
+			"--scope",
+			"--collect",
+			"--unit",
+			fmt.Sprintf("hypeshell-update-%d", os.Getpid()),
+			"--",
+		}
+		return append(scoped, argv...)
+	}
+	return argv
 }

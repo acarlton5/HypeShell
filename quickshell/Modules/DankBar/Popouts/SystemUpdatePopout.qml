@@ -93,6 +93,7 @@ DankPopout {
             focus: true
 
             readonly property bool hasTerminalBackend: (SystemUpdateService.backends || []).some(b => b.runsInTerminal === true)
+            readonly property bool isTerminalOperation: hasTerminalBackend || (SystemUpdateService.recentLog || []).some(line => String(line).indexOf("Running in terminal:") >= 0)
 
             Keys.onPressed: event => {
                 if (event.key === Qt.Key_Escape) {
@@ -427,7 +428,7 @@ DankPopout {
                     anchors.fill: parent
                     anchors.margins: Theme.spacingM
                     spacing: Theme.spacingS
-                    visible: SystemUpdateService.isUpgrading && updaterPanel.hasTerminalBackend
+                    visible: SystemUpdateService.isUpgrading && updaterPanel.isTerminalOperation
 
                     DankIcon {
                         anchors.horizontalCenter: parent.horizontalCenter
@@ -458,7 +459,7 @@ DankPopout {
                 DankFlickable {
                     anchors.fill: parent
                     anchors.margins: Theme.spacingM
-                    visible: SystemUpdateService.isUpgrading && !updaterPanel.hasTerminalBackend
+                    visible: SystemUpdateService.isUpgrading && !updaterPanel.isTerminalOperation
                     contentWidth: width
                     contentHeight: logText.implicitHeight
                     clip: true

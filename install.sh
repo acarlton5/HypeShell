@@ -4,7 +4,7 @@ set -euo pipefail
 
 SCRIPT_NAME="$(basename "$0")"
 DEFAULT_REPO_URL="https://github.com/acarlton5/HypeShell.git"
-INSTALLER_BUILD_ID="hype-about-updater-v1"
+INSTALLER_BUILD_ID="hype-safe-update-v2"
 
 YES=1
 PURGE_USER_DATA=0
@@ -315,20 +315,24 @@ stop_disable_user_units() {
         return 0
     fi
 
-    units=(
+    legacy_units=(
         hypeshell.service
         hype-shell.service
-        hype.service
         hype-updater.service
         HYPESHELL.service
         dms.service
-        hype.service
     )
 
-    for unit in "${units[@]}"; do
+    for unit in "${legacy_units[@]}"; do
         run systemctl --user stop "$unit" 2>/dev/null || true
         run systemctl --user disable "$unit" 2>/dev/null || true
     done
+
+    if [ "$UPDATE_EXISTING" -eq 0 ]; then
+        run systemctl --user stop hype.service 2>/dev/null || true
+        run systemctl --user disable hype.service 2>/dev/null || true
+    fi
+
     run systemctl --user daemon-reload || true
 }
 
@@ -345,7 +349,9 @@ kill_legacy_processes() {
         run pkill -TERM -x "$name" 2>/dev/null || true
     done
 
-    run pkill -TERM -x hype 2>/dev/null || true
+    if [ "$UPDATE_EXISTING" -eq 0 ]; then
+        run pkill -TERM -x hype 2>/dev/null || true
+    fi
     run pkill -TERM -x dms 2>/dev/null || true
     sleep 1
 }
@@ -456,7 +462,9 @@ remove_legacy_user_artifacts() {
     remove_user_file_if_exists "$HOME/.config/systemd/user/hype-shell.service"
     import_legacy_dank_material_data
 
-    remove_user_file_if_exists "$HOME/.config/systemd/user/hype.service"
+    if [ "$UPDATE_EXISTING" -eq 0 ]; then
+        remove_user_file_if_exists "$HOME/.config/systemd/user/hype.service"
+    fi
     remove_user_file_if_exists "$HOME/.config/systemd/user/hype-updater.service"
     remove_user_file_if_exists "$HOME/.local/bin/hypeshell"
     remove_user_file_if_exists "$HOME/.local/bin/hype-shell"
@@ -956,18 +964,35 @@ restart_hype_service() {
         cat > "$restart_script" <<EOF
 #!/bin/sh
 sleep 2
+export WAYLAND_DISPLAY="${WAYLAND_DISPLAY:-}"
+export DISPLAY="${DISPLAY:-}"
+export XDG_CURRENT_DESKTOP="${XDG_CURRENT_DESKTOP:-}"
+export XDG_SESSION_DESKTOP="${XDG_SESSION_DESKTOP:-}"
+export XDG_SESSION_TYPE="${XDG_SESSION_TYPE:-}"
+export HYPRLAND_INSTANCE_SIGNATURE="${HYPRLAND_INSTANCE_SIGNATURE:-}"
+export XDG_RUNTIME_DIR="${XDG_RUNTIME_DIR:-}"
+export DBUS_SESSION_BUS_ADDRESS="${DBUS_SESSION_BUS_ADDRESS:-}"
 systemctl --user daemon-reload >/dev/null 2>&1 || true
 systemctl --user import-environment WAYLAND_DISPLAY DISPLAY XDG_CURRENT_DESKTOP XDG_SESSION_DESKTOP XDG_SESSION_TYPE HYPRLAND_INSTANCE_SIGNATURE XDG_RUNTIME_DIR DBUS_SESSION_BUS_ADDRESS >/dev/null 2>&1 || true
 if systemctl --user restart hype.service >/dev/null 2>&1; then
-    exit 0
+    sleep 2
+    if systemctl --user is-active --quiet hype.service; then
+        exit 0
+    fi
 fi
 systemctl --user reset-failed hype.service >/dev/null 2>&1 || true
 if systemctl --user start hype.service >/dev/null 2>&1; then
-    exit 0
+    sleep 2
+    if systemctl --user is-active --quiet hype.service; then
+        exit 0
+    fi
 fi
 if [ -n "\${WAYLAND_DISPLAY:-}" ] && [ -x "$PREFIX/bin/hype" ]; then
     nohup "$PREFIX/bin/hype" run --session >/tmp/hypeshell-update-restart.log 2>&1 &
+    exit 0
 fi
+systemctl --user reset-failed hype.service >/dev/null 2>&1 || true
+exit 1
 EOF
         chmod +x "$restart_script"
         if command -v systemd-run >/dev/null 2>&1; then

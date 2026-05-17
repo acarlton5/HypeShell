@@ -79,6 +79,7 @@ type UpgradeOptions struct {
 	UseSudo        bool
 	AttachStdio    bool
 	CustomCommand  string
+	CustomTitle    string
 	Terminal       string
 	Targets        []Package
 }

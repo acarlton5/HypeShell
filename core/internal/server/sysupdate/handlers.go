@@ -45,6 +45,7 @@ func handleUpgrade(conn net.Conn, req models.Request, m *Manager) {
 		IncludeAUR:     params.BoolOpt(req.Params, "includeAUR", true),
 		DryRun:         params.BoolOpt(req.Params, "dry", false),
 		CustomCommand:  params.StringOpt(req.Params, "customCommand", ""),
+		CustomTitle:    params.StringOpt(req.Params, "customTitle", ""),
 		Terminal:       params.StringOpt(req.Params, "terminal", ""),
 	}
 	if err := m.Upgrade(opts); err != nil {
