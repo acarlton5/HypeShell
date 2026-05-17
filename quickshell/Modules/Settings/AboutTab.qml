@@ -184,24 +184,37 @@ Item {
             return;
         }
 
-        const command = ShellVersionService.installerUpdateCommand("--reboot-if-needed");
         if (SystemUpdateService.sysupdateAvailable && DMSService.isConnected) {
-            DMSService.sysupdateUpgrade({
-                "customCommand": command,
-                "customTitle": "HypeShell Update",
-                "terminal": terminal
-            }, response => {
-                if (response.error) {
-                    Quickshell.execDetached(aboutTab.terminalLaunchArgs(terminal, "HypeShell Update", command));
-                    ToastService.showError(I18n.tr("Update tracker failed"), response.error);
+            DMSService.sysupdateRefresh(true, refreshResponse => {
+                if (refreshResponse.error) {
+                    ToastService.showError(I18n.tr("Update check failed"), refreshResponse.error);
                     return;
                 }
+                const packages = refreshResponse.result?.packages || [];
+                const target = packages.find(pkg => pkg.backend === "hypeshell" || pkg.repo === "hypeshell" || pkg.name === "HypeShell");
                 SystemUpdateService.requestState();
-                ToastService.showInfo(I18n.tr("HypeShell update started"), I18n.tr("Track it from the Hype Bar update popout. Use the terminal window for prompts."));
+                if (!target) {
+                    ShellVersionService.checkForUpdates();
+                    ToastService.showInfo(I18n.tr("HypeShell is up to date"), I18n.tr("No HypeShell update is currently available."));
+                    return;
+                }
+
+                DMSService.sysupdateUpgrade({
+                    "targets": [target],
+                    "terminal": terminal
+                }, response => {
+                    if (response.error) {
+                        ToastService.showError(I18n.tr("Update failed to start"), response.error);
+                        return;
+                    }
+                    SystemUpdateService.requestState();
+                    ToastService.showInfo(I18n.tr("HypeShell update started"), I18n.tr("Track it from the Hype Bar update popout. Use the terminal window for prompts."));
+                });
             });
             return;
         }
 
+        const command = ShellVersionService.installerUpdateCommand("--reboot-if-needed");
         Quickshell.execDetached(aboutTab.terminalLaunchArgs(terminal, "HypeShell Update", command));
         ToastService.showInfo(I18n.tr("HypeShell update started"), I18n.tr("Follow the terminal window to finish the update."));
     }

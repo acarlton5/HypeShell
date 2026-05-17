@@ -47,10 +47,42 @@ func handleUpgrade(conn net.Conn, req models.Request, m *Manager) {
 		CustomCommand:  params.StringOpt(req.Params, "customCommand", ""),
 		CustomTitle:    params.StringOpt(req.Params, "customTitle", ""),
 		Terminal:       params.StringOpt(req.Params, "terminal", ""),
+		Targets:        parseUpgradeTargets(req.Params),
 	}
 	if err := m.Upgrade(opts); err != nil {
 		models.RespondError(conn, req.ID, err.Error())
 		return
 	}
 	models.Respond(conn, req.ID, m.GetState())
+}
+
+func parseUpgradeTargets(reqParams map[string]any) []Package {
+	raw, ok := reqParams["targets"].([]any)
+	if !ok || len(raw) == 0 {
+		return nil
+	}
+
+	out := make([]Package, 0, len(raw))
+	for _, item := range raw {
+		m, ok := item.(map[string]any)
+		if !ok {
+			continue
+		}
+		name, _ := m["name"].(string)
+		backend, _ := m["backend"].(string)
+		if name == "" && backend == "" {
+			continue
+		}
+		repo, _ := m["repo"].(string)
+		fromVersion, _ := m["fromVersion"].(string)
+		toVersion, _ := m["toVersion"].(string)
+		out = append(out, Package{
+			Name:        name,
+			Repo:        RepoKind(repo),
+			Backend:     backend,
+			FromVersion: fromVersion,
+			ToVersion:   toVersion,
+		})
+	}
+	return out
 }
