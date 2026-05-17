@@ -13,11 +13,11 @@ Singleton {
     readonly property var log: Log.scoped("HyprlandService")
 
     readonly property string configDir: Paths.strip(StandardPaths.writableLocation(StandardPaths.ConfigLocation))
-    readonly property string hyprDmsDir: configDir + "/hypr/dms"
-    readonly property string outputsPath: hyprDmsDir + "/outputs.conf"
-    readonly property string layoutPath: hyprDmsDir + "/layout.conf"
-    readonly property string cursorPath: hyprDmsDir + "/cursor.conf"
-    readonly property string windowrulesPath: hyprDmsDir + "/windowrules.conf"
+    readonly property string hyprHypeDir: configDir + "/hypr/hype"
+    readonly property string outputsPath: hyprHypeDir + "/outputs.conf"
+    readonly property string layoutPath: hyprHypeDir + "/layout.conf"
+    readonly property string cursorPath: hyprHypeDir + "/cursor.conf"
+    readonly property string windowrulesPath: hyprHypeDir + "/windowrules.conf"
 
     property int _lastGapValue: -1
 
@@ -29,7 +29,7 @@ Singleton {
     }
 
     function ensureWindowrulesConfig() {
-        Proc.runCommand("hypr-ensure-windowrules", ["sh", "-c", `mkdir -p "${hyprDmsDir}" && [ ! -f "${windowrulesPath}" ] && touch "${windowrulesPath}" || true`], (output, exitCode) => {
+        Proc.runCommand("hypr-ensure-windowrules", ["sh", "-c", `mkdir -p "${hyprHypeDir}" && [ ! -f "${windowrulesPath}" ] && touch "${windowrulesPath}" || true`], (output, exitCode) => {
             if (exitCode !== 0)
                 log.warn("Failed to ensure windowrules.conf:", output);
         });
@@ -162,7 +162,7 @@ Singleton {
 
         const content = lines.join("\n");
 
-        Proc.runCommand("hypr-write-outputs", ["sh", "-c", `mkdir -p "${hyprDmsDir}" && cat > "${outputsPath}" << 'EOF'\n${content}EOF`], (output, exitCode) => {
+        Proc.runCommand("hypr-write-outputs", ["sh", "-c", `mkdir -p "${hyprHypeDir}" && cat > "${outputsPath}" << 'EOF'\n${content}EOF`], (output, exitCode) => {
             if (exitCode !== 0) {
                 log.warn("Failed to write outputs config:", output);
                 if (callback)
@@ -209,7 +209,7 @@ decoration {
 }
 `;
 
-        Proc.runCommand("hypr-write-layout", ["sh", "-c", `mkdir -p "${hyprDmsDir}" && cat > "${layoutPath}" << 'EOF'\n${content}EOF`], (output, exitCode) => {
+        Proc.runCommand("hypr-write-layout", ["sh", "-c", `mkdir -p "${hyprHypeDir}" && cat > "${layoutPath}" << 'EOF'\n${content}EOF`], (output, exitCode) => {
             if (exitCode !== 0) {
                 log.warn("Failed to write layout config:", output);
                 return;
@@ -271,7 +271,7 @@ decoration {
 
         const settings = typeof SettingsData !== "undefined" ? SettingsData.cursorSettings : null;
         if (!settings) {
-            Proc.runCommand("hypr-write-cursor", ["sh", "-c", `mkdir -p "${hyprDmsDir}" && : > "${cursorPath}"`], (output, exitCode) => {
+            Proc.runCommand("hypr-write-cursor", ["sh", "-c", `mkdir -p "${hyprHypeDir}" && : > "${cursorPath}"`], (output, exitCode) => {
                 if (exitCode !== 0)
                     log.warn("Failed to write cursor config:", output);
             });
@@ -289,7 +289,7 @@ decoration {
         const hasCursorSettings = hideOnKeyPress || hideOnTouch || inactiveTimeout > 0;
 
         if (!hasTheme && !hasNonDefaultSize && !hasCursorSettings) {
-            Proc.runCommand("hypr-write-cursor", ["sh", "-c", `mkdir -p "${hyprDmsDir}" && : > "${cursorPath}"`], (output, exitCode) => {
+            Proc.runCommand("hypr-write-cursor", ["sh", "-c", `mkdir -p "${hyprHypeDir}" && : > "${cursorPath}"`], (output, exitCode) => {
                 if (exitCode !== 0)
                     log.warn("Failed to write cursor config:", output);
             });
@@ -320,7 +320,7 @@ decoration {
         lines.push("");
         const content = lines.join("\n");
 
-        Proc.runCommand("hypr-write-cursor", ["sh", "-c", `mkdir -p "${hyprDmsDir}" && cat > "${cursorPath}" << 'EOF'\n${content}EOF`], (output, exitCode) => {
+        Proc.runCommand("hypr-write-cursor", ["sh", "-c", `mkdir -p "${hyprHypeDir}" && cat > "${cursorPath}" << 'EOF'\n${content}EOF`], (output, exitCode) => {
             if (exitCode !== 0) {
                 log.warn("Failed to write cursor config:", output);
                 return;
