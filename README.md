@@ -1,5 +1,5 @@
 # HypeShell
- 
+  
 <div align="center">
   <a href="https://github.com/acarlton5/HypeShell">
     <img src="assets/hypeshell-logo.svg" alt="HypeShell" width="200">
