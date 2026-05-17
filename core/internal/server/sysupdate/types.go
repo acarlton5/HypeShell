@@ -12,10 +12,11 @@ const (
 type RepoKind string
 
 const (
-	RepoSystem  RepoKind = "system"
-	RepoAUR     RepoKind = "aur"
-	RepoFlatpak RepoKind = "flatpak"
-	RepoOSTree  RepoKind = "ostree"
+	RepoSystem    RepoKind = "system"
+	RepoAUR       RepoKind = "aur"
+	RepoFlatpak   RepoKind = "flatpak"
+	RepoOSTree    RepoKind = "ostree"
+	RepoHypeShell RepoKind = "hypeshell"
 )
 
 type ErrorCode string
