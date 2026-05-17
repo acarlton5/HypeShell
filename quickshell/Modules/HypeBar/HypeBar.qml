@@ -171,7 +171,7 @@ Item {
             return filtered;
         }
 
-        delegate: DankBarWindow {
+        delegate: HypeBarWindow {
             rootWindow: root
             barConfig: root.barConfig
             leftWidgetsModel: root.leftWidgetsModel

@@ -1,6 +1,6 @@
 # Plugin System
 
-Create widgets for DankBar and Control Center using dynamically-loaded QML components.
+Create widgets for Hype Bar and Control Center using dynamically-loaded QML components.
 
 ## Plugin Registry
 
@@ -8,7 +8,7 @@ Browse and discover community plugins at **https://plugins.danklinux.com/**
 
 ## Overview
 
-Plugins let you add custom widgets to DankBar and Control Center. They're discovered from `~/.config/DankMaterialShell/plugins/` and managed via PluginService.
+Plugins let you add custom widgets to Hype Bar and Control Center. They're discovered from `~/.config/hypeshell/plugins/` and managed via PluginService.
 
 ## Architecture
 
@@ -29,7 +29,7 @@ Plugins let you add custom widgets to DankBar and Control Center. They're discov
    - Dynamically loads plugin settings components inline
    - Provides consistent settings interface with proper focus handling
 
-4. **DankBar Integration** (`Modules/DankBar/DankBar.qml`)
+4. **Hype Bar Integration** (`Modules/HypeBar/HypeBar.qml`)
    - Renders plugin widgets in the bar
    - Merges plugin components with built-in widgets
    - Supports left, center, and right sections
@@ -113,7 +113,7 @@ import qs.Widgets
 import qs.Modules.Plugins
 
 PluginComponent {
-    // Define horizontal bar pill, for top and bottom DankBar positions (optional)
+    // Define horizontal bar pill, for top and bottom Hype Bar positions (optional)
     horizontalBarPill: Component {
         StyledRect {
             width: content.implicitWidth + Theme.spacingM * 2
@@ -131,7 +131,7 @@ PluginComponent {
         }
     }
 
-    // Define vertical bar pill, for left and right DankBar positions (optional)
+    // Define vertical bar pill, for left and right Hype Bar positions (optional)
     verticalBarPill: Component {
         // Same as horizontal but optimized for vertical layout
     }
@@ -825,13 +825,13 @@ PluginSettings {
 3. Navigate to Plugins tab
 4. Click "Scan for Plugins"
 5. Enable your plugin with the toggle switch
-6. Add the plugin to your DankBar configuration
+6. Add the plugin to your Hype Bar configuration
 
-## Adding Plugin to DankBar
+## Adding Plugin to Hype Bar
 
 After enabling a plugin, add it to the bar:
 
-1. Open Settings → Appearance → DankBar Layout
+1. Open Settings -> Appearance -> Hype Bar Layout
 2. Add a new widget entry with your plugin ID
 3. Choose section (left, center, right)
 4. Save and reload
@@ -1105,7 +1105,7 @@ Look for lines prefixed with:
 
 2. **Widget Not Displaying**
    - Ensure plugin is enabled in Settings
-   - Add plugin ID to DankBar widget list
+   - Add plugin ID to Hype Bar widget list
    - Check widget width/height properties
 
 3. **Settings Not Loading**
@@ -1646,7 +1646,7 @@ See `PLUGINS/ExampleDesktopClock/` for a complete working example demonstrating:
   - [Desktop Clock](./ExampleDesktopClock/)
 - **PluginService**: `Services/PluginService.qml`
 - **Settings UI**: `Modules/Settings/PluginsTab.qml`
-- **DankBar Integration**: `Modules/DankBar/DankBar.qml`
+- **Hype Bar Integration**: `Modules/HypeBar/HypeBar.qml`
 - **Launcher Integration**: `Modules/AppDrawer/AppLauncher.qml`
 - **Desktop Widget Integration**: `Modules/DesktopWidgetLayer.qml`
 - **Theme Reference**: `Common/Theme.qml`

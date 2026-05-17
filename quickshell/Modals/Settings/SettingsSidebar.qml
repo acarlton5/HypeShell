@@ -106,7 +106,7 @@ Rectangle {
         },
         {
             "id": "dankbar",
-            "text": I18n.tr("HYPE Bar"),
+            "text": I18n.tr("Hype Bar"),
             "icon": "toolbar",
             "children": [
                 {

@@ -4,7 +4,7 @@ import Quickshell.I3
 import Quickshell.Services.SystemTray
 import Quickshell.Wayland
 import qs.Common
-import qs.Modules.DankBar.Widgets
+import qs.Modules.HypeBar.Widgets
 import qs.Services
 
 Item {

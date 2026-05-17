@@ -79,7 +79,7 @@ FocusScope {
             visible: active
             focus: active
 
-            sourceComponent: DankBarTab {
+            sourceComponent: HypeBarTab {
                 parentModal: root.parentModal
             }
 

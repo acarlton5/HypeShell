@@ -20,8 +20,8 @@ import qs.Widgets
 import qs.Modules.Notifications.Popup
 import qs.Modules.OSD
 import qs.Modules.ProcessList
-import qs.Modules.DankBar
-import qs.Modules.DankBar.Popouts
+import qs.Modules.HypeBar
+import qs.Modules.HypeBar.Popouts
 import qs.Modules.Frame
 import qs.Modules.WorkspaceOverlays
 import qs.Modules.Settings.DisplayConfig
@@ -235,7 +235,7 @@ Item {
             active: root.barSurfacesLoaded && (barConfig?.enabled ?? false)
             asynchronous: false
 
-            sourceComponent: DankBar {
+            sourceComponent: HypeBar {
                 barConfig: barLoader.barConfig
                 hyprlandOverviewLoader: dankBarRepeater.hyprlandOverviewLoaderRef
 
@@ -949,6 +949,7 @@ Item {
 
             Component.onCompleted: {
                 PopoutService.systemUpdatePopout = systemUpdatePopout;
+                PopoutService._onSystemUpdatePopoutLoaded();
             }
         }
     }

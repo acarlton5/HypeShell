@@ -8,7 +8,7 @@ import qs.Widgets
 DankPopout {
     id: systemUpdatePopout
 
-    layerNamespace: "dms:system-update"
+    layerNamespace: "hype:system-update"
 
     property var parentWidget: null
     property var triggerScreen: null

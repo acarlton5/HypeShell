@@ -302,10 +302,70 @@ Singleton {
         }
     }
 
+    property bool _systemUpdateWantsOpen: false
+    property bool _systemUpdateWantsToggle: false
+    property real _systemUpdatePendingX: 0
+    property real _systemUpdatePendingY: 0
+    property real _systemUpdatePendingWidth: 40
+    property string _systemUpdatePendingSection: "center"
+    property var _systemUpdatePendingScreen: null
+    property bool _systemUpdateHasPosition: false
+
+    function _defaultSystemUpdateScreen() {
+        return Quickshell.screens.length > 0 ? Quickshell.screens[0] : null;
+    }
+
+    function _storeSystemUpdatePosition(x, y, width, section, screen, hasPos) {
+        _systemUpdateHasPosition = hasPos;
+        if (hasPos) {
+            _systemUpdatePendingX = x;
+            _systemUpdatePendingY = y;
+            _systemUpdatePendingWidth = width;
+            _systemUpdatePendingSection = section;
+            _systemUpdatePendingScreen = screen;
+            return;
+        }
+
+        const fallbackScreen = _defaultSystemUpdateScreen();
+        _systemUpdatePendingScreen = fallbackScreen;
+        _systemUpdatePendingWidth = 40;
+        _systemUpdatePendingSection = "center";
+        if (fallbackScreen) {
+            _systemUpdatePendingX = Math.max(0, fallbackScreen.width / 2 - _systemUpdatePendingWidth / 2);
+            _systemUpdatePendingY = Math.max(Theme.spacingL, Theme.barHeight + Theme.spacingM);
+        } else {
+            _systemUpdatePendingX = 0;
+            _systemUpdatePendingY = 0;
+        }
+    }
+
+    function _applySystemUpdatePosition() {
+        if (!systemUpdatePopout)
+            return;
+        if (_systemUpdatePendingScreen) {
+            systemUpdatePopout.setTriggerPosition(_systemUpdatePendingX, _systemUpdatePendingY, _systemUpdatePendingWidth, _systemUpdatePendingSection, _systemUpdatePendingScreen, SettingsData.Position.Top, Theme.barHeight - 4, 4, null);
+        }
+    }
+
     function openSystemUpdate(x, y, width, section, screen) {
+        if (!systemUpdatePopout) {
+            if (!systemUpdateLoader)
+                return;
+            _storeSystemUpdatePosition(x, y, width, section, screen, arguments.length >= 5);
+            _systemUpdateWantsOpen = true;
+            _systemUpdateWantsToggle = false;
+            systemUpdateLoader.active = true;
+            return;
+        }
+
+        if (arguments.length >= 5) {
+            _storeSystemUpdatePosition(x, y, width, section, screen, true);
+            _applySystemUpdatePosition();
+        } else if (!systemUpdatePopout.screen) {
+            _storeSystemUpdatePosition(0, 0, 40, "center", null, false);
+            _applySystemUpdatePosition();
+        }
         if (systemUpdatePopout) {
-            if (arguments.length >= 5)
-                setPosition(systemUpdatePopout, x, y, width, section, screen);
             systemUpdatePopout.open();
         }
     }
@@ -322,9 +382,41 @@ Singleton {
     }
 
     function toggleSystemUpdate(x, y, width, section, screen) {
+        if (!systemUpdatePopout) {
+            if (!systemUpdateLoader)
+                return;
+            _storeSystemUpdatePosition(x, y, width, section, screen, arguments.length >= 5);
+            _systemUpdateWantsToggle = true;
+            _systemUpdateWantsOpen = false;
+            systemUpdateLoader.active = true;
+            return;
+        }
+
+        if (arguments.length >= 5) {
+            _storeSystemUpdatePosition(x, y, width, section, screen, true);
+            _applySystemUpdatePosition();
+        } else if (!systemUpdatePopout.screen) {
+            _storeSystemUpdatePosition(0, 0, 40, "center", null, false);
+            _applySystemUpdatePosition();
+        }
         if (systemUpdatePopout) {
-            if (arguments.length >= 5)
-                setPosition(systemUpdatePopout, x, y, width, section, screen);
+            systemUpdatePopout.toggle();
+        }
+    }
+
+    function _onSystemUpdatePopoutLoaded() {
+        if (!systemUpdatePopout)
+            return;
+
+        _applySystemUpdatePosition();
+
+        if (_systemUpdateWantsOpen) {
+            _systemUpdateWantsOpen = false;
+            systemUpdatePopout.open();
+            return;
+        }
+        if (_systemUpdateWantsToggle) {
+            _systemUpdateWantsToggle = false;
             systemUpdatePopout.toggle();
         }
     }

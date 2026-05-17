@@ -36,7 +36,7 @@ make lint-qml  # Run from repo root; requires quickshell/.qmlls.ini (generated b
 
 **Panels & Bars**
 - `Modules/TopBar/` - Multi-monitor status bars with workspace switching
-- `Modules/DankBar/` - Customizable widget bar with plugin support
+- `Modules/HypeBar/` - Customizable widget bar with plugin support
 - `Modules/Dock/` - Application dock with window management
 
 **System Controls**
@@ -143,7 +143,7 @@ Workspace switchers adapt to compositor (Niri/Hyprland).
 
 External plugins in `~/.config/DankMaterialShell/plugins/`:
 
-**Widget plugins** - UI components in DankBar
+**Widget plugins** - UI components in Hype Bar
 **Daemon plugins** - Background processes without UI
 
 Plugin manifest (`plugin.json`):

@@ -177,14 +177,8 @@ Item {
     }
 
     function runHypeUpdate() {
-        const installed = SessionData.installedTerminals || [];
-        const terminal = SessionData.resolveTerminal() || (installed.length > 0 ? installed[0] : "");
-        if (!terminal || terminal.length === 0) {
-            ToastService.showError(I18n.tr("No terminal configured"), I18n.tr("Pick a terminal in Settings or install kitty."));
-            return;
-        }
-
         if (SystemUpdateService.sysupdateAvailable && DMSService.isConnected) {
+            PopoutService.openSystemUpdate();
             DMSService.sysupdateRefresh(true, refreshResponse => {
                 if (refreshResponse.error) {
                     ToastService.showError(I18n.tr("Update check failed"), refreshResponse.error);
@@ -199,18 +193,25 @@ Item {
                     return;
                 }
 
+                PopoutService.openSystemUpdate();
                 DMSService.sysupdateUpgrade({
-                    "targets": [target],
-                    "terminal": terminal
+                    "targets": [target]
                 }, response => {
                     if (response.error) {
                         ToastService.showError(I18n.tr("Update failed to start"), response.error);
                         return;
                     }
                     SystemUpdateService.requestState();
-                    ToastService.showInfo(I18n.tr("HypeShell update started"), I18n.tr("Track it from the Hype Bar update popout. Use the terminal window for prompts."));
+                    PopoutService.openSystemUpdate();
                 });
             });
+            return;
+        }
+
+        const installed = SessionData.installedTerminals || [];
+        const terminal = SessionData.resolveTerminal() || (installed.length > 0 ? installed[0] : "");
+        if (!terminal || terminal.length === 0) {
+            ToastService.showError(I18n.tr("No terminal configured"), I18n.tr("Pick a terminal in Settings or install kitty."));
             return;
         }
 

@@ -7,7 +7,7 @@ import qs.Services
 
 PanelWindow {
     id: barWindow
-    readonly property var log: Log.scoped("DankBarWindow")
+    readonly property var log: Log.scoped("HypeBarWindow")
 
     required property var rootWindow
     required property var barConfig
@@ -557,11 +557,11 @@ PanelWindow {
     Connections {
         target: PluginService
         function onPluginLoaded(pluginId) {
-            log.info("DankBar: Plugin loaded:", pluginId);
+            log.info("HypeBar: Plugin loaded:", pluginId);
             SettingsData.widgetDataChanged();
         }
         function onPluginUnloaded(pluginId) {
-            log.info("DankBar: Plugin unloaded:", pluginId);
+            log.info("HypeBar: Plugin unloaded:", pluginId);
             SettingsData.widgetDataChanged();
         }
     }
@@ -1060,7 +1060,7 @@ PanelWindow {
                         }
                     }
 
-                    DankBarContent {
+                    HypeBarContent {
                         id: topBarContent
                         barWindow: barWindow
                         rootWindow: barWindow.rootWindow
