@@ -11,6 +11,7 @@ DATA_DIR=$(PREFIX)/share
 ICON_DIR=$(DATA_DIR)/icons/hicolor/scalable/apps
 
 USER_HOME := $(if $(SUDO_USER),$(shell getent passwd $(SUDO_USER) | cut -d: -f6),$(HOME))
+USER_GROUP := $(if $(SUDO_USER),$(shell id -gn $(SUDO_USER) 2>/dev/null),)
 SYSTEMD_USER_DIR=$(USER_HOME)/.config/systemd/user
 
 SHELL_DIR=quickshell
@@ -63,11 +64,11 @@ install-completions:
 install-systemd:
 	@echo "Installing systemd user service..."
 	@mkdir -p $(SYSTEMD_USER_DIR)
-	@if [ -n "$(SUDO_USER)" ]; then chown -R $(SUDO_USER):"$(id -gn $SUDO_USER)" $(SYSTEMD_USER_DIR); fi
+	@if [ -n "$(SUDO_USER)" ]; then chown -R $(SUDO_USER):"$(USER_GROUP)" $(SYSTEMD_USER_DIR); fi
 	@sed 's|/usr/bin/hype|$(INSTALL_DIR)/hype|g' $(ASSETS_DIR)/systemd/hype.service > $(SYSTEMD_USER_DIR)/hype.service
 	@rm -f $(SYSTEMD_USER_DIR)/dms.service
 	@chmod 644 $(SYSTEMD_USER_DIR)/hype.service
-	@if [ -n "$(SUDO_USER)" ]; then chown $(SUDO_USER):"$(id -gn $SUDO_USER)" $(SYSTEMD_USER_DIR)/hype.service; fi
+	@if [ -n "$(SUDO_USER)" ]; then chown $(SUDO_USER):"$(USER_GROUP)" $(SYSTEMD_USER_DIR)/hype.service; fi
 	@echo "Systemd service installed to $(SYSTEMD_USER_DIR)/hype.service"
 
 install-icon:

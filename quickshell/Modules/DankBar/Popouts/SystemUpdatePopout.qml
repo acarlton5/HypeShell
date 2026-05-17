@@ -338,7 +338,7 @@ DankPopout {
 
                         StyledText {
                             anchors.centerIn: parent
-                            text: "kitty - hypeshell-update"
+                            text: "hypeshell self-update"
                             font.family: Theme.monoFontFamily || "monospace"
                             font.pixelSize: Theme.fontSizeSmall
                             color: Theme.withAlpha(Theme.surfaceText, 0.7)

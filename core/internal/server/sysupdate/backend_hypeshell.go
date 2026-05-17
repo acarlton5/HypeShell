@@ -9,8 +9,7 @@ import (
 )
 
 const (
-	hypeShellRepoURL    = "https://github.com/acarlton5/HypeShell.git"
-	hypeShellRawInstall = "https://raw.githubusercontent.com/acarlton5/HypeShell/main/install.sh"
+	hypeShellRepoURL = "https://github.com/acarlton5/HypeShell.git"
 )
 
 func init() {
@@ -55,16 +54,16 @@ func (hypeShellBackend) CheckUpdates(ctx context.Context) ([]Package, error) {
 }
 
 func (hypeShellBackend) Upgrade(ctx context.Context, opts UpgradeOptions, onLine func(string)) error {
-	cmd := fmt.Sprintf(`curl -fsSL "%s?cache=$(date +%%s)" | bash -s -- --update --skip-package-removal --skip-greeter --skip-hyprland-session`, hypeShellRawInstall)
+	cmd := hypeShellSelfUpdateScript()
 	if onLine != nil {
-		onLine("$ " + cmd)
-		onLine("Streaming HypeShell update in the Hype updater shade")
+		onLine("$ hype update --self")
+		onLine("Updating HypeShell from GitHub main")
 	}
 	return Run(ctx, hypeShellUpdateArgv(cmd), RunOptions{OnLine: onLine})
 }
 
 func hypeShellUpdateArgv(shellCmd string) []string {
-	argv := []string{"sh", "-c", "export HYPESHELL_INSTALL_PRIVESC=pkexec; " + shellCmd}
+	argv := []string{"bash", "-lc", shellCmd}
 	if !commandExists("systemd-run") {
 		return argv
 	}
@@ -78,6 +77,45 @@ func hypeShellUpdateArgv(shellCmd string) []string {
 		"--",
 	}
 	return append(scoped, argv...)
+}
+
+func hypeShellSelfUpdateScript() string {
+	return fmt.Sprintf(`set -euo pipefail
+tmp="$(mktemp -d "${TMPDIR:-/tmp}/hypeshell-self-update-XXXXXX")"
+trap 'rm -rf "$tmp"' EXIT
+
+echo "Cloning HypeShell main..."
+git clone --depth 1 --branch main %s "$tmp/source"
+commit="$(git -C "$tmp/source" rev-parse HEAD)"
+echo "Building HypeShell ${commit:0:12}..."
+make -C "$tmp/source" build
+
+cat > "$tmp/install-fingerprint" <<EOF
+status=success
+installed_at=$(date -u +%%Y-%%m-%%dT%%H:%%M:%%SZ)
+source_remote=%s
+source_branch=main
+source_commit=$commit
+installer_build=hype-shade-self-update-v2
+EOF
+
+update_user="${USER:-$(id -un)}"
+update_home="${HOME:-}"
+echo "Installing HypeShell. One authentication prompt may appear..."
+pkexec env SUDO_USER="$update_user" HOME="$update_home" sh -c 'make -C "$1" PREFIX="/usr/local" install && install -D -m 644 "$2" "/usr/local/share/hypeshell/install-fingerprint"' sh "$tmp/source" "$tmp/install-fingerprint"
+
+echo "Restarting HypeShell service..."
+systemctl --user daemon-reload || true
+systemctl --user import-environment WAYLAND_DISPLAY DISPLAY XDG_CURRENT_DESKTOP XDG_SESSION_DESKTOP XDG_SESSION_TYPE HYPRLAND_INSTANCE_SIGNATURE XDG_RUNTIME_DIR DBUS_SESSION_BUS_ADDRESS || true
+if ! systemctl --user restart hype.service && ! systemctl --user start hype.service; then
+    nohup /usr/local/bin/hype run --session >/tmp/hypeshell-update-restart.log 2>&1 &
+fi
+echo "HypeShell self-update complete."
+`, shellQuote(hypeShellRepoURL), shellQuote(hypeShellRepoURL))
+}
+
+func shellQuote(value string) string {
+	return "'" + strings.ReplaceAll(value, "'", "'\\''") + "'"
 }
 
 func latestHypeShellCommit(ctx context.Context) (string, error) {
