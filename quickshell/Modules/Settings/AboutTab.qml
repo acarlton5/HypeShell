@@ -109,7 +109,7 @@ Item {
     property string ircTooltip: I18n.tr("LabWC IRC Channel")
 
     property bool showMatrix: isNiri && !isHyprland && !isSway && !isScroll && !isMiracle && !isDwl && !isLabwc
-    property bool showCompositorDiscord: isHyprland || isDwl
+    property bool showCompositorDiscord: false
     property bool showReddit: isNiri && !isHyprland && !isSway && !isScroll && !isMiracle && !isDwl && !isLabwc
     property bool showIrc: isLabwc
 
@@ -733,7 +733,7 @@ Item {
             }
 
             StyledRect {
-                visible: DMSService.isConnected
+                visible: false
                 width: parent.width
                 height: backendSection.implicitHeight + Theme.spacingL * 2
                 radius: Theme.cornerRadius
