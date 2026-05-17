@@ -1,4 +1,4 @@
-﻿#!/usr/bin/env bash
+#!/usr/bin/env bash
 
 set -euo pipefail
 
@@ -1093,7 +1093,7 @@ install_greeter_wrapper_from_source() {
 
     sudo_run install -D -m 755 "$wrapper_src" /usr/local/bin/hype-greeter
     sudo_run install -D -m 755 "$wrapper_src" /usr/bin/hype-greeter
-    sudo_run rm -f /usr/local/bin/hype-greeter /usr/bin/hype-greeter
+    sudo_run rm -f /usr/local/bin/dank-greeter /usr/bin/dank-greeter /usr/local/bin/dms-greeter /usr/bin/dms-greeter
 }
 
 detect_greeter_user() {
