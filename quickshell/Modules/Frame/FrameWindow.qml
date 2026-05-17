@@ -1,4 +1,4 @@
-pragma ComponentBehavior: Bound
+﻿pragma ComponentBehavior: Bound
 
 import QtQuick
 import QtQuick.Effects
@@ -20,7 +20,7 @@ PanelWindow {
     visible: _frameActive
     updatesEnabled: _connectedActive
 
-    WlrLayershell.namespace: "dms:frame"
+    WlrLayershell.namespace: "hype:frame"
     WlrLayershell.layer: WlrLayer.Top
     WlrLayershell.exclusionMode: ExclusionMode.Ignore
 
@@ -148,7 +148,7 @@ PanelWindow {
     readonly property color _opaqueSurfaceColor: Qt.rgba(_surfaceColor.r, _surfaceColor.g, _surfaceColor.b, 1)
     readonly property real _surfaceRadius: Theme.connectedSurfaceRadius
     readonly property real _seamOverlap: Theme.hairline(win._dpr)
-    readonly property bool _disableLayer: Quickshell.env("DMS_DISABLE_LAYER") === "true" || Quickshell.env("DMS_DISABLE_LAYER") === "1"
+    readonly property bool _disableLayer: Quickshell.env("HYPE_DISABLE_LAYER") === "true" || Quickshell.env("HYPE_DISABLE_LAYER") === "1"
 
     function _regionInt(value) {
         return Math.max(0, Math.round(Theme.px(value, win._dpr)));

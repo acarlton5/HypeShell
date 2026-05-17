@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import qs.Common
 import qs.Modules.Plugins
 import qs.Services
@@ -12,7 +12,7 @@ BasePill {
             implicitWidth: icon.width
             implicitHeight: root.widgetThickness - root.horizontalPadding * 2
 
-            DankIcon {
+            HypeIcon {
                 id: icon
                 anchors.centerIn: parent
                 name: SessionService.idleInhibited ? "motion_sensor_active" : "motion_sensor_idle"

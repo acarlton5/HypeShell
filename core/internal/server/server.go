@@ -1,4 +1,4 @@
-package server
+﻿package server
 
 import (
 	"bufio"
@@ -81,7 +81,7 @@ var locationManager *location.Manager
 var sysUpdateManager *sysupdate.Manager
 var geoClientInstance geolocation.Client
 
-const dbusClientID = "dms-dbus-client"
+const dbusClientID = "hype-dbus-client"
 
 var capabilitySubscribers syncmap.Map[string, chan ServerInfo]
 var cupsSubscribers syncmap.Map[string, bool]
@@ -96,9 +96,9 @@ func getSocketDir() string {
 
 	if os.Getuid() == 0 {
 		if _, err := os.Stat("/run"); err == nil {
-			return "/run/dankdots"
+			return "/run/hypedots"
 		}
-		return "/var/run/dankdots"
+		return "/var/run/hypedots"
 	}
 
 	return os.TempDir()
@@ -116,7 +116,7 @@ func FindSocket() (string, error) {
 	}
 
 	for _, entry := range entries {
-		if (strings.HasPrefix(entry.Name(), "HYPESHELL-") || strings.HasPrefix(entry.Name(), "danklinux-")) && strings.HasSuffix(entry.Name(), ".sock") {
+		if (strings.HasPrefix(entry.Name(), "HYPESHELL-") || strings.HasPrefix(entry.Name(), "hypelinux-")) && strings.HasSuffix(entry.Name(), ".sock") {
 			return filepath.Join(dir, entry.Name()), nil
 		}
 	}
@@ -131,11 +131,11 @@ func cleanupStaleSockets() {
 	}
 
 	for _, entry := range entries {
-		if !(strings.HasPrefix(entry.Name(), "HYPESHELL-") || strings.HasPrefix(entry.Name(), "danklinux-")) || !strings.HasSuffix(entry.Name(), ".sock") {
+		if !(strings.HasPrefix(entry.Name(), "HYPESHELL-") || strings.HasPrefix(entry.Name(), "hypelinux-")) || !strings.HasSuffix(entry.Name(), ".sock") {
 			continue
 		}
 
-		pidStr := strings.TrimPrefix(strings.TrimPrefix(entry.Name(), "HYPESHELL-"), "danklinux-")
+		pidStr := strings.TrimPrefix(strings.TrimPrefix(entry.Name(), "HYPESHELL-"), "hypelinux-")
 		pidStr = strings.TrimSuffix(pidStr, ".sock")
 		pid, err := strconv.Atoi(pidStr)
 		if err != nil {
@@ -1706,8 +1706,8 @@ func Start(printDocs bool) error {
 			return
 		}
 
-		ch := loginctlManager.Subscribe("dms-lock-bridge")
-		defer loginctlManager.Unsubscribe("dms-lock-bridge")
+		ch := loginctlManager.Subscribe("hype-lock-bridge")
+		defer loginctlManager.Unsubscribe("hype-lock-bridge")
 
 		initial := loginctlManager.GetState()
 		lastLocked := initial.Locked

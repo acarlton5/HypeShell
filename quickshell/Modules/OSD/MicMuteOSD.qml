@@ -1,9 +1,9 @@
-import QtQuick
+﻿import QtQuick
 import qs.Common
 import qs.Services
 import qs.Widgets
 
-DankOSD {
+HypeOSD {
     id: root
 
     osdWidth: Theme.iconSize + Theme.spacingS * 2
@@ -20,7 +20,7 @@ DankOSD {
         }
     }
 
-    content: DankIcon {
+    content: HypeIcon {
         anchors.centerIn: parent
         name: AudioService.source && AudioService.source.audio && AudioService.source.audio.muted ? "mic_off" : "mic"
         size: Theme.iconSize

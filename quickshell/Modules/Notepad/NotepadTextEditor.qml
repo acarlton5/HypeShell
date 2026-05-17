@@ -1,4 +1,4 @@
-pragma ComponentBehavior: Bound
+﻿pragma ComponentBehavior: Bound
 
 import QtQuick
 import QtQuick.Controls
@@ -12,8 +12,8 @@ Column {
     id: root
 
     Component.onCompleted: {
-        if (PluginService.isPluginLoaded("dankNotepadModule")) {
-            pluginHighlightedHtml = SettingsData.getBuiltInPluginSetting("dankNotepadModule", "highlightedHtml", "");
+        if (PluginService.isPluginLoaded("hypeNotepadModule")) {
+            pluginHighlightedHtml = SettingsData.getBuiltInPluginSetting("hypeNotepadModule", "highlightedHtml", "");
         }
     }
 
@@ -197,7 +197,7 @@ Column {
     }
 
     function syncContentToPlugin() {
-        if (!PluginService.isPluginLoaded("dankNotepadModule"))
+        if (!PluginService.isPluginLoaded("hypeNotepadModule"))
             return;
         if (!currentTab)
             return;
@@ -205,16 +205,16 @@ Column {
         const ext = filePath.split('.').pop().toLowerCase();
         const content = textArea.text;
 
-        if (content === lastPluginContent && SettingsData.getBuiltInPluginSetting("dankNotepadModule", "previewActive", false) === inlinePreviewVisible) {
+        if (content === lastPluginContent && SettingsData.getBuiltInPluginSetting("hypeNotepadModule", "previewActive", false) === inlinePreviewVisible) {
             return;
         }
 
         lastPluginContent = content;
-        SettingsData.setBuiltInPluginSetting("dankNotepadModule", "previewActive", inlinePreviewVisible);
-        SettingsData.setBuiltInPluginSetting("dankNotepadModule", "currentFilePath", filePath);
-        SettingsData.setBuiltInPluginSetting("dankNotepadModule", "currentFileExtension", ext);
-        SettingsData.setBuiltInPluginSetting("dankNotepadModule", "sourceContent", content);
-        SettingsData.setBuiltInPluginSetting("dankNotepadModule", "updatedAt", Date.now());
+        SettingsData.setBuiltInPluginSetting("hypeNotepadModule", "previewActive", inlinePreviewVisible);
+        SettingsData.setBuiltInPluginSetting("hypeNotepadModule", "currentFilePath", filePath);
+        SettingsData.setBuiltInPluginSetting("hypeNotepadModule", "currentFileExtension", ext);
+        SettingsData.setBuiltInPluginSetting("hypeNotepadModule", "sourceContent", content);
+        SettingsData.setBuiltInPluginSetting("hypeNotepadModule", "updatedAt", Date.now());
     }
 
     function hideSearch() {
@@ -296,7 +296,7 @@ Column {
             spacing: Theme.spacingS
 
             // Search icon
-            DankIcon {
+            HypeIcon {
                 Layout.alignment: Qt.AlignVCenter
                 name: "search"
                 size: Theme.iconSize - 2
@@ -378,7 +378,7 @@ Column {
             }
 
             // Navigation buttons
-            DankActionButton {
+            HypeActionButton {
                 id: prevButton
                 Layout.alignment: Qt.AlignVCenter
                 iconName: "keyboard_arrow_up"
@@ -388,7 +388,7 @@ Column {
                 onClicked: root.findPrevious()
             }
 
-            DankActionButton {
+            HypeActionButton {
                 id: nextButton
                 Layout.alignment: Qt.AlignVCenter
                 iconName: "keyboard_arrow_down"
@@ -398,7 +398,7 @@ Column {
                 onClicked: root.findNext()
             }
 
-            DankActionButton {
+            HypeActionButton {
                 id: closeSearchButton
                 Layout.alignment: Qt.AlignVCenter
                 iconName: "close"
@@ -431,7 +431,7 @@ Column {
                 Layout.preferredWidth: inlinePreviewVisible ? parent.width * 0.55 : parent.width
                 clip: true
 
-                DankFlickable {
+                HypeFlickable {
                     id: flickable
                     anchors.fill: parent
                     clip: true
@@ -607,7 +607,7 @@ Column {
                                     root.showSearch();
                                     break;
                                 case Qt.Key_P:
-                                    if (PluginService.isPluginLoaded("dankNotepadModule")) {
+                                    if (PluginService.isPluginLoaded("hypeNotepadModule")) {
                                         event.accepted = true;
                                         root.previewRequested();
                                     }
@@ -670,7 +670,7 @@ Column {
                         spacing: Theme.spacingS
 
                         // Copy plain text button
-                        DankActionButton {
+                        HypeActionButton {
                             iconName: "content_copy"
                             iconSize: Theme.iconSize - 4
                             iconColor: Theme.surfaceTextMedium
@@ -692,7 +692,7 @@ Column {
                         }
 
                         // Copy HTML button
-                        DankActionButton {
+                        HypeActionButton {
                             iconName: "code"
                             iconSize: Theme.iconSize - 4
                             iconColor: Theme.surfaceTextMedium
@@ -708,7 +708,7 @@ Column {
                     }
                 }
 
-                DankFlickable {
+                HypeFlickable {
                     id: previewFlickable
                     anchors.top: previewHeader.bottom
                     anchors.left: parent.left
@@ -754,7 +754,7 @@ Column {
 
                 Row {
                     spacing: Theme.spacingS
-                    DankActionButton {
+                    HypeActionButton {
                         iconName: "save"
                         iconSize: Theme.iconSize - 2
                         iconColor: Theme.primary
@@ -771,7 +771,7 @@ Column {
 
                 Row {
                     spacing: Theme.spacingS
-                    DankActionButton {
+                    HypeActionButton {
                         iconName: "folder_open"
                         iconSize: Theme.iconSize - 2
                         iconColor: Theme.secondary
@@ -787,7 +787,7 @@ Column {
 
                 Row {
                     spacing: Theme.spacingS
-                    DankActionButton {
+                    HypeActionButton {
                         iconName: "note_add"
                         iconSize: Theme.iconSize - 2
                         iconColor: Theme.surfaceText
@@ -803,8 +803,8 @@ Column {
 
                 Row {
                     spacing: Theme.spacingS
-                    visible: PluginService.isPluginLoaded("dankNotepadModule")
-                    DankActionButton {
+                    visible: PluginService.isPluginLoaded("hypeNotepadModule")
+                    HypeActionButton {
                         iconName: inlinePreviewVisible ? "visibility" : "visibility_off"
                         iconSize: Theme.iconSize - 2
                         iconColor: Theme.surfaceText
@@ -820,7 +820,7 @@ Column {
                 }
             }
 
-            DankActionButton {
+            HypeActionButton {
                 anchors.right: parent.right
                 anchors.verticalCenter: parent.verticalCenter
                 iconName: "more_horiz"
@@ -905,8 +905,8 @@ Column {
     Connections {
         target: SettingsData
         function onBuiltInPluginSettingsChanged() {
-            if (PluginService.isPluginLoaded("dankNotepadModule")) {
-                pluginHighlightedHtml = SettingsData.getBuiltInPluginSetting("dankNotepadModule", "highlightedHtml", "");
+            if (PluginService.isPluginLoaded("hypeNotepadModule")) {
+                pluginHighlightedHtml = SettingsData.getBuiltInPluginSetting("hypeNotepadModule", "highlightedHtml", "");
             }
         }
     }

@@ -1,4 +1,4 @@
-pragma ComponentBehavior: Bound
+﻿pragma ComponentBehavior: Bound
 import QtQuick
 import QtQuick.Controls
 import qs.Common
@@ -164,7 +164,7 @@ Column {
                                         visible: NotepadStorageService.tabs.length > 1
                                         anchors.verticalCenter: parent.verticalCenter
 
-                                        DankIcon {
+                                        HypeIcon {
                                             name: "close"
                                             size: 14
                                             color: Theme.surfaceTextMedium
@@ -272,7 +272,7 @@ Column {
             }
         }
 
-        DankActionButton {
+        HypeActionButton {
             id: newTabButton
             width: 32
             height: 32

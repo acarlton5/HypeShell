@@ -1,4 +1,4 @@
-package clipboard
+﻿package clipboard
 
 import (
 	"bytes"
@@ -1851,7 +1851,7 @@ func (m *Manager) EntryToFile(entry *Entry) string {
 		if err != nil {
 			return ""
 		}
-		clipDir := filepath.Join(cacheDir, "dms", "clipboard")
+		clipDir := filepath.Join(cacheDir, "hype", "clipboard")
 		if err := os.MkdirAll(clipDir, 0o755); err != nil {
 			return ""
 		}

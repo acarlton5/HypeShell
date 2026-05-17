@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import qs.Common
 import qs.Widgets
 
@@ -71,7 +71,7 @@ Column {
         visible: root.description !== ""
     }
 
-    DankTextField {
+    HypeTextField {
         id: textField
         width: parent.width
         placeholderText: root.placeholder

@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import qs.Common
 import qs.Services
 import qs.Widgets
@@ -32,7 +32,7 @@ Rectangle {
         anchors.rightMargin: Theme.spacingL
         spacing: Theme.spacingM
 
-        DankCircularImage {
+        HypeCircularImage {
             id: avatarContainer
 
             width: 60
@@ -74,7 +74,7 @@ Rectangle {
         anchors.rightMargin: Theme.spacingXS
         spacing: Theme.spacingXS
 
-        DankActionButton {
+        HypeActionButton {
             buttonSize: 36
             iconName: "lock"
             iconSize: Theme.iconSize - 4
@@ -85,7 +85,7 @@ Rectangle {
             }
         }
 
-        DankActionButton {
+        HypeActionButton {
             buttonSize: 36
             iconName: "power_settings_new"
             iconSize: Theme.iconSize - 4
@@ -94,7 +94,7 @@ Rectangle {
             onClicked: root.powerButtonClicked()
         }
 
-        DankActionButton {
+        HypeActionButton {
             buttonSize: 36
             iconName: "settings"
             iconSize: Theme.iconSize - 4
@@ -106,7 +106,7 @@ Rectangle {
             }
         }
 
-        DankActionButton {
+        HypeActionButton {
             buttonSize: 36
             iconName: editMode ? "done" : "edit"
             iconSize: Theme.iconSize - 4

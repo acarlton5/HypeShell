@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import qs.Common
 import qs.Widgets
 import qs.Modules.Settings.Widgets
@@ -6,7 +6,7 @@ import qs.Modules.Settings.Widgets
 Item {
     id: root
 
-    DankFlickable {
+    HypeFlickable {
         anchors.fill: parent
         clip: true
         contentHeight: mainColumn.height + Theme.spacingXL
@@ -93,7 +93,7 @@ Item {
                             horizontalAlignment: Text.AlignLeft
                         }
 
-                        DankTextField {
+                        HypeTextField {
                             width: 100
                             height: 28
                             placeholderText: "5"

@@ -1,4 +1,4 @@
-package brightness
+﻿package brightness
 
 import (
 	"encoding/binary"
@@ -348,7 +348,7 @@ func (b *DDCBackend) getVCPFeature(fd int, vcp byte) (*ddcCapability, error) {
 		return nil, fmt.Errorf("poll i2c: %w", err)
 	}
 	if pollResult == 0 {
-		return nil, fmt.Errorf("poll timeout after %dms", pollTimeout)
+		return nil, fmt.Errorf("poll timeout after %hype", pollTimeout)
 	}
 	if pollFds[0].Revents&unix.POLLIN == 0 {
 		return nil, fmt.Errorf("poll returned but POLLIN not set")

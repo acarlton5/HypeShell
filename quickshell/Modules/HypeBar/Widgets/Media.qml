@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import Quickshell.Services.Mpris
 import qs.Common
 import qs.Modules.Plugins
@@ -210,7 +210,7 @@ BasePill {
                         visible: CavaService.cavaAvailable && SettingsData.audioVisualizerEnabled
                     }
 
-                    DankIcon {
+                    HypeIcon {
                         anchors.fill: parent
                         name: "music_note"
                         size: 20
@@ -246,7 +246,7 @@ BasePill {
                     visible: root.playerAvailable
                     opacity: activePlayer ? 1 : 0.3
 
-                    DankIcon {
+                    HypeIcon {
                         anchors.centerIn: parent
                         name: root._isPlaying ? "pause" : "play_arrow"
                         size: 14
@@ -293,7 +293,7 @@ BasePill {
                             visible: CavaService.cavaAvailable && SettingsData.audioVisualizerEnabled
                         }
 
-                        DankIcon {
+                        HypeIcon {
                             anchors.fill: parent
                             name: "music_note"
                             size: 20
@@ -451,7 +451,7 @@ BasePill {
                         visible: root.playerAvailable
                         opacity: (activePlayer && activePlayer.canGoPrevious) ? 1 : 0.3
 
-                        DankIcon {
+                        HypeIcon {
                             anchors.centerIn: parent
                             name: "skip_previous"
                             size: 12
@@ -476,7 +476,7 @@ BasePill {
                         visible: root.playerAvailable
                         opacity: activePlayer ? 1 : 0.3
 
-                        DankIcon {
+                        HypeIcon {
                             anchors.centerIn: parent
                             name: root._isPlaying ? "pause" : "play_arrow"
                             size: 14
@@ -504,7 +504,7 @@ BasePill {
                         visible: playerAvailable
                         opacity: (activePlayer && activePlayer.canGoNext) ? 1 : 0.3
 
-                        DankIcon {
+                        HypeIcon {
                             anchors.centerIn: parent
                             name: "skip_next"
                             size: 12

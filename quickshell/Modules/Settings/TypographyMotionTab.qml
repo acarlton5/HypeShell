@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import qs.Common
 import qs.Widgets
 import qs.Modules.Settings.Widgets
@@ -42,7 +42,7 @@ Item {
         fontEnumerationTimer.start();
     }
 
-    DankFlickable {
+    HypeFlickable {
         anchors.fill: parent
         clip: true
         contentHeight: mainColumn.height + Theme.spacingXL
@@ -67,7 +67,7 @@ Item {
                     height: animVariantGroup.implicitHeight
                     clip: true
 
-                    DankButtonGroup {
+                    HypeButtonGroup {
                         id: animVariantGroup
                         anchors.horizontalCenter: parent.horizontalCenter
                         buttonPadding: parent.width < 480 ? Theme.spacingS : Theme.spacingL
@@ -136,7 +136,7 @@ Item {
                     height: motionEffectGroup.implicitHeight
                     clip: true
 
-                    DankButtonGroup {
+                    HypeButtonGroup {
                         id: motionEffectGroup
                         anchors.horizontalCenter: parent.horizontalCenter
                         buttonPadding: parent.width < 480 ? Theme.spacingS : Theme.spacingL
@@ -351,7 +351,7 @@ Item {
                     height: renderTypeGroup.implicitHeight
                     clip: true
 
-                    DankButtonGroup {
+                    HypeButtonGroup {
                         id: renderTypeGroup
                         anchors.horizontalCenter: parent.horizontalCenter
                         buttonPadding: parent.width < 480 ? Theme.spacingS : Theme.spacingL
@@ -459,7 +459,7 @@ Item {
                         color: Theme.surfaceText
                     }
 
-                    DankButtonGroup {
+                    HypeButtonGroup {
                         id: qualityGroup
                         anchors.top: qualityLabel.bottom
                         anchors.topMargin: Theme.spacingS
@@ -498,7 +498,7 @@ Item {
                     height: animationSpeedGroup.implicitHeight
                     clip: true
 
-                    DankButtonGroup {
+                    HypeButtonGroup {
                         id: animationSpeedGroup
                         anchors.horizontalCenter: parent.horizontalCenter
                         buttonPadding: parent.width < 480 ? Theme.spacingS : Theme.spacingL
@@ -595,7 +595,7 @@ Item {
                     height: popoutSpeedGroup.implicitHeight
                     clip: true
 
-                    DankButtonGroup {
+                    HypeButtonGroup {
                         id: popoutSpeedGroup
                         anchors.horizontalCenter: parent.horizontalCenter
                         buttonPadding: parent.width < 480 ? Theme.spacingS : Theme.spacingL
@@ -679,7 +679,7 @@ Item {
                     height: modalSpeedGroup.implicitHeight
                     clip: true
 
-                    DankButtonGroup {
+                    HypeButtonGroup {
                         id: modalSpeedGroup
                         anchors.horizontalCenter: parent.horizontalCenter
                         buttonPadding: parent.width < 480 ? Theme.spacingS : Theme.spacingL

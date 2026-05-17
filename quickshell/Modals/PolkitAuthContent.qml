@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import Quickshell.Io
 import qs.Common
 import qs.Services
@@ -229,7 +229,7 @@ FocusScope {
             anchors.top: parent.top
             spacing: Theme.spacingXS
 
-            DankActionButton {
+            HypeActionButton {
                 visible: root.windowControls?.supported === true && root.windowControls?.canMaximize === true
                 iconName: (root.windowControls?.targetWindow?.maximized ?? false) ? "fullscreen_exit" : "fullscreen"
                 iconSize: Theme.iconSize - 4
@@ -240,7 +240,7 @@ FocusScope {
                 }
             }
 
-            DankActionButton {
+            HypeActionButton {
                 iconName: "close"
                 iconSize: Theme.iconSize - 4
                 iconColor: Theme.surfaceText
@@ -267,7 +267,7 @@ FocusScope {
             visible: text !== ""
         }
 
-        DankTextField {
+        HypeTextField {
             id: passwordField
 
             width: parent.width

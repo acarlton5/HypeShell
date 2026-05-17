@@ -1,4 +1,4 @@
-pragma Singleton
+﻿pragma Singleton
 pragma ComponentBehavior: Bound
 
 import QtQuick
@@ -10,7 +10,7 @@ Singleton {
     id: root
 
     property var widgetRegistry: ({})
-    property var dankBarRepeater: null
+    property var hypeBarRepeater: null
 
     signal widgetRegistered(string widgetId, string screenName)
     signal widgetUnregistered(string widgetId, string screenName)
@@ -135,11 +135,11 @@ Singleton {
     }
 
     function getBarWindowForScreen(screenName) {
-        if (!dankBarRepeater)
+        if (!hypeBarRepeater)
             return null;
 
-        for (var i = 0; i < dankBarRepeater.count; i++) {
-            const loader = dankBarRepeater.itemAt(i);
+        for (var i = 0; i < hypeBarRepeater.count; i++) {
+            const loader = hypeBarRepeater.itemAt(i);
             if (!loader?.item)
                 continue;
 
@@ -164,10 +164,10 @@ Singleton {
     }
 
     function getFirstBarWindow() {
-        if (!dankBarRepeater || dankBarRepeater.count === 0)
+        if (!hypeBarRepeater || hypeBarRepeater.count === 0)
             return null;
 
-        const loader = dankBarRepeater.itemAt(0);
+        const loader = hypeBarRepeater.itemAt(0);
         if (!loader?.item)
             return null;
 

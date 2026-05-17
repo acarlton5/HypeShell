@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import QtQuick.Layouts
 import Quickshell
 import qs.Common
@@ -7,7 +7,7 @@ import qs.Widgets
 import qs.Modules.Settings.Widgets
 
 Item {
-    id: dankBarTab
+    id: hypeBarTab
 
     LayoutMirroring.enabled: I18n.isRtl
     LayoutMirroring.childrenInherit: true
@@ -197,7 +197,7 @@ Item {
             notifyHorizontalBarChange();
     }
 
-    DankFlickable {
+    HypeFlickable {
         anchors.fill: parent
         clip: true
         contentHeight: mainColumn.height + Theme.spacingXL
@@ -227,12 +227,12 @@ Item {
                         Layout.fillWidth: true
                     }
 
-                    DankButton {
+                    HypeButton {
                         text: I18n.tr("Add Bar")
                         iconName: "add"
                         buttonHeight: 32
                         visible: SettingsData.barConfigs.length < 4
-                        onClicked: dankBarTab.createNewBar()
+                        onClicked: hypeBarTab.createNewBar()
                     }
                 }
 
@@ -251,8 +251,8 @@ Item {
                             width: parent.width
                             height: barCardContent.implicitHeight + Theme.spacingM * 2
                             radius: Theme.cornerRadius
-                            color: dankBarTab.selectedBarId === modelData.id ? Theme.withAlpha(Theme.primary, 0.15) : Theme.surfaceVariant
-                            border.width: dankBarTab.selectedBarId === modelData.id ? 2 : 0
+                            color: hypeBarTab.selectedBarId === modelData.id ? Theme.withAlpha(Theme.primary, 0.15) : Theme.surfaceVariant
+                            border.width: hypeBarTab.selectedBarId === modelData.id ? 2 : 0
                             border.color: Theme.primary
 
                             Row {
@@ -368,7 +368,7 @@ Item {
                                     }
                                 }
 
-                                DankActionButton {
+                                HypeActionButton {
                                     id: deleteBtn
                                     buttonSize: 32
                                     iconName: "delete"
@@ -378,7 +378,7 @@ Item {
                                     visible: barCard.modelData.id !== "default"
                                     enabled: SettingsData.barConfigs.length > 1
                                     anchors.verticalCenter: parent.verticalCenter
-                                    onClicked: dankBarTab.deleteBar(barCard.modelData.id)
+                                    onClicked: hypeBarTab.deleteBar(barCard.modelData.id)
                                 }
                             }
 
@@ -386,7 +386,7 @@ Item {
                                 anchors.fill: parent
                                 z: -1
                                 cursorShape: Qt.PointingHandCursor
-                                onClicked: dankBarTab.selectedBarId = barCard.modelData.id
+                                onClicked: hypeBarTab.selectedBarId = barCard.modelData.id
                             }
 
                             Behavior on color {
@@ -418,7 +418,7 @@ Item {
                         selectedBarId;
                         return selectedBarConfig?.enabled ?? false;
                     }
-                    onToggled: toggled => dankBarTab.toggleBarEnabled(selectedBarId)
+                    onToggled: toggled => hypeBarTab.toggleBarEnabled(selectedBarId)
                 }
             }
 
@@ -432,7 +432,7 @@ Item {
                     width: parent.width
                     height: positionButtonGroup.height
 
-                    DankButtonGroup {
+                    HypeButtonGroup {
                         id: positionButtonGroup
                         anchors.horizontalCenter: parent.horizontalCenter
                         model: [I18n.tr("Top"), I18n.tr("Bottom"), I18n.tr("Left"), I18n.tr("Right")]
@@ -512,9 +512,9 @@ Item {
                         checked: displayAssignmentColumn.showingAll
                         onToggled: checked => {
                             if (checked) {
-                                dankBarTab.setBarScreenPreferences(selectedBarId, ["all"]);
+                                hypeBarTab.setBarScreenPreferences(selectedBarId, ["all"]);
                             } else {
-                                dankBarTab.setBarScreenPreferences(selectedBarId, []);
+                                hypeBarTab.setBarScreenPreferences(selectedBarId, []);
                             }
                         }
                     }
@@ -523,7 +523,7 @@ Item {
                         text: I18n.tr("Show on Last Display")
                         checked: selectedBarConfig?.showOnLastDisplay ?? true
                         visible: !displayAssignmentColumn.showingAll
-                        onToggled: checked => dankBarTab.setBarShowOnLastDisplay(selectedBarId, checked)
+                        onToggled: checked => hypeBarTab.setBarShowOnLastDisplay(selectedBarId, checked)
                     }
 
                     Rectangle {
@@ -579,7 +579,7 @@ Item {
                                         newPrefs.push(prefObj);
                                     }
 
-                                    dankBarTab.setBarScreenPreferences(selectedBarId, newPrefs);
+                                    hypeBarTab.setBarScreenPreferences(selectedBarId, newPrefs);
                                 }
                             }
                         }
@@ -644,7 +644,7 @@ Item {
 
                     SettingsToggleRow {
                         width: parent.width - parent.leftPadding
-                        text: I18n.tr("Strict auto-hide", "Dank bar setting: hide the bar when the pointer leaves even if a menu or bar popover is still open")
+                        text: I18n.tr("Strict auto-hide", "Hype bar setting: hide the bar when the pointer leaves even if a menu or bar popover is still open")
                         checked: selectedBarConfig?.autoHideStrict ?? false
                         onToggled: toggled => {
                             SettingsData.updateBarConfig(selectedBarId, {
@@ -742,7 +742,7 @@ Item {
 
             SettingsControlledByFrame {
                 visible: SettingsData.frameEnabled
-                parentModal: dankBarTab.parentModal
+                parentModal: hypeBarTab.parentModal
                 settingLabel: I18n.tr("Bar spacing and size")
                 reason: I18n.tr("Managed by Frame")
             }
@@ -947,7 +947,7 @@ Item {
 
                 SettingsControlledByFrame {
                     visible: SettingsData.frameEnabled
-                    parentModal: dankBarTab.parentModal
+                    parentModal: hypeBarTab.parentModal
                     settingLabel: I18n.tr("Bar transparency")
                     reason: I18n.tr("Managed by Frame")
                 }
@@ -1013,7 +1013,7 @@ Item {
 
                 SettingsControlledByFrame {
                     visible: SettingsData.frameEnabled
-                    parentModal: dankBarTab.parentModal
+                    parentModal: hypeBarTab.parentModal
                     settingLabel: I18n.tr("Bar corners and background")
                     reason: I18n.tr("Managed by Frame")
                 }
@@ -1406,8 +1406,8 @@ Item {
             }
 
             SettingsControlledByFrame {
-                visible: dankBarTab.connectedFrameModeActive
-                parentModal: dankBarTab.parentModal
+                visible: hypeBarTab.connectedFrameModeActive
+                parentModal: hypeBarTab.parentModal
                 settingLabel: I18n.tr("Bar shadow, border, and corners")
                 reason: I18n.tr("Managed by Frame in Connected Mode")
             }
@@ -1419,7 +1419,7 @@ Item {
                 settingKey: "barShadow"
                 collapsible: true
                 expanded: false
-                visible: (selectedBarConfig?.enabled ?? false) && !dankBarTab.connectedFrameModeActive
+                visible: (selectedBarConfig?.enabled ?? false) && !hypeBarTab.connectedFrameModeActive
 
                 readonly property bool shadowActive: (selectedBarConfig?.shadowIntensity ?? 0) > 0
                 readonly property bool isCustomColor: (selectedBarConfig?.shadowColorMode ?? "default") === "custom"
@@ -1568,7 +1568,7 @@ Item {
                         width: parent.width
                         height: shadowColorGroup.implicitHeight
 
-                        DankButtonGroup {
+                        HypeButtonGroup {
                             id: shadowColorGroup
                             anchors.horizontalCenter: parent.horizontalCenter
                             buttonPadding: parent.width < 420 ? Theme.spacingXS : Theme.spacingS

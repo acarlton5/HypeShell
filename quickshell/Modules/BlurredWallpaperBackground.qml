@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import QtQuick.Effects
 import Quickshell
 import Quickshell.Wayland
@@ -22,7 +22,7 @@ Variants {
         screen: modelData
 
         WlrLayershell.layer: WlrLayer.Background
-        WlrLayershell.namespace: "dms:blurwallpaper"
+        WlrLayershell.namespace: "hype:blurwallpaper"
         WlrLayershell.exclusionMode: ExclusionMode.Ignore
 
         anchors.top: true
@@ -210,7 +210,7 @@ Variants {
                 active: !root.source || root.isColorSource
                 asynchronous: true
 
-                sourceComponent: DankBackdrop {
+                sourceComponent: HypeBackdrop {
                     screenName: modelData.name
                 }
             }

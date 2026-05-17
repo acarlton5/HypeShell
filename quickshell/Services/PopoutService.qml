@@ -1,4 +1,4 @@
-pragma Singleton
+﻿pragma Singleton
 pragma ComponentBehavior: Bound
 import QtQuick
 import Quickshell
@@ -16,8 +16,8 @@ Singleton {
     property var appDrawerLoader: null
     property var processListPopout: null
     property var processListPopoutLoader: null
-    property var dankDashPopout: null
-    property var dankDashPopoutLoader: null
+    property var hypeDashPopout: null
+    property var hypeDashPopoutLoader: null
     property var batteryPopout: null
     property var batteryPopoutLoader: null
     property var vpnPopout: null
@@ -32,8 +32,8 @@ Singleton {
     property var settingsModal: null
     property var settingsModalLoader: null
     property var clipboardHistoryModal: null
-    property var dankLauncherV2Modal: null
-    property var dankLauncherV2ModalLoader: null
+    property var hypeLauncherV2Modal: null
+    property var hypeLauncherV2ModalLoader: null
     property var powerMenuModal: null
     property var processListModal: null
     property var processListModalLoader: null
@@ -160,94 +160,94 @@ Singleton {
         }
     }
 
-    property bool _dankDashWantsOpen: false
-    property bool _dankDashWantsToggle: false
-    property int _dankDashPendingTab: 0
-    property real _dankDashPendingX: 0
-    property real _dankDashPendingY: 0
-    property real _dankDashPendingWidth: 0
-    property string _dankDashPendingSection: ""
-    property var _dankDashPendingScreen: null
-    property bool _dankDashHasPosition: false
+    property bool _hypeDashWantsOpen: false
+    property bool _hypeDashWantsToggle: false
+    property int _hypeDashPendingTab: 0
+    property real _hypeDashPendingX: 0
+    property real _hypeDashPendingY: 0
+    property real _hypeDashPendingWidth: 0
+    property string _hypeDashPendingSection: ""
+    property var _hypeDashPendingScreen: null
+    property bool _hypeDashHasPosition: false
 
-    function _storeDankDashPosition(x, y, width, section, screen, hasPos) {
-        _dankDashPendingX = x;
-        _dankDashPendingY = y;
-        _dankDashPendingWidth = width;
-        _dankDashPendingSection = section;
-        _dankDashPendingScreen = screen;
-        _dankDashHasPosition = hasPos;
+    function _storeHypeDashPosition(x, y, width, section, screen, hasPos) {
+        _hypeDashPendingX = x;
+        _hypeDashPendingY = y;
+        _hypeDashPendingWidth = width;
+        _hypeDashPendingSection = section;
+        _hypeDashPendingScreen = screen;
+        _hypeDashHasPosition = hasPos;
     }
 
-    function openDankDash(tabIndex, x, y, width, section, screen) {
-        _dankDashPendingTab = tabIndex || 0;
-        if (dankDashPopout) {
+    function openHypeDash(tabIndex, x, y, width, section, screen) {
+        _hypeDashPendingTab = tabIndex || 0;
+        if (hypeDashPopout) {
             if (arguments.length >= 6)
-                setPosition(dankDashPopout, x, y, width, section, screen);
-            dankDashPopout.currentTabIndex = _dankDashPendingTab;
-            dankDashPopout.dashVisible = true;
+                setPosition(hypeDashPopout, x, y, width, section, screen);
+            hypeDashPopout.currentTabIndex = _hypeDashPendingTab;
+            hypeDashPopout.dashVisible = true;
             return;
         }
-        if (!dankDashPopoutLoader)
+        if (!hypeDashPopoutLoader)
             return;
-        _storeDankDashPosition(x, y, width, section, screen, arguments.length >= 6);
-        _dankDashWantsOpen = true;
-        _dankDashWantsToggle = false;
-        dankDashPopoutLoader.active = true;
+        _storeHypeDashPosition(x, y, width, section, screen, arguments.length >= 6);
+        _hypeDashWantsOpen = true;
+        _hypeDashWantsToggle = false;
+        hypeDashPopoutLoader.active = true;
     }
 
-    function closeDankDash() {
-        if (dankDashPopout)
-            dankDashPopout.dashVisible = false;
+    function closeHypeDash() {
+        if (hypeDashPopout)
+            hypeDashPopout.dashVisible = false;
     }
 
-    function unloadDankDash() {
-        // DankDash is intentionally kept alive after first use. Destroying this
+    function unloadHypeDash() {
+        // HypeDash is intentionally kept alive after first use. Destroying this
         // lazy popout during its close signal can invalidate connected overlay
         // bindings while Qt is still unwinding the signal stack.
     }
 
-    function toggleDankDash(tabIndex, x, y, width, section, screen) {
-        _dankDashPendingTab = tabIndex || 0;
-        if (dankDashPopout) {
+    function toggleHypeDash(tabIndex, x, y, width, section, screen) {
+        _hypeDashPendingTab = tabIndex || 0;
+        if (hypeDashPopout) {
             if (arguments.length >= 6)
-                setPosition(dankDashPopout, x, y, width, section, screen);
-            if (dankDashPopout.dashVisible) {
-                dankDashPopout.dashVisible = false;
+                setPosition(hypeDashPopout, x, y, width, section, screen);
+            if (hypeDashPopout.dashVisible) {
+                hypeDashPopout.dashVisible = false;
             } else {
-                dankDashPopout.currentTabIndex = _dankDashPendingTab;
-                dankDashPopout.dashVisible = true;
+                hypeDashPopout.currentTabIndex = _hypeDashPendingTab;
+                hypeDashPopout.dashVisible = true;
             }
             return;
         }
-        if (!dankDashPopoutLoader)
+        if (!hypeDashPopoutLoader)
             return;
-        _storeDankDashPosition(x, y, width, section, screen, arguments.length >= 6);
-        _dankDashWantsToggle = true;
-        _dankDashWantsOpen = false;
-        dankDashPopoutLoader.active = true;
+        _storeHypeDashPosition(x, y, width, section, screen, arguments.length >= 6);
+        _hypeDashWantsToggle = true;
+        _hypeDashWantsOpen = false;
+        hypeDashPopoutLoader.active = true;
     }
 
-    function _onDankDashPopoutLoaded() {
-        if (!dankDashPopout)
+    function _onHypeDashPopoutLoaded() {
+        if (!hypeDashPopout)
             return;
 
-        if (_dankDashHasPosition)
-            setPosition(dankDashPopout, _dankDashPendingX, _dankDashPendingY, _dankDashPendingWidth, _dankDashPendingSection, _dankDashPendingScreen);
+        if (_hypeDashHasPosition)
+            setPosition(hypeDashPopout, _hypeDashPendingX, _hypeDashPendingY, _hypeDashPendingWidth, _hypeDashPendingSection, _hypeDashPendingScreen);
 
-        if (_dankDashWantsOpen) {
-            _dankDashWantsOpen = false;
-            dankDashPopout.currentTabIndex = _dankDashPendingTab;
-            dankDashPopout.dashVisible = true;
+        if (_hypeDashWantsOpen) {
+            _hypeDashWantsOpen = false;
+            hypeDashPopout.currentTabIndex = _hypeDashPendingTab;
+            hypeDashPopout.dashVisible = true;
             return;
         }
-        if (_dankDashWantsToggle) {
-            _dankDashWantsToggle = false;
-            if (dankDashPopout.dashVisible) {
-                dankDashPopout.dashVisible = false;
+        if (_hypeDashWantsToggle) {
+            _hypeDashWantsToggle = false;
+            if (hypeDashPopout.dashVisible) {
+                hypeDashPopout.dashVisible = false;
             } else {
-                dankDashPopout.currentTabIndex = _dankDashPendingTab;
-                dankDashPopout.dashVisible = true;
+                hypeDashPopout.currentTabIndex = _hypeDashPendingTab;
+                hypeDashPopout.dashVisible = true;
             }
         }
     }
@@ -588,107 +588,107 @@ Singleton {
         layoutPopoutLoader.active = false;
     }
 
-    property bool _dankLauncherV2WantsOpen: false
-    property bool _dankLauncherV2WantsToggle: false
-    property string _dankLauncherV2PendingQuery: ""
-    property string _dankLauncherV2PendingMode: ""
+    property bool _hypeLauncherV2WantsOpen: false
+    property bool _hypeLauncherV2WantsToggle: false
+    property string _hypeLauncherV2PendingQuery: ""
+    property string _hypeLauncherV2PendingMode: ""
 
-    function openDankLauncherV2() {
-        if (dankLauncherV2Modal) {
-            dankLauncherV2Modal.show();
-        } else if (dankLauncherV2ModalLoader) {
-            _dankLauncherV2WantsOpen = true;
-            _dankLauncherV2WantsToggle = false;
-            dankLauncherV2ModalLoader.active = true;
+    function openHypeLauncherV2() {
+        if (hypeLauncherV2Modal) {
+            hypeLauncherV2Modal.show();
+        } else if (hypeLauncherV2ModalLoader) {
+            _hypeLauncherV2WantsOpen = true;
+            _hypeLauncherV2WantsToggle = false;
+            hypeLauncherV2ModalLoader.active = true;
         }
     }
 
-    function openDankLauncherV2WithQuery(query: string) {
-        if (dankLauncherV2Modal) {
-            dankLauncherV2Modal.showWithQuery(query);
-        } else if (dankLauncherV2ModalLoader) {
-            _dankLauncherV2PendingQuery = query;
-            _dankLauncherV2WantsOpen = true;
-            _dankLauncherV2WantsToggle = false;
-            dankLauncherV2ModalLoader.active = true;
+    function openHypeLauncherV2WithQuery(query: string) {
+        if (hypeLauncherV2Modal) {
+            hypeLauncherV2Modal.showWithQuery(query);
+        } else if (hypeLauncherV2ModalLoader) {
+            _hypeLauncherV2PendingQuery = query;
+            _hypeLauncherV2WantsOpen = true;
+            _hypeLauncherV2WantsToggle = false;
+            hypeLauncherV2ModalLoader.active = true;
         }
     }
 
-    function openDankLauncherV2WithMode(mode: string) {
-        if (dankLauncherV2Modal) {
-            dankLauncherV2Modal.showWithMode(mode);
-        } else if (dankLauncherV2ModalLoader) {
-            _dankLauncherV2PendingMode = mode;
-            _dankLauncherV2WantsOpen = true;
-            _dankLauncherV2WantsToggle = false;
-            dankLauncherV2ModalLoader.active = true;
+    function openHypeLauncherV2WithMode(mode: string) {
+        if (hypeLauncherV2Modal) {
+            hypeLauncherV2Modal.showWithMode(mode);
+        } else if (hypeLauncherV2ModalLoader) {
+            _hypeLauncherV2PendingMode = mode;
+            _hypeLauncherV2WantsOpen = true;
+            _hypeLauncherV2WantsToggle = false;
+            hypeLauncherV2ModalLoader.active = true;
         }
     }
 
-    function closeDankLauncherV2() {
-        dankLauncherV2Modal?.hide();
+    function closeHypeLauncherV2() {
+        hypeLauncherV2Modal?.hide();
     }
 
-    function unloadDankLauncherV2() {
-        if (dankLauncherV2ModalLoader) {
-            dankLauncherV2Modal = null;
-            dankLauncherV2ModalLoader.active = false;
+    function unloadHypeLauncherV2() {
+        if (hypeLauncherV2ModalLoader) {
+            hypeLauncherV2Modal = null;
+            hypeLauncherV2ModalLoader.active = false;
         }
     }
 
-    function toggleDankLauncherV2() {
-        if (dankLauncherV2Modal) {
-            dankLauncherV2Modal.toggle();
-        } else if (dankLauncherV2ModalLoader) {
-            _dankLauncherV2WantsToggle = true;
-            _dankLauncherV2WantsOpen = false;
-            dankLauncherV2ModalLoader.active = true;
+    function toggleHypeLauncherV2() {
+        if (hypeLauncherV2Modal) {
+            hypeLauncherV2Modal.toggle();
+        } else if (hypeLauncherV2ModalLoader) {
+            _hypeLauncherV2WantsToggle = true;
+            _hypeLauncherV2WantsOpen = false;
+            hypeLauncherV2ModalLoader.active = true;
         }
     }
 
-    function toggleDankLauncherV2WithMode(mode: string) {
-        if (dankLauncherV2Modal) {
-            dankLauncherV2Modal.toggleWithMode(mode);
-        } else if (dankLauncherV2ModalLoader) {
-            _dankLauncherV2PendingMode = mode;
-            _dankLauncherV2WantsToggle = true;
-            _dankLauncherV2WantsOpen = false;
-            dankLauncherV2ModalLoader.active = true;
+    function toggleHypeLauncherV2WithMode(mode: string) {
+        if (hypeLauncherV2Modal) {
+            hypeLauncherV2Modal.toggleWithMode(mode);
+        } else if (hypeLauncherV2ModalLoader) {
+            _hypeLauncherV2PendingMode = mode;
+            _hypeLauncherV2WantsToggle = true;
+            _hypeLauncherV2WantsOpen = false;
+            hypeLauncherV2ModalLoader.active = true;
         }
     }
 
-    function toggleDankLauncherV2WithQuery(query: string) {
-        if (dankLauncherV2Modal) {
-            dankLauncherV2Modal.toggleWithQuery(query);
-        } else if (dankLauncherV2ModalLoader) {
-            _dankLauncherV2PendingQuery = query;
-            _dankLauncherV2WantsOpen = true;
-            _dankLauncherV2WantsToggle = false;
-            dankLauncherV2ModalLoader.active = true;
+    function toggleHypeLauncherV2WithQuery(query: string) {
+        if (hypeLauncherV2Modal) {
+            hypeLauncherV2Modal.toggleWithQuery(query);
+        } else if (hypeLauncherV2ModalLoader) {
+            _hypeLauncherV2PendingQuery = query;
+            _hypeLauncherV2WantsOpen = true;
+            _hypeLauncherV2WantsToggle = false;
+            hypeLauncherV2ModalLoader.active = true;
         }
     }
 
-    function _onDankLauncherV2ModalLoaded() {
-        if (_dankLauncherV2WantsOpen) {
-            _dankLauncherV2WantsOpen = false;
-            if (_dankLauncherV2PendingQuery) {
-                dankLauncherV2Modal?.showWithQuery(_dankLauncherV2PendingQuery);
-                _dankLauncherV2PendingQuery = "";
-            } else if (_dankLauncherV2PendingMode) {
-                dankLauncherV2Modal?.showWithMode(_dankLauncherV2PendingMode);
-                _dankLauncherV2PendingMode = "";
+    function _onHypeLauncherV2ModalLoaded() {
+        if (_hypeLauncherV2WantsOpen) {
+            _hypeLauncherV2WantsOpen = false;
+            if (_hypeLauncherV2PendingQuery) {
+                hypeLauncherV2Modal?.showWithQuery(_hypeLauncherV2PendingQuery);
+                _hypeLauncherV2PendingQuery = "";
+            } else if (_hypeLauncherV2PendingMode) {
+                hypeLauncherV2Modal?.showWithMode(_hypeLauncherV2PendingMode);
+                _hypeLauncherV2PendingMode = "";
             } else {
-                dankLauncherV2Modal?.show();
+                hypeLauncherV2Modal?.show();
             }
             return;
         }
-        if (_dankLauncherV2WantsToggle) {
-            _dankLauncherV2WantsToggle = false;
-            if (_dankLauncherV2PendingMode) {
-                dankLauncherV2Modal?.toggleWithMode(_dankLauncherV2PendingMode);
-                _dankLauncherV2PendingMode = "";
+        if (_hypeLauncherV2WantsToggle) {
+            _hypeLauncherV2WantsToggle = false;
+            if (_hypeLauncherV2PendingMode) {
+                hypeLauncherV2Modal?.toggleWithMode(_hypeLauncherV2PendingMode);
+                _hypeLauncherV2PendingMode = "";
             } else {
-                dankLauncherV2Modal?.toggle();
+                hypeLauncherV2Modal?.toggle();
             }
         }
     }

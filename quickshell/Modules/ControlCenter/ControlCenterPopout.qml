@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import Quickshell.Wayland
 import qs.Common
 import qs.Modules.ControlCenter.Details
@@ -8,10 +8,10 @@ import qs.Modules.ControlCenter.Components
 import qs.Modules.ControlCenter.Models
 import "./utils/state.js" as StateUtils
 
-DankPopout {
+HypePopout {
     id: root
 
-    layerNamespace: "dms:control-center"
+    layerNamespace: "hype:control-center"
     fullHeightSurface: true
 
     property string expandedSection: ""
@@ -203,7 +203,7 @@ DankPopout {
                 }
             }
 
-            DankFlickable {
+            HypeFlickable {
                 id: contentFlickable
                 anchors.fill: parent
                 clip: true

@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import qs.Common
 import qs.Widgets
 import qs.Modules.Settings.Widgets
@@ -29,7 +29,7 @@ Item {
         return "";
     }
 
-    DankFlickable {
+    HypeFlickable {
         anchors.fill: parent
         clip: true
         contentHeight: mainColumn.height + Theme.spacingXL

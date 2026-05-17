@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import Quickshell
 import Quickshell.Services.Pipewire
 import qs.Common
@@ -46,7 +46,7 @@ Rectangle {
             width: parent.width - headerText.width - settingsButton.width
         }
 
-        DankActionButton {
+        HypeActionButton {
             id: settingsButton
             anchors.verticalCenter: parent.verticalCenter
             iconName: "settings"
@@ -79,7 +79,7 @@ Rectangle {
             radius: (Theme.iconSize + Theme.spacingS * 2) / 2
             color: iconArea.containsMouse ? Qt.rgba(Theme.primary.r, Theme.primary.g, Theme.primary.b, 0.12) : "transparent"
 
-            DankRipple {
+            HypeRipple {
                 id: muteRipple
                 cornerRadius: parent.radius
             }
@@ -97,7 +97,7 @@ Rectangle {
                 }
             }
 
-            DankIcon {
+            HypeIcon {
                 anchors.centerIn: parent
                 name: {
                     if (!AudioService.sink || !AudioService.sink.audio)
@@ -119,7 +119,7 @@ Rectangle {
             }
         }
 
-        DankSlider {
+        HypeSlider {
             readonly property real actualVolumePercent: AudioService.sink && AudioService.sink.audio ? Math.round(AudioService.sink.audio.volume * 100) : 0
 
             anchors.verticalCenter: parent.verticalCenter
@@ -147,7 +147,7 @@ Rectangle {
         }
     }
 
-    DankFlickable {
+    HypeFlickable {
         id: audioContent
         anchors.top: volumeSlider.visible ? volumeSlider.bottom : headerRow.bottom
         anchors.left: parent.left
@@ -224,7 +224,7 @@ Rectangle {
                     border.color: modelData === AudioService.sink ? Theme.primary : Theme.outlineLight
                     border.width: modelData === AudioService.sink ? 2 : 1
 
-                    DankRipple {
+                    HypeRipple {
                         id: deviceRipple
                         cornerRadius: outputDelegate.radius
                     }
@@ -235,7 +235,7 @@ Rectangle {
                         anchors.leftMargin: Theme.spacingM
                         spacing: Theme.spacingS
 
-                        DankIcon {
+                        HypeIcon {
                             name: AudioService.sinkIcon(modelData)
                             size: Theme.iconSize - 4
                             color: modelData === AudioService.sink ? Theme.primary : Theme.surfaceText
@@ -290,7 +290,7 @@ Rectangle {
                             anchors.centerIn: parent
                             spacing: 4
 
-                            DankIcon {
+                            HypeIcon {
                                 name: "push_pin"
                                 size: 16
                                 color: {
@@ -314,7 +314,7 @@ Rectangle {
                             }
                         }
 
-                        DankRipple {
+                        HypeRipple {
                             id: pinRipple
                             cornerRadius: parent.radius
                         }
@@ -409,7 +409,7 @@ Rectangle {
                         anchors.leftMargin: Theme.spacingM
                         spacing: Theme.spacingS
 
-                        DankIcon {
+                        HypeIcon {
                             name: "album"
                             size: Theme.iconSize - 4
                             color: !modelData.audio.muted ? Theme.primary : Theme.surfaceText
@@ -465,7 +465,7 @@ Rectangle {
                                 radius: Theme.cornerRadius
                                 color: appIconArea.containsMouse ? Qt.rgba(Theme.primary.r, Theme.primary.g, Theme.primary.b, 0.12) : Theme.withAlpha(Theme.primary, 0)
 
-                                DankRipple {
+                                HypeRipple {
                                     id: appMuteRipple
                                     cornerRadius: parent.radius
                                 }
@@ -485,7 +485,7 @@ Rectangle {
                                     }
                                 }
 
-                                DankIcon {
+                                HypeIcon {
                                     anchors.centerIn: parent
                                     name: {
                                         if (!modelData)
@@ -509,7 +509,7 @@ Rectangle {
                                 }
                             }
 
-                            DankSlider {
+                            HypeSlider {
                                 readonly property real actualVolumePercent: modelData ? Math.round(modelData.audio.volume * 100) : 0
 
                                 anchors.verticalCenter: parent.verticalCenter

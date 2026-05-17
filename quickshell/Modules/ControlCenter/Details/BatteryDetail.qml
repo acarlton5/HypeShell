@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import Quickshell.Services.UPower
 import qs.Common
 import qs.Services
@@ -47,7 +47,7 @@ Rectangle {
             width: parent.width
             spacing: Theme.spacingM
 
-            DankIcon {
+            HypeIcon {
                 name: BatteryService.getBatteryIcon()
                 size: Theme.iconSizeLarge
                 color: {
@@ -192,7 +192,7 @@ Rectangle {
             }
         }
 
-        DankButtonGroup {
+        HypeButtonGroup {
             property var profileModel: (typeof PowerProfiles !== "undefined") ? [PowerProfile.PowerSaver, PowerProfile.Balanced].concat(PowerProfiles.hasPerformanceProfile ? [PowerProfile.Performance] : []) : [PowerProfile.PowerSaver, PowerProfile.Balanced, PowerProfile.Performance]
             property int currentProfileIndex: {
                 if (typeof PowerProfiles === "undefined")
@@ -232,7 +232,7 @@ Rectangle {
                     width: parent.width
                     spacing: Theme.spacingM
 
-                    DankIcon {
+                    HypeIcon {
                         name: "warning"
                         size: Theme.iconSize
                         color: Theme.error

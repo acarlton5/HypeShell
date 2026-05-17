@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import Quickshell
 import qs.Common
 import qs.Services
@@ -213,7 +213,7 @@ Item {
         anchors.fill: parent
         spacing: Theme.spacingS
 
-        DankFilterChips {
+        HypeFilterChips {
             id: filterChips
             width: parent.width
             currentIndex: root.getChipIndex()
@@ -226,7 +226,7 @@ Item {
             }
         }
 
-        DankListView {
+        HypeListView {
             id: historyListView
             width: parent.width
             height: parent.height - filterChips.height - Theme.spacingS

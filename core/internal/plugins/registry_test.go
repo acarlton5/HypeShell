@@ -1,4 +1,4 @@
-package plugins
+﻿package plugins
 
 import (
 	"encoding/json"
@@ -79,7 +79,7 @@ func TestLoadPlugins(t *testing.T) {
 
 		plugin1 := Plugin{
 			Name:         "TestPlugin1",
-			Capabilities: []string{"dankbar-widget"},
+			Capabilities: []string{"hypebar-widget"},
 			Category:     "monitoring",
 			Repo:         "https://github.com/test/plugin1",
 			Author:       "Test Author",
@@ -110,7 +110,7 @@ func TestLoadPlugins(t *testing.T) {
 
 		assert.Equal(t, "TestPlugin1", registry.plugins[0].Name)
 		assert.Equal(t, "TestPlugin2", registry.plugins[1].Name)
-		assert.Equal(t, []string{"dankbar-widget"}, registry.plugins[0].Capabilities)
+		assert.Equal(t, []string{"hypebar-widget"}, registry.plugins[0].Capabilities)
 		assert.Equal(t, []string{"dep1", "dep2"}, registry.plugins[1].Dependencies)
 	})
 

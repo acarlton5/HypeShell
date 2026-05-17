@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import Quickshell
 import qs.Common
 import qs.Services
@@ -327,7 +327,7 @@ FloatingWindow {
             border.width: 2
             anchors.verticalCenter: parent.verticalCenter
 
-            DankIcon {
+            HypeIcon {
                 anchors.centerIn: parent
                 name: parent.parent.indeterminate ? "remove" : "check"
                 size: 12
@@ -420,7 +420,7 @@ FloatingWindow {
                 }
             }
 
-            DankActionButton {
+            HypeActionButton {
                 id: closeBtn
                 anchors.right: parent.right
                 iconName: "close"
@@ -430,7 +430,7 @@ FloatingWindow {
             }
         }
 
-        DankFlickable {
+        HypeFlickable {
             id: flickable
             anchors.top: header.bottom
             anchors.left: parent.left
@@ -449,7 +449,7 @@ FloatingWindow {
 
                 InputField {
                     hasFocus: nameInput.activeFocus
-                    DankTextField {
+                    HypeTextField {
                         id: nameInput
                         anchors.fill: parent
                         font.pixelSize: Theme.fontSizeSmall
@@ -466,7 +466,7 @@ FloatingWindow {
 
                 InputField {
                     hasFocus: appIdInput.activeFocus
-                    DankTextField {
+                    HypeTextField {
                         id: appIdInput
                         anchors.fill: parent
                         font.pixelSize: Theme.fontSizeSmall
@@ -484,7 +484,7 @@ FloatingWindow {
                     InputField {
                         width: addTitleBtn.visible ? parent.width - addTitleBtn.width - Theme.spacingS : parent.width
                         hasFocus: titleInput.activeFocus
-                        DankTextField {
+                        HypeTextField {
                             id: titleInput
                             anchors.fill: parent
                             font.pixelSize: Theme.fontSizeSmall
@@ -495,7 +495,7 @@ FloatingWindow {
                         }
                     }
 
-                    DankActionButton {
+                    HypeActionButton {
                         id: addTitleBtn
                         width: root.inputFieldHeight
                         height: root.inputFieldHeight
@@ -566,7 +566,7 @@ FloatingWindow {
                         InputField {
                             width: parent.width
                             hasFocus: outputInput.activeFocus
-                            DankTextField {
+                            HypeTextField {
                                 id: outputInput
                                 anchors.fill: parent
                                 font.pixelSize: Theme.fontSizeSmall
@@ -593,7 +593,7 @@ FloatingWindow {
                         InputField {
                             width: parent.width
                             hasFocus: workspaceInput.activeFocus
-                            DankTextField {
+                            HypeTextField {
                                 id: workspaceInput
                                 anchors.fill: parent
                                 font.pixelSize: Theme.fontSizeSmall
@@ -626,7 +626,7 @@ FloatingWindow {
                         InputField {
                             width: parent.width
                             hasFocus: columnWidthInput.activeFocus
-                            DankTextField {
+                            HypeTextField {
                                 id: columnWidthInput
                                 anchors.fill: parent
                                 font.pixelSize: Theme.fontSizeSmall
@@ -653,7 +653,7 @@ FloatingWindow {
                         InputField {
                             width: parent.width
                             hasFocus: windowHeightInput.activeFocus
-                            DankTextField {
+                            HypeTextField {
                                 id: windowHeightInput
                                 anchors.fill: parent
                                 font.pixelSize: Theme.fontSizeSmall
@@ -680,7 +680,7 @@ FloatingWindow {
                         anchors.verticalCenter: parent.verticalCenter
                     }
 
-                    DankSlider {
+                    HypeSlider {
                         id: opacitySlider
                         width: parent.width - 100
                         minimum: 10
@@ -731,7 +731,7 @@ FloatingWindow {
                             horizontalAlignment: Text.AlignLeft
                         }
 
-                        DankDropdown {
+                        HypeDropdown {
                             id: blockOutDropdown
                             width: parent.width
                             dropdownWidth: parent.width
@@ -753,7 +753,7 @@ FloatingWindow {
                             horizontalAlignment: Text.AlignLeft
                         }
 
-                        DankDropdown {
+                        HypeDropdown {
                             id: columnDisplayDropdown
                             width: parent.width
                             dropdownWidth: parent.width
@@ -775,7 +775,7 @@ FloatingWindow {
                         anchors.verticalCenter: parent.verticalCenter
                     }
 
-                    DankSlider {
+                    HypeSlider {
                         id: scrollFactorSlider
                         width: parent.width - 120
                         minimum: 10
@@ -796,7 +796,7 @@ FloatingWindow {
                         anchors.verticalCenter: parent.verticalCenter
                     }
 
-                    DankSlider {
+                    HypeSlider {
                         id: cornerRadiusSlider
                         width: parent.width - 130
                         minimum: 0
@@ -830,7 +830,7 @@ FloatingWindow {
                         InputField {
                             width: parent.width
                             hasFocus: minWidthInput.activeFocus
-                            DankTextField {
+                            HypeTextField {
                                 id: minWidthInput
                                 anchors.fill: parent
                                 font.pixelSize: Theme.fontSizeSmall
@@ -857,7 +857,7 @@ FloatingWindow {
                         InputField {
                             width: parent.width
                             hasFocus: maxWidthInput.activeFocus
-                            DankTextField {
+                            HypeTextField {
                                 id: maxWidthInput
                                 anchors.fill: parent
                                 font.pixelSize: Theme.fontSizeSmall
@@ -884,7 +884,7 @@ FloatingWindow {
                         InputField {
                             width: parent.width
                             hasFocus: minHeightInput.activeFocus
-                            DankTextField {
+                            HypeTextField {
                                 id: minHeightInput
                                 anchors.fill: parent
                                 font.pixelSize: Theme.fontSizeSmall
@@ -911,7 +911,7 @@ FloatingWindow {
                         InputField {
                             width: parent.width
                             hasFocus: maxHeightInput.activeFocus
-                            DankTextField {
+                            HypeTextField {
                                 id: maxHeightInput
                                 anchors.fill: parent
                                 font.pixelSize: Theme.fontSizeSmall
@@ -996,7 +996,7 @@ FloatingWindow {
                         InputField {
                             width: parent.width
                             hasFocus: sizeInput.activeFocus
-                            DankTextField {
+                            HypeTextField {
                                 id: sizeInput
                                 anchors.fill: parent
                                 font.pixelSize: Theme.fontSizeSmall
@@ -1023,7 +1023,7 @@ FloatingWindow {
                         InputField {
                             width: parent.width
                             hasFocus: moveInput.activeFocus
-                            DankTextField {
+                            HypeTextField {
                                 id: moveInput
                                 anchors.fill: parent
                                 font.pixelSize: Theme.fontSizeSmall
@@ -1056,7 +1056,7 @@ FloatingWindow {
                         InputField {
                             width: parent.width
                             hasFocus: monitorInput.activeFocus
-                            DankTextField {
+                            HypeTextField {
                                 id: monitorInput
                                 anchors.fill: parent
                                 font.pixelSize: Theme.fontSizeSmall
@@ -1083,7 +1083,7 @@ FloatingWindow {
                         InputField {
                             width: parent.width
                             hasFocus: hyprWorkspaceInput.activeFocus
-                            DankTextField {
+                            HypeTextField {
                                 id: hyprWorkspaceInput
                                 anchors.fill: parent
                                 font.pixelSize: Theme.fontSizeSmall

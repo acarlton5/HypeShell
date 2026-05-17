@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import qs.Widgets
 
 FocusScope {
@@ -59,7 +59,7 @@ FocusScope {
                     anchors.verticalCenter: parent.verticalCenter
                 }
 
-                DankTextField {
+                HypeTextField {
                     id: triggerField
                     width: 100
                     height: 40
@@ -102,7 +102,7 @@ FocusScope {
                     anchors.verticalCenter: parent.verticalCenter
                 }
 
-                DankTextField {
+                HypeTextField {
                     id: maxNotesField
                     width: 80
                     height: 40

@@ -1,4 +1,4 @@
-{
+﻿{
   self,
   pkgs,
   ...
@@ -12,7 +12,7 @@ let
     + "/nixos";
 in
 pkgs.testers.runNixOSTest {
-  name = "dms-home-manager-module";
+  name = "hype-home-manager-module";
 
   nodes.machine = {
     ...
@@ -21,29 +21,29 @@ pkgs.testers.runNixOSTest {
       homeManagerNixosModule
     ];
 
-    users.users.danklinux = {
+    users.users.hypelinux = {
       isNormalUser = true;
       createHome = true;
-      home = "/home/danklinux";
+      home = "/home/hypelinux";
       extraGroups = [ "wheel" ];
     };
 
     home-manager.useGlobalPkgs = true;
     home-manager.useUserPackages = true;
 
-    home-manager.users.danklinux = {
+    home-manager.users.hypelinux = {
       pkgs,
       ...
     }: {
       imports = [
-        self.homeModules.dank-material-shell
+        self.homeModules.hype-material-shell
       ];
 
-      home.username = "danklinux";
-      home.homeDirectory = "/home/danklinux";
+      home.username = "hypelinux";
+      home.homeDirectory = "/home/hypelinux";
       home.stateVersion = "25.11";
 
-      programs.dank-material-shell = {
+      programs.hype-material-shell = {
         enable = true;
         systemd = {
           enable = true;
@@ -64,7 +64,7 @@ pkgs.testers.runNixOSTest {
 
         plugins.TestPlugin = {
           enable = true;
-          src = pkgs.runCommand "dms-test-plugin" { } ''
+          src = pkgs.runCommand "hype-test-plugin" { } ''
             mkdir -p "$out"
             echo plugin > "$out/plugin.txt"
           '';
@@ -84,18 +84,18 @@ pkgs.testers.runNixOSTest {
 
     machine.wait_for_unit("multi-user.target")
 
-    machine.succeed("su -- danklinux -c 'command -v dms'")
-    machine.succeed("su -- danklinux -c 'test -f ~/.config/DankMaterialShell/settings.json'")
-    machine.succeed("su -- danklinux -c 'test -f ~/.config/DankMaterialShell/clsettings.json'")
-    machine.succeed("su -- danklinux -c 'test -f ~/.config/DankMaterialShell/plugin_settings.json'")
-    machine.succeed("su -- danklinux -c 'test -e ~/.config/DankMaterialShell/plugins/TestPlugin'")
-    machine.succeed("su -- danklinux -c 'test -f ~/.local/state/DankMaterialShell/session.json'")
+    machine.succeed("su -- hypelinux -c 'command -v hype'")
+    machine.succeed("su -- hypelinux -c 'test -f ~/.config/HypeMaterialShell/settings.json'")
+    machine.succeed("su -- hypelinux -c 'test -f ~/.config/HypeMaterialShell/clsettings.json'")
+    machine.succeed("su -- hypelinux -c 'test -f ~/.config/HypeMaterialShell/plugin_settings.json'")
+    machine.succeed("su -- hypelinux -c 'test -e ~/.config/HypeMaterialShell/plugins/TestPlugin'")
+    machine.succeed("su -- hypelinux -c 'test -f ~/.local/state/HypeMaterialShell/session.json'")
 
-    settings = json.loads(machine.succeed("su -- danklinux -c 'cat ~/.config/DankMaterialShell/settings.json'"))
-    clipboard = json.loads(machine.succeed("su -- danklinux -c 'cat ~/.config/DankMaterialShell/clsettings.json'"))
-    session = json.loads(machine.succeed("su -- danklinux -c 'cat ~/.local/state/DankMaterialShell/session.json'"))
-    plugins = json.loads(machine.succeed("su -- danklinux -c 'cat ~/.config/DankMaterialShell/plugin_settings.json'"))
-    doctor = json.loads(machine.succeed("su -- danklinux -c 'dms doctor --json'"))
+    settings = json.loads(machine.succeed("su -- hypelinux -c 'cat ~/.config/HypeMaterialShell/settings.json'"))
+    clipboard = json.loads(machine.succeed("su -- hypelinux -c 'cat ~/.config/HypeMaterialShell/clsettings.json'"))
+    session = json.loads(machine.succeed("su -- hypelinux -c 'cat ~/.local/state/HypeMaterialShell/session.json'"))
+    plugins = json.loads(machine.succeed("su -- hypelinux -c 'cat ~/.config/HypeMaterialShell/plugin_settings.json'"))
+    doctor = json.loads(machine.succeed("su -- hypelinux -c 'hype doctor --json'"))
 
     t.assertEqual(settings["theme"], "integration-test")
     t.assertEqual(clipboard["maxItems"], 10)

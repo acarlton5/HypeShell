@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import qs.Common
 import qs.Widgets
 
@@ -51,7 +51,7 @@ Column {
                 color: closeArea.containsMouse ? Theme.errorHover : "transparent"
                 visible: root.showCloseButton
 
-                DankIcon {
+                HypeIcon {
                     anchors.centerIn: parent
                     name: "close"
                     size: Theme.iconSize - 4

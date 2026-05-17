@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import qs.Common
 
 MouseArea {
@@ -31,14 +31,14 @@ MouseArea {
 
         Behavior on color {
             enabled: Theme.currentAnimationSpeed !== SettingsData.AnimationSpeed.None
-            DankColorAnim {
+            HypeColorAnim {
                 duration: Theme.shorterDuration
                 easing.bezierCurve: Theme.expressiveCurves.standardDecel
             }
         }
     }
 
-    DankRipple {
+    HypeRipple {
         id: rippleLayer
         anchors.fill: parent
         rippleColor: root.stateColor
@@ -68,7 +68,7 @@ MouseArea {
         tooltip.hide();
     }
 
-    DankTooltipV2 {
+    HypeTooltipV2 {
         id: tooltip
     }
 }

@@ -1,4 +1,4 @@
-pragma ComponentBehavior: Bound
+﻿pragma ComponentBehavior: Bound
 
 import QtQuick
 import Quickshell
@@ -18,7 +18,7 @@ PanelWindow {
     visible: active
     color: "transparent"
 
-    WlrLayershell.namespace: "dms:fade-to-lock"
+    WlrLayershell.namespace: "hype:fade-to-lock"
     WlrLayershell.layer: WlrLayershell.Overlay
     WlrLayershell.exclusiveZone: -1
     WlrLayershell.keyboardFocus: active ? WlrKeyboardFocus.Exclusive : WlrKeyboardFocus.None

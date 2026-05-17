@@ -1,4 +1,4 @@
-pragma Singleton
+﻿pragma Singleton
 pragma ComponentBehavior: Bound
 
 import QtQuick
@@ -13,7 +13,7 @@ Singleton {
 
     readonly property int longTextThreshold: 200
 
-    readonly property bool clipboardAvailable: DMSService.isConnected && (DMSService.capabilities.length === 0 || DMSService.capabilities.includes("clipboard"))
+    readonly property bool clipboardAvailable: HYPEService.isConnected && (HYPEService.capabilities.length === 0 || HYPEService.capabilities.includes("clipboard"))
     readonly property bool wtypeAvailable: SessionService.wtypeAvailable
 
     property var internalEntries: []
@@ -78,7 +78,7 @@ Singleton {
         if (!clipboardAvailable) {
             return;
         }
-        DMSService.sendRequest("clipboard.getHistory", null, function (response) {
+        HYPEService.sendRequest("clipboard.getHistory", null, function (response) {
             if (response.error) {
                 log.warn("Failed to get history:", response.error);
                 return;
@@ -100,7 +100,7 @@ Singleton {
     }
 
     function copyEntry(entry, closeCallback) {
-        DMSService.sendRequest("clipboard.copyEntry", {
+        HYPEService.sendRequest("clipboard.copyEntry", {
             "id": entry.id
         }, function (response) {
             if (response.error) {
@@ -120,7 +120,7 @@ Singleton {
             ToastService.showError(I18n.tr("wtype not available - install wtype for paste support"));
             return;
         }
-        DMSService.sendRequest("clipboard.copyEntry", {
+        HYPEService.sendRequest("clipboard.copyEntry", {
             "id": entry.id
         }, function (response) {
             if (response.error) {
@@ -142,7 +142,7 @@ Singleton {
     }
 
     function deleteEntry(entry) {
-        DMSService.sendRequest("clipboard.deleteEntry", {
+        HYPEService.sendRequest("clipboard.deleteEntry", {
             "id": entry.id
         }, function (response) {
             if (response.error) {
@@ -167,7 +167,7 @@ Singleton {
             return;
         }
         confirmDialog.show(I18n.tr("Delete Saved Item?"), I18n.tr("This will permanently remove this saved clipboard item. This action cannot be undone."), function () {
-            DMSService.sendRequest("clipboard.deleteEntry", {
+            HYPEService.sendRequest("clipboard.deleteEntry", {
                 "id": entry.id
             }, function (response) {
                 if (response.error) {
@@ -182,7 +182,7 @@ Singleton {
     }
 
     function pinEntry(entry) {
-        DMSService.sendRequest("clipboard.getPinnedCount", null, function (countResponse) {
+        HYPEService.sendRequest("clipboard.getPinnedCount", null, function (countResponse) {
             if (countResponse.error) {
                 ToastService.showError(I18n.tr("Failed to check pin limit"));
                 return;
@@ -194,7 +194,7 @@ Singleton {
                 return;
             }
 
-            DMSService.sendRequest("clipboard.pinEntry", {
+            HYPEService.sendRequest("clipboard.pinEntry", {
                 "id": entry.id
             }, function (response) {
                 if (response.error) {
@@ -208,7 +208,7 @@ Singleton {
     }
 
     function unpinEntry(entry) {
-        DMSService.sendRequest("clipboard.unpinEntry", {
+        HYPEService.sendRequest("clipboard.unpinEntry", {
             "id": entry.id
         }, function (response) {
             if (response.error) {
@@ -223,7 +223,7 @@ Singleton {
     function clearAll() {
         const hasPinned = pinnedCount > 0;
         const savedCount = pinnedCount;
-        DMSService.sendRequest("clipboard.clearHistory", null, function (response) {
+        HYPEService.sendRequest("clipboard.clearHistory", null, function (response) {
             if (response.error) {
                 log.warn("Failed to clear history:", response.error);
                 return;
@@ -264,7 +264,7 @@ Singleton {
     }
 
     Connections {
-        target: DMSService
+        target: HYPEService
         enabled: root.refCount > 0
         function onClipboardStateUpdate(data) {
             const newHistory = data.history || [];

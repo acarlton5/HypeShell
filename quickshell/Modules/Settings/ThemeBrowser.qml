@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import QtQuick.Controls
 import Quickshell
 import qs.Common
@@ -81,7 +81,7 @@ FloatingWindow {
             return;
         setThemeInstalling(themeId, true);
         ToastService.showInfo(I18n.tr("Installing: %1", "installation progress").arg(themeName));
-        DMSService.installTheme(themeId, response => {
+        HYPEService.installTheme(themeId, response => {
             setThemeInstalling(themeId, false);
             if (response.error) {
                 ToastService.showError(I18n.tr("Install failed: %1", "installation error").arg(response.error));
@@ -111,7 +111,7 @@ FloatingWindow {
 
     function uninstallTheme(themeId, themeName) {
         ToastService.showInfo(I18n.tr("Uninstalling: %1", "uninstallation progress").arg(themeName));
-        DMSService.uninstallTheme(themeId, response => {
+        HYPEService.uninstallTheme(themeId, response => {
             if (response.error) {
                 ToastService.showError(I18n.tr("Uninstall failed: %1", "uninstallation error").arg(response.error));
                 return;
@@ -123,8 +123,8 @@ FloatingWindow {
 
     function refreshThemes() {
         isLoading = true;
-        DMSService.listThemes();
-        DMSService.listInstalledThemes();
+        HYPEService.listThemes();
+        HYPEService.listInstalledThemes();
     }
 
     function checkPendingInstall() {
@@ -193,7 +193,7 @@ FloatingWindow {
     }
 
     Connections {
-        target: DMSService
+        target: HYPEService
         function onThemesListReceived(themes) {
             isLoading = false;
             allThemes = themes;
@@ -249,7 +249,7 @@ FloatingWindow {
                     onDoubleClicked: windowControls.tryToggleMaximize()
                 }
 
-                DankIcon {
+                HypeIcon {
                     id: headerIcon
                     name: "palette"
                     size: Theme.iconSize
@@ -274,7 +274,7 @@ FloatingWindow {
                     anchors.verticalCenter: parent.verticalCenter
                     spacing: Theme.spacingXS
 
-                    DankActionButton {
+                    HypeActionButton {
                         id: refreshButton
                         iconName: "refresh"
                         iconSize: 18
@@ -283,7 +283,7 @@ FloatingWindow {
                         onClicked: root.refreshThemes()
                     }
 
-                    DankActionButton {
+                    HypeActionButton {
                         visible: windowControls.canMaximize
                         iconName: root.maximized ? "fullscreen_exit" : "fullscreen"
                         iconSize: Theme.iconSize - 2
@@ -291,7 +291,7 @@ FloatingWindow {
                         onClicked: windowControls.tryToggleMaximize()
                     }
 
-                    DankActionButton {
+                    HypeActionButton {
                         id: closeButton
                         iconName: "close"
                         iconSize: Theme.iconSize - 2
@@ -313,7 +313,7 @@ FloatingWindow {
                 wrapMode: Text.WordWrap
             }
 
-            DankTextField {
+            HypeTextField {
                 id: browserSearchField
                 anchors.left: parent.left
                 anchors.right: parent.right
@@ -358,7 +358,7 @@ FloatingWindow {
                         anchors.centerIn: parent
                         spacing: Theme.spacingM
 
-                        DankIcon {
+                        HypeIcon {
                             name: "sync"
                             size: 48
                             color: Theme.primary
@@ -383,7 +383,7 @@ FloatingWindow {
                     }
                 }
 
-                DankListView {
+                HypeListView {
                     id: themeBrowserList
 
                     anchors.fill: parent
@@ -394,7 +394,7 @@ FloatingWindow {
                     clip: true
                     visible: !root.isLoading
 
-                    ScrollBar.vertical: DankScrollbar {
+                    ScrollBar.vertical: HypeScrollbar {
                         id: browserScrollbar
                     }
 
@@ -458,7 +458,7 @@ FloatingWindow {
                                 }
                             }
 
-                            DankIcon {
+                            HypeIcon {
                                 name: "palette"
                                 size: 48
                                 color: Theme.primary
@@ -614,7 +614,7 @@ FloatingWindow {
                                             border.color: Theme.outline
                                             border.width: 1
 
-                                            DankTooltipV2 {
+                                            HypeTooltipV2 {
                                                 id: accentTooltip
                                             }
 
@@ -658,7 +658,7 @@ FloatingWindow {
                                     anchors.centerIn: parent
                                     spacing: Theme.spacingXS
 
-                                    DankIcon {
+                                    HypeIcon {
                                         id: installButtonIcon
                                         name: isInstalling ? "sync" : (isInstalled ? (uninstallMouseArea.containsMouse ? "delete" : "check") : "download")
                                         size: 16

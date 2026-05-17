@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import qs.Common
 import qs.Services
 import qs.Widgets
@@ -42,7 +42,7 @@ StyledRect {
             width: parent.width
             spacing: Theme.spacingM
 
-            DankIcon {
+            HypeIcon {
                 name: root.isConnected && !root.isDisabled ? "desktop_windows" : "desktop_access_disabled"
                 size: Theme.iconSize - 4
                 color: root.isConnected && !root.isDisabled ? Theme.primary : Theme.surfaceVariantText
@@ -98,7 +98,7 @@ StyledRect {
                 color: deleteArea.containsMouse ? Theme.errorHover : "transparent"
                 anchors.verticalCenter: parent.verticalCenter
 
-                DankIcon {
+                HypeIcon {
                     anchors.centerIn: parent
                     name: "delete"
                     size: 18
@@ -133,7 +133,7 @@ StyledRect {
             }
         }
 
-        DankDropdown {
+        HypeDropdown {
             width: parent.width
             text: I18n.tr("Resolution & Refresh")
             visible: root.isConnected && !root.isDisabled
@@ -211,7 +211,7 @@ StyledRect {
                         return parseFloat(scale.toFixed(2)).toString();
                     }
 
-                    DankDropdown {
+                    HypeDropdown {
                         id: scaleDropdown
                         width: parent.width
                         dropdownWidth: parent.width
@@ -243,7 +243,7 @@ StyledRect {
                         }
                     }
 
-                    DankTextField {
+                    HypeTextField {
                         id: scaleInput
                         width: parent.width
                         height: 40
@@ -283,7 +283,7 @@ StyledRect {
                     horizontalAlignment: Text.AlignLeft
                 }
 
-                DankDropdown {
+                HypeDropdown {
                     width: parent.width
                     dropdownWidth: parent.width
                     currentValue: {
@@ -298,7 +298,7 @@ StyledRect {
             }
         }
 
-        DankToggle {
+        HypeToggle {
             width: parent.width
             text: I18n.tr("Variable Refresh Rate")
             visible: root.isConnected && !root.isDisabled && !CompositorService.isDwl && !CompositorService.isHyprland && !CompositorService.isNiri && (DisplayConfigState.outputs[root.outputName]?.vrr_supported ?? false)
@@ -311,7 +311,7 @@ StyledRect {
             onToggled: checked => DisplayConfigState.setPendingChange(root.outputName, "vrr", checked)
         }
 
-        DankDropdown {
+        HypeDropdown {
             width: parent.width
             text: I18n.tr("Variable Refresh Rate")
             visible: root.isConnected && !root.isDisabled && CompositorService.isHyprland && (DisplayConfigState.outputs[root.outputName]?.vrr_supported ?? false)
@@ -334,7 +334,7 @@ StyledRect {
             }
         }
 
-        DankDropdown {
+        HypeDropdown {
             width: parent.width
             text: I18n.tr("Variable Refresh Rate")
             visible: root.isConnected && !root.isDisabled && CompositorService.isNiri && (DisplayConfigState.outputs[root.outputName]?.vrr_supported ?? false)

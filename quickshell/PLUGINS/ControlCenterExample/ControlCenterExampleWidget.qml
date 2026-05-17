@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import Quickshell
 import qs.Common
 import qs.Services
@@ -30,7 +30,7 @@ PluginComponent {
         Row {
             spacing: Theme.spacingXS
 
-            DankIcon {
+            HypeIcon {
                 name: root.isEnabled ? "toggle_on" : "toggle_off"
                 color: root.isEnabled ? Theme.primary : Theme.surfaceVariantText
                 font.pixelSize: Theme.iconSize - 4
@@ -50,7 +50,7 @@ PluginComponent {
         Column {
             spacing: Theme.spacingXS
 
-            DankIcon {
+            HypeIcon {
                 name: root.isEnabled ? "toggle_on" : "toggle_off"
                 color: root.isEnabled ? Theme.primary : Theme.surfaceVariantText
                 font.pixelSize: Theme.iconSize - 4

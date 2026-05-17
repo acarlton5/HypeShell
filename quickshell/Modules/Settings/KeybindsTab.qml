@@ -1,4 +1,4 @@
-pragma ComponentBehavior: Bound
+﻿pragma ComponentBehavior: Bound
 
 import QtQuick
 import Quickshell
@@ -184,7 +184,7 @@ Item {
         _ensureCurrentProvider();
     }
 
-    DankFlickable {
+    HypeFlickable {
         id: flickable
         anchors.fill: parent
         clip: true
@@ -216,7 +216,7 @@ Item {
                         width: parent.width
                         spacing: Theme.spacingM
 
-                        DankIcon {
+                        HypeIcon {
                             name: "keyboard"
                             size: Theme.iconSize
                             color: Theme.primary
@@ -238,7 +238,7 @@ Item {
                             }
 
                             StyledText {
-                                readonly property string bindsFile: KeybindsService.currentProvider === "niri" ? "dms/binds.kdl" : "hype/binds.conf"
+                                readonly property string bindsFile: KeybindsService.currentProvider === "niri" ? "hype/binds.kdl" : "hype/binds.conf"
                                 text: I18n.tr("Click any shortcut to edit. Changes save to %1").arg(bindsFile)
                                 font.pixelSize: Theme.fontSizeSmall
                                 color: Theme.surfaceVariantText
@@ -253,7 +253,7 @@ Item {
                         width: parent.width
                         spacing: Theme.spacingM
 
-                        DankTextField {
+                        HypeTextField {
                             id: searchField
                             width: parent.width - addButton.width - Theme.spacingM
                             placeholderText: I18n.tr("Search keybinds...")
@@ -264,7 +264,7 @@ Item {
                             }
                         }
 
-                        DankActionButton {
+                        HypeActionButton {
                             id: addButton
                             width: searchField.height
                             height: searchField.height
@@ -288,7 +288,7 @@ Item {
                 anchors.horizontalCenter: parent.horizontalCenter
                 radius: Theme.cornerRadius
 
-                readonly property var status: KeybindsService.dmsStatus
+                readonly property var status: KeybindsService.hypeStatus
                 readonly property bool showError: !status.included && status.exists
                 readonly property bool showWarning: status.included && status.overriddenBy > 0
                 readonly property bool showSetup: !status.exists
@@ -308,7 +308,7 @@ Item {
                         width: parent.width
                         spacing: Theme.spacingM
 
-                        DankIcon {
+                        HypeIcon {
                             name: warningBox.showWarning ? "info" : "warning"
                             size: Theme.iconSize
                             color: Theme.primary
@@ -336,7 +336,7 @@ Item {
                             }
 
                             StyledText {
-                                readonly property string bindsFile: KeybindsService.currentProvider === "niri" ? "dms/binds.kdl" : "hype/binds.conf"
+                                readonly property string bindsFile: KeybindsService.currentProvider === "niri" ? "hype/binds.kdl" : "hype/binds.conf"
                                 text: {
                                     if (warningBox.showSetup)
                                         return I18n.tr("Click 'Setup' to create %1 and add include to config.").arg(bindsFile);
@@ -356,7 +356,7 @@ Item {
                             }
                         }
 
-                        DankButton {
+                        HypeButton {
                             id: fixButton
                             visible: warningBox.showError || warningBox.showSetup
                             text: {
@@ -474,7 +474,7 @@ Item {
                         width: parent.width
                         spacing: Theme.spacingM
 
-                        DankIcon {
+                        HypeIcon {
                             name: "add"
                             size: Theme.iconSize
                             color: Theme.surfaceText
@@ -498,7 +498,7 @@ Item {
                                 keys: [
                                     {
                                         key: "",
-                                        source: "dms",
+                                        source: "hype",
                                         isOverride: true
                                     }
                                 ],
@@ -530,7 +530,7 @@ Item {
                         width: parent.width
                         spacing: Theme.spacingM
 
-                        DankIcon {
+                        HypeIcon {
                             name: "list"
                             size: Theme.iconSize
                             color: Theme.primary
@@ -556,7 +556,7 @@ Item {
                         spacing: Theme.spacingM
                         visible: KeybindsService.loading
 
-                        DankIcon {
+                        HypeIcon {
                             id: loadingIcon
                             name: "sync"
                             size: 20

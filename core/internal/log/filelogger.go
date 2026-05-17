@@ -1,4 +1,4 @@
-package log
+﻿package log
 
 import (
 	"bufio"
@@ -31,7 +31,7 @@ func NewFileLogger() (*FileLogger, error) {
 	if err := os.MkdirAll(logDir, 0o755); err != nil {
 		return nil, fmt.Errorf("failed to create log directory: %w", err)
 	}
-	logPath := filepath.Join(logDir, fmt.Sprintf("dankinstall-%d.log", timestamp))
+	logPath := filepath.Join(logDir, fmt.Sprintf("hypeinstall-%d.log", timestamp))
 
 	file, err := os.Create(logPath)
 	if err != nil {
@@ -49,7 +49,7 @@ func NewFileLogger() (*FileLogger, error) {
 		passwordRe: passwordRe,
 	}
 
-	header := fmt.Sprintf("=== DankInstall Log ===\nStarted: %s\n\n", time.Now().Format(time.RFC3339))
+	header := fmt.Sprintf("=== HypeInstall Log ===\nStarted: %s\n\n", time.Now().Format(time.RFC3339))
 	logger.writeToFile(header)
 
 	return logger, nil
@@ -102,7 +102,7 @@ func (l *FileLogger) Close() error {
 	l.mu.Lock()
 	defer l.mu.Unlock()
 
-	footer := fmt.Sprintf("\n=== DankInstall Log End ===\nCompleted: %s\n", time.Now().Format(time.RFC3339))
+	footer := fmt.Sprintf("\n=== HypeInstall Log End ===\nCompleted: %s\n", time.Now().Format(time.RFC3339))
 	l.writer.WriteString(footer) //nolint:errcheck
 	l.writer.Flush()
 

@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import QtQuick.Effects
 import Quickshell.Widgets
 import qs.Common
@@ -148,7 +148,7 @@ Item {
             if (wasDragging || mouse.button !== Qt.LeftButton)
                 return;
 
-            PopoutService.toggleDankLauncherV2();
+            PopoutService.toggleHypeLauncherV2();
         }
         onPositionChanged: mouse => {
             if (longPressing && !dragging) {
@@ -198,7 +198,7 @@ Item {
             width: actualIconSize
             height: actualIconSize
 
-            DankIcon {
+            HypeIcon {
                 visible: SettingsData.dockLauncherLogoMode === "apps"
                 anchors.centerIn: parent
                 name: "apps"
@@ -217,7 +217,7 @@ Item {
             }
 
             IconImage {
-                visible: SettingsData.dockLauncherLogoMode === "dank"
+                visible: SettingsData.dockLauncherLogoMode === "hype"
                 anchors.centerIn: parent
                 width: actualIconSize + SettingsData.dockLauncherLogoSizeOffset
                 height: actualIconSize + SettingsData.dockLauncherLogoSizeOffset

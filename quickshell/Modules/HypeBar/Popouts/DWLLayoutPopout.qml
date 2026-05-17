@@ -1,12 +1,12 @@
-import QtQuick
+﻿import QtQuick
 import qs.Common
 import qs.Services
 import qs.Widgets
 
-DankPopout {
+HypePopout {
     id: root
 
-    layerNamespace: "dms:layout"
+    layerNamespace: "hype:layout"
 
     property var triggerScreen: null
 
@@ -151,7 +151,7 @@ DankPopout {
                     height: 40
                     spacing: Theme.spacingM
 
-                    DankIcon {
+                    HypeIcon {
                         name: "view_quilt"
                         size: Theme.iconSizeLarge
                         color: Theme.primary
@@ -184,7 +184,7 @@ DankPopout {
                         color: closeLayoutArea.containsMouse ? Theme.errorHover : "transparent"
                         anchors.top: parent.top
 
-                        DankIcon {
+                        HypeIcon {
                             anchors.centerIn: parent
                             name: "close"
                             size: Theme.iconSize - 4
@@ -234,7 +234,7 @@ DankPopout {
                                 anchors.verticalCenter: parent.verticalCenter
                                 spacing: Theme.spacingS
 
-                                DankIcon {
+                                HypeIcon {
                                     name: root.getLayoutIcon(modelData)
                                     size: 20
                                     color: parent.parent.isActive ? Theme.primary : Theme.surfaceText

@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import QtQuick.Layouts
 import Quickshell
 import qs.Common
@@ -59,7 +59,7 @@ PluginComponent {
                             anchors.centerIn: parent
                             spacing: Theme.spacingS
 
-                            DankIcon {
+                            HypeIcon {
                                 name: "vpn_key_off"
                                 size: 36
                                 color: Theme.surfaceVariantText
@@ -93,7 +93,7 @@ PluginComponent {
                             width: parent.width
                             spacing: Theme.spacingS
 
-                            DankTextField {
+                            HypeTextField {
                                 Layout.fillWidth: true
                                 placeholderText: I18n.tr("Search devices...", "Tailscale device search placeholder")
                                 leftIconName: "search"
@@ -102,7 +102,7 @@ PluginComponent {
                                 onTextEdited: detailRoot.searchQuery = text
                             }
 
-                            DankActionButton {
+                            HypeActionButton {
                                 iconName: "sync"
                                 buttonSize: 28
                                 iconSize: 16
@@ -113,7 +113,7 @@ PluginComponent {
                         }
 
                         // Filter chips
-                        DankFilterChips {
+                        HypeFilterChips {
                             width: parent.width
                             currentIndex: detailRoot.filterIndex
                             showCounts: true
@@ -139,7 +139,7 @@ PluginComponent {
                     }
 
                     // Scrollable peer list â€” fills remaining space below header
-                    DankFlickable {
+                    HypeFlickable {
                         anchors.top: headerColumn.bottom
                         anchors.topMargin: Theme.spacingS
                         anchors.left: parent.left
@@ -183,7 +183,7 @@ PluginComponent {
                                     anchors.centerIn: parent
                                     spacing: Theme.spacingXS
 
-                                    DankIcon {
+                                    HypeIcon {
                                         name: "devices"
                                         size: 28
                                         color: Theme.surfaceVariantText
@@ -264,7 +264,7 @@ PluginComponent {
                                                 Layout.fillWidth: true
                                             }
 
-                                            DankActionButton {
+                                            HypeActionButton {
                                                 iconName: "content_copy"
                                                 buttonSize: 20
                                                 iconSize: 11
@@ -312,7 +312,7 @@ PluginComponent {
                                                     elide: Text.ElideRight
                                                 }
 
-                                                DankActionButton {
+                                                HypeActionButton {
                                                     iconName: "content_copy"
                                                     buttonSize: 20
                                                     iconSize: 11

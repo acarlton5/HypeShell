@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import QtQuick.Layouts
 import Quickshell
 import qs.Common
@@ -26,7 +26,7 @@ Item {
 
     property bool hasMultipleBars: SettingsData.barConfigs.length > 1
 
-    DankTooltipV2 {
+    HypeTooltipV2 {
         id: sharedTooltip
     }
 
@@ -786,7 +786,7 @@ Item {
         widgetSelectionPopupLoader.item.show();
     }
 
-    DankFlickable {
+    HypeFlickable {
         anchors.fill: parent
         clip: true
         contentHeight: mainColumn.height + Theme.spacingXL
@@ -817,7 +817,7 @@ Item {
                         width: parent.width
                         spacing: Theme.spacingM
 
-                        DankIcon {
+                        HypeIcon {
                             name: "toolbar"
                             size: Theme.iconSize
                             color: Theme.primary
@@ -833,7 +833,7 @@ Item {
                         }
                     }
 
-                    DankButtonGroup {
+                    HypeButtonGroup {
                         id: barSelectorGroup
                         width: parent.width
                         model: SettingsData.barConfigs.map(cfg => cfg.name || ("Bar " + (SettingsData.barConfigs.indexOf(cfg) + 1)))
@@ -869,7 +869,7 @@ Item {
                         width: parent.width
                         spacing: Theme.spacingM
 
-                        DankIcon {
+                        HypeIcon {
                             name: "widgets"
                             size: Theme.iconSize
                             color: Theme.primary
@@ -902,7 +902,7 @@ Item {
                                 anchors.centerIn: parent
                                 spacing: Theme.spacingXS
 
-                                DankIcon {
+                                HypeIcon {
                                     name: "refresh"
                                     size: 14
                                     color: Theme.surfaceText

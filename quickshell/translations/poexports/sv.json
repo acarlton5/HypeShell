@@ -1,4 +1,4 @@
-{
+﻿{
   "%1 Animation Speed": {
     "%1 Animation Speed": "%1 animeringshastighet"
   },
@@ -1152,7 +1152,7 @@
     "Choose the border accent color": "Välj accentfärg på kantlinjen"
   },
   "Choose the logo displayed on the launcher button in Hype Bar": {
-    "Choose the logo displayed on the launcher button in Hype Bar": "Välj ikonen som visas på appstartarknappen i DankBar"
+    "Choose the logo displayed on the launcher button in Hype Bar": "Välj ikonen som visas på appstartarknappen i HypeBar"
   },
   "Choose where notification popups appear on screen": {
     "Choose where notification popups appear on screen": "Välj var notisbanderoller visas på skärmen"
@@ -1757,8 +1757,8 @@
   "HypeShell Shortcuts": {
     "HypeShell Shortcuts": "HypeShell-kortkommandon"
   },
-  "HypeShell Greeter needs: greetd, dms-greeter. Fingerprint: fprintd, pam_fprintd. Security keys: pam_u2f. Add your user to the greeter group. Authentication changes apply automatically and may open a terminal when sudo authentication is required.": {
-    "HypeShell Greeter needs: greetd, dms-greeter. Fingerprint: fprintd, pam_fprintd. Security keys: pam_u2f. Add your user to the greeter group. Authentication changes apply automatically and may open a terminal when sudo authentication is required.": ""
+  "HypeShell Greeter needs: greetd, hype-greeter. Fingerprint: fprintd, pam_fprintd. Security keys: pam_u2f. Add your user to the greeter group. Authentication changes apply automatically and may open a terminal when sudo authentication is required.": {
+    "HypeShell Greeter needs: greetd, hype-greeter. Fingerprint: fprintd, pam_fprintd. Security keys: pam_u2f. Add your user to the greeter group. Authentication changes apply automatically and may open a terminal when sudo authentication is required.": ""
   },
   "HypeShell out of date": {
     "HypeShell out of date": "HypeShell är utdaterat"
@@ -1769,8 +1769,8 @@
   "HypeShell shell actions (launcher, clipboard, etc.)": {
     "HypeShell shell actions (launcher, clipboard, etc.)": "HypeShell shellåtgärder (startare, urklipp, o.s.v.)"
   },
-  "DMS_SOCKET not available": {
-    "DMS_SOCKET not available": "DMS_SOCKET otillgänglig"
+  "HYPE_SOCKET not available": {
+    "HYPE_SOCKET not available": "HYPE_SOCKET otillgänglig"
   },
   "DWL service not available": {
     "DWL service not available": "DWL-tjänsten är inte tillgänglig"
@@ -1794,7 +1794,7 @@
     "HypeShell is ready to use": "HypeShell är redo att användas"
   },
   "HypeShell & System Icons (requires restart)": {
-    "HypeShell & System Icons (requires restart)": "DankShell & systemikoner (kräver omstart)"
+    "HypeShell & System Icons (requires restart)": "HypeShell & systemikoner (kräver omstart)"
   },
   "Dark Mode": {
     "Dark Mode": "Mörkt läge"
@@ -2252,8 +2252,8 @@
   "Enable a custom override below to set per-bar shadow intensity, opacity, and color.": {
     "Enable a custom override below to set per-bar shadow intensity, opacity, and color.": "Aktivera en anpassad överstyrning nedan för att ange skuggintensitet, opacitet och färg per menyrad."
   },
-  "Enable compositor-targetable blur layer (namespace: dms:blurwallpaper). Requires manual niri configuration.": {
-    "Enable compositor-targetable blur layer (namespace: dms:blurwallpaper). Requires manual niri configuration.": "Aktivera kompositor-riktbart oskärpelager (namnrymd: dms:blurwallpaper). Kräver manuell niri-konfiguration."
+  "Enable compositor-targetable blur layer (namespace: hype:blurwallpaper). Requires manual niri configuration.": {
+    "Enable compositor-targetable blur layer (namespace: hype:blurwallpaper). Requires manual niri configuration.": "Aktivera kompositor-riktbart oskärpelager (namnrymd: hype:blurwallpaper). Kräver manuell niri-konfiguration."
   },
   "Enable fingerprint at login": {
     "Enable fingerprint at login": "Aktivera fingeravtryck vid inloggning"
@@ -2600,8 +2600,8 @@
   "Failed to ring device": {
     "Failed to ring device": "Misslyckades med att ringa enheten"
   },
-  "Failed to run 'dms greeter status'. Ensure HypeShell is installed and dms is in PATH.": {
-    "Failed to run 'dms greeter status'. Ensure HypeShell is installed and dms is in PATH.": "Misslyckades med att köra 'dms greeter status'. Se till att HypeShell är installerat och att dms finns i PATH."
+  "Failed to run 'hype greeter status'. Ensure HypeShell is installed and hype is in PATH.": {
+    "Failed to run 'hype greeter status'. Ensure HypeShell is installed and hype is in PATH.": "Misslyckades med att köra 'hype greeter status'. Se till att HypeShell är installerat och att hype finns i PATH."
   },
   "Failed to save audio config": {
     "Failed to save audio config": "Misslyckades med att spara ljudkonfiguration"
@@ -5610,10 +5610,10 @@
     "Scale": "Skala"
   },
   "Scale Hype Bar font sizes independently": {
-    "Scale Hype Bar font sizes independently": "Skala teckensnitt på DankBar oberoende av systeminställningarna"
+    "Scale Hype Bar font sizes independently": "Skala teckensnitt på HypeBar oberoende av systeminställningarna"
   },
   "Scale Hype Bar icon sizes independently": {
-    "Scale Hype Bar icon sizes independently": "Skala DankBars ikonstorlekar oberoende av systeminställningarna"
+    "Scale Hype Bar icon sizes independently": "Skala HypeBars ikonstorlekar oberoende av systeminställningarna"
   },
   "Scale all font sizes throughout the shell": {
     "Scale all font sizes throughout the shell": "Skala alla teckenstorlekar i shell"
@@ -6539,8 +6539,8 @@
   "Terminal custom additional parameters": {
     "Terminal custom additional parameters": "Ytterligare parametrar för terminalen"
   },
-  "Terminal fallback failed. Install a supported terminal emulator or run 'dms auth sync' manually.": {
-    "Terminal fallback failed. Install a supported terminal emulator or run 'dms auth sync' manually.": ""
+  "Terminal fallback failed. Install a supported terminal emulator or run 'hype auth sync' manually.": {
+    "Terminal fallback failed. Install a supported terminal emulator or run 'hype auth sync' manually.": ""
   },
   "Terminal fallback failed. Install one of the supported terminal emulators or run 'HypeShell Greeter sync' manually.": {
     "Terminal fallback failed. Install one of the supported terminal emulators or run 'HypeShell Greeter sync' manually.": "Terminalåterfall misslyckades. Installera en av de stödda terminalemulatorerna eller kör 'HypeShell Greeter sync' manuellt."
@@ -6587,8 +6587,8 @@
   "The 'dgop' tool is required for system monitoring.\nPlease install dgop to use this feature.": {
     "The 'dgop' tool is required for system monitoring.\nPlease install dgop to use this feature.": "Verktyget 'dgop' krävs för systemövervakning.\nInstallera dgop för att använda den här funktionen."
   },
-  "The DMS_SOCKET environment variable is not set or the socket is unavailable. Automated plugin management requires the DMS_SOCKET.": {
-    "The DMS_SOCKET environment variable is not set or the socket is unavailable. Automated plugin management requires the DMS_SOCKET.": "Miljövariabeln DMS_SOCKET har antingen inte ställts in eller socketen är otillgänglig. DMS_SOCKET krävs för att hantera tillägg automatiskt."
+  "The HYPE_SOCKET environment variable is not set or the socket is unavailable. Automated plugin management requires the HYPE_SOCKET.": {
+    "The HYPE_SOCKET environment variable is not set or the socket is unavailable. Automated plugin management requires the HYPE_SOCKET.": "Miljövariabeln HYPE_SOCKET har antingen inte ställts in eller socketen är otillgänglig. HYPE_SOCKET krävs för att hantera tillägg automatiskt."
   },
   "The below settings will modify your GTK and Qt settings. If you wish to preserve your current configurations, please back them up (qt5ct.conf|qt6ct.conf and ~/.config/gtk-3.0|gtk-4.0).": {
     "The below settings will modify your GTK and Qt settings. If you wish to preserve your current configurations, please back them up (qt5ct.conf|qt6ct.conf and ~/.config/gtk-3.0|gtk-4.0).": "Inställningarna nedan kommer att modifiera dina GTK- och Qt-inställningar. Om du vill behålla dina konfigurationer, vänligen säkerhetskopiera (qt5ct.conf|qt6ct.conf och ~/.config/gtk-3.0|gtk-4.0)"
@@ -7488,13 +7488,13 @@
     "direct": ""
   },
   "HypeShell is a highly customizable, modern desktop shell with a <a href=\"https://m3.material.io/\" style=\"text-decoration:none; color:%1;\">material 3 inspired</a> design.<br /><br/>It is built with <a href=\"https://quickshell.org\" style=\"text-decoration:none; color:%1;\">Quickshell</a>, a QT6 framework for building desktop shells, and <a href=\"https://go.dev\" style=\"text-decoration:none; color:%1;\">Go</a>, a statically typed, compiled programming language.": {
-    "HypeShell is a highly customizable, modern desktop shell with a <a href=\"https://m3.material.io/\" style=\"text-decoration:none; color:%1;\">material 3 inspired</a> design.<br /><br/>It is built with <a href=\"https://quickshell.org\" style=\"text-decoration:none; color:%1;\">Quickshell</a>, a QT6 framework for building desktop shells, and <a href=\"https://go.dev\" style=\"text-decoration:none; color:%1;\">Go</a>, a statically typed, compiled programming language.": "dms är ett mycket anpassningsbart, modernt skrivbordsskal med en <a href=\"https://m3.material.io/\" style=\"text-decoration:none; color:%1;\">Material 3-inspirerad</a> design.<br /><br/>Det är byggt med <a href=\"https://quickshell.org\" style=\"text-decoration:none; color:%1;\">Quickshell</a>, ett QT6-ramverk för att bygga skrivbordsskal, och <a href=\"https://go.dev\" style=\"text-decoration:none; color:%1;\">Go</a>, ett statiskt typat kompilerat programmeringsspråk."
+    "HypeShell is a highly customizable, modern desktop shell with a <a href=\"https://m3.material.io/\" style=\"text-decoration:none; color:%1;\">material 3 inspired</a> design.<br /><br/>It is built with <a href=\"https://quickshell.org\" style=\"text-decoration:none; color:%1;\">Quickshell</a>, a QT6 framework for building desktop shells, and <a href=\"https://go.dev\" style=\"text-decoration:none; color:%1;\">Go</a>, a statically typed, compiled programming language.": "hype är ett mycket anpassningsbart, modernt skrivbordsskal med en <a href=\"https://m3.material.io/\" style=\"text-decoration:none; color:%1;\">Material 3-inspirerad</a> design.<br /><br/>Det är byggt med <a href=\"https://quickshell.org\" style=\"text-decoration:none; color:%1;\">Quickshell</a>, ett QT6-ramverk för att bygga skrivbordsskal, och <a href=\"https://go.dev\" style=\"text-decoration:none; color:%1;\">Go</a>, ett statiskt typat kompilerat programmeringsspråk."
   },
-  "dms/cursor config exists but is not included. Cursor settings won't apply.": {
-    "dms/cursor config exists but is not included. Cursor settings won't apply.": "dms/cursor-konfigurationen finns men ingår inte. Markörsinställningar tillämpas inte."
+  "hype/cursor config exists but is not included. Cursor settings won't apply.": {
+    "hype/cursor config exists but is not included. Cursor settings won't apply.": "hype/cursor-konfigurationen finns men ingår inte. Markörsinställningar tillämpas inte."
   },
-  "dms/outputs config exists but is not included in your compositor config. Display changes won't persist.": {
-    "dms/outputs config exists but is not included in your compositor config. Display changes won't persist.": "dms/outputs-konfigurationen finns men ingår inte i din kompositorkonfiguration. Bildskärmsändringar sparas inte."
+  "hype/outputs config exists but is not included in your compositor config. Display changes won't persist.": {
+    "hype/outputs config exists but is not included in your compositor config. Display changes won't persist.": "hype/outputs-konfigurationen finns men ingår inte i din kompositorkonfiguration. Bildskärmsändringar sparas inte."
   },
   "e.g., firefox, kitty --title foo": {
     "e.g., firefox, kitty --title foo": "t.ex. firefox, kitty --title foo"
@@ -7553,8 +7553,8 @@
   "niri shortcuts config": {
     "niri shortcuts config": "niri-kortkommandokonfiguration"
   },
-  "niri/dms Discord": {
-    "niri/dms Discord": "niri/dms Discord"
+  "niri/hype Discord": {
+    "niri/hype Discord": "niri/hype Discord"
   },
   "now": {
     "now": "nu"

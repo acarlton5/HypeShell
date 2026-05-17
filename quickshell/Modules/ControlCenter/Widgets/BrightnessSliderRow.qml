@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import qs.Common
 import qs.Services
 import qs.Widgets
@@ -21,7 +21,7 @@ Row {
     height: 40
     spacing: 0
 
-    DankTooltipV2 {
+    HypeTooltipV2 {
         id: sharedTooltip
     }
 
@@ -93,7 +93,7 @@ Row {
         radius: (Theme.iconSize + Theme.spacingS * 2) / 2
         color: iconArea.containsMouse ? Qt.rgba(Theme.primary.r, Theme.primary.g, Theme.primary.b, 0.12) : Theme.withAlpha(Theme.primary, 0)
 
-        DankRipple {
+        HypeRipple {
             id: iconRipple
             cornerRadius: parent.radius
         }
@@ -120,7 +120,7 @@ Row {
                 sharedTooltip.hide();
             }
 
-            DankIcon {
+            HypeIcon {
                 anchors.centerIn: parent
                 name: {
                     if (!DisplayService.brightnessAvailable || !targetDevice) {
@@ -146,7 +146,7 @@ Row {
         }
     }
 
-    DankSlider {
+    HypeSlider {
         id: brightnessSlider
 
         anchors.verticalCenter: parent.verticalCenter

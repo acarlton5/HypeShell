@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import QtQuick.Effects
 import Quickshell
 import qs.Common
@@ -113,7 +113,7 @@ Item {
                     iconName: "view_carousel"
                     title: I18n.tr("Hype Bar", "greeter feature card title")
                     description: I18n.tr("Modular widget bar", "greeter feature card description")
-                    onClicked: PopoutService.openSettingsWithTab("dankbar_settings")
+                    onClicked: PopoutService.openSettingsWithTab("hypebar_settings")
                 }
 
                 GreeterFeatureCard {

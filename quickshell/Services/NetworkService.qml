@@ -1,4 +1,4 @@
-pragma Singleton
+﻿pragma Singleton
 pragma ComponentBehavior: Bound
 
 import QtQuick
@@ -96,7 +96,7 @@ Singleton {
     property bool usingLegacy: false
     property var activeService: null
 
-    readonly property string socketPath: Quickshell.env("HYPE_SOCKET") || Quickshell.env("DMS_SOCKET")
+    readonly property string socketPath: Quickshell.env("HYPE_SOCKET") || Quickshell.env("HYPE_SOCKET")
 
     Component.onCompleted: {
         log.info("Initializing...");
@@ -109,16 +109,16 @@ Singleton {
     }
 
     Connections {
-        target: DMSNetworkService
+        target: HYPENetworkService
 
         function onNetworkAvailableChanged() {
-            if (!activeService && DMSNetworkService.networkAvailable) {
-                log.info("Network capability detected, using DMSNetworkService");
-                activeService = DMSNetworkService;
+            if (!activeService && HYPENetworkService.networkAvailable) {
+                log.info("Network capability detected, using HYPENetworkService");
+                activeService = HYPENetworkService;
                 usingLegacy = false;
-                log.info("Switched to DMSNetworkService, networkAvailable:", networkAvailable);
+                log.info("Switched to HYPENetworkService, networkAvailable:", networkAvailable);
                 connectSignals();
-            } else if (!activeService && !DMSNetworkService.networkAvailable && socketPath && socketPath.length > 0) {
+            } else if (!activeService && !HYPENetworkService.networkAvailable && socketPath && socketPath.length > 0) {
                 log.info("Network capability not available in HypeShell, using LegacyNetworkService");
                 useLegacyService();
             }

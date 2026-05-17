@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import Quickshell
 import qs.Common
 import qs.Services
@@ -66,7 +66,7 @@ FloatingWindow {
                 anchors.verticalCenter: parent.verticalCenter
                 spacing: Theme.spacingXS
 
-                DankActionButton {
+                HypeActionButton {
                     visible: windowControls.canMaximize
                     iconName: root.maximized ? "fullscreen_exit" : "fullscreen"
                     iconSize: Theme.iconSize - 4
@@ -74,20 +74,20 @@ FloatingWindow {
                     onClicked: windowControls.tryToggleMaximize()
                 }
 
-                DankActionButton {
+                HypeActionButton {
                     iconName: "close"
                     iconSize: Theme.iconSize - 4
                     iconColor: Theme.surfaceText
                     onClicked: root.dismiss()
 
-                    DankTooltip {
+                    HypeTooltip {
                         text: i18n("Close")
                     }
                 }
             }
         }
 
-        DankFlickable {
+        HypeFlickable {
             anchors.left: parent.left
             anchors.right: parent.right
             anchors.top: headerRow.bottom
@@ -124,15 +124,15 @@ FloatingWindow {
                 anchors.centerIn: parent
                 spacing: Theme.spacingM
 
-                DankButton {
+                HypeButton {
                     text: i18n("Read Full Release Notes")
                     iconName: "open_in_new"
                     backgroundColor: Theme.surfaceContainerHighest
                     textColor: Theme.surfaceText
-                    onClicked: Qt.openUrlExternally("https://danklinux.com/blog/v1-4-release")
+                    onClicked: Qt.openUrlExternally("https://hypelinux.com/blog/v1-4-release")
                 }
 
-                DankButton {
+                HypeButton {
                     text: i18n("Got It")
                     iconName: "check"
                     backgroundColor: Theme.primary

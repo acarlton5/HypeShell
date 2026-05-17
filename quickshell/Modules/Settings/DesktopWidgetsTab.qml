@@ -1,4 +1,4 @@
-pragma ComponentBehavior: Bound
+﻿pragma ComponentBehavior: Bound
 
 import QtQuick
 import Quickshell
@@ -56,7 +56,7 @@ Item {
         }
     }
 
-    DankFlickable {
+    HypeFlickable {
         anchors.fill: parent
         clip: true
         contentHeight: mainColumn.height + Theme.spacingXL
@@ -91,13 +91,13 @@ Item {
                     Row {
                         spacing: Theme.spacingM
 
-                        DankButton {
+                        HypeButton {
                             text: I18n.tr("Add Widget")
                             iconName: "add"
                             onClicked: root.showWidgetBrowser()
                         }
 
-                        DankButton {
+                        HypeButton {
                             text: I18n.tr("Browse Plugins")
                             iconName: "store"
                             onClicked: root.showDesktopPluginBrowser()
@@ -131,7 +131,7 @@ Item {
                         spacing: Theme.spacingS
                         width: parent.width
 
-                        DankTextField {
+                        HypeTextField {
                             id: newGroupField
                             width: parent.width - addGroupBtn.width - Theme.spacingS
                             placeholderText: I18n.tr("New group name...")
@@ -146,7 +146,7 @@ Item {
                             }
                         }
 
-                        DankButton {
+                        HypeButton {
                             id: addGroupBtn
                             iconName: "add"
                             text: I18n.tr("Add")
@@ -183,7 +183,7 @@ Item {
                                     anchors.rightMargin: Theme.spacingS
                                     spacing: Theme.spacingS
 
-                                    DankIcon {
+                                    HypeIcon {
                                         name: "folder"
                                         size: Theme.iconSizeSmall
                                         color: Theme.surfaceText
@@ -196,7 +196,7 @@ Item {
                                         height: active ? 32 : 0
                                         anchors.verticalCenter: parent.verticalCenter
 
-                                        sourceComponent: DankTextField {
+                                        sourceComponent: HypeTextField {
                                             text: groupItem.modelData.name
                                             onAccepted: {
                                                 if (!text.trim())
@@ -228,7 +228,7 @@ Item {
                                         width: parent.width - Theme.iconSizeSmall - deleteGroupBtn.width - Theme.spacingS * 3
                                     }
 
-                                    DankActionButton {
+                                    HypeActionButton {
                                         id: deleteGroupBtn
                                         iconName: "delete"
                                         anchors.verticalCenter: parent.verticalCenter
@@ -278,14 +278,14 @@ Item {
                             anchors.rightMargin: Theme.spacingM
                             spacing: Theme.spacingS
 
-                            DankIcon {
+                            HypeIcon {
                                 name: (root.groupCollapsedStates[groupSection.groupId] ?? false) ? "expand_more" : "expand_less"
                                 size: Theme.iconSize
                                 color: Theme.surfaceText
                                 anchors.verticalCenter: parent.verticalCenter
                             }
 
-                            DankIcon {
+                            HypeIcon {
                                 name: "folder"
                                 size: Theme.iconSize
                                 color: Theme.primary
@@ -404,7 +404,7 @@ Item {
                                     }
                                 }
 
-                                DankIcon {
+                                HypeIcon {
                                     x: Theme.spacingL - 2
                                     y: Theme.spacingL + (Theme.iconSize / 2) - (size / 2)
                                     name: "drag_indicator"
@@ -451,14 +451,14 @@ Item {
                         anchors.rightMargin: Theme.spacingM
                         spacing: Theme.spacingS
 
-                        DankIcon {
+                        HypeIcon {
                             name: (root.groupCollapsedStates["_ungrouped"] ?? false) ? "expand_more" : "expand_less"
                             size: Theme.iconSize
                             color: Theme.surfaceText
                             anchors.verticalCenter: parent.verticalCenter
                         }
 
-                        DankIcon {
+                        HypeIcon {
                             name: "widgets"
                             size: Theme.iconSize
                             color: Theme.primary
@@ -577,7 +577,7 @@ Item {
                                 }
                             }
 
-                            DankIcon {
+                            HypeIcon {
                                 x: Theme.spacingL - 2
                                 y: Theme.spacingL + (Theme.iconSize / 2) - (size / 2)
                                 name: "drag_indicator"
@@ -628,7 +628,7 @@ Item {
                             radius: 20
                             color: Theme.primarySelected
 
-                            DankIcon {
+                            HypeIcon {
                                 anchors.centerIn: parent
                                 name: "drag_pan"
                                 size: Theme.iconSize
@@ -670,7 +670,7 @@ Item {
                             radius: 20
                             color: Theme.primarySelected
 
-                            DankIcon {
+                            HypeIcon {
                                 anchors.centerIn: parent
                                 name: "open_in_full"
                                 size: Theme.iconSize

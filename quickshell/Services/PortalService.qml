@@ -1,4 +1,4 @@
-pragma Singleton
+﻿pragma Singleton
 pragma ComponentBehavior: Bound
 
 import QtQuick
@@ -21,7 +21,7 @@ Singleton {
     property string colorSchemeCommand: ""
     property string pendingProfileImage: ""
 
-    readonly property string socketPath: Quickshell.env("HYPE_SOCKET") || Quickshell.env("DMS_SOCKET")
+    readonly property string socketPath: Quickshell.env("HYPE_SOCKET") || Quickshell.env("HYPE_SOCKET")
 
     function init() {
     }
@@ -32,7 +32,7 @@ Singleton {
         const username = Quickshell.env("USER");
         if (!username)
             return;
-        DMSService.sendRequest("freedesktop.accounts.getUserIconFile", {
+        HYPEService.sendRequest("freedesktop.accounts.getUserIconFile", {
             "username": username
         }, response => {
             if (response.result && response.result.success) {
@@ -62,7 +62,7 @@ Singleton {
             return;
         }
 
-        DMSService.sendRequest("freedesktop.accounts.getUserIconFile", {
+        HYPEService.sendRequest("freedesktop.accounts.getUserIconFile", {
             "username": username
         }, response => {
             if (response.result && response.result.success) {
@@ -93,7 +93,7 @@ Singleton {
         }
         if (!freedeskAvailable)
             return;
-        DMSService.sendRequest("freedesktop.settings.getColorScheme", null, response => {
+        HYPEService.sendRequest("freedesktop.settings.getColorScheme", null, response => {
             if (response.result) {
                 systemColorScheme = response.result.value || 0;
             }
@@ -125,7 +125,7 @@ Singleton {
     function setSystemIconTheme(themeName) {
         if (!settingsPortalAvailable || !freedeskAvailable)
             return;
-        DMSService.sendRequest("freedesktop.settings.setIconTheme", {
+        HYPEService.sendRequest("freedesktop.settings.setIconTheme", {
             "iconTheme": themeName
         }, response => {
             if (response.error) {
@@ -137,7 +137,7 @@ Singleton {
     function setSystemProfileImage(imagePath) {
         if (!accountsServiceAvailable || !freedeskAvailable)
             return;
-        DMSService.sendRequest("freedesktop.accounts.setIconFile", {
+        HYPEService.sendRequest("freedesktop.accounts.setIconFile", {
             "path": imagePath || ""
         }, response => {
             if (response.error) {
@@ -169,7 +169,7 @@ Singleton {
 
     Component.onCompleted: {
         if (socketPath && socketPath.length > 0) {
-            checkDMSCapabilities();
+            checkHYPECapabilities();
         } else {
             log.info("HYPE_SOCKET not set");
         }
@@ -177,34 +177,34 @@ Singleton {
     }
 
     Connections {
-        target: DMSService
+        target: HYPEService
 
         function onConnectionStateChanged() {
-            if (DMSService.isConnected) {
-                checkDMSCapabilities();
+            if (HYPEService.isConnected) {
+                checkHYPECapabilities();
             }
         }
     }
 
     Connections {
-        target: DMSService
-        enabled: DMSService.isConnected
+        target: HYPEService
+        enabled: HYPEService.isConnected
 
         function onCapabilitiesChanged() {
-            checkDMSCapabilities();
+            checkHYPECapabilities();
         }
     }
 
-    function checkDMSCapabilities() {
-        if (!DMSService.isConnected) {
+    function checkHYPECapabilities() {
+        if (!HYPEService.isConnected) {
             return;
         }
 
-        if (DMSService.capabilities.length === 0) {
+        if (HYPEService.capabilities.length === 0) {
             return;
         }
 
-        freedeskAvailable = DMSService.capabilities.includes("freedesktop");
+        freedeskAvailable = HYPEService.capabilities.includes("freedesktop");
         if (freedeskAvailable) {
             checkAccountsService();
             checkSettingsPortal();
@@ -216,7 +216,7 @@ Singleton {
     function checkAccountsService() {
         if (!freedeskAvailable)
             return;
-        DMSService.sendRequest("freedesktop.getState", null, response => {
+        HYPEService.sendRequest("freedesktop.getState", null, response => {
             if (response.result && response.result.accounts) {
                 accountsServiceAvailable = response.result.accounts.available || false;
                 if (accountsServiceAvailable) {
@@ -229,7 +229,7 @@ Singleton {
     function checkSettingsPortal() {
         if (!freedeskAvailable)
             return;
-        DMSService.sendRequest("freedesktop.getState", null, response => {
+        HYPEService.sendRequest("freedesktop.getState", null, response => {
             if (response.result && response.result.settings) {
                 settingsPortalAvailable = response.result.settings.available || false;
                 if (settingsPortalAvailable && SettingsData.syncModeWithPortal) {

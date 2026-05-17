@@ -1,11 +1,11 @@
-{
+﻿{
   self,
   pkgs,
   ...
 }:
 rec {
   all = pkgs.symlinkJoin {
-    name = "dms-nixos-tests";
+    name = "hype-nixos-tests";
     paths = [
       nixos-module
       nixos-service-start-module

@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import qs.Common
 import qs.Services
 import qs.Widgets
@@ -20,7 +20,7 @@ Item {
         }
     }
 
-    DankFlickable {
+    HypeFlickable {
         anchors.fill: parent
         clip: true
         contentHeight: mainColumn.height + Theme.spacingXL
@@ -53,7 +53,7 @@ Item {
                         width: parent.width
                         spacing: Theme.spacingM
 
-                        DankIcon {
+                        HypeIcon {
                             name: "brightness_6"
                             size: Theme.iconSize
                             color: Theme.primary
@@ -69,7 +69,7 @@ Item {
                         }
                     }
 
-                    DankToggle {
+                    HypeToggle {
                         id: nightModeToggle
 
                         width: parent.width
@@ -133,7 +133,7 @@ Item {
                         }
                     }
 
-                    DankToggle {
+                    HypeToggle {
                         id: automaticToggle
                         width: parent.width
                         text: I18n.tr("Automatic Control")
@@ -174,7 +174,7 @@ Item {
                             width: parent.width
                             height: 45 + Theme.spacingM
 
-                            DankTabBar {
+                            HypeTabBar {
                                 id: modeTabBarNight
                                 width: 200
                                 height: 45
@@ -257,7 +257,7 @@ Item {
                                         verticalAlignment: Text.AlignVCenter
                                     }
 
-                                    DankDropdown {
+                                    HypeDropdown {
                                         dropdownWidth: 70
                                         currentValue: SessionData.nightModeStartHour.toString()
                                         options: {
@@ -272,7 +272,7 @@ Item {
                                         }
                                     }
 
-                                    DankDropdown {
+                                    HypeDropdown {
                                         dropdownWidth: 70
                                         currentValue: SessionData.nightModeStartMinute.toString().padStart(2, '0')
                                         options: {
@@ -300,7 +300,7 @@ Item {
                                         verticalAlignment: Text.AlignVCenter
                                     }
 
-                                    DankDropdown {
+                                    HypeDropdown {
                                         dropdownWidth: 70
                                         currentValue: SessionData.nightModeEndHour.toString()
                                         options: {
@@ -315,7 +315,7 @@ Item {
                                         }
                                     }
 
-                                    DankDropdown {
+                                    HypeDropdown {
                                         dropdownWidth: 70
                                         currentValue: SessionData.nightModeEndMinute.toString().padStart(2, '0')
                                         options: {
@@ -339,7 +339,7 @@ Item {
                             spacing: Theme.spacingM
                             width: parent.width
 
-                            DankToggle {
+                            HypeToggle {
                                 id: ipLocationToggle
                                 width: parent.width
                                 text: I18n.tr("Use IP Location")
@@ -381,7 +381,7 @@ Item {
                                             color: Theme.surfaceVariantText
                                         }
 
-                                        DankTextField {
+                                        HypeTextField {
                                             width: 120
                                             height: 40
                                             text: SessionData.latitude.toString()
@@ -404,7 +404,7 @@ Item {
                                             color: Theme.surfaceVariantText
                                         }
 
-                                        DankTextField {
+                                        HypeTextField {
                                             width: 120
                                             height: 40
                                             text: SessionData.longitude.toString()
@@ -447,7 +447,7 @@ Item {
                                 width: parent.width
                                 spacing: Theme.spacingS
 
-                                DankIcon {
+                                HypeIcon {
                                     name: DisplayService.gammaIsDay ? "light_mode" : "dark_mode"
                                     size: Theme.iconSizeSmall
                                     color: Theme.primary
@@ -478,7 +478,7 @@ Item {
                                         anchors.centerIn: parent
                                         spacing: Theme.spacingXS
 
-                                        DankIcon {
+                                        HypeIcon {
                                             name: "device_thermostat"
                                             size: Theme.iconSize
                                             color: Theme.primary
@@ -513,7 +513,7 @@ Item {
                                         anchors.centerIn: parent
                                         spacing: Theme.spacingXS
 
-                                        DankIcon {
+                                        HypeIcon {
                                             name: DisplayService.gammaIsDay ? "wb_sunny" : "nightlight"
                                             size: Theme.iconSize
                                             color: DisplayService.gammaIsDay ? "#FFA726" : "#7E57C2"
@@ -555,7 +555,7 @@ Item {
                                         anchors.centerIn: parent
                                         spacing: Theme.spacingXS
 
-                                        DankIcon {
+                                        HypeIcon {
                                             name: "wb_twilight"
                                             size: Theme.iconSize
                                             color: "#FF7043"
@@ -591,7 +591,7 @@ Item {
                                         anchors.centerIn: parent
                                         spacing: Theme.spacingXS
 
-                                        DankIcon {
+                                        HypeIcon {
                                             name: "wb_twilight"
                                             size: Theme.iconSize
                                             color: "#5C6BC0"
@@ -628,7 +628,7 @@ Item {
                                     anchors.centerIn: parent
                                     spacing: Theme.spacingM
 
-                                    DankIcon {
+                                    HypeIcon {
                                         name: "schedule"
                                         size: Theme.iconSize
                                         color: Theme.primary

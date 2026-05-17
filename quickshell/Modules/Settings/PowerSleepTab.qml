@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import qs.Common
 import qs.Services
 import qs.Widgets
@@ -15,7 +15,7 @@ Item {
         return idx >= 0 ? idx : 0;
     }
 
-    DankFlickable {
+    HypeFlickable {
         anchors.fill: parent
         clip: true
         contentHeight: mainColumn.height + Theme.spacingXL
@@ -52,7 +52,7 @@ Item {
                         visible: BatteryService.batteryAvailable
                     }
 
-                    DankButtonGroup {
+                    HypeButtonGroup {
                         id: powerCategory
                         anchors.verticalCenter: parent.verticalCenter
                         visible: BatteryService.batteryAvailable
@@ -338,7 +338,7 @@ Item {
                         leftPadding: Theme.spacingM
                     }
 
-                    DankButtonGroup {
+                    HypeButtonGroup {
                         id: suspendBehaviorSelector
                         anchors.horizontalCenter: parent.horizontalCenter
                         model: [I18n.tr("Suspend"), I18n.tr("Hibernate"), I18n.tr("Suspend then Hibernate")]
@@ -577,7 +577,7 @@ Item {
                             color: Theme.surfaceVariantText
                         }
 
-                        DankTextField {
+                        HypeTextField {
                             width: parent.width
                             placeholderText: modelData.placeholder
                             backgroundColor: Theme.surfaceContainerHighest

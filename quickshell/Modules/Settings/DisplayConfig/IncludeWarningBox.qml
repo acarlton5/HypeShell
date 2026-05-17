@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import qs.Common
 import qs.Widgets
 
@@ -30,7 +30,7 @@ StyledRect {
             width: parent.width
             spacing: Theme.spacingM
 
-            DankIcon {
+            HypeIcon {
                 name: "warning"
                 size: Theme.iconSize
                 color: Theme.primary
@@ -73,7 +73,7 @@ StyledRect {
                 }
             }
 
-            DankButton {
+            HypeButton {
                 id: fixButton
                 visible: root.showError || root.showSetup
                 text: {

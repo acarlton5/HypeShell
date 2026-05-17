@@ -1,6 +1,6 @@
-# DMS Quickshell Interface
+﻿# HYPE Quickshell Interface
 
-QML-based desktop shell interface for DankMaterialShell providing panels, widgets, and overlays.
+QML-based desktop shell interface for HypeMaterialShell providing panels, widgets, and overlays.
 
 **See [root README](../README.md) for project overview and installation.**
 
@@ -85,15 +85,15 @@ Singletons providing system integration:
 
 Reusable Material Design 3 components in `Widgets/`:
 
-- `DankIcon` - Icon component with Material font
-- `DankSlider` - Enhanced slider with animations
-- `DankToggle` - Toggle switch component
-- `DankTabBar` - Tab bar implementation
-- `DankGridView` - Grid layout with adaptive columns
-- `DankListView` - Scrollable list view
-- `DankTextField` - Text input with validation
-- `DankDropdown` - Dropdown selection
-- `DankPopout` - Base for overlay components
+- `HypeIcon` - Icon component with Material font
+- `HypeSlider` - Enhanced slider with animations
+- `HypeToggle` - Toggle switch component
+- `HypeTabBar` - Tab bar implementation
+- `HypeGridView` - Grid layout with adaptive columns
+- `HypeListView` - Scrollable list view
+- `HypeTextField` - Text input with validation
+- `HypeDropdown` - Dropdown selection
+- `HypePopout` - Base for overlay components
 - `StateLayer` - Material interaction states
 
 ## Theming
@@ -141,7 +141,7 @@ Workspace switchers adapt to compositor (Niri/Hyprland).
 
 ## Plugin System
 
-External plugins in `~/.config/DankMaterialShell/plugins/`:
+External plugins in `~/.config/HypeMaterialShell/plugins/`:
 
 **Widget plugins** - UI components in Hype Bar
 **Daemon plugins** - Background processes without UI
@@ -173,7 +173,7 @@ Backend IPC socket communication:
 import Quickshell.Io
 
 Process {
-    command: ["dms", "ipc", "call", "spotlight", "toggle"]
+    command: ["hype", "ipc", "call", "spotlight", "toggle"]
     running: true
 }
 ```
@@ -220,7 +220,7 @@ Singleton {
 **Guidelines:**
 - Use `Theme.propertyName` for consistent styling
 - Bind directly to service properties for reactivity
-- Use `DankIcon` for all icons
+- Use `HypeIcon` for all icons
 - Implement feature detection and graceful degradation
 - 4-space indentation, no unnecessary comments
 

@@ -1,4 +1,4 @@
-pragma Singleton
+﻿pragma Singleton
 pragma ComponentBehavior: Bound
 
 import QtQuick
@@ -16,12 +16,12 @@ Singleton {
     signal stateChanged
 
     Connections {
-        target: DMSService
+        target: HYPEService
         function onCapabilitiesReceived() {
             checkCapabilities();
         }
         function onConnectionStateChanged() {
-            if (DMSService.isConnected) {
+            if (HYPEService.isConnected) {
                 checkCapabilities();
             } else {
                 extWorkspaceAvailable = false;
@@ -35,21 +35,21 @@ Singleton {
     }
 
     Component.onCompleted: {
-        if (DMSService.dmsAvailable) {
+        if (HYPEService.hypeAvailable) {
             checkCapabilities();
         }
     }
 
     function checkCapabilities() {
-        if (!DMSService.capabilities || !Array.isArray(DMSService.capabilities)) {
+        if (!HYPEService.capabilities || !Array.isArray(HYPEService.capabilities)) {
             extWorkspaceAvailable = false;
             return;
         }
 
-        const hasExtWorkspace = DMSService.capabilities.includes("extworkspace");
+        const hasExtWorkspace = HYPEService.capabilities.includes("extworkspace");
         if (hasExtWorkspace && !extWorkspaceAvailable) {
             if (typeof CompositorService !== "undefined") {
-                const useExtWorkspace = DMSService.forceExtWorkspace || (!CompositorService.isNiri && !CompositorService.isHyprland && !CompositorService.isDwl && !CompositorService.isSway && !CompositorService.isScroll && !CompositorService.isMiracle);
+                const useExtWorkspace = HYPEService.forceExtWorkspace || (!CompositorService.isNiri && !CompositorService.isHyprland && !CompositorService.isDwl && !CompositorService.isSway && !CompositorService.isScroll && !CompositorService.isMiracle);
                 if (!useExtWorkspace) {
                     log.info("ext-workspace available but compositor has native support");
                     extWorkspaceAvailable = false;
@@ -58,7 +58,7 @@ Singleton {
             }
             extWorkspaceAvailable = true;
             log.info("ext-workspace capability detected");
-            DMSService.addSubscription("extworkspace");
+            HYPEService.addSubscription("extworkspace");
             requestState();
         } else if (!hasExtWorkspace) {
             extWorkspaceAvailable = false;
@@ -66,11 +66,11 @@ Singleton {
     }
 
     function requestState() {
-        if (!DMSService.isConnected || !extWorkspaceAvailable) {
+        if (!HYPEService.isConnected || !extWorkspaceAvailable) {
             return;
         }
 
-        DMSService.sendRequest("extworkspace.getState", null, response => {
+        HYPEService.sendRequest("extworkspace.getState", null, response => {
             if (response.result) {
                 handleStateUpdate(response.result);
             }
@@ -88,11 +88,11 @@ Singleton {
     }
 
     function activateWorkspace(workspaceID, groupID = "") {
-        if (!DMSService.isConnected || !extWorkspaceAvailable) {
+        if (!HYPEService.isConnected || !extWorkspaceAvailable) {
             return;
         }
 
-        DMSService.sendRequest("extworkspace.activateWorkspace", {
+        HYPEService.sendRequest("extworkspace.activateWorkspace", {
             "workspaceID": workspaceID,
             "groupID": groupID
         }, response => {
@@ -103,11 +103,11 @@ Singleton {
     }
 
     function deactivateWorkspace(workspaceID, groupID = "") {
-        if (!DMSService.isConnected || !extWorkspaceAvailable) {
+        if (!HYPEService.isConnected || !extWorkspaceAvailable) {
             return;
         }
 
-        DMSService.sendRequest("extworkspace.deactivateWorkspace", {
+        HYPEService.sendRequest("extworkspace.deactivateWorkspace", {
             "workspaceID": workspaceID,
             "groupID": groupID
         }, response => {
@@ -118,11 +118,11 @@ Singleton {
     }
 
     function removeWorkspace(workspaceID, groupID = "") {
-        if (!DMSService.isConnected || !extWorkspaceAvailable) {
+        if (!HYPEService.isConnected || !extWorkspaceAvailable) {
             return;
         }
 
-        DMSService.sendRequest("extworkspace.removeWorkspace", {
+        HYPEService.sendRequest("extworkspace.removeWorkspace", {
             "workspaceID": workspaceID,
             "groupID": groupID
         }, response => {
@@ -133,11 +133,11 @@ Singleton {
     }
 
     function createWorkspace(groupID, name) {
-        if (!DMSService.isConnected || !extWorkspaceAvailable) {
+        if (!HYPEService.isConnected || !extWorkspaceAvailable) {
             return;
         }
 
-        DMSService.sendRequest("extworkspace.createWorkspace", {
+        HYPEService.sendRequest("extworkspace.createWorkspace", {
             "groupID": groupID,
             "name": name
         }, response => {

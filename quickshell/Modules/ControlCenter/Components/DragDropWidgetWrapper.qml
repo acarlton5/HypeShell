@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import qs.Common
 import qs.Services
 import qs.Widgets
@@ -246,7 +246,7 @@ Item {
         visible: editMode
         z: 10
 
-        DankIcon {
+        HypeIcon {
             anchors.centerIn: parent
             name: "close"
             size: 12
@@ -291,7 +291,7 @@ Item {
         z: 15
         opacity: dragArea.drag.active ? 1.0 : 0.7
 
-        DankIcon {
+        HypeIcon {
             anchors.centerIn: parent
             name: "drag_indicator"
             size: 10

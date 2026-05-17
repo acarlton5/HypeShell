@@ -1,9 +1,9 @@
-{
+﻿{
     "id": "exampleVariants",
     "name": "Example with Variants",
     "description": "Demonstrates dynamic variant creation for plugins",
     "version": "1.0.0",
-    "author": "DMS",
+    "author": "HYPE",
     "type": "widget",
     "capabilities": ["multiple-usecases", "variants"],
     "component": "./VariantWidget.qml",

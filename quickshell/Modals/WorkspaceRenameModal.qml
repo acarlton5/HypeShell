@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import Quickshell
 import qs.Common
 import qs.Services
@@ -95,7 +95,7 @@ FloatingWindow {
                     anchors.right: parent.right
                     spacing: Theme.spacingXS
 
-                    DankActionButton {
+                    HypeActionButton {
                         visible: windowControls.canMaximize
                         iconName: root.maximized ? "fullscreen_exit" : "fullscreen"
                         iconSize: Theme.iconSize - 4
@@ -103,7 +103,7 @@ FloatingWindow {
                         onClicked: windowControls.tryToggleMaximize()
                     }
 
-                    DankActionButton {
+                    HypeActionButton {
                         iconName: "close"
                         iconSize: Theme.iconSize - 4
                         iconColor: Theme.surfaceText
@@ -125,7 +125,7 @@ FloatingWindow {
                     onClicked: nameInput.forceActiveFocus()
                 }
 
-                DankTextField {
+                HypeTextField {
                     id: nameInput
 
                     anchors.fill: parent

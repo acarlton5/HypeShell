@@ -1,4 +1,4 @@
-pragma ComponentBehavior: Bound
+﻿pragma ComponentBehavior: Bound
 
 import QtQuick
 import Quickshell
@@ -84,9 +84,9 @@ Scope {
     }
 
     FileView {
-        id: dankshellConfigWatcher
+        id: hypeshellConfigWatcher
 
-        path: "/etc/pam.d/dankshell"
+        path: "/etc/pam.d/hypeshell"
         printErrors: false
     }
 
@@ -100,18 +100,18 @@ Scope {
     FileView {
         id: u2fConfigWatcher
 
-        path: "/etc/pam.d/dankshell-u2f"
+        path: "/etc/pam.d/hypeshell-u2f"
         printErrors: false
     }
 
-    // Detects Nix-installed DMS on non-NixOS systems
+    // Detects Nix-installed HYPE on non-NixOS systems
     readonly property bool runningFromNixStore: Quickshell.shellDir.startsWith("/nix/store/")
 
     PamContext {
         id: passwd
 
-        config: dankshellConfigWatcher.loaded ? "dankshell" : "login"
-        configDirectory: (dankshellConfigWatcher.loaded || nixosMarker.loaded || root.runningFromNixStore) ? "/etc/pam.d" : Quickshell.shellDir + "/assets/pam"
+        config: hypeshellConfigWatcher.loaded ? "hypeshell" : "login"
+        configDirectory: (hypeshellConfigWatcher.loaded || nixosMarker.loaded || root.runningFromNixStore) ? "/etc/pam.d" : Quickshell.shellDir + "/assets/pam"
 
         onMessageChanged: {
             if (message.startsWith("The account is locked")) {
@@ -260,7 +260,7 @@ Scope {
             start();
         }
 
-        config: u2fConfigWatcher.loaded ? "dankshell-u2f" : "u2f"
+        config: u2fConfigWatcher.loaded ? "hypeshell-u2f" : "u2f"
         configDirectory: u2fConfigWatcher.loaded ? "/etc/pam.d" : Quickshell.shellDir + "/assets/pam"
 
         onMessageChanged: {

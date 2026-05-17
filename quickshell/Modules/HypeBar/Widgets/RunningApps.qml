@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import QtQuick.Controls
 import QtQuick.Effects
 import Quickshell
@@ -296,7 +296,7 @@ BasePill {
                             mipmap: true
                             asynchronous: true
                             visible: status === Image.Ready
-                            layer.enabled: appId === "org.quickshell" || appId === "com.danklinux.dms"
+                            layer.enabled: appId === "org.quickshell" || appId === "com.hypelinux.hype"
                             layer.smooth: true
                             layer.mipmap: true
                             layer.effect: MultiEffect {
@@ -306,7 +306,7 @@ BasePill {
                             }
                         }
 
-                        DankIcon {
+                        HypeIcon {
                             anchors.left: parent.left
                             anchors.leftMargin: (widgetData?.runningAppsCompactMode !== undefined ? widgetData.runningAppsCompactMode : SettingsData.runningAppsCompactMode) ? Math.round((parent.width - Theme.barIconSize(root.barThickness, undefined, root.barConfig?.maximizeWidgetIcons, root.barConfig?.iconScale)) / 2) : Theme.spacingXS
                             anchors.verticalCenter: parent.verticalCenter
@@ -365,7 +365,7 @@ BasePill {
                             maximumLineCount: 1
                         }
 
-                        DankRipple {
+                        HypeRipple {
                             id: itemRipple
                             cornerRadius: Theme.cornerRadius
                         }
@@ -550,7 +550,7 @@ BasePill {
                             mipmap: true
                             asynchronous: true
                             visible: status === Image.Ready
-                            layer.enabled: appId === "org.quickshell" || appId === "com.danklinux.dms"
+                            layer.enabled: appId === "org.quickshell" || appId === "com.hypelinux.hype"
                             layer.smooth: true
                             layer.mipmap: true
                             layer.effect: MultiEffect {
@@ -560,7 +560,7 @@ BasePill {
                             }
                         }
 
-                        DankIcon {
+                        HypeIcon {
                             anchors.left: parent.left
                             anchors.leftMargin: (widgetData?.runningAppsCompactMode !== undefined ? widgetData.runningAppsCompactMode : SettingsData.runningAppsCompactMode) ? Math.round((parent.width - Theme.barIconSize(root.barThickness, undefined, root.barConfig?.maximizeWidgetIcons, root.barConfig?.iconScale)) / 2) : Theme.spacingXS
                             anchors.verticalCenter: parent.verticalCenter
@@ -619,7 +619,7 @@ BasePill {
                             maximumLineCount: 1
                         }
 
-                        DankRipple {
+                        HypeRipple {
                             id: itemRipple
                             cornerRadius: Theme.cornerRadius
                         }
@@ -735,7 +735,7 @@ BasePill {
 
         active: false
 
-        sourceComponent: DankTooltip {}
+        sourceComponent: HypeTooltip {}
     }
 
     Loader {

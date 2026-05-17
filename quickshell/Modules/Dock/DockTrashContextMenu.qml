@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import qs.Common
 import qs.Services
 
@@ -7,7 +7,7 @@ DockContextMenuBase {
 
     property var dockApps: null
 
-    layerNamespace: "dms:dock-trash-context-menu"
+    layerNamespace: "hype:dock-trash-context-menu"
 
     function showForButton(button, dockHeight, dockScreen, parentDockApps) {
         dockApps = parentDockApps || null;

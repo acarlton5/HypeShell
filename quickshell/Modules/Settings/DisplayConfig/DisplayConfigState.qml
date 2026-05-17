@@ -1,4 +1,4 @@
-pragma Singleton
+﻿pragma Singleton
 pragma ComponentBehavior: Bound
 
 import QtCore
@@ -152,9 +152,9 @@ Singleton {
         const legacy = SettingsData.displayProfiles || {};
         const configDir = Paths.strip(StandardPaths.writableLocation(StandardPaths.ConfigLocation));
         const compositorDirs = {
-            "niri": configDir + "/niri/dms/profiles",
+            "niri": configDir + "/niri/hype/profiles",
             "hyprland": configDir + "/hypr/hype/profiles",
-            "dwl": configDir + "/mango/dms/profiles"
+            "dwl": configDir + "/mango/hype/profiles"
         };
         const compositorExts = {
             "niri": ".kdl",
@@ -1263,9 +1263,9 @@ Singleton {
         case "niri":
             return {
                 "configFile": configDir + "/niri/config.kdl",
-                "outputsFile": configDir + "/niri/dms/outputs.kdl",
-                "grepPattern": 'include.*"dms/outputs.kdl"',
-                "includeLine": 'include "dms/outputs.kdl"'
+                "outputsFile": configDir + "/niri/hype/outputs.kdl",
+                "grepPattern": 'include.*"hype/outputs.kdl"',
+                "includeLine": 'include "hype/outputs.kdl"'
             };
         case "hyprland":
             return {
@@ -1277,9 +1277,9 @@ Singleton {
         case "dwl":
             return {
                 "configFile": configDir + "/mango/config.conf",
-                "outputsFile": configDir + "/mango/dms/outputs.conf",
-                "grepPattern": 'source.*dms/outputs.conf',
-                "includeLine": "source=./dms/outputs.conf"
+                "outputsFile": configDir + "/mango/hype/outputs.conf",
+                "grepPattern": 'source.*hype/outputs.conf',
+                "includeLine": "source=./hype/outputs.conf"
             };
         default:
             return null;
@@ -1824,7 +1824,7 @@ Singleton {
         const configContent = generateNiriOutputsKdl(mergedOutputs, mergedNiriSettings);
 
         const configDir = Paths.strip(StandardPaths.writableLocation(StandardPaths.ConfigLocation));
-        const tempFile = configDir + "/niri/dms/.outputs-validate-tmp.kdl";
+        const tempFile = configDir + "/niri/hype/.outputs-validate-tmp.kdl";
 
         Proc.runCommand("niri-validate-write-tmp", ["sh", "-c", `mkdir -p "$(dirname "${tempFile}")" && cat > "${tempFile}" << 'EOF'\n${configContent}EOF`], (output, writeExitCode) => {
             if (writeExitCode !== 0) {

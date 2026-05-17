@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import qs.Common
 import qs.Modules.Plugins
 import qs.Services
@@ -72,7 +72,7 @@ BasePill {
                     visible: root.showMicIcon || PrivacyService.microphoneActive
                     anchors.horizontalCenter: parent.horizontalCenter
 
-                    DankIcon {
+                    HypeIcon {
                         name: {
                             const sourceAudio = AudioService.source?.audio;
                             const muted = !sourceAudio || sourceAudio.muted || sourceAudio.volume === 0.0;
@@ -93,7 +93,7 @@ BasePill {
                     visible: root.showCameraIcon || PrivacyService.cameraActive
                     anchors.horizontalCenter: parent.horizontalCenter
 
-                    DankIcon {
+                    HypeIcon {
                         name: "camera_video"
                         size: Theme.iconSizeSmall
                         color: PrivacyService.cameraActive ? Theme.error : Theme.surfaceText
@@ -120,7 +120,7 @@ BasePill {
                     visible: root.showScreenSharingIcon || PrivacyService.screensharingActive
                     anchors.horizontalCenter: parent.horizontalCenter
 
-                    DankIcon {
+                    HypeIcon {
                         name: "screen_share"
                         size: Theme.iconSizeSmall
                         color: PrivacyService.screensharingActive ? Theme.warning : Theme.surfaceText
@@ -141,7 +141,7 @@ BasePill {
                     visible: root.showMicIcon || PrivacyService.microphoneActive
                     anchors.verticalCenter: parent.verticalCenter
 
-                    DankIcon {
+                    HypeIcon {
                         name: {
                             const sourceAudio = AudioService.source?.audio;
                             const muted = !sourceAudio || sourceAudio.muted || sourceAudio.volume === 0.0;
@@ -162,7 +162,7 @@ BasePill {
                     visible: root.showCameraIcon || PrivacyService.cameraActive
                     anchors.verticalCenter: parent.verticalCenter
 
-                    DankIcon {
+                    HypeIcon {
                         name: "camera_video"
                         size: Theme.iconSizeSmall
                         color: PrivacyService.cameraActive ? Theme.error : Theme.surfaceText
@@ -189,7 +189,7 @@ BasePill {
                     visible: root.showScreenSharingIcon || PrivacyService.screensharingActive
                     anchors.verticalCenter: parent.verticalCenter
 
-                    DankIcon {
+                    HypeIcon {
                         name: "screen_share"
                         size: Theme.iconSizeSmall
                         color: PrivacyService.screensharingActive ? Theme.warning : Theme.surfaceText

@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import qs.Common
 import qs.Services
 import qs.Widgets
@@ -124,7 +124,7 @@ Rectangle {
             width: parent.width
             spacing: Theme.spacingS
 
-            DankIcon {
+            HypeIcon {
                 name: SessionData.doNotDisturb ? "notifications_off" : "notifications_paused"
                 size: Theme.iconSize - 2
                 color: SessionData.doNotDisturb ? Theme.primary : Theme.surfaceText
@@ -222,7 +222,7 @@ Rectangle {
                 anchors.verticalCenter: parent.verticalCenter
                 spacing: Theme.spacingS
 
-                DankIcon {
+                HypeIcon {
                     anchors.verticalCenter: parent.verticalCenter
                     name: "notifications_active"
                     size: Theme.iconSizeSmall

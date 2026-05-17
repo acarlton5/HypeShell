@@ -1,13 +1,13 @@
-import QtQuick
+﻿import QtQuick
 import qs.Common
 import qs.Modals.Common
 import qs.Services
 import qs.Widgets
 
-DankModal {
+HypeModal {
     id: root
 
-    layerNamespace: "dms:network-info-wired"
+    layerNamespace: "hype:network-info-wired"
 
     keepPopoutsOpen: true
 
@@ -74,7 +74,7 @@ DankModal {
                         }
                     }
 
-                    DankActionButton {
+                    HypeActionButton {
                         iconName: "close"
                         iconSize: Theme.iconSize - 4
                         iconColor: Theme.surfaceText
@@ -93,7 +93,7 @@ DankModal {
                     border.width: 1
                     clip: true
 
-                    DankFlickable {
+                    HypeFlickable {
                         anchors.fill: parent
                         anchors.margins: Theme.spacingM
                         contentHeight: detailsText.contentHeight

@@ -1,10 +1,10 @@
-# LauncherExample Plugin
+﻿# LauncherExample Plugin
 
-A demonstration plugin that showcases the DMS launcher plugin system capabilities.
+A demonstration plugin that showcases the HYPE launcher plugin system capabilities.
 
 ## Purpose
 
-This plugin serves as a comprehensive example for developers creating launcher plugins for DMS. It demonstrates:
+This plugin serves as a comprehensive example for developers creating launcher plugins for HYPE. It demonstrates:
 
 - **Plugin Structure**: Proper manifest, launcher, and settings components
 - **Trigger System**: Customizable trigger strings for plugin activation (including empty triggers)
@@ -42,7 +42,7 @@ PLUGINS/LauncherExample/
 
 ## Installation
 
-1. **Plugin Directory**: Copy to `~/.config/DankMaterialShell/plugins/LauncherExample`
+1. **Plugin Directory**: Copy to `~/.config/HypeMaterialShell/plugins/LauncherExample`
 2. **Enable Plugin**: Settings → Plugins → Enable "LauncherExample"
 3. **Configure**: Set custom trigger in plugin settings if desired
 
@@ -234,7 +234,7 @@ onTriggerChanged: {
 ## Testing
 
 Test the plugin by:
-1. Installing and enabling in DMS
+1. Installing and enabling in HYPE
 2. Testing with trigger enabled
 3. Testing with empty trigger (no trigger mode)
 4. Trying each action type

@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import qs.Common
 import qs.Modules.Notifications.Center
 import qs.Modules.Plugins
@@ -15,7 +15,7 @@ BasePill {
             implicitWidth: notifIcon.width
             implicitHeight: root.widgetThickness - root.horizontalPadding * 2
 
-            DankIcon {
+            HypeIcon {
                 id: notifIcon
                 anchors.centerIn: parent
                 name: SessionData.doNotDisturb ? "notifications_off" : "notifications"

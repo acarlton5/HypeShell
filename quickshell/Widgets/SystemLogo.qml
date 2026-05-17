@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import QtQuick.Effects
 import Quickshell
 import Quickshell.Widgets
@@ -34,7 +34,7 @@ Item {
         }
     }
 
-    DankNFIcon {
+    HypeNFIcon {
         id: nfIcon
         anchors.centerIn: parent
         visible: root.useNerdFont

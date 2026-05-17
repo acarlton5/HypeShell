@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import qs.Common
 import qs.Widgets
 
@@ -26,7 +26,7 @@ Item {
             }
         }
 
-        DankIcon {
+        HypeIcon {
             id: arrowIcon
             anchors.centerIn: parent
             size: actualIconSize * 0.6

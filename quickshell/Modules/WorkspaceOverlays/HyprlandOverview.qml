@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import QtQuick.Controls
 import Quickshell
 import Quickshell.Wayland
@@ -30,7 +30,7 @@ Scope {
                 visible: overviewScope.overviewOpen
                 color: "transparent"
 
-                WlrLayershell.namespace: "dms:workspace-overview"
+                WlrLayershell.namespace: "hype:workspace-overview"
                 WlrLayershell.layer: WlrLayer.Overlay
                 WlrLayershell.exclusiveZone: -1
                 WlrLayershell.keyboardFocus: {

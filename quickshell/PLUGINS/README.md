@@ -1,10 +1,10 @@
-# Plugin System
+﻿# Plugin System
 
 Create widgets for Hype Bar and Control Center using dynamically-loaded QML components.
 
 ## Plugin Registry
 
-Browse and discover community plugins at **https://plugins.danklinux.com/**
+Browse and discover community plugins at **https://plugins.hypelinux.com/**
 
 ## Overview
 
@@ -16,7 +16,7 @@ Plugins let you add custom widgets to Hype Bar and Control Center. They're disco
 
 1. **PluginService** (`Services/PluginService.qml`)
    - Singleton service managing plugin lifecycle
-   - Discovers plugins from `$CONFIGPATH/DankMaterialShell/plugins/`
+   - Discovers plugins from `$CONFIGPATH/HypeMaterialShell/plugins/`
    - Handles loading, unloading, and state management
    - Provides data persistence for plugin settings
 
@@ -33,14 +33,14 @@ Plugins let you add custom widgets to Hype Bar and Control Center. They're disco
    - Renders plugin widgets in the bar
    - Merges plugin components with built-in widgets
    - Supports left, center, and right sections
-   - Supports any dankbar position (top/left/right/bottom)
+   - Supports any hypebar position (top/left/right/bottom)
 
 ## Plugin Structure
 
-Each plugin must be a directory in `$CONFIGPATH/DankMaterialShell/plugins/` containing:
+Each plugin must be a directory in `$CONFIGPATH/HypeMaterialShell/plugins/` containing:
 
 ```
-$CONFIGPATH/DankMaterialShell/plugins/YourPlugin/
+$CONFIGPATH/HypeMaterialShell/plugins/YourPlugin/
 ├── plugin.json          # Required: Plugin manifest
 ├── YourWidget.qml       # Required: Widget component
 ├── YourSettings.qml     # Optional: Settings UI
@@ -65,7 +65,7 @@ The manifest file defines plugin metadata and configuration.
     "component": "./YourWidget.qml",
     "icon": "material_icon_name",
     "settings": "./YourSettings.qml",
-    "requires_dms": ">=0.1.0",
+    "requires_hype": ">=0.1.0",
     "requires": ["some-system-tool"],
     "permissions": [
         "settings_read",
@@ -81,7 +81,7 @@ The manifest file defines plugin metadata and configuration.
 - `version`: Semantic version string (e.g., "1.0.0")
 - `author`: Plugin creator name or email
 - `type`: Plugin type - "widget", "daemon", "launcher", or "desktop"
-- `capabilities`: Array of plugin capabilities  (e.g., ["dankbar-widget"], ["control-center"], ["monitoring"])
+- `capabilities`: Array of plugin capabilities  (e.g., ["hypebar-widget"], ["control-center"], ["monitoring"])
 - `component`: Relative path to main QML component file
 
 **Required for Launcher Type:**
@@ -90,9 +90,9 @@ The manifest file defines plugin metadata and configuration.
 **Optional Fields:**
 - `icon`: Material Design icon name (displayed in UI)
 - `settings`: Path to settings component (enables settings UI)
-- `requires_dms`: Minimum DMS version requirement (e.g., ">=0.1.18", ">0.1.0")
+- `requires_hype`: Minimum HYPE version requirement (e.g., ">=0.1.18", ">0.1.0")
 - `requires`: Array of required system tools/dependencies (e.g., ["curl", "jq"])
-- `permissions`: Required DMS permissions (e.g., ["settings_read", "settings_write"])
+- `permissions`: Required HYPE permissions (e.g., ["settings_read", "settings_write"])
 
 **Permissions:**
 
@@ -273,7 +273,7 @@ PopoutComponent {
 
     // Your content here - use parent.width for full width
     // Calculate available height: root.popoutHeight - headerHeight - detailsHeight - spacing
-    DankGridView {
+    HypeGridView {
         width: parent.width
         height: parent.height
         // ...
@@ -538,7 +538,7 @@ PluginSettings {
 
 ```qml
 PluginService.pluginDirectory: string
-// Path to plugins directory ($CONFIGPATH/DankMaterialShell/plugins)
+// Path to plugins directory ($CONFIGPATH/HypeMaterialShell/plugins)
 
 PluginService.availablePlugins: object
 // Map of all discovered plugins {pluginId: pluginInfo}
@@ -705,8 +705,8 @@ PluginComponent {
 ### Step 1: Create Plugin Directory
 
 ```bash
-mkdir -p $CONFIGPATH/DankMaterialShell/plugins/MyPlugin
-cd $CONFIGPATH/DankMaterialShell/plugins/MyPlugin
+mkdir -p $CONFIGPATH/HypeMaterialShell/plugins/MyPlugin
+cd $CONFIGPATH/HypeMaterialShell/plugins/MyPlugin
 ```
 
 ### Step 2: Create Manifest
@@ -725,7 +725,7 @@ Create `plugin.json`:
     "component": "./MyWidget.qml",
     "icon": "extension",
     "settings": "./MySettings.qml",
-    "requires_dms": ">=0.1.0",
+    "requires_hype": ">=0.1.0",
     "permissions": ["settings_read", "settings_write"]
 }
 ```
@@ -820,7 +820,7 @@ PluginSettings {
 
 ### Step 5: Enable Plugin
 
-1. Run the shell: `qs -p $CONFIGPATH/quickshell/dms/shell.qml`
+1. Run the shell: `qs -p $CONFIGPATH/quickshell/hype/shell.qml`
 2. Open Settings (Ctrl+,)
 3. Navigate to Plugins tab
 4. Click "Scan for Plugins"
@@ -836,11 +836,11 @@ After enabling a plugin, add it to the bar:
 3. Choose section (left, center, right)
 4. Save and reload
 
-Or edit `$CONFIGPATH/quickshell/dms/config.json`:
+Or edit `$CONFIGPATH/quickshell/hype/config.json`:
 
 ```json
 {
-    "dankBarLeftWidgets": [
+    "hypeBarLeftWidgets": [
         {"widgetId": "myPlugin", "enabled": true}
     ]
 }
@@ -848,7 +848,7 @@ Or edit `$CONFIGPATH/quickshell/dms/config.json`:
 
 ## Best Practices
 
-1. **Use Existing Widgets**: Leverage `qs.Widgets` components (DankIcon, DankToggle, etc.) for consistency
+1. **Use Existing Widgets**: Leverage `qs.Widgets` components (HypeIcon, HypeToggle, etc.) for consistency
 2. **Follow Theme**: Use `Theme` singleton for colors, spacing, and fonts
 3. **Data Persistence**: Use PluginService data APIs instead of manual file operations
 4. **Error Handling**: Gracefully handle missing dependencies and invalid data
@@ -860,11 +860,11 @@ Or edit `$CONFIGPATH/quickshell/dms/config.json`:
 
 ## Clipboard Access
 
-Plugins that need to copy text to the clipboard should use the built-in `dms cl copy` command through Quickshell's `execDetached` function.
+Plugins that need to copy text to the clipboard should use the built-in `hype cl copy` command through Quickshell's `execDetached` function.
 
 ### Correct Method
 
-Import Quickshell and use `execDetached` with `dms cl copy`:
+Import Quickshell and use `execDetached` with `hype cl copy`:
 
 ```qml
 import QtQuick
@@ -872,7 +872,7 @@ import Quickshell
 
 Item {
     function copyToClipboard(text) {
-        Quickshell.execDetached(["dms", "cl", "copy", text])
+        Quickshell.execDetached(["hype", "cl", "copy", text])
     }
 }
 ```
@@ -884,7 +884,7 @@ From the ExampleEmojiPlugin (EmojiWidget.qml):
 ```qml
 MouseArea {
     onClicked: {
-        Quickshell.execDetached(["dms", "cl", "copy", modelData])
+        Quickshell.execDetached(["hype", "cl", "copy", modelData])
         ToastService.showInfo("Copied " + modelData + " to clipboard")
         popoutColumn.closePopout()
     }
@@ -899,7 +899,7 @@ MouseArea {
 
 ### Dependencies
 
-This method uses the built-in DMS clipboard functionality which has native Wayland support.
+This method uses the built-in HYPE clipboard functionality which has native Wayland support.
 
 ## Running External Commands
 
@@ -1039,7 +1039,7 @@ import qs.Common
 import qs.Widgets
 
 Item {
-    DankTextField {
+    HypeTextField {
         id: searchField
         placeholderText: "Search files..."
 
@@ -1088,7 +1088,7 @@ Item {
 View plugin logs:
 
 ```bash
-qs -v -p $CONFIGPATH/quickshell/dms/shell.qml
+qs -v -p $CONFIGPATH/quickshell/hype/shell.qml
 ```
 
 Look for lines prefixed with:
@@ -1100,7 +1100,7 @@ Look for lines prefixed with:
 
 1. **Plugin Not Detected**
    - Check plugin.json syntax (use `jq` or JSON validator)
-   - Verify directory is in `$CONFIGPATH/DankMaterialShell/plugins/`
+   - Verify directory is in `$CONFIGPATH/HypeMaterialShell/plugins/`
    - Click "Scan for Plugins" in Settings
 
 2. **Widget Not Displaying**
@@ -1116,7 +1116,7 @@ Look for lines prefixed with:
 
 4. **Data Not Persisting**
    - Confirm pluginService.savePluginData() calls (with injection)
-   - Check `$CONFIGPATH/DankMaterialShell/settings.json` for pluginSettings data
+   - Check `$CONFIGPATH/HypeMaterialShell/settings.json` for pluginSettings data
    - Verify plugin has settings permissions
    - Ensure PluginService was properly injected into settings component
 
@@ -1134,7 +1134,7 @@ Currently, only `settings_write` is enforced by the PluginSettings component.
 
 ## API Stability
 
-The plugin API is currently **experimental**. Breaking changes may occur in minor version updates. Pin to specific DMS versions for production use.
+The plugin API is currently **experimental**. Breaking changes may occur in minor version updates. Pin to specific HYPE versions for production use.
 
 **Roadmap:**
 - Plugin marketplace/repository
@@ -1145,7 +1145,7 @@ The plugin API is currently **experimental**. Breaking changes may occur in mino
 
 ## Launcher Plugins
 
-Launcher plugins extend the DMS application launcher by adding custom searchable items with trigger-based filtering.
+Launcher plugins extend the HYPE application launcher by adding custom searchable items with trigger-based filtering.
 
 ### Overview
 
@@ -1173,7 +1173,7 @@ To create a launcher plugin, set the plugin type in `plugin.json`:
     "trigger": "#",
     "icon": "search",
     "settings": "./MySettings.qml",
-    "requires_dms": ">=0.1.18",
+    "requires_hype": ">=0.1.18",
     "permissions": ["settings_read", "settings_write"]
 }
 ```
@@ -1332,7 +1332,7 @@ FocusScope {
             }
         }
 
-        DankTextField {
+        HypeTextField {
             id: triggerField
             visible: !noTriggerToggle.checked
             text: loadSettings("trigger", "#")
@@ -1642,7 +1642,7 @@ See `PLUGINS/ExampleDesktopClock/` for a complete working example demonstrating:
   - [Emoji Picker](./ExampleEmojiPlugin/)
   - [WorldClock](https://github.com/rochacbruno/WorldClock)
   - [LauncherExample](./LauncherExample/)
-  - [Calculator](https://github.com/rochacbruno/DankCalculator)
+  - [Calculator](https://github.com/rochacbruno/HypeCalculator)
   - [Desktop Clock](./ExampleDesktopClock/)
 - **PluginService**: `Services/PluginService.qml`
 - **Settings UI**: `Modules/Settings/PluginsTab.qml`
@@ -1662,4 +1662,4 @@ Share your plugins with the community:
 4. Add example screenshots
 5. Document dependencies and permissions
 
-For plugin system improvements, submit issues or PRs to the main DMS repository.
+For plugin system improvements, submit issues or PRs to the main HYPE repository.

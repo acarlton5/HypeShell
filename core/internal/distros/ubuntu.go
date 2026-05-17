@@ -1,4 +1,4 @@
-package distros
+﻿package distros
 
 import (
 	"context"
@@ -54,8 +54,8 @@ func (u *UbuntuDistribution) DetectDependencies(ctx context.Context, wm deps.Win
 func (u *UbuntuDistribution) DetectDependenciesWithTerminal(ctx context.Context, wm deps.WindowManager, terminal deps.Terminal) ([]deps.Dependency, error) {
 	var dependencies []deps.Dependency
 
-	// DMS at the top (shell is prominent)
-	dependencies = append(dependencies, u.detectDMS())
+	// HYPE at the top (shell is prominent)
+	dependencies = append(dependencies, u.detectHYPE())
 
 	// Terminal with choice support
 	dependencies = append(dependencies, u.detectSpecificTerminal(terminal))
@@ -64,7 +64,7 @@ func (u *UbuntuDistribution) DetectDependenciesWithTerminal(ctx context.Context,
 	dependencies = append(dependencies, u.detectGit())
 	dependencies = append(dependencies, u.detectWindowManager(wm))
 	dependencies = append(dependencies, u.detectQuickshell())
-	dependencies = append(dependencies, u.detectDMSGreeter())
+	dependencies = append(dependencies, u.detectHYPEGreeter())
 	dependencies = append(dependencies, u.detectXDGPortal())
 	dependencies = append(dependencies, u.detectAccountsService())
 
@@ -96,8 +96,8 @@ func (u *UbuntuDistribution) detectAccountsService() deps.Dependency {
 	return u.detectPackage("accountsservice", "D-Bus interface for user account query and manipulation", u.packageInstalled("accountsservice"))
 }
 
-func (u *UbuntuDistribution) detectDMSGreeter() deps.Dependency {
-	return u.detectOptionalPackage("dms-greeter", "DankMaterialShell greetd greeter", u.packageInstalled("dms-greeter"))
+func (u *UbuntuDistribution) detectHYPEGreeter() deps.Dependency {
+	return u.detectOptionalPackage("hype-greeter", "HypeMaterialShell greetd greeter", u.packageInstalled("hype-greeter"))
 }
 
 func (u *UbuntuDistribution) packageInstalled(pkg string) bool {
@@ -117,13 +117,13 @@ func (u *UbuntuDistribution) GetPackageMappingWithVariants(wm deps.WindowManager
 		"xdg-desktop-portal-gtk": {Name: "xdg-desktop-portal-gtk", Repository: RepoTypeSystem},
 		"accountsservice":        {Name: "accountsservice", Repository: RepoTypeSystem},
 
-		// DMS packages from PPAs
-		"dms (DankMaterialShell)": u.getDmsMapping(variants["dms (DankMaterialShell)"]),
+		// HYPE packages from PPAs
+		"hype (HypeMaterialShell)": u.getDmsMapping(variants["hype (HypeMaterialShell)"]),
 		"quickshell":              u.getQuickshellMapping(variants["quickshell"]),
-		"dms-greeter":             {Name: "dms-greeter", Repository: RepoTypePPA, RepoURL: "ppa:avengemedia/danklinux"},
-		"matugen":                 {Name: "matugen", Repository: RepoTypePPA, RepoURL: "ppa:avengemedia/danklinux"},
-		"dgop":                    {Name: "dgop", Repository: RepoTypePPA, RepoURL: "ppa:avengemedia/danklinux"},
-		"ghostty":                 {Name: "ghostty", Repository: RepoTypePPA, RepoURL: "ppa:avengemedia/danklinux"},
+		"hype-greeter":             {Name: "hype-greeter", Repository: RepoTypePPA, RepoURL: "ppa:avengemedia/hypelinux"},
+		"matugen":                 {Name: "matugen", Repository: RepoTypePPA, RepoURL: "ppa:avengemedia/hypelinux"},
+		"dgop":                    {Name: "dgop", Repository: RepoTypePPA, RepoURL: "ppa:avengemedia/hypelinux"},
+		"ghostty":                 {Name: "ghostty", Repository: RepoTypePPA, RepoURL: "ppa:avengemedia/hypelinux"},
 	}
 
 	switch wm {
@@ -143,30 +143,30 @@ func (u *UbuntuDistribution) GetPackageMappingWithVariants(wm deps.WindowManager
 
 func (u *UbuntuDistribution) getDmsMapping(variant deps.PackageVariant) PackageMapping {
 	if variant == deps.VariantGit {
-		return PackageMapping{Name: "dms-git", Repository: RepoTypePPA, RepoURL: "ppa:avengemedia/dms-git"}
+		return PackageMapping{Name: "hype-git", Repository: RepoTypePPA, RepoURL: "ppa:avengemedia/hype-git"}
 	}
-	return PackageMapping{Name: "dms", Repository: RepoTypePPA, RepoURL: "ppa:avengemedia/dms"}
+	return PackageMapping{Name: "hype", Repository: RepoTypePPA, RepoURL: "ppa:avengemedia/hype"}
 }
 
 func (u *UbuntuDistribution) getQuickshellMapping(variant deps.PackageVariant) PackageMapping {
 	if forceQuickshellGit || variant == deps.VariantGit {
-		return PackageMapping{Name: "quickshell-git", Repository: RepoTypePPA, RepoURL: "ppa:avengemedia/danklinux"}
+		return PackageMapping{Name: "quickshell-git", Repository: RepoTypePPA, RepoURL: "ppa:avengemedia/hypelinux"}
 	}
-	return PackageMapping{Name: "quickshell", Repository: RepoTypePPA, RepoURL: "ppa:avengemedia/danklinux"}
+	return PackageMapping{Name: "quickshell", Repository: RepoTypePPA, RepoURL: "ppa:avengemedia/hypelinux"}
 }
 
 func (u *UbuntuDistribution) getNiriMapping(variant deps.PackageVariant) PackageMapping {
 	if variant == deps.VariantGit {
-		return PackageMapping{Name: "niri-git", Repository: RepoTypePPA, RepoURL: "ppa:avengemedia/danklinux"}
+		return PackageMapping{Name: "niri-git", Repository: RepoTypePPA, RepoURL: "ppa:avengemedia/hypelinux"}
 	}
-	return PackageMapping{Name: "niri", Repository: RepoTypePPA, RepoURL: "ppa:avengemedia/danklinux"}
+	return PackageMapping{Name: "niri", Repository: RepoTypePPA, RepoURL: "ppa:avengemedia/hypelinux"}
 }
 
 func (u *UbuntuDistribution) getXwaylandSatelliteMapping(variant deps.PackageVariant) PackageMapping {
 	if variant == deps.VariantGit {
-		return PackageMapping{Name: "xwayland-satellite-git", Repository: RepoTypePPA, RepoURL: "ppa:avengemedia/danklinux"}
+		return PackageMapping{Name: "xwayland-satellite-git", Repository: RepoTypePPA, RepoURL: "ppa:avengemedia/hypelinux"}
 	}
-	return PackageMapping{Name: "xwayland-satellite", Repository: RepoTypePPA, RepoURL: "ppa:avengemedia/danklinux"}
+	return PackageMapping{Name: "xwayland-satellite", Repository: RepoTypePPA, RepoURL: "ppa:avengemedia/hypelinux"}
 }
 
 func (u *UbuntuDistribution) InstallPrerequisites(ctx context.Context, sudoPassword string, progressChan chan<- InstallProgressMsg) error {
@@ -332,8 +332,8 @@ func (u *UbuntuDistribution) InstallPackages(ctx context.Context, dependencies [
 		u.log(fmt.Sprintf("Warning: failed to write window manager config: %v", err))
 	}
 
-	if err := u.EnableDMSService(ctx, wm); err != nil {
-		u.log(fmt.Sprintf("Warning: failed to enable dms service: %v", err))
+	if err := u.EnableHYPEService(ctx, wm); err != nil {
+		u.log(fmt.Sprintf("Warning: failed to enable hype service: %v", err))
 	}
 
 	// Phase 7: Complete

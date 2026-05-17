@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import qs.Common
 import qs.Services
 import qs.Widgets
@@ -116,7 +116,7 @@ Item {
             }
         }
 
-        DankRipple {
+        HypeRipple {
             id: rippleLayer
             rippleColor: Theme.surfaceText
             cornerRadius: background.radius

@@ -1,4 +1,4 @@
-# AGENTS.md
+﻿# AGENTS.md
 
 This file provides guidance to AI coding assistants.
 
@@ -35,7 +35,7 @@ When asked to backup Memory Bank System files, you will copy the core context fi
 
 ## Project Overview
 
-DankMaterialShell is a complete desktop environment for Wayland compositors, built as a **monorepo** with two main components:
+HypeMaterialShell is a complete desktop environment for Wayland compositors, built as a **monorepo** with two main components:
 
 **1. Go Backend (core/)** - System integration, IPC server, and CLI tools (~118,000 lines)
 **2. QML Frontend (quickshell/)** - UI layer consuming the backend's IPC API
@@ -52,7 +52,7 @@ DankMaterialShell is a complete desktop environment for Wayland compositors, bui
 - **Wayland Protocols** - Display management, screenshots, clipboard, workspaces
 - **D-Bus** - Bluetooth, NetworkManager, systemd-logind, desktop portals
 - **IPC Server** - Unix socket JSON API for QML ↔ Go communication
-- **CLI Tools** - `dms` command with 20+ subcommands, `dankinstall` TUI installer
+- **CLI Tools** - `hype` command with 20+ subcommands, `hypeinstall` TUI installer
 
 ### Frontend (quickshell/)
 - **QML (Qt Modeling Language)** - UI components and visual presentation
@@ -68,23 +68,23 @@ DankMaterialShell is a complete desktop environment for Wayland compositors, bui
 cd core/
 
 # Build
-make                 # Build dms CLI (bin/dms)
-make dankinstall     # Build installer (bin/dankinstall)
+make                 # Build hype CLI (bin/hype)
+make hypeinstall     # Build installer (bin/hypeinstall)
 make test            # Run tests
 make dist            # Build distribution binaries (no update/greeter features)
 
 # Install
-sudo make install    # Install to /usr/local/bin/dms
+sudo make install    # Install to /usr/local/bin/hype
 
 # Development
 gofmt -w .           # Format Go code
 go mod tidy          # Clean up dependencies
 golangci-lint run    # Run linter
 
-# Run dms CLI
-./bin/dms run        # Start shell via dms daemon
-./bin/dms ipc <cmd>  # Send IPC command to running shell
-./bin/dms --help     # View all commands
+# Run hype CLI
+./bin/hype run        # Start shell via hype daemon
+./bin/hype ipc <cmd>  # Send IPC command to running shell
+./bin/hype --help     # View all commands
 ```
 
 ### Frontend (QML)
@@ -92,7 +92,7 @@ golangci-lint run    # Run linter
 ```bash
 cd quickshell/
 
-# Run the shell (requires dms backend running or use 'dms run')
+# Run the shell (requires hype backend running or use 'hype run')
 quickshell -p shell.qml
 qs -p .              # Shorthand
 qs -v -p shell.qml   # Verbose debugging
@@ -110,11 +110,11 @@ make -C .. lint-qml  # From quickshell/, call the repo-root lint target; require
 The project is organized as a monorepo with clear separation between backend and frontend:
 
 ```
-DankMaterialShell/
+HypeMaterialShell/
 ├── core/               # Go backend (~118,000 lines)
 │   ├── cmd/            # Binary entrypoints
-│   │   ├── dms/        # Main CLI with 20+ commands
-│   │   └── dankinstall/# TUI installer
+│   │   ├── hype/        # Main CLI with 20+ commands
+│   │   └── hypeinstall/# TUI installer
 │   ├── internal/       # System integration packages (23 packages)
 │   │   ├── clipboard/  # Clipboard history (ext-data-control-v1)
 │   │   ├── colorpicker/# Native Wayland color picker
@@ -122,7 +122,7 @@ DankMaterialShell/
 │   │   ├── brightness/ # DDC/CI & backlight control
 │   │   ├── bluez/      # Bluetooth D-Bus integration
 │   │   ├── config/     # Configuration management
-│   │   ├── dank16/     # Terminal color scheme generator
+│   │   ├── hype16/     # Terminal color scheme generator
 │   │   ├── deps/       # Dependency detection
 │   │   ├── distros/    # Distribution-specific installers (6 distros)
 │   │   ├── greeter/    # Display manager greeter
@@ -164,7 +164,7 @@ The backend provides all system integration through these key components:
 
 #### 1. IPC Server (`internal/server/`)
 
-JSON-based RPC over Unix socket (`/tmp/dms-ipc-<uid>.sock`) with 15+ submodules:
+JSON-based RPC over Unix socket (`/tmp/hype-ipc-<uid>.sock`) with 15+ submodules:
 
 - **apppicker/** - Application search and launch
 - **bluez/** - Bluetooth device management
@@ -187,30 +187,30 @@ JSON-based RPC over Unix socket (`/tmp/dms-ipc-<uid>.sock`) with 15+ submodules:
 - **wlcontext/** - Wayland connection management
 - **wlroutput/** - wlr-output-management protocol
 
-#### 2. CLI Commands (`cmd/dms/`)
+#### 2. CLI Commands (`cmd/hype/`)
 
-The `dms` CLI provides 20+ commands:
+The `hype` CLI provides 20+ commands:
 
 ```bash
-dms run [-d]                    # Start shell (daemon mode)
-dms restart / kill              # Manage shell process
-dms ipc <command> [args]        # Send IPC commands
-dms brightness [list|set]       # Display brightness control
-dms color pick [--rgb|--hsv]    # Native color picker
-dms clipboard [list|clear]      # Clipboard management
-dms screenshot [area|output]    # Take screenshots
-dms notify send <msg>           # Send notifications
-dms dpms [on|off]              # Display power management
-dms keybinds [reload|list]     # Keybind management
-dms windowrules [add|remove]   # Window rules management
-dms matugen [generate|reload]  # Theme generation
-dms dank16 [generate]          # Terminal theme generation
-dms config [get|set]           # Configuration management
-dms features                    # Show available features
-dms doctor                      # System diagnostics
-dms plugins [browse|install]   # Plugin management
-dms update [check]             # Update DMS and deps
-dms greeter [install|enable]   # Greeter management
+hype run [-d]                    # Start shell (daemon mode)
+hype restart / kill              # Manage shell process
+hype ipc <command> [args]        # Send IPC commands
+hype brightness [list|set]       # Display brightness control
+hype color pick [--rgb|--hsv]    # Native color picker
+hype clipboard [list|clear]      # Clipboard management
+hype screenshot [area|output]    # Take screenshots
+hype notify send <msg>           # Send notifications
+hype dpms [on|off]              # Display power management
+hype keybinds [reload|list]     # Keybind management
+hype windowrules [add|remove]   # Window rules management
+hype matugen [generate|reload]  # Theme generation
+hype hype16 [generate]          # Terminal theme generation
+hype config [get|set]           # Configuration management
+hype features                    # Show available features
+hype doctor                      # System diagnostics
+hype plugins [browse|install]   # Plugin management
+hype update [check]             # Update HYPE and deps
+hype greeter [install|enable]   # Greeter management
 ```
 
 #### 3. Wayland Integration (`internal/wayland/`, `internal/proto/`)
@@ -245,7 +245,7 @@ Native Wayland protocol implementations (as client):
 
 #### 5. Distribution Support (`internal/distros/`)
 
-`dankinstall` TUI installer with full support for:
+`hypeinstall` TUI installer with full support for:
 
 - **Arch Linux** - pacman + AUR (yay/paru)
 - **Fedora** - dnf + COPR
@@ -294,14 +294,14 @@ shell.qml           # Main entry point (minimal orchestration)
 │   ├── PluginSettingsModal.qml
 │   └── [7 more modals]
 ├── Widgets/        # Reusable UI controls (19 files)
-│   ├── DankIcon.qml
-│   ├── DankSlider.qml
-│   ├── DankToggle.qml
-│   ├── DankTabBar.qml
-│   ├── DankGridView.qml
-│   ├── DankListView.qml
+│   ├── HypeIcon.qml
+│   ├── HypeSlider.qml
+│   ├── HypeToggle.qml
+│   ├── HypeTabBar.qml
+│   ├── HypeGridView.qml
+│   ├── HypeListView.qml
 │   └── [13 more widgets]
-└── plugins/        # External plugins directory ($CONFIGPATH/DankMaterialShell/plugins/)
+└── plugins/        # External plugins directory ($CONFIGPATH/HypeMaterialShell/plugins/)
     └── PluginName/ # Example Plugin structure
         ├── plugin.json            # Plugin manifest
         ├── PluginNameWidget.qml   # Widget component
@@ -343,25 +343,25 @@ shell.qml           # Main entry point (minimal orchestration)
    - Unified modal management with consistent styling and keyboard navigation
 
 6. **Widgets/** - Reusable UI controls (19 files)
-   - **DankIcon**: Centralized icon component with Material Design font integration
-   - **DankSlider**: Enhanced slider with animations and smart detection
-   - **DankToggle**: Consistent toggle switch component
-   - **DankTabBar**: Unified tab bar implementation
-   - **DankGridView**: Reusable grid view with adaptive columns
-   - **DankListView**: Reusable list view with configurable styling
-   - **DankTextField**: Styled text input with validation
-   - **DankDropdown**: Dropdown selection component
-   - **DankPopout**: Base popout component for overlays
+   - **HypeIcon**: Centralized icon component with Material Design font integration
+   - **HypeSlider**: Enhanced slider with animations and smart detection
+   - **HypeToggle**: Consistent toggle switch component
+   - **HypeTabBar**: Unified tab bar implementation
+   - **HypeGridView**: Reusable grid view with adaptive columns
+   - **HypeListView**: Reusable list view with configurable styling
+   - **HypeTextField**: Styled text input with validation
+   - **HypeDropdown**: Dropdown selection component
+   - **HypePopout**: Base popout component for overlays
    - **StateLayer**: Material Design 3 interaction states
    - **StyledRect/StyledText**: Themed base components
    - **CachingImage**: Optimized image loading with caching
-   - **DankLocationSearch**: Location picker with search
+   - **HypeLocationSearch**: Location picker with search
    - **SystemLogo**: Animated system branding component
 
-7. **Plugins/** - External plugin system (`$CONFIGPATH/DankMaterialShell/plugins/`)
+7. **Plugins/** - External plugin system (`$CONFIGPATH/HypeMaterialShell/plugins/`)
    - **PluginService**: Discovers, loads, and manages plugin lifecycle
    - **Dynamic Loading**: Plugins loaded at runtime from external directory
-   - **DankBar Integration**: Plugin widgets rendered alongside built-in widgets
+   - **HypeBar Integration**: Plugin widgets rendered alongside built-in widgets
    - **Settings System**: Per-plugin settings with persistence
 
 ### Key Architectural Patterns
@@ -403,12 +403,12 @@ shell.qml           # Main entry point (minimal orchestration)
 
 #### Key Widgets
 
-- **DankIcon**: Centralized icon component with automatic Material Design font detection
-- **DankSlider**: Enhanced slider with animations and smart detection
-- **DankToggle**: Consistent toggle switch component
-- **DankTabBar**: Unified tab bar implementation
-- **DankGridView**: Reusable grid view with adaptive columns
-- **DankListView**: Reusable list view with configurable styling
+- **HypeIcon**: Centralized icon component with automatic Material Design font detection
+- **HypeSlider**: Enhanced slider with animations and smart detection
+- **HypeToggle**: Consistent toggle switch component
+- **HypeTabBar**: Unified tab bar implementation
+- **HypeGridView**: Reusable grid view with adaptive columns
+- **HypeListView**: Reusable list view with configurable styling
 
 ## Code Conventions
 
@@ -443,7 +443,7 @@ Text {
 
 2. **Naming Conventions**:
    - **Services**: Use `Singleton` type with `id: root`
-   - **Components**: Use descriptive names (e.g., `DankSlider`, `TopBar`)
+   - **Components**: Use descriptive names (e.g., `HypeSlider`, `TopBar`)
    - **Properties**: camelCase for properties, PascalCase for types
 
 3. **Null-Safe Operations**:
@@ -487,7 +487,7 @@ import Quickshell.Widgets
 import Quickshell.Io     // For Process, FileView
 import qs.Common         // For Theme, utilities
 import qs.Services       // For service access
-import qs.Widgets        // For reusable widgets (DankIcon, etc.)
+import qs.Widgets        // For reusable widgets (HypeIcon, etc.)
 ```
 
 #### Go Import Order
@@ -506,8 +506,8 @@ import (
     "github.com/spf13/cobra"
 
     // Internal packages
-    "github.com/AvengeMedia/DankMaterialShell/core/internal/server/models"
-    "github.com/AvengeMedia/DankMaterialShell/core/internal/utils"
+    "github.com/AvengeMedia/HypeMaterialShell/core/internal/server/models"
+    "github.com/AvengeMedia/HypeMaterialShell/core/internal/utils"
 )
 ```
 
@@ -515,7 +515,7 @@ import (
 - QML Services should NOT import other QML services
 - Modules and Widgets can import and use services via property bindings
 - Use `Theme.propertyName` for consistent styling
-- Use `DankIcon { name: "icon_name" }` for all icons instead of manual Text components
+- Use `HypeIcon { name: "icon_name" }` for all icons instead of manual Text components
 
 ### Go Backend Code Conventions
 
@@ -548,8 +548,8 @@ All server modules should follow this pattern:
 package mymodule
 
 import (
-    "github.com/AvengeMedia/DankMaterialShell/core/internal/server/models"
-    "github.com/AvengeMedia/DankMaterialShell/core/internal/server/params"
+    "github.com/AvengeMedia/HypeMaterialShell/core/internal/server/models"
+    "github.com/AvengeMedia/HypeMaterialShell/core/internal/server/params"
 )
 
 type Manager struct {
@@ -656,7 +656,7 @@ func TestManager_HandleRequest(t *testing.T) {
 #### 7. Logging
 
 ```go
-import "github.com/AvengeMedia/DankMaterialShell/core/internal/log"
+import "github.com/AvengeMedia/HypeMaterialShell/core/internal/log"
 
 // Use appropriate log levels
 log.Debug("Processing request", "method", req.Method)
@@ -683,7 +683,7 @@ log.Fatal("Critical failure", "error", err) // Only for unrecoverable errors
    property bool brightnessAvailable: false
 
    // In modules - adapt UI accordingly
-   DankSlider {
+   HypeSlider {
        visible: DisplayService.brightnessAvailable
        enabled: DisplayService.brightnessAvailable
        value: DisplayService.brightnessLevel
@@ -691,7 +691,7 @@ log.Fatal("Critical failure", "error", err) // Only for unrecoverable errors
    ```
 
 3. **Reusable Components**:
-   - Create reusable widgets for common patterns (like DankSlider)
+   - Create reusable widgets for common patterns (like HypeSlider)
    - Use configurable properties for different use cases
    - Include proper signal handling with unique names (avoid `valueChanged`)
 
@@ -742,7 +742,7 @@ The shell uses Quickshell's `Variants` pattern for multi-monitor support:
 
 The shell uses a Unix socket-based IPC system for all system integration:
 
-1. **Go Backend** (`core/internal/server/`) runs an IPC server on `/tmp/dms-ipc-<uid>.sock`
+1. **Go Backend** (`core/internal/server/`) runs an IPC server on `/tmp/hype-ipc-<uid>.sock`
 2. **QML Services** send JSON-RPC requests to the backend
 3. **Backend** handles system integration (D-Bus, Wayland, hardware) and responds
 4. **QML Services** receive responses and update properties for UI reactivity
@@ -773,7 +773,7 @@ QML Service updates properties → UI updates reactively
 - QML Services should be **thin wrappers** - minimal logic, just IPC calls
 - System integration logic belongs in Go backend packages
 - When adding features, implement backend first, then QML wrapper
-- Use `dms ipc <command>` CLI to test backend functionality independently
+- Use `hype ipc <command>` CLI to test backend functionality independently
 
 ## Common Development Tasks
 
@@ -788,14 +788,14 @@ When modifying the shell:
 4. **Theming**: Use `Theme.propertyName` for Material Design 3 consistency
 
 **Go Backend:**
-1. **Build**: `cd core && make` to build dms CLI
+1. **Build**: `cd core && make` to build hype CLI
 2. **Tests**: `make test` to run Go unit tests (add appropriate test coverage for new code)
 3. **Linting**: `gofmt -w .`, `go mod tidy`, and `golangci-lint run`
-4. **IPC testing**: Use `dms ipc <command>` to test backend functionality
+4. **IPC testing**: Use `hype ipc <command>` to test backend functionality
 5. **Rebuild**: After backend changes, rebuild with `make` and restart shell
 
 **Integration:**
-1. **Full test**: `dms restart` to restart both backend and frontend
+1. **Full test**: `hype restart` to restart both backend and frontend
 2. **Wayland compatibility**: Test on Wayland session
 3. **Multi-monitor**: Verify behavior with multiple displays
 4. **Compositor compatibility**: Test on Niri, Hyprland, MangoWC, Sway, labwc, Scroll when possible
@@ -816,7 +816,7 @@ When modifying the shell:
    - Import `qs.Widgets` for reusable components
    - Bind to service properties for reactive updates
    - Consider per-screen vs global behavior
-   - Use `DankIcon` for icons instead of manual Text components
+   - Use `HypeIcon` for icons instead of manual Text components
 
 3. **Integration in shell.qml**:
    ```qml
@@ -839,7 +839,7 @@ When modifying the shell:
    - Import `qs.Common` for theming
    - Focus on reusability and composition
    - Keep widgets simple and focused
-   - Use `DankIcon` for icons instead of manual Text components
+   - Use `HypeIcon` for icons instead of manual Text components
 
 ### Adding New Services
 
@@ -857,7 +857,7 @@ When modifying the shell:
    package newsystem
 
    import (
-       "github.com/AvengeMedia/DankMaterialShell/core/internal/server/models"
+       "github.com/AvengeMedia/HypeMaterialShell/core/internal/server/models"
    )
 
    type Manager struct {
@@ -880,7 +880,7 @@ When modifying the shell:
    router["newsystem"] = newsystemMgr.HandleRequest
    ```
 
-4. **Test backend**: `dms ipc newsystem.action '{"param": "value"}'`
+4. **Test backend**: `hype ipc newsystem.action '{"param": "value"}'`
 
 #### Step 2: Create QML Wrapper
 
@@ -929,17 +929,17 @@ When modifying the shell:
 
 ### Creating Plugins
 
-Plugins are external, dynamically-loaded components that extend DankMaterialShell functionality. Plugins are stored in `~/.config/DankMaterialShell/plugins/` and have their settings isolated from core DMS settings.
+Plugins are external, dynamically-loaded components that extend HypeMaterialShell functionality. Plugins are stored in `~/.config/HypeMaterialShell/plugins/` and have their settings isolated from core HYPE settings.
 
 **Plugin Types:**
-- **Widget plugins** (`"type": "widget"` or omit type field): Display UI components in DankBar
+- **Widget plugins** (`"type": "widget"` or omit type field): Display UI components in HypeBar
 - **Daemon plugins** (`"type": "daemon"`): Run invisibly in the background without UI
 
 #### Widget Plugins
 
 1. **Create plugin directory**:
    ```bash
-   mkdir -p ~/.config/DankMaterialShell/plugins/YourPlugin
+   mkdir -p ~/.config/HypeMaterialShell/plugins/YourPlugin
    ```
 
 2. **Create manifest** (`plugin.json`):
@@ -1031,7 +1031,7 @@ Plugins are external, dynamically-loaded components that extend DankMaterialShel
    - Open Settings → Plugins
    - Click "Scan for Plugins"
    - Toggle plugin to enable
-   - Add plugin ID to DankBar widget list
+   - Add plugin ID to HypeBar widget list
 
 #### Daemon Plugins
 
@@ -1039,7 +1039,7 @@ Daemon plugins run invisibly in the background without any UI components. They'r
 
 1. **Create plugin directory**:
    ```bash
-   mkdir -p ~/.config/DankMaterialShell/plugins/YourDaemon
+   mkdir -p ~/.config/HypeMaterialShell/plugins/YourDaemon
    ```
 
 2. **Create manifest** (`plugin.json`):
@@ -1094,8 +1094,8 @@ Daemon plugins run invisibly in the background without any UI components. They'r
 
 **Plugin Directory Structure:**
 ```
-~/.config/DankMaterialShell/
-├── settings.json                    # Core DMS settings + plugin settings
+~/.config/HypeMaterialShell/
+├── settings.json                    # Core HYPE settings + plugin settings
 │   └── pluginSettings: {
 │       └── yourPlugin: {
 │           ├── enabled: true,
@@ -1129,14 +1129,14 @@ Daemon plugins run invisibly in the background without any UI components. They'r
 2. **Singleton conflicts**: Ensure services use `Singleton` type with `id: root`
 3. **Property binding issues**: Use property aliases for reactive updates
 4. **Theme inconsistencies**: Always use `Theme.propertyName` instead of hardcoded values
-5. **IPC communication failures**: Check if `dms run` backend is running
+5. **IPC communication failures**: Check if `hype run` backend is running
 
 #### Go Backend Issues
 
 1. **IPC not responding**:
-   - Check if socket exists: `ls -la /tmp/dms-ipc-$(id -u).sock`
-   - Test with CLI: `dms ipc test.ping`
-   - Check logs: `journalctl --user -u dms.service -f`
+   - Check if socket exists: `ls -la /tmp/hype-ipc-$(id -u).sock`
+   - Test with CLI: `hype ipc test.ping`
+   - Check logs: `journalctl --user -u hype.service -f`
 
 2. **D-Bus errors**:
    - Verify service availability: `busctl --user list | grep org.bluez`
@@ -1145,8 +1145,8 @@ Daemon plugins run invisibly in the background without any UI components. They'r
 
 3. **Wayland protocol errors**:
    - Check compositor support: Different compositors support different protocols
-   - Use `dms features` to see available features
-   - Enable debug output: `WAYLAND_DEBUG=1 dms run`
+   - Use `hype features` to see available features
+   - Enable debug output: `WAYLAND_DEBUG=1 hype run`
 
 4. **Build failures**:
    - Update Go: Requires Go 1.24+
@@ -1171,10 +1171,10 @@ Daemon plugins run invisibly in the background without any UI components. They'r
 - **Responsiveness**: Use property bindings for reactive UI
 - **Consistency**: Follow Material Design 3 principles via Theme singleton
 - **Performance**: Minimize expensive operations and use appropriate data structures
-- **Icon Management**: Use `DankIcon` for all icons instead of manual Text components
-- **Widget System**: Leverage existing widgets (DankSlider, DankToggle, etc.) for consistency
+- **Icon Management**: Use `HypeIcon` for all icons instead of manual Text components
+- **Widget System**: Leverage existing widgets (HypeSlider, HypeToggle, etc.) for consistency
 - **NO WRAPPER HELL**: Avoid creating unnecessary wrapper functions - bind directly to underlying APIs for better reactivity and performance
-- **Modern QML Patterns**: Leverage new widgets like DankTextField, DankDropdown, CachingImage
+- **Modern QML Patterns**: Leverage new widgets like HypeTextField, HypeDropdown, CachingImage
 - **Structured Organization**: Follow the established Services/Modules/Widgets/Modals separation
 
 #### Go Backend
@@ -1196,15 +1196,15 @@ Daemon plugins run invisibly in the background without any UI components. They'r
 
 ### Common Widget Patterns
 
-1. **Icons**: Always use `DankIcon { name: "icon_name" }` instead of `Text { font.family: Theme.iconFont }`
-2. **Sliders**: Use `DankSlider` for consistent styling and behavior
-3. **Toggles**: Use `DankToggle` for switches and checkboxes
-4. **Tab Bars**: Use `DankTabBar` for tabbed interfaces
-5. **Lists**: Use `DankListView` for scrollable lists
-6. **Grids**: Use `DankGridView` for grid layouts
-7. **Text Fields**: Use `DankTextField` for text input with validation
-8. **Dropdowns**: Use `DankDropdown` for selection menus
-9. **Popouts**: Use `DankPopout` as base for overlay components
+1. **Icons**: Always use `HypeIcon { name: "icon_name" }` instead of `Text { font.family: Theme.iconFont }`
+2. **Sliders**: Use `HypeSlider` for consistent styling and behavior
+3. **Toggles**: Use `HypeToggle` for switches and checkboxes
+4. **Tab Bars**: Use `HypeTabBar` for tabbed interfaces
+5. **Lists**: Use `HypeListView` for scrollable lists
+6. **Grids**: Use `HypeGridView` for grid layouts
+7. **Text Fields**: Use `HypeTextField` for text input with validation
+8. **Dropdowns**: Use `HypeDropdown` for selection menus
+9. **Popouts**: Use `HypePopout` as base for overlay components
 10. **Images**: Use `CachingImage` for optimized image loading
 
 ### Essential Utility Functions

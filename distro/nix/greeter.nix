@@ -1,14 +1,14 @@
-{
+﻿{
   lib,
   config,
   pkgs,
-  dmsPkgs,
+  hypePkgs,
   ...
 }:
 let
   inherit (lib) types;
-  cfg = config.programs.dank-material-shell.greeter;
-  cfgDms = config.programs.dank-material-shell;
+  cfg = config.programs.hype-material-shell.greeter;
+  cfgDms = config.programs.hype-material-shell;
 
   inherit (config.services.greetd.settings.default_session) user;
 
@@ -18,8 +18,8 @@ let
     in
     if configured != null then configured else builtins.getAttr cfg.compositor.name pkgs;
 
-  cacheDir = "/var/lib/dms-greeter";
-  greeterScript = pkgs.writeShellScriptBin "dms-greeter" ''
+  cacheDir = "/var/lib/hype-greeter";
+  greeterScript = pkgs.writeShellScriptBin "hype-greeter" ''
     export PATH=$PATH:${
       lib.makeBinPath [
         cfg.quickshell.package
@@ -31,17 +31,17 @@ let
       lib.escapeShellArgs (
         [
           "sh"
-          "${cfg.package}/share/quickshell/dms/Modules/Greetd/assets/dms-greeter"
+          "${cfg.package}/share/quickshell/hype/Modules/Greetd/assets/hype-greeter"
           "--cache-dir"
           cacheDir
           "--command"
           cfg.compositor.name
           "-p"
-          "${cfg.package}/share/quickshell/dms"
+          "${cfg.package}/share/quickshell/hype"
         ]
         ++ lib.optionals (cfg.compositor.customConfig != "") [
           "-C"
-          "${pkgs.writeText "dmsgreeter-compositor-config" cfg.compositor.customConfig}"
+          "${pkgs.writeText "hypegreeter-compositor-config" cfg.compositor.customConfig}"
         ]
       )
     } ${lib.optionalString cfg.logs.save "> ${cfg.logs.path} 2>&1"}
@@ -52,33 +52,33 @@ in
 {
   imports =
     let
-      msg = "The option 'programs.dank-material-shell.greeter.compositor.extraConfig' is deprecated. Please use 'programs.dank-material-shell.greeter.compositor.customConfig' instead.";
+      msg = "The option 'programs.hype-material-shell.greeter.compositor.extraConfig' is deprecated. Please use 'programs.hype-material-shell.greeter.compositor.customConfig' instead.";
     in
     [
       (lib.mkRemovedOptionModule [
         "programs"
-        "dank-material-shell"
+        "hype-material-shell"
         "greeter"
         "compositor"
         "extraConfig"
       ] msg)
-      ./dms-rename.nix
+      ./hype-rename.nix
     ];
 
-  options.programs.dank-material-shell.greeter = {
-    enable = lib.mkEnableOption "DankMaterialShell greeter";
+  options.programs.hype-material-shell.greeter = {
+    enable = lib.mkEnableOption "HypeMaterialShell greeter";
     package = lib.mkOption {
       type = types.package;
-      default = if cfgDms.enable or false then cfgDms.package else dmsPkgs.dms-shell;
+      default = if cfgDms.enable or false then cfgDms.package else hypePkgs.hype-shell;
       defaultText = lib.literalExpression ''
-        if config.programs.dank-material-shell.enable
-        then config.programs.dank-material-shell.package
+        if config.programs.hype-material-shell.enable
+        then config.programs.hype-material-shell.package
         else built from source;
       '';
       description = ''
-        The DankMaterialShell package to use for the greeter.
+        The HypeMaterialShell package to use for the greeter.
 
-        Defaults to the package from `programs.dank-material-shell` if it is enabled,
+        Defaults to the package from `programs.hype-material-shell` if it is enabled,
         otherwise defaults to building from source.
       '';
     };
@@ -104,7 +104,7 @@ in
       default = [ ];
       description = "Config files to copy into data directory";
       example = [
-        "/home/user/.config/DankMaterialShell/settings.json"
+        "/home/user/.config/HypeMaterialShell/settings.json"
       ];
     };
     configHome = lib.mkOption {
@@ -113,20 +113,20 @@ in
       example = "/home/user";
       description = ''
         User home directory to copy configurations for greeter
-        If DMS config files are in non-standard locations then use the configFiles option instead
+        If HYPE config files are in non-standard locations then use the configFiles option instead
       '';
     };
     quickshell = {
-      package = lib.mkPackageOption dmsPkgs "quickshell" {
-        extraDescription = "The quickshell package to use (defaults to be built from source, in the commit 26531f due to unreleased features used by DMS).";
+      package = lib.mkPackageOption hypePkgs "quickshell" {
+        extraDescription = "The quickshell package to use (defaults to be built from source, in the commit 26531f due to unreleased features used by HYPE).";
       };
     };
-    logs.save = lib.mkEnableOption "saving logs from DMS greeter to file";
+    logs.save = lib.mkEnableOption "saving logs from HYPE greeter to file";
     logs.path = lib.mkOption {
       type = types.path;
-      default = "/tmp/dms-greeter.log";
+      default = "/tmp/hype-greeter.log";
       description = ''
-        File path to save DMS greeter logs to
+        File path to save HYPE greeter logs to
       '';
     };
   };
@@ -135,14 +135,14 @@ in
       {
         assertion = (config.users.users.${user} or { }) != { };
         message = ''
-          dmsgreeter: user set for greetd default_session ${user} does not exist. Please create it before referencing it.
+          hypegreeter: user set for greetd default_session ${user} does not exist. Please create it before referencing it.
         '';
       }
     ];
-    # DMS currently relies on /etc/pam.d/login for lock screen password auth on NixOS.
-    # Declare security.pam.services.dankshell only if you want to override that runtime fallback.
-    # U2F and fingerprint are handled separately by DMS — do not add pam_u2f or pam_fprintd here.
-    # security.pam.services.dankshell = {
+    # HYPE currently relies on /etc/pam.d/login for lock screen password auth on NixOS.
+    # Declare security.pam.services.hypeshell only if you want to override that runtime fallback.
+    # U2F and fingerprint are handled separately by HYPE — do not add pam_u2f or pam_fprintd here.
+    # security.pam.services.hypeshell = {
     #   # Example: add faillock
     #   faillock.enable = true;
     # };
@@ -155,7 +155,7 @@ in
       inter
       material-symbols
     ];
-    systemd.tmpfiles.settings."10-dmsgreeter" = {
+    systemd.tmpfiles.settings."10-hypegreeter" = {
       ${cacheDir}.d = {
         inherit user;
         group =
@@ -211,13 +211,13 @@ in
           fi
       fi
 
-      mv dms-colors.json colors.json || :
+      mv hype-colors.json colors.json || :
       chown ${user}: * || :
     '';
-    programs.dank-material-shell.greeter.configFiles = lib.mkIf (cfg.configHome != null) [
-      "${cfg.configHome}/.config/DankMaterialShell/settings.json"
-      "${cfg.configHome}/.local/state/DankMaterialShell/session.json"
-      "${cfg.configHome}/.cache/DankMaterialShell/dms-colors.json"
+    programs.hype-material-shell.greeter.configFiles = lib.mkIf (cfg.configHome != null) [
+      "${cfg.configHome}/.config/HypeMaterialShell/settings.json"
+      "${cfg.configHome}/.local/state/HypeMaterialShell/session.json"
+      "${cfg.configHome}/.cache/HypeMaterialShell/hype-colors.json"
     ];
   };
 }

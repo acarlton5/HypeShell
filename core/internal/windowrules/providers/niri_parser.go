@@ -1,4 +1,4 @@
-package providers
+﻿package providers
 
 import (
 	"fmt"
@@ -58,12 +58,12 @@ type NiriRulesParser struct {
 	processedFiles   map[string]bool
 	rules            []NiriWindowRule
 	currentSource    string
-	dmsRulesIncluded bool
-	dmsRulesExists   bool
+	hypeRulesIncluded bool
+	hypeRulesExists   bool
 	includeCount     int
-	dmsIncludePos    int
-	rulesAfterDMS    int
-	dmsProcessed     bool
+	hypeIncludePos    int
+	rulesAfterHYPE    int
+	hypeProcessed     bool
 }
 
 func NewNiriRulesParser(configDir string) *NiriRulesParser {
@@ -71,14 +71,14 @@ func NewNiriRulesParser(configDir string) *NiriRulesParser {
 		configDir:      configDir,
 		processedFiles: make(map[string]bool),
 		rules:          []NiriWindowRule{},
-		dmsIncludePos:  -1,
+		hypeIncludePos:  -1,
 	}
 }
 
 func (p *NiriRulesParser) Parse() ([]NiriWindowRule, error) {
-	dmsRulesPath := filepath.Join(p.configDir, "dms", "windowrules.kdl")
-	if _, err := os.Stat(dmsRulesPath); err == nil {
-		p.dmsRulesExists = true
+	hypeRulesPath := filepath.Join(p.configDir, "hype", "windowrules.kdl")
+	if _, err := os.Stat(hypeRulesPath); err == nil {
+		p.hypeRulesExists = true
 	}
 
 	configPath := filepath.Join(p.configDir, "config.kdl")
@@ -86,15 +86,15 @@ func (p *NiriRulesParser) Parse() ([]NiriWindowRule, error) {
 		return nil, err
 	}
 
-	if p.dmsRulesExists && !p.dmsProcessed {
-		p.parseDMSRulesDirectly(dmsRulesPath)
+	if p.hypeRulesExists && !p.hypeProcessed {
+		p.parseHYPERulesDirectly(hypeRulesPath)
 	}
 
 	return p.rules, nil
 }
 
-func (p *NiriRulesParser) parseDMSRulesDirectly(dmsRulesPath string) {
-	data, err := os.ReadFile(dmsRulesPath)
+func (p *NiriRulesParser) parseHYPERulesDirectly(hypeRulesPath string) {
+	data, err := os.ReadFile(hypeRulesPath)
 	if err != nil {
 		return
 	}
@@ -105,10 +105,10 @@ func (p *NiriRulesParser) parseDMSRulesDirectly(dmsRulesPath string) {
 	}
 
 	prevSource := p.currentSource
-	p.currentSource = dmsRulesPath
-	p.processNodes(doc.Nodes, filepath.Dir(dmsRulesPath))
+	p.currentSource = hypeRulesPath
+	p.processNodes(doc.Nodes, filepath.Dir(hypeRulesPath))
 	p.currentSource = prevSource
-	p.dmsProcessed = true
+	p.hypeProcessed = true
 }
 
 func (p *NiriRulesParser) parseFile(filePath string) error {
@@ -160,13 +160,13 @@ func (p *NiriRulesParser) handleInclude(node *document.Node, baseDir string) {
 	}
 
 	includePath := strings.Trim(node.Arguments[0].String(), "\"")
-	isDMSInclude := includePath == "dms/windowrules.kdl" || strings.HasSuffix(includePath, "/dms/windowrules.kdl")
+	isHYPEInclude := includePath == "hype/windowrules.kdl" || strings.HasSuffix(includePath, "/hype/windowrules.kdl")
 
 	p.includeCount++
-	if isDMSInclude {
-		p.dmsRulesIncluded = true
-		p.dmsIncludePos = p.includeCount
-		p.dmsProcessed = true
+	if isHYPEInclude {
+		p.hypeRulesIncluded = true
+		p.hypeIncludePos = p.includeCount
+		p.hypeProcessed = true
 	}
 
 	fullPath := filepath.Join(baseDir, includePath)
@@ -410,33 +410,33 @@ func (p *NiriRulesParser) parseBoolArg(node *document.Node) bool {
 	return node.Arguments[0].ValueString() != "false"
 }
 
-func (p *NiriRulesParser) HasDMSRulesIncluded() bool {
-	return p.dmsRulesIncluded
+func (p *NiriRulesParser) HasHYPERulesIncluded() bool {
+	return p.hypeRulesIncluded
 }
 
-func (p *NiriRulesParser) buildDMSStatus() *windowrules.DMSRulesStatus {
-	status := &windowrules.DMSRulesStatus{
-		Exists:          p.dmsRulesExists,
-		Included:        p.dmsRulesIncluded,
-		IncludePosition: p.dmsIncludePos,
+func (p *NiriRulesParser) buildHYPEStatus() *windowrules.HYPERulesStatus {
+	status := &windowrules.HYPERulesStatus{
+		Exists:          p.hypeRulesExists,
+		Included:        p.hypeRulesIncluded,
+		IncludePosition: p.hypeIncludePos,
 		TotalIncludes:   p.includeCount,
-		RulesAfterDMS:   p.rulesAfterDMS,
+		RulesAfterHYPE:   p.rulesAfterHYPE,
 	}
 
 	switch {
-	case !p.dmsRulesExists:
+	case !p.hypeRulesExists:
 		status.Effective = false
-		status.StatusMessage = "dms/windowrules.kdl does not exist"
-	case !p.dmsRulesIncluded:
+		status.StatusMessage = "hype/windowrules.kdl does not exist"
+	case !p.hypeRulesIncluded:
 		status.Effective = false
-		status.StatusMessage = "dms/windowrules.kdl is not included in config.kdl"
-	case p.rulesAfterDMS > 0:
+		status.StatusMessage = "hype/windowrules.kdl is not included in config.kdl"
+	case p.rulesAfterHYPE > 0:
 		status.Effective = true
-		status.OverriddenBy = p.rulesAfterDMS
-		status.StatusMessage = "Some DMS rules may be overridden by config rules"
+		status.OverriddenBy = p.rulesAfterHYPE
+		status.StatusMessage = "Some HYPE rules may be overridden by config rules"
 	default:
 		status.Effective = true
-		status.StatusMessage = "DMS window rules are active"
+		status.StatusMessage = "HYPE window rules are active"
 	}
 
 	return status
@@ -444,8 +444,8 @@ func (p *NiriRulesParser) buildDMSStatus() *windowrules.DMSRulesStatus {
 
 type NiriRulesParseResult struct {
 	Rules            []NiriWindowRule
-	DMSRulesIncluded bool
-	DMSStatus        *windowrules.DMSRulesStatus
+	HYPERulesIncluded bool
+	HYPEStatus        *windowrules.HYPERulesStatus
 }
 
 func ParseNiriWindowRules(configDir string) (*NiriRulesParseResult, error) {
@@ -456,8 +456,8 @@ func ParseNiriWindowRules(configDir string) (*NiriRulesParseResult, error) {
 	}
 	return &NiriRulesParseResult{
 		Rules:            rules,
-		DMSRulesIncluded: parser.HasDMSRulesIncluded(),
-		DMSStatus:        parser.buildDMSStatus(),
+		HYPERulesIncluded: parser.HasHYPERulesIncluded(),
+		HYPEStatus:        parser.buildHYPEStatus(),
 	}, nil
 }
 
@@ -526,7 +526,7 @@ func (p *NiriWritableProvider) Name() string {
 }
 
 func (p *NiriWritableProvider) GetOverridePath() string {
-	return filepath.Join(p.configDir, "dms", "windowrules.kdl")
+	return filepath.Join(p.configDir, "hype", "windowrules.kdl")
 }
 
 func (p *NiriWritableProvider) GetRuleSet() (*windowrules.RuleSet, error) {
@@ -538,13 +538,13 @@ func (p *NiriWritableProvider) GetRuleSet() (*windowrules.RuleSet, error) {
 		Title:            "Niri Window Rules",
 		Provider:         "niri",
 		Rules:            ConvertNiriRulesToWindowRules(result.Rules),
-		DMSRulesIncluded: result.DMSRulesIncluded,
-		DMSStatus:        result.DMSStatus,
+		HYPERulesIncluded: result.HYPERulesIncluded,
+		HYPEStatus:        result.HYPEStatus,
 	}, nil
 }
 
 func (p *NiriWritableProvider) SetRule(rule windowrules.WindowRule) error {
-	rules, err := p.LoadDMSRules()
+	rules, err := p.LoadHYPERules()
 	if err != nil {
 		rules = []windowrules.WindowRule{}
 	}
@@ -561,11 +561,11 @@ func (p *NiriWritableProvider) SetRule(rule windowrules.WindowRule) error {
 		rules = append(rules, rule)
 	}
 
-	return p.writeDMSRules(rules)
+	return p.writeHYPERules(rules)
 }
 
 func (p *NiriWritableProvider) RemoveRule(id string) error {
-	rules, err := p.LoadDMSRules()
+	rules, err := p.LoadHYPERules()
 	if err != nil {
 		return err
 	}
@@ -577,11 +577,11 @@ func (p *NiriWritableProvider) RemoveRule(id string) error {
 		}
 	}
 
-	return p.writeDMSRules(newRules)
+	return p.writeHYPERules(newRules)
 }
 
 func (p *NiriWritableProvider) ReorderRules(ids []string) error {
-	rules, err := p.LoadDMSRules()
+	rules, err := p.LoadHYPERules()
 	if err != nil {
 		return err
 	}
@@ -603,12 +603,12 @@ func (p *NiriWritableProvider) ReorderRules(ids []string) error {
 		newRules = append(newRules, r)
 	}
 
-	return p.writeDMSRules(newRules)
+	return p.writeHYPERules(newRules)
 }
 
 var niriMetaCommentRegex = regexp.MustCompile(`^//\s*@id=(\S*)\s*@name=(.*)$`)
 
-func (p *NiriWritableProvider) LoadDMSRules() ([]windowrules.WindowRule, error) {
+func (p *NiriWritableProvider) LoadHYPERules() ([]windowrules.WindowRule, error) {
 	rulesPath := p.GetOverridePath()
 	data, err := os.ReadFile(rulesPath)
 	if err != nil {
@@ -665,7 +665,7 @@ func (p *NiriWritableProvider) LoadDMSRules() ([]windowrules.WindowRule, error) 
 			name = metas[i].name
 		}
 		if id == "" {
-			id = fmt.Sprintf("dms_rule_%d", i)
+			id = fmt.Sprintf("hype_rule_%d", i)
 		}
 
 		wr := windowrules.WindowRule{
@@ -720,7 +720,7 @@ func (p *NiriWritableProvider) LoadDMSRules() ([]windowrules.WindowRule, error) 
 	return rules, nil
 }
 
-func (p *NiriWritableProvider) writeDMSRules(rules []windowrules.WindowRule) error {
+func (p *NiriWritableProvider) writeHYPERules(rules []windowrules.WindowRule) error {
 	rulesPath := p.GetOverridePath()
 
 	if err := os.MkdirAll(filepath.Dir(rulesPath), 0755); err != nil {
@@ -728,7 +728,7 @@ func (p *NiriWritableProvider) writeDMSRules(rules []windowrules.WindowRule) err
 	}
 
 	var lines []string
-	lines = append(lines, "// DMS Window Rules - Managed by DankMaterialShell")
+	lines = append(lines, "// HYPE Window Rules - Managed by HypeMaterialShell")
 	lines = append(lines, "// Do not edit manually - changes may be overwritten")
 	lines = append(lines, "")
 

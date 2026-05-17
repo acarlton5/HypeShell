@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+﻿#!/usr/bin/env bash
 
 set -euo pipefail
 
@@ -10,7 +10,7 @@ YES=1
 PURGE_USER_DATA=0
 SKIP_INSTALL=0
 SKIP_PACKAGE_REMOVAL=0
-REMOVE_DMS_PACKAGES=0
+REMOVE_HYPE_PACKAGES=0
 UPDATE_EXISTING=0
 INSTALL_GREETER=1
 INSTALL_HYPRLAND_SESSION=1
@@ -83,7 +83,7 @@ while [ "$#" -gt 0 ]; do
     case "$1" in
         --update)
             UPDATE_EXISTING=1
-            REMOVE_DMS_PACKAGES=1
+            REMOVE_HYPE_PACKAGES=1
             CLEAN_DISPLAY_MANAGER=1
             ;;
         --dry-run)
@@ -101,8 +101,8 @@ while [ "$#" -gt 0 ]; do
         --skip-package-removal)
             SKIP_PACKAGE_REMOVAL=1
             ;;
-        --remove-upstream-packages|--remove-dms-packages)
-            REMOVE_DMS_PACKAGES=1
+        --remove-upstream-packages|--remove-hype-packages)
+            REMOVE_HYPE_PACKAGES=1
             ;;
         --install-method)
             INSTALL_METHOD="${2:-}"
@@ -123,7 +123,7 @@ while [ "$#" -gt 0 ]; do
             ;;
         --clean)
             CLEAN_DISPLAY_MANAGER=1
-            REMOVE_DMS_PACKAGES=1
+            REMOVE_HYPE_PACKAGES=1
             ;;
         --reboot-if-needed)
             REBOOT_IF_NEEDED=1
@@ -228,7 +228,7 @@ existing_hypeshell_install_detected() {
     have hype && return 0
     path_exists "$PREFIX/bin/hype" && return 0
     path_exists "$PREFIX/share/quickshell/hype" && return 0
-    path_exists "$PREFIX/share/quickshell/dms" && return 0
+    path_exists "$PREFIX/share/quickshell/hype" && return 0
     return 1
 }
 
@@ -273,14 +273,14 @@ backup_legacy_children() {
     done
 }
 
-import_legacy_dank_material_data() {
+import_legacy_hype_material_data() {
     [ "$PURGE_USER_DATA" -eq 0 ] || return 0
 
-    legacy_config="$HOME/.config/DankMaterialShell"
+    legacy_config="$HOME/.config/HypeMaterialShell"
     hype_config="$HOME/.config/HypeShell"
-    legacy_state="${XDG_STATE_HOME:-$HOME/.local/state}/DankMaterialShell"
+    legacy_state="${XDG_STATE_HOME:-$HOME/.local/state}/HypeMaterialShell"
     hype_state="${XDG_STATE_HOME:-$HOME/.local/state}/HypeShell"
-    legacy_cache="${XDG_CACHE_HOME:-$HOME/.cache}/DankMaterialShell"
+    legacy_cache="${XDG_CACHE_HOME:-$HOME/.cache}/HypeMaterialShell"
     hype_cache="${XDG_CACHE_HOME:-$HOME/.cache}/HypeShell"
 
     for file in settings.json plugin_settings.json clsettings.json; do
@@ -297,7 +297,7 @@ import_legacy_dank_material_data() {
         fi
     done
 
-    for file in cache.json launcher_cache.json dms-colors.json; do
+    for file in cache.json launcher_cache.json hype-colors.json; do
         if [ -f "$legacy_cache/$file" ] && [ ! -e "$hype_cache/$file" ]; then
             run mkdir -p "$hype_cache"
             run cp -a "$legacy_cache/$file" "$hype_cache/$file"
@@ -329,7 +329,7 @@ stop_disable_user_units() {
         hype-shell.service
         hype-updater.service
         HYPESHELL.service
-        dms.service
+        hype.service
     )
 
     for unit in "${legacy_units[@]}"; do
@@ -361,7 +361,7 @@ kill_legacy_processes() {
     if [ "$UPDATE_EXISTING" -eq 0 ]; then
         run pkill -TERM -x hype 2>/dev/null || true
     fi
-    run pkill -TERM -x dms 2>/dev/null || true
+    run pkill -TERM -x hype 2>/dev/null || true
     sleep 1
 }
 
@@ -380,19 +380,19 @@ remove_legacy_packages() {
         hypeshell-git
     )
 
-    if [ "$REMOVE_DMS_PACKAGES" -eq 1 ]; then
+    if [ "$REMOVE_HYPE_PACKAGES" -eq 1 ]; then
         package_candidates+=(
-            dms
-            dms-cli
-            dms-git
-            dms-greeter
-            dms-hyprland
-            dms-niri
-            dms-shell
-            dms-shell-git
-            dms-shell-hyprland
-            dms-shell-niri
-            greetd-dms-greeter-git
+            hype
+            hype-cli
+            hype-git
+            hype-greeter
+            hype-hyprland
+            hype-niri
+            hype-shell
+            hype-shell-git
+            hype-shell-hyprland
+            hype-shell-niri
+            greetd-hype-greeter-git
         )
     fi
 
@@ -469,7 +469,7 @@ remove_legacy_user_artifacts() {
 
     remove_user_file_if_exists "$HOME/.config/systemd/user/hypeshell.service"
     remove_user_file_if_exists "$HOME/.config/systemd/user/hype-shell.service"
-    import_legacy_dank_material_data
+    import_legacy_hype_material_data
 
     if [ "$UPDATE_EXISTING" -eq 0 ]; then
         remove_user_file_if_exists "$HOME/.config/systemd/user/hype.service"
@@ -484,10 +484,10 @@ remove_legacy_user_artifacts() {
     remove_user_file_if_exists "$HOME/.local/share/applications/hype-updater.desktop"
     remove_user_file_if_exists "$HOME/.local/share/applications/hype-store.desktop"
 
-    backup_legacy_children "$HOME/.config/DankMaterialShell/plugins"
-    backup_legacy_children "$HOME/.config/DankMaterialShell/themes"
-    backup_legacy_children "$HOME/.local/share/DankMaterialShell/plugins"
-    backup_legacy_children "$HOME/.local/share/DankMaterialShell/themes"
+    backup_legacy_children "$HOME/.config/HypeMaterialShell/plugins"
+    backup_legacy_children "$HOME/.config/HypeMaterialShell/themes"
+    backup_legacy_children "$HOME/.local/share/HypeMaterialShell/plugins"
+    backup_legacy_children "$HOME/.local/share/HypeMaterialShell/themes"
 }
 
 remove_legacy_system_artifacts() {
@@ -495,29 +495,29 @@ remove_legacy_system_artifacts() {
     remove_if_exists /usr/local/bin/hype-shell
     remove_if_exists /usr/local/bin/hypeupdater
     remove_if_exists /usr/local/bin/hype-updater
-    remove_if_exists /usr/local/bin/dms
-    remove_if_exists /usr/local/bin/dms-greeter
+    remove_if_exists /usr/local/bin/hype
+    remove_if_exists /usr/local/bin/hype-greeter
     remove_if_exists /usr/bin/hypeshell
     remove_if_exists /usr/bin/hype-shell
     remove_if_exists /usr/bin/hypeupdater
     remove_if_exists /usr/bin/hype-updater
-    remove_if_exists /usr/bin/dms
-    remove_if_exists /usr/bin/dms-greeter
+    remove_if_exists /usr/bin/hype
+    remove_if_exists /usr/bin/hype-greeter
     remove_if_exists /usr/local/share/quickshell/hype-shell
     remove_if_exists /usr/local/share/quickshell/hypeshell
-    remove_if_exists /usr/local/share/quickshell/dms
+    remove_if_exists /usr/local/share/quickshell/hype
     remove_if_exists /usr/local/share/hype-shell
     remove_if_exists /usr/local/share/hypeshell
     remove_if_exists /usr/local/share/hype-store
     remove_if_exists /usr/share/quickshell/hype-shell
     remove_if_exists /usr/share/quickshell/hypeshell
-    remove_if_exists /usr/share/quickshell/dms
+    remove_if_exists /usr/share/quickshell/hype
     remove_if_exists /usr/share/hype-shell
     remove_if_exists /usr/share/hypeshell
     remove_if_exists /usr/share/hype-store
     remove_if_exists /etc/xdg/quickshell/hype-shell
     remove_if_exists /etc/xdg/quickshell/hypeshell
-    remove_if_exists /etc/xdg/quickshell/dms
+    remove_if_exists /etc/xdg/quickshell/hype
     remove_if_exists /etc/systemd/user/hypeshell.service
     remove_if_exists /etc/systemd/user/hype-shell.service
     remove_if_exists /usr/local/share/applications/hypeshell.desktop
@@ -864,7 +864,7 @@ ensure_hyprland_shell_startup() {
     config_dir="${XDG_CONFIG_HOME:-$HOME/.config}/hypr"
     config_file="$config_dir/hyprland.conf"
     hype_config_dir="$config_dir/hype"
-    legacy_config_dir="$config_dir/dms"
+    legacy_config_dir="$config_dir/hype"
     startup_line="exec-once = systemctl --user start hype.service || hype run"
 
     if [ "$YES" -eq 0 ]; then
@@ -892,27 +892,27 @@ ensure_hyprland_shell_startup() {
         fi
     fi
 
-    if [ -f "$config_file" ] && grep -q 'source = \./dms/' "$config_file"; then
+    if [ -f "$config_file" ] && grep -q 'source = \./hype/' "$config_file"; then
         cp "$config_file" "$config_file.hypeshell-pre-paths.bak"
-        sed -i -e 's#source = \./dms/#source = ./hype/#g' "$config_file"
+        sed -i -e 's#source = \./hype/#source = ./hype/#g' "$config_file"
     fi
 
-    if [ -f "$hype_config_dir/binds.conf" ] && { grep -q '{{TERMINAL_COMMAND}}' "$hype_config_dir/binds.conf" || grep -q 'dms ipc call' "$hype_config_dir/binds.conf" || grep -q 'dms clipboard copy' "$hype_config_dir/binds.conf"; }; then
+    if [ -f "$hype_config_dir/binds.conf" ] && { grep -q '{{TERMINAL_COMMAND}}' "$hype_config_dir/binds.conf" || grep -q 'hype ipc call' "$hype_config_dir/binds.conf" || grep -q 'hype clipboard copy' "$hype_config_dir/binds.conf"; }; then
         cp "$hype_config_dir/binds.conf" "$hype_config_dir/binds.conf.hypeshell-pre-command-repair.bak"
         sed -i \
             -e 's/{{TERMINAL_COMMAND}}/kitty/g' \
-            -e 's/dms ipc call/hype ipc call/g' \
-            -e 's/dms clipboard copy/hype clipboard copy/g' \
+            -e 's/hype ipc call/hype ipc call/g' \
+            -e 's/hype clipboard copy/hype clipboard copy/g' \
             "$hype_config_dir/binds.conf"
     fi
 
     if [ -f "$config_file" ] && ! grep -Eq '(^|[[:space:]])(hype run|hype\.service)' "$config_file"; then
         cp "$config_file" "$config_file.hypeshell-pre-startup.bak"
-        if grep -Eq '(^|[[:space:]])(dms run|dms\.service)' "$config_file"; then
+        if grep -Eq '(^|[[:space:]])(hype run|hype\.service)' "$config_file"; then
             sed -i \
-                -e 's/systemctl --user start dms\.service/systemctl --user start hype.service/g' \
-                -e 's/\bdms run\b/hype run/g' \
-                -e 's#source = \./dms/#source = ./hype/#g' \
+                -e 's/systemctl --user start hype\.service/systemctl --user start hype.service/g' \
+                -e 's/\bhype run\b/hype run/g' \
+                -e 's#source = \./hype/#source = ./hype/#g' \
                 "$config_file"
             return 0
         fi
@@ -1093,7 +1093,7 @@ install_greeter_wrapper_from_source() {
 
     sudo_run install -D -m 755 "$wrapper_src" /usr/local/bin/hype-greeter
     sudo_run install -D -m 755 "$wrapper_src" /usr/bin/hype-greeter
-    sudo_run rm -f /usr/local/bin/dms-greeter /usr/bin/dms-greeter
+    sudo_run rm -f /usr/local/bin/hype-greeter /usr/bin/hype-greeter
 }
 
 detect_greeter_user() {
@@ -1296,7 +1296,7 @@ EOF
 
     install_source_dependency
 
-    if [ "$INSTALL_METHOD" = "source" ] && { [ "$REMOVE_DMS_PACKAGES" -eq 1 ] || [ "$INSTALL_HYPRLAND_SESSION" -eq 1 ]; }; then
+    if [ "$INSTALL_METHOD" = "source" ] && { [ "$REMOVE_HYPE_PACKAGES" -eq 1 ] || [ "$INSTALL_HYPRLAND_SESSION" -eq 1 ]; }; then
         prepare_source
         verify_hypeshell_source_payload
     fi

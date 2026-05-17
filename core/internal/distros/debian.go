@@ -1,4 +1,4 @@
-package distros
+﻿package distros
 
 import (
 	"context"
@@ -54,14 +54,14 @@ func (d *DebianDistribution) DetectDependencies(ctx context.Context, wm deps.Win
 func (d *DebianDistribution) DetectDependenciesWithTerminal(ctx context.Context, wm deps.WindowManager, terminal deps.Terminal) ([]deps.Dependency, error) {
 	var dependencies []deps.Dependency
 
-	dependencies = append(dependencies, d.detectDMS())
+	dependencies = append(dependencies, d.detectHYPE())
 
 	dependencies = append(dependencies, d.detectSpecificTerminal(terminal))
 
 	dependencies = append(dependencies, d.detectGit())
 	dependencies = append(dependencies, d.detectWindowManager(wm))
 	dependencies = append(dependencies, d.detectQuickshell())
-	dependencies = append(dependencies, d.detectDMSGreeter())
+	dependencies = append(dependencies, d.detectHYPEGreeter())
 	dependencies = append(dependencies, d.detectXDGPortal())
 	dependencies = append(dependencies, d.detectAccountsService())
 
@@ -87,8 +87,8 @@ func (d *DebianDistribution) detectAccountsService() deps.Dependency {
 	return d.detectPackage("accountsservice", "D-Bus interface for user account query and manipulation", d.packageInstalled("accountsservice"))
 }
 
-func (d *DebianDistribution) detectDMSGreeter() deps.Dependency {
-	return d.detectOptionalPackage("dms-greeter", "DankMaterialShell greetd greeter", d.packageInstalled("dms-greeter"))
+func (d *DebianDistribution) detectHYPEGreeter() deps.Dependency {
+	return d.detectOptionalPackage("hype-greeter", "HypeMaterialShell greetd greeter", d.packageInstalled("hype-greeter"))
 }
 
 func (d *DebianDistribution) packageInstalled(pkg string) bool {
@@ -128,13 +128,13 @@ func (d *DebianDistribution) GetPackageMappingWithVariants(wm deps.WindowManager
 		"xdg-desktop-portal-gtk": {Name: "xdg-desktop-portal-gtk", Repository: RepoTypeSystem},
 		"accountsservice":        {Name: "accountsservice", Repository: RepoTypeSystem},
 
-		// DMS packages from OBS with variant support
-		"dms (DankMaterialShell)": d.getDmsMapping(variants["dms (DankMaterialShell)"]),
+		// HYPE packages from OBS with variant support
+		"hype (HypeMaterialShell)": d.getDmsMapping(variants["hype (HypeMaterialShell)"]),
 		"quickshell":              d.getQuickshellMapping(variants["quickshell"]),
-		"dms-greeter":             {Name: "dms-greeter", Repository: RepoTypeOBS, RepoURL: "home:AvengeMedia:danklinux"},
-		"matugen":                 {Name: "matugen", Repository: RepoTypeOBS, RepoURL: "home:AvengeMedia:danklinux"},
-		"dgop":                    {Name: "dgop", Repository: RepoTypeOBS, RepoURL: "home:AvengeMedia:danklinux"},
-		"ghostty":                 {Name: "ghostty", Repository: RepoTypeOBS, RepoURL: "home:AvengeMedia:danklinux"},
+		"hype-greeter":             {Name: "hype-greeter", Repository: RepoTypeOBS, RepoURL: "home:AvengeMedia:hypelinux"},
+		"matugen":                 {Name: "matugen", Repository: RepoTypeOBS, RepoURL: "home:AvengeMedia:hypelinux"},
+		"dgop":                    {Name: "dgop", Repository: RepoTypeOBS, RepoURL: "home:AvengeMedia:hypelinux"},
+		"ghostty":                 {Name: "ghostty", Repository: RepoTypeOBS, RepoURL: "home:AvengeMedia:hypelinux"},
 	}
 
 	if wm == deps.WindowManagerNiri {
@@ -148,30 +148,30 @@ func (d *DebianDistribution) GetPackageMappingWithVariants(wm deps.WindowManager
 
 func (d *DebianDistribution) getDmsMapping(variant deps.PackageVariant) PackageMapping {
 	if variant == deps.VariantGit {
-		return PackageMapping{Name: "dms-git", Repository: RepoTypeOBS, RepoURL: "home:AvengeMedia:dms-git"}
+		return PackageMapping{Name: "hype-git", Repository: RepoTypeOBS, RepoURL: "home:AvengeMedia:hype-git"}
 	}
-	return PackageMapping{Name: "dms", Repository: RepoTypeOBS, RepoURL: "home:AvengeMedia:dms"}
+	return PackageMapping{Name: "hype", Repository: RepoTypeOBS, RepoURL: "home:AvengeMedia:hype"}
 }
 
 func (d *DebianDistribution) getQuickshellMapping(variant deps.PackageVariant) PackageMapping {
 	if forceQuickshellGit || variant == deps.VariantGit {
-		return PackageMapping{Name: "quickshell-git", Repository: RepoTypeOBS, RepoURL: "home:AvengeMedia:danklinux"}
+		return PackageMapping{Name: "quickshell-git", Repository: RepoTypeOBS, RepoURL: "home:AvengeMedia:hypelinux"}
 	}
-	return PackageMapping{Name: "quickshell", Repository: RepoTypeOBS, RepoURL: "home:AvengeMedia:danklinux"}
+	return PackageMapping{Name: "quickshell", Repository: RepoTypeOBS, RepoURL: "home:AvengeMedia:hypelinux"}
 }
 
 func (d *DebianDistribution) getNiriMapping(variant deps.PackageVariant) PackageMapping {
 	if variant == deps.VariantGit {
-		return PackageMapping{Name: "niri-git", Repository: RepoTypeOBS, RepoURL: "home:AvengeMedia:danklinux"}
+		return PackageMapping{Name: "niri-git", Repository: RepoTypeOBS, RepoURL: "home:AvengeMedia:hypelinux"}
 	}
-	return PackageMapping{Name: "niri", Repository: RepoTypeOBS, RepoURL: "home:AvengeMedia:danklinux"}
+	return PackageMapping{Name: "niri", Repository: RepoTypeOBS, RepoURL: "home:AvengeMedia:hypelinux"}
 }
 
 func (d *DebianDistribution) getXwaylandSatelliteMapping(variant deps.PackageVariant) PackageMapping {
 	if variant == deps.VariantGit {
-		return PackageMapping{Name: "xwayland-satellite-git", Repository: RepoTypeOBS, RepoURL: "home:AvengeMedia:danklinux"}
+		return PackageMapping{Name: "xwayland-satellite-git", Repository: RepoTypeOBS, RepoURL: "home:AvengeMedia:hypelinux"}
 	}
-	return PackageMapping{Name: "xwayland-satellite", Repository: RepoTypeOBS, RepoURL: "home:AvengeMedia:danklinux"}
+	return PackageMapping{Name: "xwayland-satellite", Repository: RepoTypeOBS, RepoURL: "home:AvengeMedia:hypelinux"}
 }
 
 func (d *DebianDistribution) InstallPrerequisites(ctx context.Context, sudoPassword string, progressChan chan<- InstallProgressMsg) error {
@@ -334,8 +334,8 @@ func (d *DebianDistribution) InstallPackages(ctx context.Context, dependencies [
 		d.log(fmt.Sprintf("Warning: failed to write window manager config: %v", err))
 	}
 
-	if err := d.EnableDMSService(ctx, wm); err != nil {
-		d.log(fmt.Sprintf("Warning: failed to enable dms service: %v", err))
+	if err := d.EnableHYPEService(ctx, wm); err != nil {
+		d.log(fmt.Sprintf("Warning: failed to enable hype service: %v", err))
 	}
 
 	progressChan <- InstallProgressMsg{
@@ -425,7 +425,7 @@ func (d *DebianDistribution) enableOBSRepos(ctx context.Context, obsPkgs []Packa
 		if pkg.RepoURL != "" && !enabledRepos[pkg.RepoURL] {
 			d.log(fmt.Sprintf("Enabling OBS repository: %s", pkg.RepoURL))
 
-			// RepoURL format: "home:AvengeMedia:danklinux"
+			// RepoURL format: "home:AvengeMedia:hypelinux"
 			repoPath := strings.ReplaceAll(pkg.RepoURL, ":", ":/")
 			repoName := strings.ReplaceAll(pkg.RepoURL, ":", "-")
 			baseURL := fmt.Sprintf("https://download.opensuse.org/repositories/%s/%s", repoPath, debianVersion)

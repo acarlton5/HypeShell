@@ -1,4 +1,4 @@
-package keybinds
+﻿package keybinds
 
 type Keybind struct {
 	Key             string   `json:"key"`
@@ -15,12 +15,12 @@ type Keybind struct {
 	Conflict        *Keybind `json:"conflict,omitempty"`
 }
 
-type DMSBindsStatus struct {
+type HYPEBindsStatus struct {
 	Exists          bool   `json:"exists"`
 	Included        bool   `json:"included"`
 	IncludePosition int    `json:"includePosition"`
 	TotalIncludes   int    `json:"totalIncludes"`
-	BindsAfterDMS   int    `json:"bindsAfterDms"`
+	BindsAfterHYPE   int    `json:"bindsAfterDms"`
 	Effective       bool   `json:"effective"`
 	OverriddenBy    int    `json:"overriddenBy"`
 	StatusMessage   string `json:"statusMessage"`
@@ -30,8 +30,8 @@ type CheatSheet struct {
 	Title            string               `json:"title"`
 	Provider         string               `json:"provider"`
 	Binds            map[string][]Keybind `json:"binds"`
-	DMSBindsIncluded bool                 `json:"dmsBindsIncluded"`
-	DMSStatus        *DMSBindsStatus      `json:"dmsStatus,omitempty"`
+	HYPEBindsIncluded bool                 `json:"hypeBindsIncluded"`
+	HYPEStatus        *HYPEBindsStatus      `json:"hypeStatus,omitempty"`
 }
 
 type Provider interface {

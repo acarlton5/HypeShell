@@ -1,4 +1,4 @@
-package distros
+﻿package distros
 
 import (
 	"context"
@@ -88,7 +88,7 @@ func (g *GentooDistribution) DetectDependencies(ctx context.Context, wm deps.Win
 func (g *GentooDistribution) DetectDependenciesWithTerminal(ctx context.Context, wm deps.WindowManager, terminal deps.Terminal) ([]deps.Dependency, error) {
 	var dependencies []deps.Dependency
 
-	dependencies = append(dependencies, g.detectDMS())
+	dependencies = append(dependencies, g.detectHYPE())
 
 	dependencies = append(dependencies, g.detectSpecificTerminal(terminal))
 
@@ -150,7 +150,7 @@ func (g *GentooDistribution) GetPackageMappingWithVariants(wm deps.WindowManager
 
 		"quickshell":              g.getQuickshellMapping(variants["quickshell"]),
 		"matugen":                 {Name: "x11-misc/matugen", Repository: RepoTypeGURU, AcceptKeywords: archKeyword},
-		"dms (DankMaterialShell)": g.getDmsMapping(variants["dms (DankMaterialShell)"]),
+		"hype (HypeMaterialShell)": g.getDmsMapping(variants["hype (HypeMaterialShell)"]),
 		"dgop":                    {Name: "dgop", Repository: RepoTypeManual, BuildFunc: "installDgop"},
 	}
 
@@ -172,7 +172,7 @@ func (g *GentooDistribution) getQuickshellMapping(_ deps.PackageVariant) Package
 }
 
 func (g *GentooDistribution) getDmsMapping(_ deps.PackageVariant) PackageMapping {
-	return PackageMapping{Name: "dms", Repository: RepoTypeManual, BuildFunc: "installDankMaterialShell"}
+	return PackageMapping{Name: "hype", Repository: RepoTypeManual, BuildFunc: "installHypeMaterialShell"}
 }
 
 func (g *GentooDistribution) getHyprlandMapping(_ deps.PackageVariant) PackageMapping {
@@ -408,8 +408,8 @@ func (g *GentooDistribution) InstallPackages(ctx context.Context, dependencies [
 		g.log(fmt.Sprintf("Warning: failed to write window manager config: %v", err))
 	}
 
-	if err := g.EnableDMSService(ctx, wm); err != nil {
-		g.log(fmt.Sprintf("Warning: failed to enable dms service: %v", err))
+	if err := g.EnableHYPEService(ctx, wm); err != nil {
+		g.log(fmt.Sprintf("Warning: failed to enable hype service: %v", err))
 	}
 
 	progressChan <- InstallProgressMsg{
@@ -521,12 +521,12 @@ func (g *GentooDistribution) setPackageUseFlags(ctx context.Context, packageName
 	useFlagLine := fmt.Sprintf("%s %s", packageName, useFlags)
 
 	checkExistingCmd := exec.CommandContext(ctx, "bash", "-c",
-		fmt.Sprintf("grep -q '^%s ' %s/danklinux 2>/dev/null", packageName, packageUseDir))
+		fmt.Sprintf("grep -q '^%s ' %s/hypelinux 2>/dev/null", packageName, packageUseDir))
 	if checkExistingCmd.Run() == nil {
 		g.log(fmt.Sprintf("Updating USE flags for %s from existing entry", packageName))
 		escapedPkg := strings.ReplaceAll(packageName, "/", "\\/")
 		replaceCmd := privesc.ExecCommand(ctx, sudoPassword,
-			fmt.Sprintf("sed -i '/^%s /d' %s/danklinux; exit_code=$?; exit $exit_code", escapedPkg, packageUseDir))
+			fmt.Sprintf("sed -i '/^%s /d' %s/hypelinux; exit_code=$?; exit $exit_code", escapedPkg, packageUseDir))
 		if output, err := replaceCmd.CombinedOutput(); err != nil {
 			g.log(fmt.Sprintf("sed delete output: %s", string(output)))
 			return fmt.Errorf("failed to remove old USE flags: %w", err)
@@ -534,7 +534,7 @@ func (g *GentooDistribution) setPackageUseFlags(ctx context.Context, packageName
 	}
 
 	appendCmd := privesc.ExecCommand(ctx, sudoPassword,
-		fmt.Sprintf("bash -c \"echo '%s' >> %s/danklinux\"", useFlagLine, packageUseDir))
+		fmt.Sprintf("bash -c \"echo '%s' >> %s/hypelinux\"", useFlagLine, packageUseDir))
 
 	output, err := appendCmd.CombinedOutput()
 	if err != nil {
@@ -633,12 +633,12 @@ func (g *GentooDistribution) setPackageAcceptKeywords(ctx context.Context, packa
 	keywordLine := fmt.Sprintf("%s %s", packageName, keywords)
 
 	checkExistingCmd := exec.CommandContext(ctx, "bash", "-c",
-		fmt.Sprintf("grep -q '^%s ' %s/danklinux 2>/dev/null", packageName, acceptKeywordsDir))
+		fmt.Sprintf("grep -q '^%s ' %s/hypelinux 2>/dev/null", packageName, acceptKeywordsDir))
 	if checkExistingCmd.Run() == nil {
 		g.log(fmt.Sprintf("Updating accept keywords for %s from existing entry", packageName))
 		escapedPkg := strings.ReplaceAll(packageName, "/", "\\/")
 		replaceCmd := privesc.ExecCommand(ctx, sudoPassword,
-			fmt.Sprintf("sed -i '/^%s /d' %s/danklinux; exit_code=$?; exit $exit_code", escapedPkg, acceptKeywordsDir))
+			fmt.Sprintf("sed -i '/^%s /d' %s/hypelinux; exit_code=$?; exit $exit_code", escapedPkg, acceptKeywordsDir))
 		if output, err := replaceCmd.CombinedOutput(); err != nil {
 			g.log(fmt.Sprintf("sed delete output: %s", string(output)))
 			return fmt.Errorf("failed to remove old accept keywords: %w", err)
@@ -646,7 +646,7 @@ func (g *GentooDistribution) setPackageAcceptKeywords(ctx context.Context, packa
 	}
 
 	appendCmd := privesc.ExecCommand(ctx, sudoPassword,
-		fmt.Sprintf("bash -c \"echo '%s' >> %s/danklinux\"", keywordLine, acceptKeywordsDir))
+		fmt.Sprintf("bash -c \"echo '%s' >> %s/hypelinux\"", keywordLine, acceptKeywordsDir))
 
 	output, err := appendCmd.CombinedOutput()
 	if err != nil {

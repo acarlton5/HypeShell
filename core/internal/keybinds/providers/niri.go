@@ -1,4 +1,4 @@
-package providers
+﻿package providers
 
 import (
 	"fmt"
@@ -15,7 +15,7 @@ import (
 
 type NiriProvider struct {
 	configDir        string
-	dmsBindsIncluded bool
+	hypeBindsIncluded bool
 	parsed           bool
 }
 
@@ -46,7 +46,7 @@ func (n *NiriProvider) GetCheatSheet() (*keybinds.CheatSheet, error) {
 		return nil, fmt.Errorf("failed to parse niri config: %w", err)
 	}
 
-	n.dmsBindsIncluded = result.DMSBindsIncluded
+	n.hypeBindsIncluded = result.HYPEBindsIncluded
 	n.parsed = true
 
 	categorizedBinds := make(map[string][]keybinds.Keybind)
@@ -56,28 +56,28 @@ func (n *NiriProvider) GetCheatSheet() (*keybinds.CheatSheet, error) {
 		Title:            "Niri Keybinds",
 		Provider:         n.Name(),
 		Binds:            categorizedBinds,
-		DMSBindsIncluded: result.DMSBindsIncluded,
+		HYPEBindsIncluded: result.HYPEBindsIncluded,
 	}
 
-	if result.DMSStatus != nil {
-		sheet.DMSStatus = &keybinds.DMSBindsStatus{
-			Exists:          result.DMSStatus.Exists,
-			Included:        result.DMSStatus.Included,
-			IncludePosition: result.DMSStatus.IncludePosition,
-			TotalIncludes:   result.DMSStatus.TotalIncludes,
-			BindsAfterDMS:   result.DMSStatus.BindsAfterDMS,
-			Effective:       result.DMSStatus.Effective,
-			OverriddenBy:    result.DMSStatus.OverriddenBy,
-			StatusMessage:   result.DMSStatus.StatusMessage,
+	if result.HYPEStatus != nil {
+		sheet.HYPEStatus = &keybinds.HYPEBindsStatus{
+			Exists:          result.HYPEStatus.Exists,
+			Included:        result.HYPEStatus.Included,
+			IncludePosition: result.HYPEStatus.IncludePosition,
+			TotalIncludes:   result.HYPEStatus.TotalIncludes,
+			BindsAfterHYPE:   result.HYPEStatus.BindsAfterHYPE,
+			Effective:       result.HYPEStatus.Effective,
+			OverriddenBy:    result.HYPEStatus.OverriddenBy,
+			StatusMessage:   result.HYPEStatus.StatusMessage,
 		}
 	}
 
 	return sheet, nil
 }
 
-func (n *NiriProvider) HasDMSBindsIncluded() bool {
+func (n *NiriProvider) HasHYPEBindsIncluded() bool {
 	if n.parsed {
-		return n.dmsBindsIncluded
+		return n.hypeBindsIncluded
 	}
 
 	result, err := ParseNiriKeys(n.configDir)
@@ -85,9 +85,9 @@ func (n *NiriProvider) HasDMSBindsIncluded() bool {
 		return false
 	}
 
-	n.dmsBindsIncluded = result.DMSBindsIncluded
+	n.hypeBindsIncluded = result.HYPEBindsIncluded
 	n.parsed = true
-	return n.dmsBindsIncluded
+	return n.hypeBindsIncluded
 }
 
 func (n *NiriProvider) convertSection(section *NiriSection, subcategory string, categorizedBinds map[string][]keybinds.Keybind, conflicts map[string]*NiriKeyBinding) {
@@ -148,8 +148,8 @@ func (n *NiriProvider) convertKeybind(kb *NiriKeyBinding, subcategory string, co
 	keyStr := n.formatKey(kb)
 
 	source := "config"
-	if strings.Contains(kb.Source, "dms/binds.kdl") {
-		source = "dms"
+	if strings.Contains(kb.Source, "hype/binds.kdl") {
+		source = "hype"
 	}
 
 	bind := keybinds.Keybind{
@@ -165,7 +165,7 @@ func (n *NiriProvider) convertKeybind(kb *NiriKeyBinding, subcategory string, co
 		Repeat:          kb.Repeat,
 	}
 
-	if source == "dms" && conflicts != nil {
+	if source == "hype" && conflicts != nil {
 		if conflictKb, ok := conflicts[keyStr]; ok {
 			bind.Conflict = &keybinds.Keybind{
 				Key:         keyStr,
@@ -211,7 +211,7 @@ func (n *NiriProvider) formatKey(kb *NiriKeyBinding) string {
 }
 
 func (n *NiriProvider) GetOverridePath() string {
-	return filepath.Join(n.configDir, "dms", "binds.kdl")
+	return filepath.Join(n.configDir, "hype", "binds.kdl")
 }
 
 func (n *NiriProvider) validateAction(action string) error {
@@ -241,7 +241,7 @@ func (n *NiriProvider) SetBind(key, action, description string, options map[stri
 	overridePath := n.GetOverridePath()
 
 	if err := os.MkdirAll(filepath.Dir(overridePath), 0o755); err != nil {
-		return fmt.Errorf("failed to create dms directory: %w", err)
+		return fmt.Errorf("failed to create hype directory: %w", err)
 	}
 
 	existingBinds, err := n.loadOverrideBinds()
@@ -499,7 +499,7 @@ func (n *NiriProvider) writeOverrideBinds(binds map[string]*overrideBind) error 
 
 func (n *NiriProvider) getBindSortPriority(action string) int {
 	switch {
-	case strings.HasPrefix(action, "spawn") && strings.Contains(action, "dms"):
+	case strings.HasPrefix(action, "spawn") && strings.Contains(action, "hype"):
 		return 0
 	case strings.Contains(action, "workspace"):
 		return 1
@@ -627,7 +627,7 @@ func (n *NiriProvider) isNumericArg(val string) bool {
 }
 
 func (n *NiriProvider) validateBindsContent(content string) error {
-	tmpFile, err := os.CreateTemp("", "dms-binds-*.kdl")
+	tmpFile, err := os.CreateTemp("", "hype-binds-*.kdl")
 	if err != nil {
 		return fmt.Errorf("failed to create temp file: %w", err)
 	}

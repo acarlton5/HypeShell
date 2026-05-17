@@ -1,4 +1,4 @@
-pragma ComponentBehavior: Bound
+﻿pragma ComponentBehavior: Bound
 
 import QtQuick
 import QtQuick.Controls
@@ -50,7 +50,7 @@ SettingsCard {
     onExpandedChanged: isExpanded = expanded
 
     headerActions: [
-        DankToggle {
+        HypeToggle {
             checked: instanceData?.enabled ?? true
             onToggled: isChecked => {
                 if (!root.instanceId)
@@ -60,7 +60,7 @@ SettingsCard {
                 });
             }
         },
-        DankActionButton {
+        HypeActionButton {
             id: menuButton
             iconName: "more_vert"
             onClicked: {
@@ -105,7 +105,7 @@ SettingsCard {
                             anchors.verticalCenter: parent.verticalCenter
                             spacing: Theme.spacingS
 
-                            DankIcon {
+                            HypeIcon {
                                 name: "content_copy"
                                 size: Theme.iconSizeSmall
                                 color: Theme.surfaceText
@@ -142,7 +142,7 @@ SettingsCard {
                             anchors.verticalCenter: parent.verticalCenter
                             spacing: Theme.spacingS
 
-                            DankIcon {
+                            HypeIcon {
                                 name: root.confirmingDelete ? "warning" : "delete"
                                 size: Theme.iconSizeSmall
                                 color: Theme.error
@@ -208,7 +208,7 @@ SettingsCard {
                     horizontalAlignment: Text.AlignLeft
                 }
 
-                DankTextField {
+                HypeTextField {
                     width: parent.width - 80 - Theme.spacingM
                     text: root.widgetName
                     onEditingFinished: {
@@ -245,7 +245,7 @@ SettingsCard {
                     horizontalAlignment: Text.AlignLeft
                 }
 
-                DankDropdown {
+                HypeDropdown {
                     id: groupDropdown
                     width: parent.width - 80 - Theme.spacingM
                     compactMode: true
@@ -413,7 +413,7 @@ SettingsCard {
                             anchors.verticalCenter: parent.verticalCenter
                         }
 
-                        DankButton {
+                        HypeButton {
                             id: copyBtn
                             iconName: "content_copy"
                             backgroundColor: "transparent"

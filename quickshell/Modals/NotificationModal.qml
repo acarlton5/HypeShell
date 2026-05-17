@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import Quickshell.Hyprland
 import Quickshell.Io
 import qs.Common
@@ -6,10 +6,10 @@ import qs.Modals.Common
 import qs.Modules.Notifications.Center
 import qs.Services
 
-DankModal {
+HypeModal {
     id: notificationModal
 
-    layerNamespace: "dms:notification-center-modal"
+    layerNamespace: "hype:notification-center-modal"
 
     HyprlandFocusGrab {
         windows: [notificationModal.contentWindow]

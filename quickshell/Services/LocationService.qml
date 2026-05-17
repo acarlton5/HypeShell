@@ -1,4 +1,4 @@
-pragma Singleton
+﻿pragma Singleton
 pragma ComponentBehavior: Bound
 
 import QtQuick
@@ -7,7 +7,7 @@ import Quickshell
 Singleton {
     id: root
 
-    readonly property bool locationAvailable: DMSService.isConnected && (DMSService.capabilities.length === 0 || DMSService.capabilities.includes("location"))
+    readonly property bool locationAvailable: HYPEService.isConnected && (HYPEService.capabilities.length === 0 || HYPEService.capabilities.includes("location"))
     readonly property bool valid: latitude !== 0 || longitude !== 0
 
     property var latitude: 0.0
@@ -21,7 +21,7 @@ Singleton {
     }
 
     Connections {
-        target: DMSService
+        target: HYPEService
 
         function onLocationStateUpdate(data) {
             if (!locationAvailable)
@@ -45,7 +45,7 @@ Singleton {
         if (!locationAvailable)
             return;
 
-        DMSService.sendRequest("location.getState", null, response => {
+        HYPEService.sendRequest("location.getState", null, response => {
             if (response.result)
                 handleStateUpdate(response.result);
         });

@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import qs.Common
 import qs.Modules.Plugins
 import qs.Services
@@ -51,7 +51,7 @@ BasePill {
             implicitWidth: root.isVerticalOrientation ? root.widgetThickness : updaterIcon.implicitWidth
             implicitHeight: root.widgetThickness
 
-            DankIcon {
+            HypeIcon {
                 id: statusIcon
                 anchors.centerIn: parent
                 visible: root.isVerticalOrientation
@@ -107,7 +107,7 @@ BasePill {
                 spacing: Theme.spacingXS
                 visible: !root.isVerticalOrientation
 
-                DankIcon {
+                HypeIcon {
                     id: statusIconHorizontal
                     anchors.verticalCenter: parent.verticalCenter
                     smoothTransform: root.isChecking

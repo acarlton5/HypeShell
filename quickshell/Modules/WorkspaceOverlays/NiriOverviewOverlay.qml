@@ -1,9 +1,9 @@
-import QtQuick
+﻿import QtQuick
 import QtQuick.Controls
 import Quickshell
 import Quickshell.Wayland
 import qs.Common
-import qs.Modals.DankLauncherV2
+import qs.Modals.HypeLauncherV2
 import qs.Services
 import qs.Widgets
 
@@ -14,7 +14,7 @@ Scope {
     property string searchActiveScreen: ""
     property bool isClosing: false
     property bool releaseKeyboard: false
-    readonly property bool spotlightModalOpen: PopoutService.dankLauncherV2Modal?.spotlightOpen ?? false
+    readonly property bool spotlightModalOpen: PopoutService.hypeLauncherV2Modal?.spotlightOpen ?? false
     property bool overlayActive: NiriService.inOverview || searchActive
 
     function showSpotlight(screenName) {
@@ -120,7 +120,7 @@ Scope {
                 visible: overlayVisible
                 color: "transparent"
 
-                WlrLayershell.namespace: "dms:niri-overview-spotlight"
+                WlrLayershell.namespace: "hype:niri-overview-spotlight"
                 WlrLayershell.layer: WlrLayer.Overlay
                 WlrLayershell.exclusiveZone: -1
                 WlrLayershell.keyboardFocus: {
@@ -252,7 +252,7 @@ Scope {
                     }
 
                     readonly property int baseWidth: {
-                        switch (SettingsData.dankLauncherV2Size) {
+                        switch (SettingsData.hypeLauncherV2Size) {
                         case "micro":
                             return 500;
                         case "medium":
@@ -264,7 +264,7 @@ Scope {
                         }
                     }
                     readonly property int baseHeight: {
-                        switch (SettingsData.dankLauncherV2Size) {
+                        switch (SettingsData.hypeLauncherV2Size) {
                         case "micro":
                             return 480;
                         case "medium":

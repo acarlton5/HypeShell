@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import qs.Common
 import qs.Widgets
 
@@ -140,7 +140,7 @@ Rectangle {
                     anchors.verticalCenter: parent.verticalCenter
                     spacing: Theme.spacingM
 
-                    DankIcon {
+                    HypeIcon {
                         name: SessionData.doNotDisturb ? "notifications_off" : "notifications"
                         size: Theme.iconSizeSmall
                         color: SessionData.doNotDisturb ? Theme.error : Theme.surfaceText
@@ -155,7 +155,7 @@ Rectangle {
                     }
                 }
 
-                DankToggle {
+                HypeToggle {
                     id: dndToggle
                     anchors.right: parent.right
                     anchors.verticalCenter: parent.verticalCenter
@@ -177,7 +177,7 @@ Rectangle {
                 color: Theme.surfaceVariantText
             }
 
-            DankDropdown {
+            HypeDropdown {
                 text: I18n.tr("Low Priority")
                 description: I18n.tr("Timeout for low priority notifications")
                 currentValue: getTimeoutText(SettingsData.notificationTimeoutLow)
@@ -192,7 +192,7 @@ Rectangle {
                 }
             }
 
-            DankDropdown {
+            HypeDropdown {
                 text: I18n.tr("Normal Priority")
                 description: I18n.tr("Timeout for normal priority notifications")
                 currentValue: getTimeoutText(SettingsData.notificationTimeoutNormal)
@@ -207,7 +207,7 @@ Rectangle {
                 }
             }
 
-            DankDropdown {
+            HypeDropdown {
                 text: I18n.tr("Critical Priority")
                 description: I18n.tr("Timeout for critical priority notifications")
                 currentValue: getTimeoutText(SettingsData.notificationTimeoutCritical)
@@ -240,7 +240,7 @@ Rectangle {
                     anchors.verticalCenter: parent.verticalCenter
                     spacing: Theme.spacingM
 
-                    DankIcon {
+                    HypeIcon {
                         name: "notifications_active"
                         size: Theme.iconSizeSmall
                         color: SettingsData.notificationOverlayEnabled ? Theme.primary : Theme.surfaceText
@@ -270,7 +270,7 @@ Rectangle {
                     }
                 }
 
-                DankToggle {
+                HypeToggle {
                     id: overlayToggle
                     anchors.right: parent.right
                     anchors.verticalCenter: parent.verticalCenter
@@ -291,7 +291,7 @@ Rectangle {
                     anchors.verticalCenter: parent.verticalCenter
                     spacing: Theme.spacingM
 
-                    DankIcon {
+                    HypeIcon {
                         name: "privacy_tip"
                         size: Theme.iconSizeSmall
                         color: SettingsData.notificationPopupPrivacyMode ? Theme.primary : Theme.surfaceText
@@ -321,7 +321,7 @@ Rectangle {
                     }
                 }
 
-                DankToggle {
+                HypeToggle {
                     id: privacyToggle
                     anchors.right: parent.right
                     anchors.verticalCenter: parent.verticalCenter
@@ -353,7 +353,7 @@ Rectangle {
                     anchors.verticalCenter: parent.verticalCenter
                     spacing: Theme.spacingM
 
-                    DankIcon {
+                    HypeIcon {
                         name: "low_priority"
                         size: Theme.iconSizeSmall
                         color: SettingsData.notificationHistorySaveLow ? Theme.primary : Theme.surfaceText
@@ -368,7 +368,7 @@ Rectangle {
                     }
                 }
 
-                DankToggle {
+                HypeToggle {
                     id: lowToggle
                     anchors.right: parent.right
                     anchors.verticalCenter: parent.verticalCenter
@@ -387,7 +387,7 @@ Rectangle {
                     anchors.verticalCenter: parent.verticalCenter
                     spacing: Theme.spacingM
 
-                    DankIcon {
+                    HypeIcon {
                         name: "notifications"
                         size: Theme.iconSizeSmall
                         color: SettingsData.notificationHistorySaveNormal ? Theme.primary : Theme.surfaceText
@@ -402,7 +402,7 @@ Rectangle {
                     }
                 }
 
-                DankToggle {
+                HypeToggle {
                     id: normalToggle
                     anchors.right: parent.right
                     anchors.verticalCenter: parent.verticalCenter
@@ -421,7 +421,7 @@ Rectangle {
                     anchors.verticalCenter: parent.verticalCenter
                     spacing: Theme.spacingM
 
-                    DankIcon {
+                    HypeIcon {
                         name: "priority_high"
                         size: Theme.iconSizeSmall
                         color: SettingsData.notificationHistorySaveCritical ? Theme.primary : Theme.surfaceText
@@ -436,7 +436,7 @@ Rectangle {
                     }
                 }
 
-                DankToggle {
+                HypeToggle {
                     id: criticalToggle
                     anchors.right: parent.right
                     anchors.verticalCenter: parent.verticalCenter

@@ -1,4 +1,4 @@
-package providers
+﻿package providers
 
 import (
 	"fmt"
@@ -37,16 +37,16 @@ type NiriParser struct {
 	bindMap            map[string]*NiriKeyBinding
 	bindOrder          []string
 	currentSource      string
-	dmsBindsIncluded   bool
-	dmsBindsExists     bool
+	hypeBindsIncluded   bool
+	hypeBindsExists     bool
 	includeCount       int
-	dmsIncludePos      int
-	bindsBeforeDMS     int
-	bindsAfterDMS      int
-	dmsBindKeys        map[string]bool
+	hypeIncludePos      int
+	bindsBeforeHYPE     int
+	bindsAfterHYPE      int
+	hypeBindKeys        map[string]bool
 	configBindKeys     map[string]bool
-	dmsProcessed       bool
-	dmsBindMap         map[string]*NiriKeyBinding
+	hypeProcessed       bool
+	hypeBindMap         map[string]*NiriKeyBinding
 	conflictingConfigs map[string]*NiriKeyBinding
 }
 
@@ -154,18 +154,18 @@ func NewNiriParser(configDir string) *NiriParser {
 		bindMap:            make(map[string]*NiriKeyBinding),
 		bindOrder:          []string{},
 		currentSource:      "",
-		dmsIncludePos:      -1,
-		dmsBindKeys:        make(map[string]bool),
+		hypeIncludePos:      -1,
+		hypeBindKeys:        make(map[string]bool),
 		configBindKeys:     make(map[string]bool),
-		dmsBindMap:         make(map[string]*NiriKeyBinding),
+		hypeBindMap:         make(map[string]*NiriKeyBinding),
 		conflictingConfigs: make(map[string]*NiriKeyBinding),
 	}
 }
 
 func (p *NiriParser) Parse() (*NiriSection, error) {
-	dmsBindsPath := filepath.Join(p.configDir, "dms", "binds.kdl")
-	if _, err := os.Stat(dmsBindsPath); err == nil {
-		p.dmsBindsExists = true
+	hypeBindsPath := filepath.Join(p.configDir, "hype", "binds.kdl")
+	if _, err := os.Stat(hypeBindsPath); err == nil {
+		p.hypeBindsExists = true
 	}
 
 	configPath := filepath.Join(p.configDir, "config.kdl")
@@ -174,16 +174,16 @@ func (p *NiriParser) Parse() (*NiriSection, error) {
 		return nil, err
 	}
 
-	if p.dmsBindsExists && !p.dmsProcessed {
-		p.parseDMSBindsDirectly(dmsBindsPath, section)
+	if p.hypeBindsExists && !p.hypeProcessed {
+		p.parseHYPEBindsDirectly(hypeBindsPath, section)
 	}
 
 	section.Keybinds = p.finalizeBinds()
 	return section, nil
 }
 
-func (p *NiriParser) parseDMSBindsDirectly(dmsBindsPath string, section *NiriSection) {
-	data, err := os.ReadFile(dmsBindsPath)
+func (p *NiriParser) parseHYPEBindsDirectly(hypeBindsPath string, section *NiriSection) {
+	data, err := os.ReadFile(hypeBindsPath)
 	if err != nil {
 		return
 	}
@@ -194,11 +194,11 @@ func (p *NiriParser) parseDMSBindsDirectly(dmsBindsPath string, section *NiriSec
 	}
 
 	prevSource := p.currentSource
-	p.currentSource = dmsBindsPath
-	baseDir := filepath.Dir(dmsBindsPath)
+	p.currentSource = hypeBindsPath
+	baseDir := filepath.Dir(hypeBindsPath)
 	p.processNodes(doc.Nodes, section, baseDir)
 	p.currentSource = prevSource
-	p.dmsProcessed = true
+	p.hypeProcessed = true
 }
 
 func (p *NiriParser) finalizeBinds() []NiriKeyBinding {
@@ -213,13 +213,13 @@ func (p *NiriParser) finalizeBinds() []NiriKeyBinding {
 
 func (p *NiriParser) addBind(kb *NiriKeyBinding) {
 	key := p.formatBindKey(kb)
-	isDMSBind := strings.Contains(kb.Source, "dms/binds.kdl")
+	isHYPEBind := strings.Contains(kb.Source, "hype/binds.kdl")
 
-	if isDMSBind {
-		p.dmsBindKeys[key] = true
-		p.dmsBindMap[key] = kb
-	} else if p.dmsBindKeys[key] {
-		p.bindsAfterDMS++
+	if isHYPEBind {
+		p.hypeBindKeys[key] = true
+		p.hypeBindMap[key] = kb
+	} else if p.hypeBindKeys[key] {
+		p.bindsAfterHYPE++
 		p.conflictingConfigs[key] = kb
 		p.configBindKeys[key] = true
 		return
@@ -295,13 +295,13 @@ func (p *NiriParser) handleInclude(node *document.Node, section *NiriSection, ba
 	}
 
 	includePath := strings.Trim(node.Arguments[0].String(), "\"")
-	isDMSInclude := includePath == "dms/binds.kdl" || strings.HasSuffix(includePath, "/dms/binds.kdl")
+	isHYPEInclude := includePath == "hype/binds.kdl" || strings.HasSuffix(includePath, "/hype/binds.kdl")
 
 	p.includeCount++
-	if isDMSInclude {
-		p.dmsBindsIncluded = true
-		p.dmsIncludePos = p.includeCount
-		p.bindsBeforeDMS = len(p.bindMap)
+	if isHYPEInclude {
+		p.hypeBindsIncluded = true
+		p.hypeIncludePos = p.includeCount
+		p.bindsBeforeHYPE = len(p.bindMap)
 	}
 
 	fullPath := filepath.Join(baseDir, includePath)
@@ -309,8 +309,8 @@ func (p *NiriParser) handleInclude(node *document.Node, section *NiriSection, ba
 		fullPath = includePath
 	}
 
-	if isDMSInclude {
-		p.dmsProcessed = true
+	if isHYPEInclude {
+		p.hypeProcessed = true
 	}
 
 	includedSection, err := p.parseFile(fullPath, "")
@@ -321,8 +321,8 @@ func (p *NiriParser) handleInclude(node *document.Node, section *NiriSection, ba
 	section.Children = append(section.Children, includedSection.Children...)
 }
 
-func (p *NiriParser) HasDMSBindsIncluded() bool {
-	return p.dmsBindsIncluded
+func (p *NiriParser) HasHYPEBindsIncluded() bool {
+	return p.hypeBindsIncluded
 }
 
 func (p *NiriParser) handleRecentWindows(node *document.Node, section *NiriSection) {
@@ -438,45 +438,45 @@ func (p *NiriParser) parseKeyCombo(combo string) ([]string, string) {
 
 type NiriParseResult struct {
 	Section            *NiriSection
-	DMSBindsIncluded   bool
-	DMSStatus          *DMSBindsStatusInfo
+	HYPEBindsIncluded   bool
+	HYPEStatus          *HYPEBindsStatusInfo
 	ConflictingConfigs map[string]*NiriKeyBinding
 }
 
-type DMSBindsStatusInfo struct {
+type HYPEBindsStatusInfo struct {
 	Exists          bool
 	Included        bool
 	IncludePosition int
 	TotalIncludes   int
-	BindsAfterDMS   int
+	BindsAfterHYPE   int
 	Effective       bool
 	OverriddenBy    int
 	StatusMessage   string
 }
 
-func (p *NiriParser) buildDMSStatus() *DMSBindsStatusInfo {
-	status := &DMSBindsStatusInfo{
-		Exists:          p.dmsBindsExists,
-		Included:        p.dmsBindsIncluded,
-		IncludePosition: p.dmsIncludePos,
+func (p *NiriParser) buildHYPEStatus() *HYPEBindsStatusInfo {
+	status := &HYPEBindsStatusInfo{
+		Exists:          p.hypeBindsExists,
+		Included:        p.hypeBindsIncluded,
+		IncludePosition: p.hypeIncludePos,
 		TotalIncludes:   p.includeCount,
-		BindsAfterDMS:   p.bindsAfterDMS,
+		BindsAfterHYPE:   p.bindsAfterHYPE,
 	}
 
 	switch {
-	case !p.dmsBindsExists:
+	case !p.hypeBindsExists:
 		status.Effective = false
-		status.StatusMessage = "dms/binds.kdl does not exist"
-	case !p.dmsBindsIncluded:
+		status.StatusMessage = "hype/binds.kdl does not exist"
+	case !p.hypeBindsIncluded:
 		status.Effective = false
-		status.StatusMessage = "dms/binds.kdl is not included in config.kdl"
-	case p.bindsAfterDMS > 0:
+		status.StatusMessage = "hype/binds.kdl is not included in config.kdl"
+	case p.bindsAfterHYPE > 0:
 		status.Effective = true
-		status.OverriddenBy = p.bindsAfterDMS
-		status.StatusMessage = "Some DMS binds may be overridden by config binds"
+		status.OverriddenBy = p.bindsAfterHYPE
+		status.StatusMessage = "Some HYPE binds may be overridden by config binds"
 	default:
 		status.Effective = true
-		status.StatusMessage = "DMS binds are active"
+		status.StatusMessage = "HYPE binds are active"
 	}
 
 	return status
@@ -490,8 +490,8 @@ func ParseNiriKeys(configDir string) (*NiriParseResult, error) {
 	}
 	return &NiriParseResult{
 		Section:            section,
-		DMSBindsIncluded:   parser.HasDMSBindsIncluded(),
-		DMSStatus:          parser.buildDMSStatus(),
+		HYPEBindsIncluded:   parser.HasHYPEBindsIncluded(),
+		HYPEStatus:          parser.buildHYPEStatus(),
 		ConflictingConfigs: parser.conflictingConfigs,
 	}, nil
 }

@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import qs.Common
 import qs.Services
 import qs.Widgets
@@ -22,7 +22,7 @@ Item {
             "notepad": "Notepad",
             "hotkeys": "Keybinds",
             "lock": "Lock Screen",
-            "dankdash": "Dashboard"
+            "hypedash": "Dashboard"
         })
 
     function getFeatureDesc(action) {
@@ -32,7 +32,7 @@ Item {
         return null;
     }
 
-    readonly property var dmsKeybinds: {
+    readonly property var hypeKeybinds: {
         if (!greeterRoot || !greeterRoot.cheatsheetLoaded || !greeterRoot.cheatsheetData || !greeterRoot.cheatsheetData.binds)
             return [];
         const seen = new Set();
@@ -63,9 +63,9 @@ Item {
         return binds;
     }
 
-    readonly property bool hasKeybinds: dmsKeybinds.length > 0
+    readonly property bool hasKeybinds: hypeKeybinds.length > 0
 
-    DankFlickable {
+    HypeFlickable {
         anchors.fill: parent
         clip: true
         contentHeight: mainColumn.height + Theme.spacingL * 2
@@ -89,7 +89,7 @@ Item {
                     color: Theme.withAlpha(Theme.success, 0.15)
                     anchors.verticalCenter: parent.verticalCenter
 
-                    DankIcon {
+                    HypeIcon {
                         anchors.centerIn: parent
                         name: "check_circle"
                         size: Theme.iconSize + 4
@@ -125,7 +125,7 @@ Item {
                     width: parent.width
                     spacing: Theme.spacingS
 
-                    DankIcon {
+                    HypeIcon {
                         name: "keyboard"
                         size: root.sectionIconSize
                         color: Theme.primary
@@ -164,7 +164,7 @@ Item {
                         columnSpacing: Theme.spacingM
 
                         Repeater {
-                            model: root.dmsKeybinds
+                            model: root.hypeKeybinds
 
                             Row {
                                 width: keybindsRect.itemWidth
@@ -254,7 +254,7 @@ Item {
                     Row {
                         spacing: Theme.spacingS
 
-                        DankIcon {
+                        HypeIcon {
                             name: "keyboard"
                             size: root.sectionIconSize
                             color: Theme.surfaceVariantText
@@ -286,7 +286,7 @@ Item {
                             anchors.centerIn: parent
                             spacing: Theme.spacingS
 
-                            DankIcon {
+                            HypeIcon {
                                 name: "menu_book"
                                 size: root.sectionIconSize
                                 color: Theme.primary
@@ -301,7 +301,7 @@ Item {
                                 anchors.verticalCenter: parent.verticalCenter
                             }
 
-                            DankIcon {
+                            HypeIcon {
                                 name: "open_in_new"
                                 size: Theme.iconSizeSmall - 2
                                 color: Theme.surfaceVariantText
@@ -345,7 +345,7 @@ Item {
                     width: parent.width
                     spacing: Theme.spacingS
 
-                    DankIcon {
+                    HypeIcon {
                         name: "settings"
                         size: root.sectionIconSize
                         color: Theme.primary
@@ -403,8 +403,8 @@ Item {
                         width: (parent.width - Theme.spacingS) / 2
                         iconName: "toolbar"
                         title: I18n.tr("Hype Bar", "greeter settings link")
-                        description: I18n.tr("Widgets, layout, style", "greeter dankbar description")
-                        onClicked: PopoutService.openSettingsWithTab("dankbar_settings")
+                        description: I18n.tr("Widgets, layout, style", "greeter hypebar description")
+                        onClicked: PopoutService.openSettingsWithTab("hypebar_settings")
                     }
 
                     GreeterSettingsCard {
@@ -442,7 +442,7 @@ Item {
                     width: parent.width
                     spacing: Theme.spacingS
 
-                    DankIcon {
+                    HypeIcon {
                         name: "explore"
                         size: root.sectionIconSize
                         color: Theme.primary

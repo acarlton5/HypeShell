@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import Quickshell
 import qs.Common
 import qs.Services
@@ -31,7 +31,7 @@ Rectangle {
     height: baseCardHeight + contentItem.extraHeight
     radius: Theme.cornerRadius
     clip: false
-    readonly property bool shadowsAllowed: Theme.elevationEnabled && Quickshell.env("DMS_DISABLE_LAYER") !== "true" && Quickshell.env("DMS_DISABLE_LAYER") !== "1" && !BlurService.enabled
+    readonly property bool shadowsAllowed: Theme.elevationEnabled && Quickshell.env("HYPE_DISABLE_LAYER") !== "true" && Quickshell.env("HYPE_DISABLE_LAYER") !== "1" && !BlurService.enabled
 
     ElevationShadow {
         id: shadowLayer
@@ -110,7 +110,7 @@ Rectangle {
         anchors.rightMargin: Theme.spacingL + Theme.notificationHoverRevealMargin
         height: collapsedContentHeight + extraHeight
 
-        DankCircularImage {
+        HypeCircularImage {
             id: iconContainer
             readonly property string rawImage: historyItem.image || ""
             readonly property string iconFromImage: {
@@ -261,7 +261,7 @@ Rectangle {
         }
     }
 
-    DankActionButton {
+    HypeActionButton {
         anchors.top: parent.top
         anchors.right: parent.right
         anchors.topMargin: cardPadding

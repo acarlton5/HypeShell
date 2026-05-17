@@ -1,4 +1,4 @@
-package tui
+﻿package tui
 
 import (
 	"fmt"
@@ -111,7 +111,7 @@ func (m Model) routeToAuthAfterPrivesc() (tea.Model, tea.Cmd) {
 // enterAuthPhase is called when dependency review (or the Gentoo screens)
 // finish. It either routes directly to the sudo/fingerprint flow or shows
 // the privesc-tool selection screen when multiple tools are available and
-// no $DMS_PRIVESC override is set.
+// no $HYPE_PRIVESC override is set.
 func (m Model) enterAuthPhase() (tea.Model, tea.Cmd) {
 	tools := privesc.AvailableTools()
 	_, envSet := privesc.EnvOverride()

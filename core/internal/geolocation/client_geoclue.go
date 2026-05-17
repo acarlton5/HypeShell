@@ -1,4 +1,4 @@
-package geolocation
+﻿package geolocation
 
 import (
 	"fmt"
@@ -115,7 +115,7 @@ func (c *GeoClueClient) setupClient() error {
 	}
 
 	clientObj := c.dbusConn.Object(dbusGeoClueService, c.clientPath)
-	if err := clientObj.SetProperty(dbusGeoClueClientDesktopId, "dms"); err != nil {
+	if err := clientObj.SetProperty(dbusGeoClueClientDesktopId, "hype"); err != nil {
 		return fmt.Errorf("failed to set desktop ID: %w", err)
 	}
 

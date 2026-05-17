@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import Quickshell
 import qs.Common
 import qs.Services
@@ -41,11 +41,11 @@ FocusScope {
 
     focus: true
 
-    DankTooltipV2 {
+    HypeTooltipV2 {
         id: sharedTooltip
     }
 
-    DankFlickable {
+    HypeFlickable {
         anchors.fill: parent
         clip: true
         contentHeight: mainColumn.height + Theme.spacingXL
@@ -77,7 +77,7 @@ FocusScope {
                         width: parent.width
                         spacing: Theme.spacingM
 
-                        DankIcon {
+                        HypeIcon {
                             name: "extension"
                             size: Theme.iconSize
                             color: Theme.primary
@@ -110,15 +110,15 @@ FocusScope {
 
                     StyledRect {
                         width: parent.width
-                        height: dmsWarningColumn.implicitHeight + Theme.spacingM * 2
+                        height: hypeWarningColumn.implicitHeight + Theme.spacingM * 2
                         radius: Theme.cornerRadius
                         color: Theme.withAlpha(Theme.warning, 0.1)
                         border.color: Theme.warning
                         border.width: 1
-                        visible: !DMSService.dmsAvailable
+                        visible: !HYPEService.hypeAvailable
 
                         Column {
-                            id: dmsWarningColumn
+                            id: hypeWarningColumn
                             anchors.fill: parent
                             anchors.margins: Theme.spacingM
                             spacing: Theme.spacingXS
@@ -126,7 +126,7 @@ FocusScope {
                             Row {
                                 spacing: Theme.spacingXS
 
-                                DankIcon {
+                                HypeIcon {
                                     name: "warning"
                                     size: 16
                                     color: Theme.warning
@@ -179,7 +179,7 @@ FocusScope {
                             Row {
                                 spacing: Theme.spacingXS
 
-                                DankIcon {
+                                HypeIcon {
                                     name: "error"
                                     size: 16
                                     color: Theme.error
@@ -196,7 +196,7 @@ FocusScope {
                             }
 
                             StyledText {
-                                text: I18n.tr("Some plugins require a newer version of HypeShell:") + " " + incompatWarning.incompatPlugins.map(p => p.name + " (" + p.requires_dms + ")").join(", ")
+                                text: I18n.tr("Some plugins require a newer version of HypeShell:") + " " + incompatWarning.incompatPlugins.map(p => p.name + " (" + p.requires_hype + ")").join(", ")
                                 font.pixelSize: Theme.fontSizeSmall - 1
                                 color: Theme.surfaceVariantText
                                 wrapMode: Text.WordWrap
@@ -227,29 +227,29 @@ FocusScope {
                         width: parent.width
                         spacing: Theme.spacingM
 
-                        DankButton {
+                        HypeButton {
                             text: I18n.tr("Browse")
                             iconName: "store"
-                            enabled: DMSService.dmsAvailable
+                            enabled: HYPEService.hypeAvailable
                             onClicked: {
                                 showPluginBrowser();
                             }
                         }
 
-                        DankButton {
+                        HypeButton {
                             text: I18n.tr("Scan")
                             iconName: "refresh"
                             onClicked: {
                                 pluginsTab.isRefreshingPlugins = true;
                                 PluginService.scanPlugins();
-                                if (DMSService.dmsAvailable) {
-                                    DMSService.listInstalled();
+                                if (HYPEService.hypeAvailable) {
+                                    HYPEService.listInstalled();
                                 }
                                 pluginsTab.refreshPluginList();
                             }
                         }
 
-                        DankButton {
+                        HypeButton {
                             text: PluginService.pluginDirectoryExists ? I18n.tr("Open Dir") : I18n.tr("Create Dir")
                             iconName: PluginService.pluginDirectoryExists ? "folder_open" : "create_new_folder"
                             onClicked: {
@@ -339,7 +339,7 @@ FocusScope {
                             height: 1
                         }
 
-                        DankActionButton {
+                        HypeActionButton {
                             id: searchIconBtn
                             iconName: "search"
                             iconSize: 20
@@ -358,7 +358,7 @@ FocusScope {
                         }
                     }
 
-                    DankTextField {
+                    HypeTextField {
                         id: pluginSearchField
                         width: parent.width
                         visible: pluginsTab.isSearchExpanded || height > 0
@@ -402,7 +402,7 @@ FocusScope {
                                 pluginData: modelData
                                 expandedPluginId: pluginsTab.expandedPluginId
                                 hasUpdate: {
-                                    if (DMSService.apiVersion < 8)
+                                    if (HYPEService.apiVersion < 8)
                                         return false;
                                     return pluginsTab.installedPluginsData[pluginId] || pluginsTab.installedPluginsData[pluginName] || false;
                                 }
@@ -450,8 +450,8 @@ FocusScope {
             }
         }
         function onPluginListUpdated() {
-            if (DMSService.apiVersion >= 8) {
-                DMSService.listInstalled();
+            if (HYPEService.apiVersion >= 8) {
+                HYPEService.listInstalled();
             }
             refreshPluginList();
         }
@@ -468,7 +468,7 @@ FocusScope {
     }
 
     Connections {
-        target: DMSService
+        target: HYPEService
         function onPluginsListReceived(plugins) {
             if (!pluginBrowserLoader.item)
                 return;
@@ -501,8 +501,8 @@ FocusScope {
 
     Component.onCompleted: {
         updateFilteredPlugins();
-        if (DMSService.dmsAvailable && DMSService.apiVersion >= 8)
-            DMSService.listInstalled();
+        if (HYPEService.hypeAvailable && HYPEService.apiVersion >= 8)
+            HYPEService.listInstalled();
         if (PopoutService.pendingPluginInstall)
             Qt.callLater(showPluginBrowser);
     }

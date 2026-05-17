@@ -1,4 +1,4 @@
-pragma ComponentBehavior: Bound
+﻿pragma ComponentBehavior: Bound
 
 import QtQuick
 import QtQuick.Effects
@@ -489,7 +489,7 @@ Rectangle {
                         height: 1
                     }
 
-                    DankActionButton {
+                    HypeActionButton {
                         iconName: "close"
                         iconSize: Theme.iconSize - 4
                         iconColor: Theme.surfaceText
@@ -572,7 +572,7 @@ Rectangle {
                                 anchors.centerIn: parent
                                 spacing: Theme.spacingS
 
-                                DankIcon {
+                                HypeIcon {
                                     name: gridButtonRect.actionData.icon
                                     size: Theme.iconSize + 8
                                     color: {
@@ -709,7 +709,7 @@ Rectangle {
                                 anchors.verticalCenter: parent.verticalCenter
                                 spacing: Theme.spacingM
 
-                                DankIcon {
+                                HypeIcon {
                                     name: listButtonRect.actionData.icon
                                     size: Theme.iconSize + 4
                                     color: {
@@ -784,7 +784,7 @@ Rectangle {
                         }
                     }
 
-                    DankIcon {
+                    HypeIcon {
                         name: root.showHoldHint ? "warning" : "touch_app"
                         size: Theme.fontSizeSmall
                         color: root.showHoldHint ? Theme.warning : Qt.rgba(Theme.surfaceText.r, Theme.surfaceText.g, Theme.surfaceText.b, 0.6)

@@ -1,10 +1,10 @@
-import QtQuick
+﻿import QtQuick
 import Quickshell.Services.UPower
 import qs.Common
 import qs.Services
 import qs.Widgets
 
-DankOSD {
+HypeOSD {
     id: root
 
     property int currentProfile: 0
@@ -34,7 +34,7 @@ DankOSD {
         }
     }
 
-    content: DankIcon {
+    content: HypeIcon {
         anchors.centerIn: parent
         name: root.profileIcon
         size: Theme.iconSize

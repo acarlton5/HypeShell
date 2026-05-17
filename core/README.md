@@ -1,16 +1,16 @@
-# DMS Backend & CLI
+﻿# HYPE Backend & CLI
 
-Go-based backend for DankMaterialShell providing system integration, IPC, and installation tools.
+Go-based backend for HypeMaterialShell providing system integration, IPC, and installation tools.
 
 **See [root README](../README.md) for project overview and installation.**
 
 ## Components
 
-**dms CLI**
+**hype CLI**
 Command-line interface and daemon for shell management and system control.
 
-**dankinstall**
-Distribution-aware installer for deploying DMS and compositor configurations on Arch, Fedora, Debian, Ubuntu, openSUSE, and Gentoo. Supports both an interactive TUI and a headless (unattended) mode via CLI flags.
+**hypeinstall**
+Distribution-aware installer for deploying HYPE and compositor configurations on Arch, Fedora, Debian, Ubuntu, openSUSE, and Gentoo. Supports both an interactive TUI and a headless (unattended) mode via CLI flags.
 
 ## System Integration
 
@@ -71,25 +71,25 @@ Custom IPC via unix socket (JSON API) for shell communication.
 
 ## CLI Commands
 
-- `dms run [-d]` - Start shell (optionally as daemon)
-- `dms restart` / `dms kill` - Manage running processes
-- `dms ipc <command>` - Send IPC commands (toggle launcher, notifications, etc.)
-- `dms plugins [install|browse|search]` - Plugin management
-- `dms brightness [list|set]` - Control display/monitor brightness
-- `dms color pick` - Native color picker (see below)
-- `dms update` - Update DMS and dependencies (disabled in distro packages)
-- `dms greeter install` - Install greetd greeter (disabled in distro packages)
+- `hype run [-d]` - Start shell (optionally as daemon)
+- `hype restart` / `hype kill` - Manage running processes
+- `hype ipc <command>` - Send IPC commands (toggle launcher, notifications, etc.)
+- `hype plugins [install|browse|search]` - Plugin management
+- `hype brightness [list|set]` - Control display/monitor brightness
+- `hype color pick` - Native color picker (see below)
+- `hype update` - Update HYPE and dependencies (disabled in distro packages)
+- `hype greeter install` - Install greetd greeter (disabled in distro packages)
 
 ### Color Picker
 
 Native Wayland color picker with magnifier, no external dependencies. Supports HiDPI and fractional scaling.
 
 ```bash
-dms color pick              # Pick color, output hex
-dms color pick --rgb        # Output as RGB (255 128 64)
-dms color pick --hsv        # Output as HSV (24 75% 100%)
-dms color pick --json       # Output all formats as JSON
-dms color pick -a           # Auto-copy to clipboard
+hype color pick              # Pick color, output hex
+hype color pick --rgb        # Output as RGB (255 128 64)
+hype color pick --hsv        # Output as HSV (24 75% 100%)
+hype color pick --json       # Output all formats as JSON
+hype color pick -a           # Auto-copy to clipboard
 ```
 
 The on-screen preview displays the selected format. JSON output includes hex, RGB, HSL, HSV, and CMYK values.
@@ -101,8 +101,8 @@ Requires Go 1.25+
 **Development build:**
 
 ```bash
-make              # Build dms CLI
-make dankinstall  # Build installer
+make              # Build hype CLI
+make hypeinstall  # Build installer
 make test         # Run tests
 ```
 
@@ -112,12 +112,12 @@ make test         # Run tests
 make dist         # Build without update/greeter features
 ```
 
-Produces `bin/dms-linux-amd64` and `bin/dms-linux-arm64`
+Produces `bin/hype-linux-amd64` and `bin/hype-linux-arm64`
 
 **Installation:**
 
 ```bash
-sudo make install  # Install to /usr/local/bin/dms
+sudo make install  # Install to /usr/local/bin/hype
 ```
 
 ## Development
@@ -140,17 +140,17 @@ go-wayland-scanner -i internal/proto/xml/wlr-gamma-control-unstable-v1.xml \
 
 **Module Structure:**
 
-- `cmd/` - Binary entrypoints (dms, dankinstall)
+- `cmd/` - Binary entrypoints (hype, hypeinstall)
 - `internal/distros/` - Distribution-specific installation logic
 - `internal/proto/` - Wayland protocol bindings
 - `pkg/` - Shared packages
 
-## Installation via dankinstall
+## Installation via hypeinstall
 
 **Interactive (TUI):**
 
 ```bash
-curl -fsSL https://install.danklinux.com | sh
+curl -fsSL https://install.hypelinux.com | sh
 ```
 
 **Headless (unattended):**
@@ -158,15 +158,15 @@ curl -fsSL https://install.danklinux.com | sh
 Headless mode requires cached sudo credentials. Run `sudo -v` first:
 
 ```bash
-sudo -v && curl -fsSL https://install.danklinux.com | sh -s -- -c niri -t ghostty -y
-sudo -v && curl -fsSL https://install.danklinux.com | sh -s -- -c hyprland -t kitty --include-deps dms-greeter -y
+sudo -v && curl -fsSL https://install.hypelinux.com | sh -s -- -c niri -t ghostty -y
+sudo -v && curl -fsSL https://install.hypelinux.com | sh -s -- -c hyprland -t kitty --include-deps hype-greeter -y
 ```
 
 | Flag | Short | Description |
 |------|-------|-------------|
 | `--compositor <niri|hyprland>` | `-c` | Compositor/WM to install (required for headless) |
 | `--term <ghostty|kitty|alacritty>` | `-t` | Terminal emulator (required for headless) |
-| `--include-deps <name,...>` | | Enable optional dependencies (e.g. `dms-greeter`) |
+| `--include-deps <name,...>` | | Enable optional dependencies (e.g. `hype-greeter`) |
 | `--exclude-deps <name,...>` | | Skip specific dependencies |
 | `--replace-configs <name,...>` | | Replace specific configuration files (mutually exclusive with `--replace-configs-all`) |
 | `--replace-configs-all` | | Replace all configuration files (mutually exclusive with `--replace-configs`) |
@@ -174,9 +174,9 @@ sudo -v && curl -fsSL https://install.danklinux.com | sh -s -- -c hyprland -t ki
 
 Headless mode requires `--yes` to proceed; without it, the installer exits with an error.
 Configuration files are not replaced by default unless `--replace-configs` or `--replace-configs-all` is specified.
-`dms-greeter` is disabled by default; use `--include-deps dms-greeter` to enable it.
+`hype-greeter` is disabled by default; use `--include-deps hype-greeter` to enable it.
 
-When no flags are provided, `dankinstall` launches the interactive TUI.
+When no flags are provided, `hypeinstall` launches the interactive TUI.
 
 ### Headless mode validation rules
 
@@ -188,7 +188,7 @@ Headless mode activates when `--compositor` or `--term` is provided.
 
 ### Log file location
 
-`dankinstall` writes logs to `/tmp` by default.
+`hypeinstall` writes logs to `/tmp` by default.
 Set the `DANKINSTALL_LOG_DIR` environment variable to override the log directory.
 
 ## Supported Distributions
@@ -200,7 +200,7 @@ Uses `pacman` for system packages, builds AUR packages via `makepkg`, no AUR hel
 
 **Fedora**
 
-Uses COPR repositories (`avengemedia/danklinux`, `avengemedia/dms`).
+Uses COPR repositories (`avengemedia/hypelinux`, `avengemedia/hype`).
 
 **Ubuntu**
 Requires PPA support. Most packages built from source (slow first install).

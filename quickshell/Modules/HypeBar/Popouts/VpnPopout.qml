@@ -1,16 +1,16 @@
-import QtQuick
+﻿import QtQuick
 import QtQuick.Layouts
 import qs.Common
 import qs.Services
 import qs.Widgets
 
-DankPopout {
+HypePopout {
     id: root
 
-    layerNamespace: "dms:vpn"
+    layerNamespace: "hype:vpn"
 
     Ref {
-        service: DMSNetworkService
+        service: HYPENetworkService
     }
 
     property bool wasVisible: false
@@ -24,7 +24,7 @@ DankPopout {
 
     onShouldBeVisibleChanged: {
         if (shouldBeVisible && !wasVisible) {
-            DMSNetworkService.getState();
+            HYPENetworkService.getState();
         }
         wasVisible = shouldBeVisible;
     }
@@ -68,7 +68,7 @@ DankPopout {
                         Layout.fillWidth: true
                     }
 
-                    DankActionButton {
+                    HypeActionButton {
                         iconName: "close"
                         iconSize: Theme.iconSize - 4
                         iconColor: Theme.surfaceText

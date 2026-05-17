@@ -1,4 +1,4 @@
-{
+﻿{
   "%1 Animation Speed": {
     "%1 Animation Speed": "%1 Animáció sebessége"
   },
@@ -1152,7 +1152,7 @@
     "Choose the border accent color": "Válaszd ki a szegély kiemelőszínét"
   },
   "Choose the logo displayed on the launcher button in Hype Bar": {
-    "Choose the logo displayed on the launcher button in Hype Bar": "Válaszd ki a DankBar indítógombján megjelenő logót"
+    "Choose the logo displayed on the launcher button in Hype Bar": "Válaszd ki a HypeBar indítógombján megjelenő logót"
   },
   "Choose where notification popups appear on screen": {
     "Choose where notification popups appear on screen": "A felugró értesítések megjelenési helye"
@@ -1757,8 +1757,8 @@
   "HypeShell Shortcuts": {
     "HypeShell Shortcuts": "HypeShell gyorsbillentyűk"
   },
-  "HypeShell Greeter needs: greetd, dms-greeter. Fingerprint: fprintd, pam_fprintd. Security keys: pam_u2f. Add your user to the greeter group. Authentication changes apply automatically and may open a terminal when sudo authentication is required.": {
-    "HypeShell Greeter needs: greetd, dms-greeter. Fingerprint: fprintd, pam_fprintd. Security keys: pam_u2f. Add your user to the greeter group. Authentication changes apply automatically and may open a terminal when sudo authentication is required.": "A HypeShell-üdvözlőképernyőnek (greeter) szüksége van a következőkre: greetd, dms-greeter. Ujjlenyomat: fprintd, pam_fprintd. Biztonsági kulcsok: pam_u2f. Add hozzá a felhasználódat a greeter csoporthoz. A hitelesítési módosítások automatikusan alkalmazásra kerülnek, és terminált nyithatnak meg, ha sudo hitelesítés szükséges."
+  "HypeShell Greeter needs: greetd, hype-greeter. Fingerprint: fprintd, pam_fprintd. Security keys: pam_u2f. Add your user to the greeter group. Authentication changes apply automatically and may open a terminal when sudo authentication is required.": {
+    "HypeShell Greeter needs: greetd, hype-greeter. Fingerprint: fprintd, pam_fprintd. Security keys: pam_u2f. Add your user to the greeter group. Authentication changes apply automatically and may open a terminal when sudo authentication is required.": "A HypeShell-üdvözlőképernyőnek (greeter) szüksége van a következőkre: greetd, hype-greeter. Ujjlenyomat: fprintd, pam_fprintd. Biztonsági kulcsok: pam_u2f. Add hozzá a felhasználódat a greeter csoporthoz. A hitelesítési módosítások automatikusan alkalmazásra kerülnek, és terminált nyithatnak meg, ha sudo hitelesítés szükséges."
   },
   "HypeShell out of date": {
     "HypeShell out of date": "A HypeShell elavult"
@@ -1769,8 +1769,8 @@
   "HypeShell shell actions (launcher, clipboard, etc.)": {
     "HypeShell shell actions (launcher, clipboard, etc.)": "HypeShell héj-műveletek (indító, vágólap, stb.)"
   },
-  "DMS_SOCKET not available": {
-    "DMS_SOCKET not available": "A DMS_SOCKET nem érhető el"
+  "HYPE_SOCKET not available": {
+    "HYPE_SOCKET not available": "A HYPE_SOCKET nem érhető el"
   },
   "DWL service not available": {
     "DWL service not available": "A DWL szolgáltatás nem érhető el"
@@ -1794,7 +1794,7 @@
     "HypeShell is ready to use": "A HypeShell használatra kész"
   },
   "HypeShell & System Icons (requires restart)": {
-    "HypeShell & System Icons (requires restart)": "DankShell és Rendszerikonok (újraindítást igényel)"
+    "HypeShell & System Icons (requires restart)": "HypeShell és Rendszerikonok (újraindítást igényel)"
   },
   "Dark Mode": {
     "Dark Mode": "Sötét mód"
@@ -2252,8 +2252,8 @@
   "Enable a custom override below to set per-bar shadow intensity, opacity, and color.": {
     "Enable a custom override below to set per-bar shadow intensity, opacity, and color.": "Engedélyezd az egyéni felülbírálást alább a sávonkénti árnyékintenzitás, áttetszőség és szín beállításához."
   },
-  "Enable compositor-targetable blur layer (namespace: dms:blurwallpaper). Requires manual niri configuration.": {
-    "Enable compositor-targetable blur layer (namespace: dms:blurwallpaper). Requires manual niri configuration.": "Kompozitor által célozható elmosás réteg engedélyezése (névtér: dms:blurwallpaper). Kézi niri konfigurációt igényel."
+  "Enable compositor-targetable blur layer (namespace: hype:blurwallpaper). Requires manual niri configuration.": {
+    "Enable compositor-targetable blur layer (namespace: hype:blurwallpaper). Requires manual niri configuration.": "Kompozitor által célozható elmosás réteg engedélyezése (névtér: hype:blurwallpaper). Kézi niri konfigurációt igényel."
   },
   "Enable fingerprint at login": {
     "Enable fingerprint at login": "Ujjlenyomat engedélyezése bejelentkezéskor"
@@ -2600,8 +2600,8 @@
   "Failed to ring device": {
     "Failed to ring device": "Nem sikerült az eszköz megcsöngetése"
   },
-  "Failed to run 'dms greeter status'. Ensure HypeShell is installed and dms is in PATH.": {
-    "Failed to run 'dms greeter status'. Ensure HypeShell is installed and dms is in PATH.": "Nem sikerült futtatni a 'dms greeter status' parancsot. Győződj meg róla, hogy a HypeShell telepítve van, és a dms benne van a PATH környezeti változóban."
+  "Failed to run 'hype greeter status'. Ensure HypeShell is installed and hype is in PATH.": {
+    "Failed to run 'hype greeter status'. Ensure HypeShell is installed and hype is in PATH.": "Nem sikerült futtatni a 'hype greeter status' parancsot. Győződj meg róla, hogy a HypeShell telepítve van, és a hype benne van a PATH környezeti változóban."
   },
   "Failed to save audio config": {
     "Failed to save audio config": "Nem sikerült menteni a hangkonfigurációt"
@@ -5610,10 +5610,10 @@
     "Scale": "Skála"
   },
   "Scale Hype Bar font sizes independently": {
-    "Scale Hype Bar font sizes independently": "A DankBar betűméretének független méretezése"
+    "Scale Hype Bar font sizes independently": "A HypeBar betűméretének független méretezése"
   },
   "Scale Hype Bar icon sizes independently": {
-    "Scale Hype Bar icon sizes independently": "DankBar ikonméretek független skálázása"
+    "Scale Hype Bar icon sizes independently": "HypeBar ikonméretek független skálázása"
   },
   "Scale all font sizes throughout the shell": {
     "Scale all font sizes throughout the shell": "Betűméret skálázása a felületen"
@@ -6539,8 +6539,8 @@
   "Terminal custom additional parameters": {
     "Terminal custom additional parameters": "Terminál egyéni további paraméterei"
   },
-  "Terminal fallback failed. Install a supported terminal emulator or run 'dms auth sync' manually.": {
-    "Terminal fallback failed. Install a supported terminal emulator or run 'dms auth sync' manually.": "A terminál visszalépés sikertelen. Telepíts egy támogatott terminálemulátort, vagy futtasd a 'dms auth sync' parancsot."
+  "Terminal fallback failed. Install a supported terminal emulator or run 'hype auth sync' manually.": {
+    "Terminal fallback failed. Install a supported terminal emulator or run 'hype auth sync' manually.": "A terminál visszalépés sikertelen. Telepíts egy támogatott terminálemulátort, vagy futtasd a 'hype auth sync' parancsot."
   },
   "Terminal fallback failed. Install one of the supported terminal emulators or run 'HypeShell Greeter sync' manually.": {
     "Terminal fallback failed. Install one of the supported terminal emulators or run 'HypeShell Greeter sync' manually.": "A terminál tartalék megnyitása sikertelen. Telepíts egyet a támogatott terminálemulátorok közül, vagy futtasd a 'HypeShell Greeter sync' parancsot."
@@ -6587,8 +6587,8 @@
   "The 'dgop' tool is required for system monitoring.\nPlease install dgop to use this feature.": {
     "The 'dgop' tool is required for system monitoring.\nPlease install dgop to use this feature.": "A rendszerfigyeléshez a „dgop” eszköz szükséges.\nTelepítsd a dgop-ot a funkció használatához."
   },
-  "The DMS_SOCKET environment variable is not set or the socket is unavailable. Automated plugin management requires the DMS_SOCKET.": {
-    "The DMS_SOCKET environment variable is not set or the socket is unavailable. Automated plugin management requires the DMS_SOCKET.": "A DMS_SOCKET környezeti változó nincs beállítva, vagy a socket nem érhető el. Az automatizált bővítménykezeléshez DMS_SOCKET szükséges."
+  "The HYPE_SOCKET environment variable is not set or the socket is unavailable. Automated plugin management requires the HYPE_SOCKET.": {
+    "The HYPE_SOCKET environment variable is not set or the socket is unavailable. Automated plugin management requires the HYPE_SOCKET.": "A HYPE_SOCKET környezeti változó nincs beállítva, vagy a socket nem érhető el. Az automatizált bővítménykezeléshez HYPE_SOCKET szükséges."
   },
   "The below settings will modify your GTK and Qt settings. If you wish to preserve your current configurations, please back them up (qt5ct.conf|qt6ct.conf and ~/.config/gtk-3.0|gtk-4.0).": {
     "The below settings will modify your GTK and Qt settings. If you wish to preserve your current configurations, please back them up (qt5ct.conf|qt6ct.conf and ~/.config/gtk-3.0|gtk-4.0).": "Az alábbi beállítások módosítják a GTK és Qt beállításokat. Ha meg szeretnéd őrizni a jelenlegi konfigurációt, készíts róluk biztonsági másolatot (qt5ct.conf|qt6ct.conf és ~/.config/gtk-3.0|gtk-4.0)."
@@ -7488,13 +7488,13 @@
     "direct": "közvetlen"
   },
   "HypeShell is a highly customizable, modern desktop shell with a <a href=\"https://m3.material.io/\" style=\"text-decoration:none; color:%1;\">material 3 inspired</a> design.<br /><br/>It is built with <a href=\"https://quickshell.org\" style=\"text-decoration:none; color:%1;\">Quickshell</a>, a QT6 framework for building desktop shells, and <a href=\"https://go.dev\" style=\"text-decoration:none; color:%1;\">Go</a>, a statically typed, compiled programming language.": {
-    "HypeShell is a highly customizable, modern desktop shell with a <a href=\"https://m3.material.io/\" style=\"text-decoration:none; color:%1;\">material 3 inspired</a> design.<br /><br/>It is built with <a href=\"https://quickshell.org\" style=\"text-decoration:none; color:%1;\">Quickshell</a>, a QT6 framework for building desktop shells, and <a href=\"https://go.dev\" style=\"text-decoration:none; color:%1;\">Go</a>, a statically typed, compiled programming language.": "A dms egy nagymértékben testreszabható, modern asztali héj, <a href=\"https://m3.material.io/\" style=\"text-decoration:none; color:%1;\">material 3 ihlette</a> dizájnnal.<br /><br/>A <a href=\"https://quickshell.org\" style=\"text-decoration:none; color:%1;\">Quickshell</a>-lel, egy QT6 keretrendszerrel asztali héjak építéséhez, és a <a href=\"https://go.dev\" style=\"text-decoration:none; color:%1;\">Go</a> statikusan típusos, fordított programozási nyelvvel készült."
+    "HypeShell is a highly customizable, modern desktop shell with a <a href=\"https://m3.material.io/\" style=\"text-decoration:none; color:%1;\">material 3 inspired</a> design.<br /><br/>It is built with <a href=\"https://quickshell.org\" style=\"text-decoration:none; color:%1;\">Quickshell</a>, a QT6 framework for building desktop shells, and <a href=\"https://go.dev\" style=\"text-decoration:none; color:%1;\">Go</a>, a statically typed, compiled programming language.": "A hype egy nagymértékben testreszabható, modern asztali héj, <a href=\"https://m3.material.io/\" style=\"text-decoration:none; color:%1;\">material 3 ihlette</a> dizájnnal.<br /><br/>A <a href=\"https://quickshell.org\" style=\"text-decoration:none; color:%1;\">Quickshell</a>-lel, egy QT6 keretrendszerrel asztali héjak építéséhez, és a <a href=\"https://go.dev\" style=\"text-decoration:none; color:%1;\">Go</a> statikusan típusos, fordított programozási nyelvvel készült."
   },
-  "dms/cursor config exists but is not included. Cursor settings won't apply.": {
-    "dms/cursor config exists but is not included. Cursor settings won't apply.": "A dms/cursor konfiguráció létezik, de nincs befoglalva. A kurzorbeállítások nem lesznek érvényesek."
+  "hype/cursor config exists but is not included. Cursor settings won't apply.": {
+    "hype/cursor config exists but is not included. Cursor settings won't apply.": "A hype/cursor konfiguráció létezik, de nincs befoglalva. A kurzorbeállítások nem lesznek érvényesek."
   },
-  "dms/outputs config exists but is not included in your compositor config. Display changes won't persist.": {
-    "dms/outputs config exists but is not included in your compositor config. Display changes won't persist.": "A dms/outputs konfiguráció létezik, de nincs benne a kompozitor konfigurációjában. A kijelző változások nem maradnak meg."
+  "hype/outputs config exists but is not included in your compositor config. Display changes won't persist.": {
+    "hype/outputs config exists but is not included in your compositor config. Display changes won't persist.": "A hype/outputs konfiguráció létezik, de nincs benne a kompozitor konfigurációjában. A kijelző változások nem maradnak meg."
   },
   "e.g., firefox, kitty --title foo": {
     "e.g., firefox, kitty --title foo": "pl.: firefox, kitty --title foo"
@@ -7553,8 +7553,8 @@
   "niri shortcuts config": {
     "niri shortcuts config": "niri gyorsbillentyűk beállítása"
   },
-  "niri/dms Discord": {
-    "niri/dms Discord": "niri/dms Discord"
+  "niri/hype Discord": {
+    "niri/hype Discord": "niri/hype Discord"
   },
   "now": {
     "now": "most"
@@ -7614,7 +7614,7 @@
     "up": "fel"
   },
   "update HypeShell for NM integration.": {
-    "update HypeShell for NM integration.": "frissítsd a dms-t az NM integrációhoz."
+    "update HypeShell for NM integration.": "frissítsd a hype-t az NM integrációhoz."
   },
   "v%1 by %2": {
     "v%1 by %2": "v%1 ettől: %2"

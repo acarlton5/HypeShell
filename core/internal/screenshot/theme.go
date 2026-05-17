@@ -1,4 +1,4 @@
-package screenshot
+﻿package screenshot
 
 import (
 	"encoding/json"
@@ -79,7 +79,7 @@ func getColorsFilePath() string {
 		log.Error("Failed to get user cache dir", "err", err)
 		return ""
 	}
-	return filepath.Join(cacheDir, "DankMaterialShell", "dms-colors.json")
+	return filepath.Join(cacheDir, "HypeMaterialShell", "hype-colors.json")
 }
 
 func isLightMode() bool {

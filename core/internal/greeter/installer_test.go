@@ -1,4 +1,4 @@
-package greeter
+﻿package greeter
 
 import (
 	"os"
@@ -36,7 +36,7 @@ func TestResolveGreeterThemeSyncState(t *testing.T) {
   "iconTheme": "Papirus"
 }`,
 			sessionJSON:             `{"isLightMode":true}`,
-			wantSourcePath:          filepath.Join(".cache", "HypeShell", "greeter-colors", "dms-colors.json"),
+			wantSourcePath:          filepath.Join(".cache", "HypeShell", "greeter-colors", "hype-colors.json"),
 			wantResolvedWallpaper:   filepath.Join("Pictures", "blue.jpg"),
 			wantDynamicOverrideUsed: true,
 		},
@@ -47,7 +47,7 @@ func TestResolveGreeterThemeSyncState(t *testing.T) {
   "greeterWallpaperPath": ""
 }`,
 			sessionJSON:             `{"isLightMode":false}`,
-			wantSourcePath:          filepath.Join(".cache", "HypeShell", "dms-colors.json"),
+			wantSourcePath:          filepath.Join(".cache", "HypeShell", "hype-colors.json"),
 			wantResolvedWallpaper:   "",
 			wantDynamicOverrideUsed: false,
 		},
@@ -58,7 +58,7 @@ func TestResolveGreeterThemeSyncState(t *testing.T) {
   "greeterWallpaperPath": "/tmp/blue.jpg"
 }`,
 			sessionJSON:             `{"isLightMode":false}`,
-			wantSourcePath:          filepath.Join(".cache", "HypeShell", "dms-colors.json"),
+			wantSourcePath:          filepath.Join(".cache", "HypeShell", "hype-colors.json"),
 			wantResolvedWallpaper:   "/tmp/blue.jpg",
 			wantDynamicOverrideUsed: false,
 		},

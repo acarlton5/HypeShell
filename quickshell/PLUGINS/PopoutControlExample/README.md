@@ -1,4 +1,4 @@
-# Popout Control Example Plugin
+﻿# Popout Control Example Plugin
 
 This example plugin demonstrates:
 - Using `PopoutService` to trigger positioned popouts and modals
@@ -42,11 +42,11 @@ popoutService.closeProcessList()
 popoutService.toggleProcessList()
 ```
 
-#### DankDash
+#### HypeDash
 ```qml
-popoutService.openDankDash(tabIndex)    // tabIndex: 0=Calendar, 1=Media, 2=Weather
-popoutService.closeDankDash()
-popoutService.toggleDankDash(tabIndex)
+popoutService.openHypeDash(tabIndex)    // tabIndex: 0=Calendar, 1=Media, 2=Weather
+popoutService.closeHypeDash()
+popoutService.toggleHypeDash(tabIndex)
 ```
 
 #### Battery Popout
@@ -86,9 +86,9 @@ popoutService.closeClipboardHistory()
 
 #### Launcher Modal
 ```qml
-popoutService.openDankLauncherV2()
-popoutService.closeDankLauncherV2()
-popoutService.toggleDankLauncherV2()
+popoutService.openHypeLauncherV2()
+popoutService.closeHypeLauncherV2()
+popoutService.toggleHypeLauncherV2()
 ```
 
 #### Power Menu Modal
@@ -194,11 +194,11 @@ Error: Cannot assign to non-existent property "popoutService"
 
 ## Installation
 
-1. Copy the plugin directory to `~/.config/DankMaterialShell/plugins/`
+1. Copy the plugin directory to `~/.config/HypeMaterialShell/plugins/`
 2. Open Settings → Plugins
 3. Click "Scan for Plugins"
 4. Enable "Popout Control Example"
-5. Add `popoutControlExample` to your DankBar widget list
+5. Add `popoutControlExample` to your HypeBar widget list
 
 ## Notes
 

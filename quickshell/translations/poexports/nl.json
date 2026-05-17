@@ -1,4 +1,4 @@
-{
+﻿{
   "%1 Animation Speed": {
     "%1 Animation Speed": "%1 animatiesnelheid"
   },
@@ -1152,7 +1152,7 @@
     "Choose the border accent color": "Kies de accentkleur voor de rand"
   },
   "Choose the logo displayed on the launcher button in Hype Bar": {
-    "Choose the logo displayed on the launcher button in Hype Bar": "Kies het logo voor de startknop in DankBar"
+    "Choose the logo displayed on the launcher button in Hype Bar": "Kies het logo voor de startknop in HypeBar"
   },
   "Choose where notification popups appear on screen": {
     "Choose where notification popups appear on screen": "Kies waar meldingen op het scherm verschijnen"
@@ -1757,8 +1757,8 @@
   "HypeShell Shortcuts": {
     "HypeShell Shortcuts": "HypeShell-sneltoetsen"
   },
-  "HypeShell Greeter needs: greetd, dms-greeter. Fingerprint: fprintd, pam_fprintd. Security keys: pam_u2f. Add your user to the greeter group. Authentication changes apply automatically and may open a terminal when sudo authentication is required.": {
-    "HypeShell Greeter needs: greetd, dms-greeter. Fingerprint: fprintd, pam_fprintd. Security keys: pam_u2f. Add your user to the greeter group. Authentication changes apply automatically and may open a terminal when sudo authentication is required.": "HypeShell-aanmeldscherm heeft nodig: greetd, dms-greeter. Vingerafdruk: fprintd, pam_fprintd. Beveiligingssleutels: pam_u2f. Voeg uw gebruiker toe aan de greeter-groep. Verificatiewijzigingen worden automatisch toegepast en kunnen een terminal openen wanneer sudo-verificatie vereist is."
+  "HypeShell Greeter needs: greetd, hype-greeter. Fingerprint: fprintd, pam_fprintd. Security keys: pam_u2f. Add your user to the greeter group. Authentication changes apply automatically and may open a terminal when sudo authentication is required.": {
+    "HypeShell Greeter needs: greetd, hype-greeter. Fingerprint: fprintd, pam_fprintd. Security keys: pam_u2f. Add your user to the greeter group. Authentication changes apply automatically and may open a terminal when sudo authentication is required.": "HypeShell-aanmeldscherm heeft nodig: greetd, hype-greeter. Vingerafdruk: fprintd, pam_fprintd. Beveiligingssleutels: pam_u2f. Voeg uw gebruiker toe aan de greeter-groep. Verificatiewijzigingen worden automatisch toegepast en kunnen een terminal openen wanneer sudo-verificatie vereist is."
   },
   "HypeShell out of date": {
     "HypeShell out of date": "HypeShell verouderd"
@@ -1769,8 +1769,8 @@
   "HypeShell shell actions (launcher, clipboard, etc.)": {
     "HypeShell shell actions (launcher, clipboard, etc.)": "HypeShell-shellacties (starter, klembord, enz.)"
   },
-  "DMS_SOCKET not available": {
-    "DMS_SOCKET not available": "DMS_SOCKET niet beschikbaar"
+  "HYPE_SOCKET not available": {
+    "HYPE_SOCKET not available": "HYPE_SOCKET niet beschikbaar"
   },
   "DWL service not available": {
     "DWL service not available": "DWL-service niet beschikbaar"
@@ -1794,7 +1794,7 @@
     "HypeShell is ready to use": "HypeShell is klaar voor gebruik"
   },
   "HypeShell & System Icons (requires restart)": {
-    "HypeShell & System Icons (requires restart)": "DankShell- & systeempictogrammen (vereist herstart)"
+    "HypeShell & System Icons (requires restart)": "HypeShell- & systeempictogrammen (vereist herstart)"
   },
   "Dark Mode": {
     "Dark Mode": "Donkere modus"
@@ -2252,8 +2252,8 @@
   "Enable a custom override below to set per-bar shadow intensity, opacity, and color.": {
     "Enable a custom override below to set per-bar shadow intensity, opacity, and color.": "Schakel hieronder een aangepaste overschrijving in om de schaduwintensiteit, dekking en kleur per balk in te stellen."
   },
-  "Enable compositor-targetable blur layer (namespace: dms:blurwallpaper). Requires manual niri configuration.": {
-    "Enable compositor-targetable blur layer (namespace: dms:blurwallpaper). Requires manual niri configuration.": "Schakel compositor-targetable vervagingslaag in (namespace: dms:blurwallpaper). Vereist handmatige niri-configuratie."
+  "Enable compositor-targetable blur layer (namespace: hype:blurwallpaper). Requires manual niri configuration.": {
+    "Enable compositor-targetable blur layer (namespace: hype:blurwallpaper). Requires manual niri configuration.": "Schakel compositor-targetable vervagingslaag in (namespace: hype:blurwallpaper). Vereist handmatige niri-configuratie."
   },
   "Enable fingerprint at login": {
     "Enable fingerprint at login": "Vingerafdruk inschakelen bij aanmelden"
@@ -2600,8 +2600,8 @@
   "Failed to ring device": {
     "Failed to ring device": "Klingelen van apparaat mislukt"
   },
-  "Failed to run 'dms greeter status'. Ensure HypeShell is installed and dms is in PATH.": {
-    "Failed to run 'dms greeter status'. Ensure HypeShell is installed and dms is in PATH.": "Uitvoeren van 'dms greeter status' mislukt. Zorg ervoor dat HypeShell is geïnstalleerd en dms in het PATH staat."
+  "Failed to run 'hype greeter status'. Ensure HypeShell is installed and hype is in PATH.": {
+    "Failed to run 'hype greeter status'. Ensure HypeShell is installed and hype is in PATH.": "Uitvoeren van 'hype greeter status' mislukt. Zorg ervoor dat HypeShell is geïnstalleerd en hype in het PATH staat."
   },
   "Failed to save audio config": {
     "Failed to save audio config": "Audio-configuratie opslaan mislukt"
@@ -5610,10 +5610,10 @@
     "Scale": "Schaal"
   },
   "Scale Hype Bar font sizes independently": {
-    "Scale Hype Bar font sizes independently": "DankBar-lettergroottes onafhankelijk schalen"
+    "Scale Hype Bar font sizes independently": "HypeBar-lettergroottes onafhankelijk schalen"
   },
   "Scale Hype Bar icon sizes independently": {
-    "Scale Hype Bar icon sizes independently": "DankBar-pictogramgroottes onafhankelijk schalen"
+    "Scale Hype Bar icon sizes independently": "HypeBar-pictogramgroottes onafhankelijk schalen"
   },
   "Scale all font sizes throughout the shell": {
     "Scale all font sizes throughout the shell": "Alle lettergroottes in de shell schalen"
@@ -6539,8 +6539,8 @@
   "Terminal custom additional parameters": {
     "Terminal custom additional parameters": "Aangepaste extra parameters terminal"
   },
-  "Terminal fallback failed. Install a supported terminal emulator or run 'dms auth sync' manually.": {
-    "Terminal fallback failed. Install a supported terminal emulator or run 'dms auth sync' manually.": "Terminal-terugval mislukt. Installeer een ondersteunde terminalemulator of voer handmatig 'dms auth sync' uit."
+  "Terminal fallback failed. Install a supported terminal emulator or run 'hype auth sync' manually.": {
+    "Terminal fallback failed. Install a supported terminal emulator or run 'hype auth sync' manually.": "Terminal-terugval mislukt. Installeer een ondersteunde terminalemulator of voer handmatig 'hype auth sync' uit."
   },
   "Terminal fallback failed. Install one of the supported terminal emulators or run 'HypeShell Greeter sync' manually.": {
     "Terminal fallback failed. Install one of the supported terminal emulators or run 'HypeShell Greeter sync' manually.": "Terminal fallback mislukt. Installeer een van de ondersteunde terminal-emulators of voer handmatig 'HypeShell Greeter sync' uit."
@@ -6587,8 +6587,8 @@
   "The 'dgop' tool is required for system monitoring.\nPlease install dgop to use this feature.": {
     "The 'dgop' tool is required for system monitoring.\nPlease install dgop to use this feature.": "De tool 'dgop' is vereist voor systeembewaking.\nInstalleer dgop om deze functie te gebruiken."
   },
-  "The DMS_SOCKET environment variable is not set or the socket is unavailable. Automated plugin management requires the DMS_SOCKET.": {
-    "The DMS_SOCKET environment variable is not set or the socket is unavailable. Automated plugin management requires the DMS_SOCKET.": "De DMS_SOCKET omgevingsvariabele is niet ingesteld of de socket is niet beschikbaar. Geautomatiseerd plug-inbeheer vereist de DMS_SOCKET."
+  "The HYPE_SOCKET environment variable is not set or the socket is unavailable. Automated plugin management requires the HYPE_SOCKET.": {
+    "The HYPE_SOCKET environment variable is not set or the socket is unavailable. Automated plugin management requires the HYPE_SOCKET.": "De HYPE_SOCKET omgevingsvariabele is niet ingesteld of de socket is niet beschikbaar. Geautomatiseerd plug-inbeheer vereist de HYPE_SOCKET."
   },
   "The below settings will modify your GTK and Qt settings. If you wish to preserve your current configurations, please back them up (qt5ct.conf|qt6ct.conf and ~/.config/gtk-3.0|gtk-4.0).": {
     "The below settings will modify your GTK and Qt settings. If you wish to preserve your current configurations, please back them up (qt5ct.conf|qt6ct.conf and ~/.config/gtk-3.0|gtk-4.0).": "De onderstaande instellingen wijzigen uw GTK- en Qt-instellingen. Als u uw huidige configuraties wilt behouden, maak er dan een back-up van (qt5ct.conf|qt6ct.conf en ~/.config/gtk-3.0|gtk-4.0)."
@@ -7488,13 +7488,13 @@
     "direct": "direct"
   },
   "HypeShell is a highly customizable, modern desktop shell with a <a href=\"https://m3.material.io/\" style=\"text-decoration:none; color:%1;\">material 3 inspired</a> design.<br /><br/>It is built with <a href=\"https://quickshell.org\" style=\"text-decoration:none; color:%1;\">Quickshell</a>, a QT6 framework for building desktop shells, and <a href=\"https://go.dev\" style=\"text-decoration:none; color:%1;\">Go</a>, a statically typed, compiled programming language.": {
-    "HypeShell is a highly customizable, modern desktop shell with a <a href=\"https://m3.material.io/\" style=\"text-decoration:none; color:%1;\">material 3 inspired</a> design.<br /><br/>It is built with <a href=\"https://quickshell.org\" style=\"text-decoration:none; color:%1;\">Quickshell</a>, a QT6 framework for building desktop shells, and <a href=\"https://go.dev\" style=\"text-decoration:none; color:%1;\">Go</a>, a statically typed, compiled programming language.": "dms is een zeer aanpasbare, moderne desktop-shell met een op <a href=\"https://m3.material.io/\" style=\"text-decoration:none; color:%1;\">Material 3 geïnspireerd</a> ontwerp.<br /><br/>Het is gebouwd met <a href=\"https://quickshell.org\" style=\"text-decoration:none; color:%1;\">Quickshell</a>, een QT6-framework voor het bouwen van desktop-shells, en <a href=\"https://go.dev\" style=\"text-decoration:none; color:%1;\">Go</a>, een statisch getypeerde, gecompileerde programmeertaal."
+    "HypeShell is a highly customizable, modern desktop shell with a <a href=\"https://m3.material.io/\" style=\"text-decoration:none; color:%1;\">material 3 inspired</a> design.<br /><br/>It is built with <a href=\"https://quickshell.org\" style=\"text-decoration:none; color:%1;\">Quickshell</a>, a QT6 framework for building desktop shells, and <a href=\"https://go.dev\" style=\"text-decoration:none; color:%1;\">Go</a>, a statically typed, compiled programming language.": "hype is een zeer aanpasbare, moderne desktop-shell met een op <a href=\"https://m3.material.io/\" style=\"text-decoration:none; color:%1;\">Material 3 geïnspireerd</a> ontwerp.<br /><br/>Het is gebouwd met <a href=\"https://quickshell.org\" style=\"text-decoration:none; color:%1;\">Quickshell</a>, een QT6-framework voor het bouwen van desktop-shells, en <a href=\"https://go.dev\" style=\"text-decoration:none; color:%1;\">Go</a>, een statisch getypeerde, gecompileerde programmeertaal."
   },
-  "dms/cursor config exists but is not included. Cursor settings won't apply.": {
-    "dms/cursor config exists but is not included. Cursor settings won't apply.": "dms/cursor-configuratie bestaat maar is niet ingesloten. Cursorinstellingen worden niet toegepast."
+  "hype/cursor config exists but is not included. Cursor settings won't apply.": {
+    "hype/cursor config exists but is not included. Cursor settings won't apply.": "hype/cursor-configuratie bestaat maar is niet ingesloten. Cursorinstellingen worden niet toegepast."
   },
-  "dms/outputs config exists but is not included in your compositor config. Display changes won't persist.": {
-    "dms/outputs config exists but is not included in your compositor config. Display changes won't persist.": "dms/outputs-configuratie bestaat maar is niet opgenomen in uw compositor-configuratie. Beeldschermwijzigingen blijven niet behouden."
+  "hype/outputs config exists but is not included in your compositor config. Display changes won't persist.": {
+    "hype/outputs config exists but is not included in your compositor config. Display changes won't persist.": "hype/outputs-configuratie bestaat maar is niet opgenomen in uw compositor-configuratie. Beeldschermwijzigingen blijven niet behouden."
   },
   "e.g., firefox, kitty --title foo": {
     "e.g., firefox, kitty --title foo": "bijv. firefox, kitty --title foo"
@@ -7553,8 +7553,8 @@
   "niri shortcuts config": {
     "niri shortcuts config": "niri-sneltoetsenconfiguratie"
   },
-  "niri/dms Discord": {
-    "niri/dms Discord": "niri/dms Discord"
+  "niri/hype Discord": {
+    "niri/hype Discord": "niri/hype Discord"
   },
   "now": {
     "now": "nu"
@@ -7614,7 +7614,7 @@
     "up": "actief"
   },
   "update HypeShell for NM integration.": {
-    "update HypeShell for NM integration.": "update dms voor NM-integratie."
+    "update HypeShell for NM integration.": "update hype voor NM-integratie."
   },
   "v%1 by %2": {
     "v%1 by %2": "v%1 door %2"

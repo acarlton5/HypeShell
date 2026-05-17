@@ -1,4 +1,4 @@
-package providers
+﻿package providers
 
 import (
 	"os"
@@ -151,13 +151,13 @@ func TestHyprlandWritableProvider(t *testing.T) {
 		t.Errorf("Name() = %q, want hyprland", provider.Name())
 	}
 
-	expectedPath := filepath.Join(tmpDir, "dms", "windowrules.conf")
+	expectedPath := filepath.Join(tmpDir, "hype", "windowrules.conf")
 	if provider.GetOverridePath() != expectedPath {
 		t.Errorf("GetOverridePath() = %q, want %q", provider.GetOverridePath(), expectedPath)
 	}
 }
 
-func TestHyprlandSetAndLoadDMSRules(t *testing.T) {
+func TestHyprlandSetAndLoadHYPERules(t *testing.T) {
 	tmpDir := t.TempDir()
 	provider := NewHyprlandWritableProvider(tmpDir)
 
@@ -168,9 +168,9 @@ func TestHyprlandSetAndLoadDMSRules(t *testing.T) {
 		t.Fatalf("SetRule failed: %v", err)
 	}
 
-	rules, err := provider.LoadDMSRules()
+	rules, err := provider.LoadHYPERules()
 	if err != nil {
-		t.Fatalf("LoadDMSRules failed: %v", err)
+		t.Fatalf("LoadHYPERules failed: %v", err)
 	}
 
 	if len(rules) != 1 {
@@ -201,7 +201,7 @@ func TestHyprlandRemoveRule(t *testing.T) {
 		t.Fatalf("RemoveRule failed: %v", err)
 	}
 
-	rules, _ := provider.LoadDMSRules()
+	rules, _ := provider.LoadHYPERules()
 	if len(rules) != 1 {
 		t.Fatalf("expected 1 rule after removal, got %d", len(rules))
 	}
@@ -229,7 +229,7 @@ func TestHyprlandReorderRules(t *testing.T) {
 		t.Fatalf("ReorderRules failed: %v", err)
 	}
 
-	rules, _ := provider.LoadDMSRules()
+	rules, _ := provider.LoadHYPERules()
 	if len(rules) != 3 {
 		t.Fatalf("expected 3 rules, got %d", len(rules))
 	}

@@ -1,13 +1,13 @@
-#!/bin/bash
+﻿#!/bin/bash
 set -euo pipefail
 
 # Build SRPM locally with correct tarball and upload to Copr
 # Usage: ./copr-upload.sh [PACKAGE] [VERSION] [RELEASE]
 # Examples:
-#   ./copr-upload.sh dms 1.0.3 1
-#   ./copr-upload.sh dms-greeter 1.0.3 1
+#   ./copr-upload.sh hype 1.0.3 1
+#   ./copr-upload.sh hype-greeter 1.0.3 1
 
-PACKAGE="${1:-dms}"
+PACKAGE="${1:-hype}"
 VERSION="${2:-}"
 RELEASE="${3:-1}"
 
@@ -15,20 +15,20 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
 
 # Determine Copr project based on package
-if [ "$PACKAGE" = "dms" ]; then
-    COPR_PROJECT="avengemedia/dms"
-elif [ "$PACKAGE" = "dms-greeter" ]; then
-    COPR_PROJECT="avengemedia/danklinux"
+if [ "$PACKAGE" = "hype" ]; then
+    COPR_PROJECT="avengemedia/hype"
+elif [ "$PACKAGE" = "hype-greeter" ]; then
+    COPR_PROJECT="avengemedia/hypelinux"
 else
     echo "❌ Unknown package: $PACKAGE"
-    echo "Supported packages: dms, dms-greeter"
+    echo "Supported packages: hype, hype-greeter"
     exit 1
 fi
 
 # Get version from latest release if not provided
 if [ -z "$VERSION" ]; then
     echo "📦 Determining latest version..."
-    VERSION=$(curl -s https://api.github.com/repos/AvengeMedia/DankMaterialShell/releases/latest | jq -r '.tag_name' | sed 's/^v//')
+    VERSION=$(curl -s https://api.github.com/repos/AvengeMedia/HypeMaterialShell/releases/latest | jq -r '.tag_name' | sed 's/^v//')
     if [ -z "$VERSION" ] || [ "$VERSION" = "null" ]; then
         echo "❌ Failed to determine version. Please specify manually."
         exit 1
@@ -44,9 +44,9 @@ cd ~/rpmbuild/SOURCES
 
 # Download source tarball from GitHub releases
 echo "📦 Downloading source tarball for v${VERSION}..."
-if [ ! -f ~/rpmbuild/SOURCES/dms-qml.tar.gz ]; then
-    wget -O ~/rpmbuild/SOURCES/dms-qml.tar.gz "https://github.com/AvengeMedia/DankMaterialShell/releases/download/v${VERSION}/dms-qml.tar.gz" || {
-        echo "❌ Failed to download dms-qml.tar.gz for v${VERSION}"
+if [ ! -f ~/rpmbuild/SOURCES/hype-qml.tar.gz ]; then
+    wget -O ~/rpmbuild/SOURCES/hype-qml.tar.gz "https://github.com/AvengeMedia/HypeMaterialShell/releases/download/v${VERSION}/hype-qml.tar.gz" || {
+        echo "❌ Failed to download hype-qml.tar.gz for v${VERSION}"
         exit 1
     }
     echo "✅ Source tarball downloaded"

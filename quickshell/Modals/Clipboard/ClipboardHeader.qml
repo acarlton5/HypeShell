@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import qs.Common
 import qs.Widgets
 import qs.Modals.Clipboard
@@ -23,7 +23,7 @@ Item {
         anchors.verticalCenter: parent.verticalCenter
         spacing: Theme.spacingM
 
-        DankIcon {
+        HypeIcon {
             name: "content_paste"
             size: Theme.iconSize
             color: Theme.primary
@@ -44,7 +44,7 @@ Item {
         anchors.verticalCenter: parent.verticalCenter
         spacing: Theme.spacingS
 
-        DankActionButton {
+        HypeActionButton {
             iconName: "push_pin"
             iconSize: Theme.iconSize - 4
             iconColor: header.activeTab === "saved" ? Theme.primary : Theme.surfaceText
@@ -53,7 +53,7 @@ Item {
             onClicked: tabChanged(header.activeTab === "saved" ? "recents" : "saved")
         }
 
-        DankActionButton {
+        HypeActionButton {
             iconName: "info"
             iconSize: Theme.iconSize - 4
             iconColor: showKeyboardHints ? Theme.primary : Theme.surfaceText
@@ -61,7 +61,7 @@ Item {
             onClicked: keyboardHintsToggled()
         }
 
-        DankActionButton {
+        HypeActionButton {
             iconName: "delete_sweep"
             iconSize: Theme.iconSize
             iconColor: Theme.surfaceText
@@ -69,7 +69,7 @@ Item {
             onClicked: clearAllClicked()
         }
 
-        DankActionButton {
+        HypeActionButton {
             iconName: "close"
             iconSize: Theme.iconSize - 4
             iconColor: Theme.surfaceText

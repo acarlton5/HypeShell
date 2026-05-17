@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import qs.Common
 import qs.Modules.Plugins
 import qs.Services
@@ -8,7 +8,7 @@ BasePill {
     id: root
 
     Ref {
-        service: DMSNetworkService
+        service: HYPENetworkService
     }
 
     property bool isHovered: clickArea.containsMouse
@@ -37,13 +37,13 @@ BasePill {
             implicitWidth: icon.width
             implicitHeight: root.widgetThickness - root.horizontalPadding * 2
 
-            DankIcon {
+            HypeIcon {
                 id: icon
 
-                name: DMSNetworkService.connected ? "vpn_lock" : "vpn_key_off"
+                name: HYPENetworkService.connected ? "vpn_lock" : "vpn_key_off"
                 size: Theme.barIconSize(root.barThickness, -4, root.barConfig?.maximizeWidgetIcons, root.barConfig?.iconScale)
-                color: DMSNetworkService.connected ? Theme.primary : Theme.widgetIconColor
-                opacity: DMSNetworkService.isBusy ? 0.5 : 1.0
+                color: HYPENetworkService.connected ? Theme.primary : Theme.widgetIconColor
+                opacity: HYPENetworkService.isBusy ? 0.5 : 1.0
                 anchors.centerIn: parent
 
                 Behavior on opacity {
@@ -59,7 +59,7 @@ BasePill {
     Loader {
         id: tooltipLoader
         active: false
-        sourceComponent: DankTooltip {}
+        sourceComponent: HypeTooltip {}
     }
 
     MouseArea {
@@ -67,14 +67,14 @@ BasePill {
 
         anchors.fill: parent
         hoverEnabled: true
-        cursorShape: DMSNetworkService.isBusy ? Qt.BusyCursor : Qt.PointingHandCursor
+        cursorShape: HYPENetworkService.isBusy ? Qt.BusyCursor : Qt.PointingHandCursor
         acceptedButtons: Qt.LeftButton | Qt.RightButton
-        enabled: !DMSNetworkService.isBusy
+        enabled: !HYPENetworkService.isBusy
         onPressed: event => {
             root.triggerRipple(this, event.x, event.y);
             switch (event.button) {
             case Qt.RightButton:
-                DMSNetworkService.toggleVpn();
+                HYPENetworkService.toggleVpn();
                 return;
             case Qt.LeftButton:
                 root.toggleVpnPopup();
@@ -88,10 +88,10 @@ BasePill {
             if (!tooltipLoader.item)
                 return;
             let tooltipText = "";
-            if (!DMSNetworkService.connected) {
+            if (!HYPENetworkService.connected) {
                 tooltipText = "VPN Disconnected";
             } else {
-                const names = DMSNetworkService.activeNames || [];
+                const names = HYPENetworkService.activeNames || [];
                 if (names.length <= 1) {
                     const name = names[0] || "";
                     const maxLength = 25;

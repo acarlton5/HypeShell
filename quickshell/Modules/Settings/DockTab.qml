@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import qs.Common
 import qs.Modals.FileBrowser
 import qs.Services
@@ -21,7 +21,7 @@ Item {
         onFileSelected: path => SettingsData.set("dockLauncherLogoCustomPath", path.replace("file://", ""))
     }
 
-    DankFlickable {
+    HypeFlickable {
         anchors.fill: parent
         clip: true
         contentHeight: mainColumn.height + Theme.spacingXL
@@ -110,7 +110,7 @@ Item {
                     width: parent.width
                     height: dockPositionButtonGroup.height
 
-                    DankButtonGroup {
+                    HypeButtonGroup {
                         id: dockPositionButtonGroup
                         anchors.horizontalCenter: parent.horizontalCenter
                         model: [I18n.tr("Top"), I18n.tr("Bottom"), I18n.tr("Left"), I18n.tr("Right")]
@@ -270,14 +270,14 @@ Item {
                             height: logoModeGroup.implicitHeight
                             clip: true
 
-                            DankButtonGroup {
+                            HypeButtonGroup {
                                 id: logoModeGroup
                                 anchors.horizontalCenter: parent.horizontalCenter
                                 buttonPadding: parent.width < 480 ? Theme.spacingS : Theme.spacingL
                                 minButtonWidth: parent.width < 480 ? 44 : 64
                                 textSize: parent.width < 480 ? Theme.fontSizeSmall : Theme.fontSizeMedium
                                 model: {
-                                    const modes = [I18n.tr("Apps Icon"), I18n.tr("OS Logo"), I18n.tr("Dank")];
+                                    const modes = [I18n.tr("Apps Icon"), I18n.tr("OS Logo"), I18n.tr("Hype")];
                                     if (CompositorService.isNiri) {
                                         modes.push("niri");
                                     } else if (CompositorService.isHyprland) {
@@ -301,7 +301,7 @@ Item {
                                         return 0;
                                     if (SettingsData.dockLauncherLogoMode === "os")
                                         return 1;
-                                    if (SettingsData.dockLauncherLogoMode === "dank")
+                                    if (SettingsData.dockLauncherLogoMode === "hype")
                                         return 2;
                                     if (SettingsData.dockLauncherLogoMode === "compositor")
                                         return 3;
@@ -320,7 +320,7 @@ Item {
                                         SettingsData.set("dockLauncherLogoMode", "os");
                                         break;
                                     case 2:
-                                        SettingsData.set("dockLauncherLogoMode", "dank");
+                                        SettingsData.set("dockLauncherLogoMode", "hype");
                                         break;
                                     case 3:
                                         SettingsData.set("dockLauncherLogoMode", "compositor");
@@ -359,7 +359,7 @@ Item {
                             }
                         }
 
-                        DankActionButton {
+                        HypeActionButton {
                             id: selectButton
                             iconName: "folder_open"
                             width: 36
@@ -395,7 +395,7 @@ Item {
                                     anchors.horizontalCenter: parent.horizontalCenter
                                     spacing: Theme.spacingM
 
-                                    DankButtonGroup {
+                                    HypeButtonGroup {
                                         id: colorModeGroup
                                         buttonPadding: parent.parent.width < 480 ? Theme.spacingS : Theme.spacingL
                                         minButtonWidth: parent.parent.width < 480 ? 44 : 64
@@ -565,7 +565,7 @@ Item {
                             color: Theme.surfaceVariantText
                         }
 
-                        DankTextField {
+                        HypeTextField {
                             id: trashCustomCommandField
                             width: parent.width
                             placeholderText: "pcmanfm trash:///"

@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import Quickshell
 import Quickshell.Wayland
 import qs.Common
@@ -13,7 +13,7 @@ PanelWindow {
     property var anchorItem: null
     property real dockVisibleHeight: 40
     property int margin: 10
-    property string layerNamespace: "dms:dock-context-menu"
+    property string layerNamespace: "hype:dock-context-menu"
     property real menuMaxWidth: 400
     property real menuMinWidth: 180
 

@@ -1,4 +1,4 @@
-pragma ComponentBehavior: Bound
+﻿pragma ComponentBehavior: Bound
 
 import QtQuick
 import Quickshell
@@ -69,7 +69,7 @@ Scope {
         property bool anchorLeft: false
         property bool anchorRight: false
 
-        WlrLayershell.namespace: "dms:frame-exclusion"
+        WlrLayershell.namespace: "hype:frame-exclusion"
         WlrLayershell.layer: WlrLayer.Top
         exclusiveZone: SettingsData.frameThickness
         color: "transparent"

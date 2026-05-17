@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import QtQuick.Effects
 import qs.Common
 import qs.Widgets
@@ -219,7 +219,7 @@ StyledRect {
                 }
             }
 
-            DankNFIcon {
+            HypeNFIcon {
                 anchors.centerIn: parent
                 name: delegateRoot.fileIsDir ? "folder" : getIconForFile(delegateRoot.fileName)
                 size: iconSizes[iconSizeIndex] * 0.45

@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import Quickshell.Widgets
 import qs.Common
 import qs.Services
@@ -11,9 +11,9 @@ DockContextMenuBase {
     property bool hidePin: false
     property var desktopEntry: null
     property var dockApps: null
-    readonly property bool isDmsWindow: appData?.appId === "org.quickshell" || appData?.appId === "com.danklinux.dms"
+    readonly property bool isDmsWindow: appData?.appId === "org.quickshell" || appData?.appId === "com.hypelinux.hype"
 
-    layerNamespace: "dms:dock-context-menu"
+    layerNamespace: "hype:dock-context-menu"
 
     function showForButton(button, data, dockHeight, hidePinOption, entry, dockScreen, parentDockApps) {
         appData = data;
@@ -60,7 +60,7 @@ DockContextMenuBase {
                 radius: 10
                 color: closeMouseArea.containsMouse ? Qt.rgba(Theme.error.r, Theme.error.g, Theme.error.b, 0.2) : "transparent"
 
-                DankIcon {
+                HypeIcon {
                     anchors.centerIn: parent
                     name: "close"
                     size: 12
@@ -81,7 +81,7 @@ DockContextMenuBase {
                 }
             }
 
-            DankRipple {
+            HypeRipple {
                 id: windowRipple
                 rippleColor: Theme.surfaceText
                 cornerRadius: Theme.cornerRadius
@@ -160,7 +160,7 @@ DockContextMenuBase {
                 }
             }
 
-            DankRipple {
+            HypeRipple {
                 id: actionRipple
                 rippleColor: Theme.surfaceText
                 cornerRadius: Theme.cornerRadius
@@ -209,7 +209,7 @@ DockContextMenuBase {
             anchors.verticalCenter: parent.verticalCenter
             spacing: Theme.spacingXS
 
-            DankIcon {
+            HypeIcon {
                 anchors.verticalCenter: parent.verticalCenter
                 name: root.appData && root.appData.isPinned ? "keep_off" : "push_pin"
                 size: 14
@@ -228,7 +228,7 @@ DockContextMenuBase {
             }
         }
 
-        DankRipple {
+        HypeRipple {
             id: pinRipple
             rippleColor: Theme.surfaceText
             cornerRadius: Theme.cornerRadius
@@ -282,7 +282,7 @@ DockContextMenuBase {
             anchors.verticalCenter: parent.verticalCenter
             spacing: Theme.spacingXS
 
-            DankIcon {
+            HypeIcon {
                 anchors.verticalCenter: parent.verticalCenter
                 name: "memory"
                 size: 14
@@ -301,7 +301,7 @@ DockContextMenuBase {
             }
         }
 
-        DankRipple {
+        HypeRipple {
             id: nvidiaRipple
             rippleColor: Theme.surfaceText
             cornerRadius: Theme.cornerRadius
@@ -337,7 +337,7 @@ DockContextMenuBase {
             anchors.verticalCenter: parent.verticalCenter
             spacing: Theme.spacingXS
 
-            DankIcon {
+            HypeIcon {
                 anchors.verticalCenter: parent.verticalCenter
                 name: "close"
                 size: 14
@@ -356,7 +356,7 @@ DockContextMenuBase {
             }
         }
 
-        DankRipple {
+        HypeRipple {
             id: closeRipple
             rippleColor: Theme.error
             cornerRadius: Theme.cornerRadius

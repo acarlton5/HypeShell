@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import QtQuick.Controls
 import Quickshell
 import Quickshell.Wayland
@@ -62,13 +62,13 @@ PanelWindow {
     }
 
     function triggerDashTab(tabIndex) {
-        dankDashPopoutLoader.active = true;
-        if (!dankDashPopoutLoader.item) {
+        hypeDashPopoutLoader.active = true;
+        if (!hypeDashPopoutLoader.item) {
             return false;
         }
 
         let section = "center";
-        if (clockButtonRef && clockButtonRef.visualContent && dankDashPopoutLoader.item.setTriggerPosition) {
+        if (clockButtonRef && clockButtonRef.visualContent && hypeDashPopoutLoader.item.setTriggerPosition) {
             // Calculate barPosition from axis.edge
             const barPosition = axis?.edge === "left" ? 2 : (axis?.edge === "right" ? 3 : (axis?.edge === "top" ? 0 : 1));
             section = clockButtonRef.section || "center";
@@ -95,12 +95,12 @@ PanelWindow {
             }
 
             const pos = SettingsData.getPopupTriggerPosition(triggerPos, barWindow.screen, barWindow.effectiveBarThickness, triggerWidth, barConfig?.spacing ?? 4, barPosition, barConfig);
-            dankDashPopoutLoader.item.setTriggerPosition(pos.x, pos.y, pos.width, section, barWindow.screen, barPosition, barWindow.effectiveBarThickness, barConfig?.spacing ?? 4, barConfig);
+            hypeDashPopoutLoader.item.setTriggerPosition(pos.x, pos.y, pos.width, section, barWindow.screen, barPosition, barWindow.effectiveBarThickness, barConfig?.spacing ?? 4, barConfig);
         } else {
-            dankDashPopoutLoader.item.triggerScreen = barWindow.screen;
+            hypeDashPopoutLoader.item.triggerScreen = barWindow.screen;
         }
 
-        PopoutManager.requestPopout(dankDashPopoutLoader.item, tabIndex, (barConfig?.id ?? "default") + "-" + section + "-" + tabIndex);
+        PopoutManager.requestPopout(hypeDashPopoutLoader.item, tabIndex, (barConfig?.id ?? "default") + "-" + section + "-" + tabIndex);
         return true;
     }
 
@@ -109,7 +109,7 @@ PanelWindow {
     }
 
     readonly property var dBarLayer: {
-        switch (Quickshell.env("DMS_DANKBAR_LAYER")) {
+        switch (Quickshell.env("HYPE_DANKBAR_LAYER")) {
         case "bottom":
             return WlrLayer.Bottom;
         case "overlay":
@@ -258,7 +258,7 @@ PanelWindow {
     }
 
     WlrLayershell.layer: dBarLayer
-    WlrLayershell.namespace: "dms:bar"
+    WlrLayershell.namespace: "hype:bar"
 
     signal colorPickerRequested
 

@@ -1,4 +1,4 @@
-package sysupdate
+﻿package sysupdate
 
 import (
 	"context"
@@ -61,7 +61,7 @@ func (b archHelperBackend) ID() string      { return b.id }
 func (b archHelperBackend) Repo() RepoKind  { return RepoSystem }
 func (b archHelperBackend) NeedsAuth() bool { return true }
 func (b archHelperBackend) RunsInTerminal() bool {
-	return os.Getenv("DMS_FORCE_PKEXEC") != "1"
+	return os.Getenv("HYPE_FORCE_PKEXEC") != "1"
 }
 func (b archHelperBackend) IsAvailable(_ context.Context) bool { return commandExists(b.id) }
 
@@ -98,7 +98,7 @@ func (b archHelperBackend) Upgrade(ctx context.Context, opts UpgradeOptions, onL
 	if !BackendHasTargets(b, opts.Targets, opts.IncludeAUR, opts.IncludeFlatpak) {
 		return nil
 	}
-	if os.Getenv("DMS_FORCE_PKEXEC") == "1" {
+	if os.Getenv("HYPE_FORCE_PKEXEC") == "1" {
 		argv := append([]string{"pkexec"}, archHelperUpgradeArgv(b.id, opts.IncludeAUR)...)
 		return Run(ctx, argv, RunOptions{OnLine: onLine, AttachStdio: opts.AttachStdio})
 	}
@@ -201,7 +201,7 @@ func pacmanPrivateDB() (string, error) {
 	if tmp == "" {
 		tmp = "/tmp"
 	}
-	dir := filepath.Join(tmp, fmt.Sprintf("dms-checkup-db-%d", os.Getuid()))
+	dir := filepath.Join(tmp, fmt.Sprintf("hype-checkup-db-%d", os.Getuid()))
 	if err := os.MkdirAll(dir, 0o755); err != nil {
 		return "", err
 	}

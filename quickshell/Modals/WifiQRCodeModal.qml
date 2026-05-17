@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import QtQuick.Layouts
 import QtQuick.Effects
 import Quickshell
@@ -9,10 +9,10 @@ import qs.Common
 import qs.Services
 import qs.Widgets
 
-DankModal {
+HypeModal {
     id: root
     visible: false
-    layerNamespace: "dms:wifi-qrcode"
+    layerNamespace: "hype:wifi-qrcode"
 
     property bool disablePopupTransparency: true
     property string wifiSSID: ""
@@ -48,7 +48,7 @@ DankModal {
     function fetchNetworkQRCode(ssid) {
         // TODO: Add loading UI?
 
-        DMSService.sendRequest("network.qrcode", {
+        HYPEService.sendRequest("network.qrcode", {
             ssid: ssid
         }, response => {
             if (response.error) {
@@ -62,7 +62,7 @@ DankModal {
     }
 
     function deleteQRCodeFile(path) {
-        DMSService.sendRequest("network.delete-qrcode", {
+        HYPEService.sendRequest("network.delete-qrcode", {
             path: path
         }, response => {
             if (response.error) {
@@ -129,7 +129,7 @@ DankModal {
                         Layout.alignment: Qt.AlignLeft
                     }
 
-                    DankActionButton {
+                    HypeActionButton {
                         iconName: "save"
                         iconSize: Theme.iconSize - 4
                         iconColor: Theme.surfaceText
@@ -142,7 +142,7 @@ DankModal {
                         Layout.alignment: Qt.AlignRight
                     }
 
-                    DankActionButton {
+                    HypeActionButton {
                         iconName: "close"
                         iconSize: Theme.iconSize - 4
                         iconColor: Theme.surfaceText

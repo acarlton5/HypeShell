@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import Quickshell
 import Quickshell.Wayland
 import qs.Common
@@ -8,7 +8,7 @@ import qs.Widgets
 PanelWindow {
     id: root
 
-    WlrLayershell.namespace: "dms:toast"
+    WlrLayershell.namespace: "hype:toast"
 
     property var modelData
     property bool shouldBeVisible: false
@@ -112,7 +112,7 @@ PanelWindow {
                 width: parent.width
                 height: Math.max(Theme.iconSize + 8, messageText.implicitHeight)
 
-                DankIcon {
+                HypeIcon {
                     id: statusIcon
                     name: {
                         switch (ToastService.currentLevel) {
@@ -163,7 +163,7 @@ PanelWindow {
                     wrapMode: Text.NoWrap
                 }
 
-                DankActionButton {
+                HypeActionButton {
                     id: expandButton
                     iconName: toast.expanded ? "expand_less" : "expand_more"
                     iconSize: Theme.iconSize
@@ -192,7 +192,7 @@ PanelWindow {
                     }
                 }
 
-                DankActionButton {
+                HypeActionButton {
                     id: closeButton
                     iconName: "close"
                     iconSize: Theme.iconSize
@@ -257,7 +257,7 @@ PanelWindow {
                             wrapMode: Text.Wrap
                         }
 
-                        DankActionButton {
+                        HypeActionButton {
                             id: copyDetailsButton
                             iconName: "content_copy"
                             iconSize: Theme.iconSizeSmall
@@ -340,7 +340,7 @@ PanelWindow {
                             wrapMode: Text.Wrap
                         }
 
-                        DankActionButton {
+                        HypeActionButton {
                             id: copyButton
                             iconName: "content_copy"
                             iconSize: Theme.iconSizeSmall

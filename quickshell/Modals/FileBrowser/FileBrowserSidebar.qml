@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import qs.Common
 import qs.Widgets
 
@@ -41,7 +41,7 @@ StyledRect {
                     anchors.leftMargin: Theme.spacingM
                     spacing: Theme.spacingS
 
-                    DankIcon {
+                    HypeIcon {
                         name: modelData?.icon ?? ""
                         size: Theme.iconSize - 2
                         color: currentPath === modelData?.path ? Theme.primary : Theme.surfaceText

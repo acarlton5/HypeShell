@@ -1,4 +1,4 @@
-pragma Singleton
+﻿pragma Singleton
 pragma ComponentBehavior: Bound
 
 import QtQuick
@@ -10,7 +10,7 @@ Singleton {
     id: root
 
     readonly property Transition add: Transition {
-        DankAnim {
+        HypeAnim {
             property: "opacity"
             from: 0
             to: 1
@@ -20,7 +20,7 @@ Singleton {
     }
 
     readonly property Transition remove: Transition {
-        DankAnim {
+        HypeAnim {
             property: "opacity"
             to: 0
             duration: Theme.expressiveDurations.fast
@@ -29,7 +29,7 @@ Singleton {
     }
 
     readonly property Transition displaced: Transition {
-        DankAnim {
+        HypeAnim {
             property: "y"
             duration: Theme.expressiveDurations.normal
             easing.bezierCurve: Theme.expressiveCurves.expressiveEffects
@@ -37,7 +37,7 @@ Singleton {
     }
 
     readonly property Transition move: Transition {
-        DankAnim {
+        HypeAnim {
             property: "y"
             duration: Theme.expressiveDurations.normal
             easing.bezierCurve: Theme.expressiveCurves.expressiveEffects

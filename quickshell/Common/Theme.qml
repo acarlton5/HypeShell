@@ -1,4 +1,4 @@
-pragma Singleton
+﻿pragma Singleton
 pragma ComponentBehavior: Bound
 
 import QtCore
@@ -15,7 +15,7 @@ Singleton {
     readonly property var log: Log.scoped("Theme")
 
     readonly property string stateDir: Paths.strip(StandardPaths.writableLocation(StandardPaths.GenericCacheLocation).toString()) + "/HypeShell"
-    readonly property bool envDisableMatugen: Quickshell.env("DMS_DISABLE_MATUGEN") === "1" || Quickshell.env("DMS_DISABLE_MATUGEN") === "true"
+    readonly property bool envDisableMatugen: Quickshell.env("HYPE_DISABLE_MATUGEN") === "1" || Quickshell.env("HYPE_DISABLE_MATUGEN") === "true"
     readonly property string defaultFontFamily: "Inter Variable"
     readonly property string defaultMonoFontFamily: "Fira Code"
 
@@ -106,10 +106,10 @@ Singleton {
     property var _pendingGenerateParams: null
 
     property bool themeModeAutomationActive: false
-    property bool dmsServiceWasDisconnected: true
+    property bool hypeServiceWasDisconnected: true
 
-    readonly property var dank16: {
-        const raw = matugenColors?.dank16;
+    readonly property var hype16: {
+        const raw = matugenColors?.hype16;
         if (!raw)
             return null;
 
@@ -284,8 +284,8 @@ Singleton {
 
         function onLatitudeChanged() {
             if (root.themeModeAutomationActive && SessionData.themeModeAutoMode === "location") {
-                if (!SessionData.nightModeUseIPLocation && SessionData.latitude !== 0.0 && SessionData.longitude !== 0.0 && typeof DMSService !== "undefined") {
-                    DMSService.sendRequest("wayland.gamma.setLocation", {
+                if (!SessionData.nightModeUseIPLocation && SessionData.latitude !== 0.0 && SessionData.longitude !== 0.0 && typeof HYPEService !== "undefined") {
+                    HYPEService.sendRequest("wayland.gamma.setLocation", {
                         "latitude": SessionData.latitude,
                         "longitude": SessionData.longitude
                     });
@@ -297,8 +297,8 @@ Singleton {
 
         function onLongitudeChanged() {
             if (root.themeModeAutomationActive && SessionData.themeModeAutoMode === "location") {
-                if (!SessionData.nightModeUseIPLocation && SessionData.latitude !== 0.0 && SessionData.longitude !== 0.0 && typeof DMSService !== "undefined") {
-                    DMSService.sendRequest("wayland.gamma.setLocation", {
+                if (!SessionData.nightModeUseIPLocation && SessionData.latitude !== 0.0 && SessionData.longitude !== 0.0 && typeof HYPEService !== "undefined") {
+                    HYPEService.sendRequest("wayland.gamma.setLocation", {
                         "latitude": SessionData.latitude,
                         "longitude": SessionData.longitude
                     });
@@ -310,12 +310,12 @@ Singleton {
 
         function onNightModeUseIPLocationChanged() {
             if (root.themeModeAutomationActive && SessionData.themeModeAutoMode === "location") {
-                if (typeof DMSService !== "undefined") {
-                    DMSService.sendRequest("wayland.gamma.setUseIPLocation", {
+                if (typeof HYPEService !== "undefined") {
+                    HYPEService.sendRequest("wayland.gamma.setUseIPLocation", {
                         "use": SessionData.nightModeUseIPLocation
                     }, response => {
                         if (!response.error && !SessionData.nightModeUseIPLocation && SessionData.latitude !== 0.0 && SessionData.longitude !== 0.0) {
-                            DMSService.sendRequest("wayland.gamma.setLocation", {
+                            HYPEService.sendRequest("wayland.gamma.setLocation", {
                                 "latitude": SessionData.latitude,
                                 "longitude": SessionData.longitude
                             });
@@ -341,7 +341,7 @@ Singleton {
     }
 
     Connections {
-        target: DMSService
+        target: HYPEService
 
         function onThemeAutoStateUpdate(data) {
             if (!SessionData.themeModeAutoEnabled) {
@@ -351,16 +351,16 @@ Singleton {
         }
 
         function onConnectionStateChanged() {
-            if (DMSService.isConnected && SessionData.themeModeAutoMode === "time") {
+            if (HYPEService.isConnected && SessionData.themeModeAutoMode === "time") {
                 root.syncTimeThemeSchedule();
             }
 
-            if (DMSService.isConnected && SessionData.themeModeAutoMode === "location") {
+            if (HYPEService.isConnected && SessionData.themeModeAutoMode === "location") {
                 root.syncLocationThemeSchedule();
             }
 
             if (themeAutoBackendAvailable() && SessionData.themeModeAutoEnabled) {
-                DMSService.sendRequest("theme.auto.getState", null, response => {
+                HYPEService.sendRequest("theme.auto.getState", null, response => {
                     if (response && response.result) {
                         applyThemeAutoState(response.result);
                     }
@@ -371,9 +371,9 @@ Singleton {
                 return;
             }
 
-            if (DMSService.isConnected && SessionData.themeModeAutoMode === "location") {
+            if (HYPEService.isConnected && SessionData.themeModeAutoMode === "location") {
                 if (SessionData.nightModeUseIPLocation) {
-                    DMSService.sendRequest("wayland.gamma.setUseIPLocation", {
+                    HYPEService.sendRequest("wayland.gamma.setUseIPLocation", {
                         "use": true
                     }, response => {
                         if (!response.error) {
@@ -381,11 +381,11 @@ Singleton {
                         }
                     });
                 } else if (SessionData.latitude !== 0.0 && SessionData.longitude !== 0.0) {
-                    DMSService.sendRequest("wayland.gamma.setUseIPLocation", {
+                    HYPEService.sendRequest("wayland.gamma.setUseIPLocation", {
                         "use": false
                     }, response => {
                         if (!response.error) {
-                            DMSService.sendRequest("wayland.gamma.setLocation", {
+                            HYPEService.sendRequest("wayland.gamma.setLocation", {
                                 "latitude": SessionData.latitude,
                                 "longitude": SessionData.longitude
                             }, locationResponse => {
@@ -420,7 +420,7 @@ Singleton {
             root.evaluateThemeMode();
             return;
         }
-        DMSService.sendRequest("theme.auto.trigger", {});
+        HYPEService.sendRequest("theme.auto.trigger", {});
     }
 
     function applyGreeterTheme(themeName) {
@@ -1585,9 +1585,9 @@ Singleton {
 
     function syncGreeterThemeCache() {
         const isGreeterMode = (typeof SessionData !== "undefined" && SessionData.isGreeterMode);
-        if (isGreeterMode || typeof DMSService === "undefined" || !DMSService.isConnected)
+        if (isGreeterMode || typeof HYPEService === "undefined" || !HYPEService.isConnected)
             return;
-        DMSService.sendRequest("greeter.syncTheme", {}, response => {
+        HYPEService.sendRequest("greeter.syncTheme", {}, response => {
             if (response?.error)
                 log.debug("Greeter theme cache sync skipped:", response.error);
         });
@@ -1670,13 +1670,13 @@ Singleton {
 
     function barTextSize(barThickness, fontScale, maximizeText) {
         const scale = barThickness / 48;
-        const dankBarScale = fontScale !== undefined ? fontScale : 1.0;
+        const hypeBarScale = fontScale !== undefined ? fontScale : 1.0;
         const maxScale = (maximizeText ?? false) ? 1.5 : 1.0;
         if (scale <= 0.75)
-            return Math.round(fontSizeSmall * 0.9 * dankBarScale * maxScale);
+            return Math.round(fontSizeSmall * 0.9 * hypeBarScale * maxScale);
         if (scale >= 1.25)
-            return Math.round(fontSizeMedium * dankBarScale * maxScale);
-        return Math.round(fontSizeSmall * dankBarScale * maxScale);
+            return Math.round(fontSizeMedium * hypeBarScale * maxScale);
+        return Math.round(fontSizeSmall * hypeBarScale * maxScale);
     }
 
     function getBatteryIcon(level, isCharging, batteryAvailable) {
@@ -2283,7 +2283,7 @@ Singleton {
         id: dynamicColorsFileView
         path: {
             const greetCfgDir = Quickshell.env("HYPE_GREET_CFG_DIR") || "/var/cache/hype-greeter";
-            const colorsPath = SessionData.isGreeterMode ? greetCfgDir + "/colors.json" : stateDir + "/dms-colors.json";
+            const colorsPath = SessionData.isGreeterMode ? greetCfgDir + "/colors.json" : stateDir + "/hype-colors.json";
             return colorsPath;
         }
         blockLoading: false
@@ -2397,7 +2397,7 @@ Singleton {
 
     // Theme mode automation functions
     function themeAutoBackendAvailable() {
-        return typeof DMSService !== "undefined" && DMSService.isConnected && Array.isArray(DMSService.capabilities) && DMSService.capabilities.includes("theme.auto");
+        return typeof HYPEService !== "undefined" && HYPEService.isConnected && Array.isArray(HYPEService.capabilities) && HYPEService.capabilities.includes("theme.auto");
     }
 
     function applyThemeAutoState(state) {
@@ -2416,11 +2416,11 @@ Singleton {
     }
 
     function syncTimeThemeSchedule() {
-        if (typeof SessionData === "undefined" || typeof DMSService === "undefined") {
+        if (typeof SessionData === "undefined" || typeof HYPEService === "undefined") {
             return;
         }
 
-        if (!DMSService.isConnected) {
+        if (!HYPEService.isConnected) {
             return;
         }
 
@@ -2430,7 +2430,7 @@ Singleton {
             return;
         }
 
-        DMSService.sendRequest("theme.auto.setMode", {
+        HYPEService.sendRequest("theme.auto.setMode", {
             "mode": "time"
         });
 
@@ -2440,7 +2440,7 @@ Singleton {
         const endHour = shareSettings ? SessionData.nightModeEndHour : SessionData.themeModeEndHour;
         const endMinute = shareSettings ? SessionData.nightModeEndMinute : SessionData.themeModeEndMinute;
 
-        DMSService.sendRequest("theme.auto.setSchedule", {
+        HYPEService.sendRequest("theme.auto.setSchedule", {
             "startHour": startHour,
             "startMinute": startMinute,
             "endHour": endHour,
@@ -2451,18 +2451,18 @@ Singleton {
             }
         });
 
-        DMSService.sendRequest("theme.auto.setEnabled", {
+        HYPEService.sendRequest("theme.auto.setEnabled", {
             "enabled": true
         });
-        DMSService.sendRequest("theme.auto.trigger", {});
+        HYPEService.sendRequest("theme.auto.trigger", {});
     }
 
     function syncLocationThemeSchedule() {
-        if (typeof SessionData === "undefined" || typeof DMSService === "undefined") {
+        if (typeof SessionData === "undefined" || typeof HYPEService === "undefined") {
             return;
         }
 
-        if (!DMSService.isConnected) {
+        if (!HYPEService.isConnected) {
             return;
         }
 
@@ -2472,30 +2472,30 @@ Singleton {
             return;
         }
 
-        DMSService.sendRequest("theme.auto.setMode", {
+        HYPEService.sendRequest("theme.auto.setMode", {
             "mode": "location"
         });
 
         if (SessionData.nightModeUseIPLocation) {
-            DMSService.sendRequest("theme.auto.setUseIPLocation", {
+            HYPEService.sendRequest("theme.auto.setUseIPLocation", {
                 "use": true
             });
         } else {
-            DMSService.sendRequest("theme.auto.setUseIPLocation", {
+            HYPEService.sendRequest("theme.auto.setUseIPLocation", {
                 "use": false
             });
             if (SessionData.latitude !== 0.0 && SessionData.longitude !== 0.0) {
-                DMSService.sendRequest("theme.auto.setLocation", {
+                HYPEService.sendRequest("theme.auto.setLocation", {
                     "latitude": SessionData.latitude,
                     "longitude": SessionData.longitude
                 });
             }
         }
 
-        DMSService.sendRequest("theme.auto.setEnabled", {
+        HYPEService.sendRequest("theme.auto.setEnabled", {
             "enabled": true
         });
-        DMSService.sendRequest("theme.auto.trigger", {});
+        HYPEService.sendRequest("theme.auto.trigger", {});
     }
 
     function evaluateThemeMode() {
@@ -2504,7 +2504,7 @@ Singleton {
         }
 
         if (themeAutoBackendAvailable()) {
-            DMSService.sendRequest("theme.auto.getState", null, response => {
+            HYPEService.sendRequest("theme.auto.getState", null, response => {
                 if (response && response.result) {
                     applyThemeAutoState(response.result);
                 }
@@ -2611,16 +2611,16 @@ Singleton {
 
     // Helper function to send location to backend
     function sendLocationToBackend() {
-        if (typeof SessionData === "undefined" || typeof DMSService === "undefined") {
+        if (typeof SessionData === "undefined" || typeof HYPEService === "undefined") {
             return false;
         }
 
-        if (!DMSService.isConnected) {
+        if (!HYPEService.isConnected) {
             return false;
         }
 
         if (SessionData.nightModeUseIPLocation) {
-            DMSService.sendRequest("wayland.gamma.setUseIPLocation", {
+            HYPEService.sendRequest("wayland.gamma.setUseIPLocation", {
                 "use": true
             }, response => {
                 if (response?.error) {
@@ -2629,11 +2629,11 @@ Singleton {
             });
             return true;
         } else if (SessionData.latitude !== 0.0 && SessionData.longitude !== 0.0) {
-            DMSService.sendRequest("wayland.gamma.setUseIPLocation", {
+            HYPEService.sendRequest("wayland.gamma.setUseIPLocation", {
                 "use": false
             }, response => {
                 if (!response.error) {
-                    DMSService.sendRequest("wayland.gamma.setLocation", {
+                    HYPEService.sendRequest("wayland.gamma.setLocation", {
                         "latitude": SessionData.latitude,
                         "longitude": SessionData.longitude
                     }, locResp => {
@@ -2687,8 +2687,8 @@ Singleton {
 
     function stopThemeModeAutomation() {
         root.themeModeAutomationActive = false;
-        if (typeof DMSService !== "undefined" && DMSService.isConnected) {
-            DMSService.sendRequest("theme.auto.setEnabled", {
+        if (typeof HYPEService !== "undefined" && HYPEService.isConnected) {
+            HYPEService.sendRequest("theme.auto.setEnabled", {
                 "enabled": false
             });
         }

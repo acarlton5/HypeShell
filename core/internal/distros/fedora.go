@@ -1,4 +1,4 @@
-package distros
+﻿package distros
 
 import (
 	"context"
@@ -69,8 +69,8 @@ func (f *FedoraDistribution) DetectDependencies(ctx context.Context, wm deps.Win
 func (f *FedoraDistribution) DetectDependenciesWithTerminal(ctx context.Context, wm deps.WindowManager, terminal deps.Terminal) ([]deps.Dependency, error) {
 	var dependencies []deps.Dependency
 
-	// DMS at the top (shell is prominent)
-	dependencies = append(dependencies, f.detectDMS())
+	// HYPE at the top (shell is prominent)
+	dependencies = append(dependencies, f.detectHYPE())
 
 	// Terminal with choice support
 	dependencies = append(dependencies, f.detectSpecificTerminal(terminal))
@@ -79,7 +79,7 @@ func (f *FedoraDistribution) DetectDependenciesWithTerminal(ctx context.Context,
 	dependencies = append(dependencies, f.detectGit())
 	dependencies = append(dependencies, f.detectWindowManager(wm))
 	dependencies = append(dependencies, f.detectQuickshell())
-	dependencies = append(dependencies, f.detectDMSGreeter())
+	dependencies = append(dependencies, f.detectHYPEGreeter())
 	dependencies = append(dependencies, f.detectXDGPortal())
 	dependencies = append(dependencies, f.detectAccountsService())
 
@@ -117,7 +117,7 @@ func (f *FedoraDistribution) GetPackageMappingWithVariants(wm deps.WindowManager
 	packages := map[string]PackageMapping{
 		// Standard DNF packages
 		"git":                    {Name: "git", Repository: RepoTypeSystem},
-		"ghostty":                {Name: "ghostty", Repository: RepoTypeCOPR, RepoURL: "avengemedia/danklinux"},
+		"ghostty":                {Name: "ghostty", Repository: RepoTypeCOPR, RepoURL: "avengemedia/hypelinux"},
 		"kitty":                  {Name: "kitty", Repository: RepoTypeSystem},
 		"alacritty":              {Name: "alacritty", Repository: RepoTypeSystem},
 		"xdg-desktop-portal-gtk": {Name: "xdg-desktop-portal-gtk", Repository: RepoTypeSystem},
@@ -125,10 +125,10 @@ func (f *FedoraDistribution) GetPackageMappingWithVariants(wm deps.WindowManager
 
 		// COPR packages
 		"quickshell":              f.getQuickshellMapping(variants["quickshell"]),
-		"dms-greeter":             {Name: "dms-greeter", Repository: RepoTypeCOPR, RepoURL: "avengemedia/danklinux"},
-		"matugen":                 {Name: "matugen", Repository: RepoTypeCOPR, RepoURL: "avengemedia/danklinux"},
-		"dms (DankMaterialShell)": f.getDmsMapping(variants["dms (DankMaterialShell)"]),
-		"dgop":                    {Name: "dgop", Repository: RepoTypeCOPR, RepoURL: "avengemedia/danklinux"},
+		"hype-greeter":             {Name: "hype-greeter", Repository: RepoTypeCOPR, RepoURL: "avengemedia/hypelinux"},
+		"matugen":                 {Name: "matugen", Repository: RepoTypeCOPR, RepoURL: "avengemedia/hypelinux"},
+		"hype (HypeMaterialShell)": f.getDmsMapping(variants["hype (HypeMaterialShell)"]),
+		"dgop":                    {Name: "dgop", Repository: RepoTypeCOPR, RepoURL: "avengemedia/hypelinux"},
 	}
 
 	switch wm {
@@ -146,16 +146,16 @@ func (f *FedoraDistribution) GetPackageMappingWithVariants(wm deps.WindowManager
 
 func (f *FedoraDistribution) getQuickshellMapping(variant deps.PackageVariant) PackageMapping {
 	if forceQuickshellGit || variant == deps.VariantGit {
-		return PackageMapping{Name: "quickshell-git", Repository: RepoTypeCOPR, RepoURL: "avengemedia/danklinux"}
+		return PackageMapping{Name: "quickshell-git", Repository: RepoTypeCOPR, RepoURL: "avengemedia/hypelinux"}
 	}
-	return PackageMapping{Name: "quickshell", Repository: RepoTypeCOPR, RepoURL: "avengemedia/danklinux"}
+	return PackageMapping{Name: "quickshell", Repository: RepoTypeCOPR, RepoURL: "avengemedia/hypelinux"}
 }
 
 func (f *FedoraDistribution) getDmsMapping(variant deps.PackageVariant) PackageMapping {
 	if variant == deps.VariantGit {
-		return PackageMapping{Name: "dms", Repository: RepoTypeCOPR, RepoURL: "avengemedia/dms-git"}
+		return PackageMapping{Name: "hype", Repository: RepoTypeCOPR, RepoURL: "avengemedia/hype-git"}
 	}
-	return PackageMapping{Name: "dms", Repository: RepoTypeCOPR, RepoURL: "avengemedia/dms"}
+	return PackageMapping{Name: "hype", Repository: RepoTypeCOPR, RepoURL: "avengemedia/hype"}
 }
 
 func (f *FedoraDistribution) getHyprlandMapping(_ deps.PackageVariant) PackageMapping {
@@ -197,8 +197,8 @@ func (f *FedoraDistribution) detectAccountsService() deps.Dependency {
 	}
 }
 
-func (f *FedoraDistribution) detectDMSGreeter() deps.Dependency {
-	return f.detectOptionalPackage("dms-greeter", "DankMaterialShell greetd greeter", f.packageInstalled("dms-greeter"))
+func (f *FedoraDistribution) detectHYPEGreeter() deps.Dependency {
+	return f.detectOptionalPackage("hype-greeter", "HypeMaterialShell greetd greeter", f.packageInstalled("hype-greeter"))
 }
 
 func (f *FedoraDistribution) getPrerequisites() []string {
@@ -359,8 +359,8 @@ func (f *FedoraDistribution) InstallPackages(ctx context.Context, dependencies [
 		f.log(fmt.Sprintf("Warning: failed to write window manager config: %v", err))
 	}
 
-	if err := f.EnableDMSService(ctx, wm); err != nil {
-		f.log(fmt.Sprintf("Warning: failed to enable dms service: %v", err))
+	if err := f.EnableHYPEService(ctx, wm); err != nil {
+		f.log(fmt.Sprintf("Warning: failed to enable hype service: %v", err))
 	}
 
 	// Phase 7: Complete

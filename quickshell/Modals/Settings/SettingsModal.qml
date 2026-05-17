@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import Quickshell
 import qs.Common
 import qs.Modals.FileBrowser
@@ -199,7 +199,7 @@ FloatingWindow {
                     anchors.verticalCenter: parent.verticalCenter
                     spacing: Theme.spacingM
 
-                    DankActionButton {
+                    HypeActionButton {
                         visible: settingsModal.isCompactMode
                         circular: false
                         iconName: "menu"
@@ -211,7 +211,7 @@ FloatingWindow {
                         }
                     }
 
-                    DankIcon {
+                    HypeIcon {
                         name: "settings"
                         size: Theme.iconSize
                         color: Theme.primary
@@ -234,7 +234,7 @@ FloatingWindow {
                     anchors.topMargin: Theme.spacingM
                     spacing: Theme.spacingXS
 
-                    DankActionButton {
+                    HypeActionButton {
                         visible: windowControls.canMaximize
                         circular: false
                         iconName: settingsModal.maximized ? "fullscreen_exit" : "fullscreen"
@@ -243,7 +243,7 @@ FloatingWindow {
                         onClicked: windowControls.tryToggleMaximize()
                     }
 
-                    DankActionButton {
+                    HypeActionButton {
                         circular: false
                         iconName: "close"
                         iconSize: Theme.iconSize - 4
@@ -281,7 +281,7 @@ FloatingWindow {
                     anchors.rightMargin: Theme.spacingM
                     spacing: Theme.spacingM
 
-                    DankIcon {
+                    HypeIcon {
                         name: "info"
                         size: Theme.iconSize
                         color: Theme.warning
@@ -299,7 +299,7 @@ FloatingWindow {
                         wrapMode: Text.WordWrap
                     }
 
-                    DankButton {
+                    HypeButton {
                         id: copySettingsButton
 
                         visible: SettingsData._isReadOnly && SettingsData._hasUnsavedChanges
@@ -316,7 +316,7 @@ FloatingWindow {
                         }
                     }
 
-                    DankButton {
+                    HypeButton {
                         id: copySessionButton
 
                         visible: SessionData._isReadOnly && SessionData._hasUnsavedChanges

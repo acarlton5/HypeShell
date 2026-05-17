@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import QtQuick.Effects
 import qs.Common
 import qs.Services
@@ -109,9 +109,9 @@ Column {
             ChangelogFeatureCard {
                 width: (parent.width - Theme.spacingS) / 2
                 iconName: "space_dashboard"
-                title: "Dank Launcher V2"
+                title: "Hype Launcher V2"
                 description: "New capabilities & plugins"
-                onClicked: PopoutService.openDankLauncherV2()
+                onClicked: PopoutService.openHypeLauncherV2()
             }
 
             ChangelogFeatureCard {
@@ -119,7 +119,7 @@ Column {
                 iconName: "smartphone"
                 title: "Phone Connect"
                 description: "KDE Connect & Valent"
-                onClicked: Qt.openUrlExternally("https://github.com/AvengeMedia/dms-plugins/tree/master/DankKDEConnect")
+                onClicked: Qt.openUrlExternally("https://github.com/AvengeMedia/hype-plugins/tree/master/HypeKDEConnect")
             }
 
             ChangelogFeatureCard {
@@ -196,7 +196,7 @@ Column {
         Row {
             spacing: Theme.spacingS
 
-            DankIcon {
+            HypeIcon {
                 name: "warning"
                 size: Theme.iconSizeSmall
                 color: Theme.warning
@@ -230,7 +230,7 @@ Column {
 
                 ChangelogUpgradeNote {
                     width: parent.width
-                    text: "Spotlight replaced by Dank Launcher V2 — check settings for new options"
+                    text: "Spotlight replaced by Hype Launcher V2 — check settings for new options"
                 }
 
                 ChangelogUpgradeNote {

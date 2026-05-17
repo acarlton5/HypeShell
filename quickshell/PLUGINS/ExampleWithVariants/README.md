@@ -1,6 +1,6 @@
-# Example with Variants Plugin
+﻿# Example with Variants Plugin
 
-This plugin demonstrates the dynamic variant system for DankMaterialShell plugins.
+This plugin demonstrates the dynamic variant system for HypeMaterialShell plugins.
 
 ## What are Variants?
 

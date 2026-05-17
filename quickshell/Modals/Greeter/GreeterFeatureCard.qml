@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import qs.Common
 import qs.Widgets
 
@@ -35,7 +35,7 @@ Rectangle {
             color: Theme.primaryContainer
             anchors.horizontalCenter: parent.horizontalCenter
 
-            DankIcon {
+            HypeIcon {
                 anchors.centerIn: parent
                 name: root.iconName
                 size: Theme.iconSize - 4

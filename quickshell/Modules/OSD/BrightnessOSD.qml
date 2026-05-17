@@ -1,9 +1,9 @@
-import QtQuick
+﻿import QtQuick
 import qs.Common
 import qs.Services
 import qs.Widgets
 
-DankOSD {
+HypeOSD {
     id: root
 
     readonly property bool useVertical: isVerticalLayout
@@ -50,7 +50,7 @@ DankOSD {
                 x: parent.gap
                 anchors.verticalCenter: parent.verticalCenter
 
-                DankIcon {
+                HypeIcon {
                     anchors.centerIn: parent
                     name: {
                         const deviceInfo = DisplayService.getCurrentDeviceInfo();
@@ -65,7 +65,7 @@ DankOSD {
                 }
             }
 
-            DankSlider {
+            HypeSlider {
                 id: brightnessSlider
 
                 width: parent.width - Theme.iconSize - parent.gap * 3
@@ -133,7 +133,7 @@ DankOSD {
                 anchors.horizontalCenter: parent.horizontalCenter
                 y: gap
 
-                DankIcon {
+                HypeIcon {
                     anchors.centerIn: parent
                     name: {
                         const deviceInfo = DisplayService.getCurrentDeviceInfo();

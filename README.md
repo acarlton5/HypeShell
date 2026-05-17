@@ -1,4 +1,4 @@
-# HypeShell
+﻿# HypeShell
 
 <div align="center">
   <a href="https://github.com/acarlton5/HypeShell">
@@ -31,7 +31,7 @@ HypeShell/
 │   ├── Widgets/        # Reusable UI controls
 │   └── Common/         # Shared resources and themes
 ├── core/               # Go backend and CLI
-│   ├── cmd/            # dms CLI and dankinstall binaries
+│   ├── cmd/            # hype CLI and hypeinstall binaries
 │   ├── internal/       # System integration, IPC, distro support
 │   └── pkg/            # Shared packages
 ├── distro/             # Distribution packaging
@@ -71,7 +71,7 @@ https://github.com/user-attachments/assets/1200a739-7770-4601-8b85-695ca527819a
 curl -fsSL https://raw.githubusercontent.com/acarlton5/HypeShell/main/install.sh | bash
 ```
 
-The installer clones this HypeShell repo, installs missing tools such as Go, make, and Quickshell, builds the shell from source, installs the HypeShell-owned Hyprland session/config files, and can switch SDDM/GDM/LightDM to the HypeShell greeter on `greetd`. It treats Hyprland as the compositor dependency and does not install upstream `dms-shell`, `dms-shell-hyprland`, or `dms-hyprland` packages.
+The installer clones this HypeShell repo, installs missing tools such as Go, make, and Quickshell, builds the shell from source, installs the HypeShell-owned Hyprland session/config files, and can switch SDDM/GDM/LightDM to the HypeShell greeter on `greetd`. It treats Hyprland as the compositor dependency and does not install upstream `hype-shell`, `hype-shell-hyprland`, or `hype-hyprland` packages.
 
 To repair or update an existing install:
 
@@ -92,13 +92,13 @@ Manual installation docs will live in this repository while HypeShell's dedicate
 ## Features
 
 **Dynamic Theming**
-Wallpaper-based color schemes that automatically theme GTK, Qt, terminals, editors (vscode, vscodium), and more using [matugen](https://github.com/InioX/matugen) and dank16.
+Wallpaper-based color schemes that automatically theme GTK, Qt, terminals, editors (vscode, vscodium), and more using [matugen](https://github.com/InioX/matugen) and hype16.
 
 **System Monitoring**
 Real-time CPU, RAM, GPU metrics and temperatures with [dgop](https://github.com/AvengeMedia/dgop). Process list with search and management.
 
 **Powerful Launcher**
-Spotlight-style search for applications, files ([dsearch](https://github.com/AvengeMedia/danksearch)), emojis, running windows, calculator, and commands. Extensible with plugins.
+Spotlight-style search for applications, files ([dsearch](https://github.com/AvengeMedia/hypesearch)), emojis, running windows, calculator, and commands. Extensible with plugins.
 
 **Control Center**
 Unified interface for network, Bluetooth, audio devices, display settings, and night mode.
@@ -134,7 +134,7 @@ hype brightness list  # List available displays
 hype plugins search   # Browse plugin registry
 ```
 
-The legacy `dms` command remains as a temporary compatibility alias during the HypeShell transition.
+The legacy `hype` command remains as a temporary compatibility alias during the HypeShell transition.
 
 ## Documentation
 
@@ -156,7 +156,7 @@ See component-specific documentation:
 ```bash
 cd core
 make              # Build hype CLI
-make dankinstall  # Build installer
+make hypeinstall  # Build installer
 ```
 
 **Shell:**

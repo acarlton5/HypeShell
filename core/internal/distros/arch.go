@@ -1,4 +1,4 @@
-package distros
+﻿package distros
 
 import (
 	"context"
@@ -88,8 +88,8 @@ func (a *ArchDistribution) DetectDependencies(ctx context.Context, wm deps.Windo
 func (a *ArchDistribution) DetectDependenciesWithTerminal(ctx context.Context, wm deps.WindowManager, terminal deps.Terminal) ([]deps.Dependency, error) {
 	var dependencies []deps.Dependency
 
-	// DMS at the top (shell is prominent)
-	dependencies = append(dependencies, a.detectDMS())
+	// HYPE at the top (shell is prominent)
+	dependencies = append(dependencies, a.detectHYPE())
 
 	// Terminal with choice support
 	dependencies = append(dependencies, a.detectSpecificTerminal(terminal))
@@ -98,7 +98,7 @@ func (a *ArchDistribution) DetectDependenciesWithTerminal(ctx context.Context, w
 	dependencies = append(dependencies, a.detectGit())
 	dependencies = append(dependencies, a.detectWindowManager(wm))
 	dependencies = append(dependencies, a.detectQuickshell())
-	dependencies = append(dependencies, a.detectDMSGreeter())
+	dependencies = append(dependencies, a.detectHYPEGreeter())
 	dependencies = append(dependencies, a.detectXDGPortal())
 	dependencies = append(dependencies, a.detectAccountsService())
 
@@ -126,8 +126,8 @@ func (a *ArchDistribution) detectAccountsService() deps.Dependency {
 	return a.detectPackage("accountsservice", "D-Bus interface for user account query and manipulation", a.packageInstalled("accountsservice"))
 }
 
-func (a *ArchDistribution) detectDMSGreeter() deps.Dependency {
-	return a.detectOptionalPackage("dms-greeter", "DankMaterialShell greetd greeter", a.packageInstalled("greetd-dms-greeter-git"))
+func (a *ArchDistribution) detectHYPEGreeter() deps.Dependency {
+	return a.detectOptionalPackage("hype-greeter", "HypeMaterialShell greetd greeter", a.packageInstalled("greetd-hype-greeter-git"))
 }
 
 func (a *ArchDistribution) packageInstalled(pkg string) bool {
@@ -178,10 +178,10 @@ func (a *ArchDistribution) GetPackageMapping(wm deps.WindowManager) map[string]P
 
 func (a *ArchDistribution) GetPackageMappingWithVariants(wm deps.WindowManager, variants map[string]deps.PackageVariant) map[string]PackageMapping {
 	packages := map[string]PackageMapping{
-		"dms (DankMaterialShell)": a.getDMSMapping(variants["dms (DankMaterialShell)"]),
+		"hype (HypeMaterialShell)": a.getHYPEMapping(variants["hype (HypeMaterialShell)"]),
 		"git":                     {Name: "git", Repository: RepoTypeSystem},
 		"quickshell":              a.getQuickshellMapping(variants["quickshell"]),
-		"dms-greeter":             {Name: "greetd-dms-greeter-git", Repository: RepoTypeAUR},
+		"hype-greeter":             {Name: "greetd-hype-greeter-git", Repository: RepoTypeAUR},
 		"matugen":                 a.getMatugenMapping(variants["matugen"]),
 		"dgop":                    {Name: "dgop", Repository: RepoTypeSystem},
 		"ghostty":                 {Name: "ghostty", Repository: RepoTypeSystem},
@@ -233,16 +233,16 @@ func (a *ArchDistribution) getMatugenMapping(variant deps.PackageVariant) Packag
 	return PackageMapping{Name: "matugen", Repository: RepoTypeSystem}
 }
 
-func (a *ArchDistribution) getDMSMapping(variant deps.PackageVariant) PackageMapping {
-	if forceDMSGit || variant == deps.VariantGit {
-		return PackageMapping{Name: "dms-shell-git", Repository: RepoTypeAUR}
+func (a *ArchDistribution) getHYPEMapping(variant deps.PackageVariant) PackageMapping {
+	if forceHYPEGit || variant == deps.VariantGit {
+		return PackageMapping{Name: "hype-shell-git", Repository: RepoTypeAUR}
 	}
 
-	if a.packageInstalled("dms-shell-git") {
-		return PackageMapping{Name: "dms-shell-git", Repository: RepoTypeAUR}
+	if a.packageInstalled("hype-shell-git") {
+		return PackageMapping{Name: "hype-shell-git", Repository: RepoTypeAUR}
 	}
 
-	return PackageMapping{Name: "dms-shell", Repository: RepoTypeSystem}
+	return PackageMapping{Name: "hype-shell", Repository: RepoTypeSystem}
 }
 
 func (a *ArchDistribution) detectXwaylandSatellite() deps.Dependency {
@@ -324,7 +324,7 @@ func (a *ArchDistribution) InstallPackages(ctx context.Context, dependencies []d
 
 	systemPkgs, aurPkgs, manualPkgs, variantMap := a.categorizePackages(dependencies, wm, reinstallFlags, disabledFlags)
 
-	if slices.Contains(aurPkgs, "quickshell-git") && slices.Contains(systemPkgs, "dms-shell") {
+	if slices.Contains(aurPkgs, "quickshell-git") && slices.Contains(systemPkgs, "hype-shell") {
 		if err := a.preinstallQuickshellGit(ctx, sudoPassword, progressChan); err != nil {
 			return fmt.Errorf("failed to preinstall quickshell-git: %w", err)
 		}
@@ -398,8 +398,8 @@ func (a *ArchDistribution) InstallPackages(ctx context.Context, dependencies []d
 		a.log(fmt.Sprintf("Warning: failed to write window manager config: %v", err))
 	}
 
-	if err := a.EnableDMSService(ctx, wm); err != nil {
-		a.log(fmt.Sprintf("Warning: failed to enable dms service: %v", err))
+	if err := a.EnableHYPEService(ctx, wm); err != nil {
+		a.log(fmt.Sprintf("Warning: failed to enable hype service: %v", err))
 	}
 
 	// Phase 7: Complete
@@ -494,7 +494,7 @@ func (a *ArchDistribution) preinstallQuickshellGit(ctx context.Context, sudoPass
 		Progress:    0.18,
 		Step:        "Building quickshell-git before system packages...",
 		IsComplete:  false,
-		CommandInfo: "Installing quickshell-git ahead of dms-shell to avoid conflict",
+		CommandInfo: "Installing quickshell-git ahead of hype-shell to avoid conflict",
 	}
 	return a.installSingleAURPackage(ctx, "quickshell-git", sudoPassword, progressChan, 0.18, 0.32)
 }
@@ -507,8 +507,8 @@ func (a *ArchDistribution) installSystemPackages(ctx context.Context, packages [
 	a.log(fmt.Sprintf("Installing system packages: %s", strings.Join(packages, ", ")))
 
 	args := []string{"pacman", "-S", "--needed", "--noconfirm"}
-	if slices.Contains(packages, "dms-shell") {
-		args = append(args, "--assume-installed", "dms-shell-compositor=1")
+	if slices.Contains(packages, "hype-shell") {
+		args = append(args, "--assume-installed", "hype-shell-compositor=1")
 	}
 	args = append(args, packages...)
 
@@ -556,7 +556,7 @@ func (a *ArchDistribution) installAURPackages(ctx context.Context, packages []st
 		}
 	}
 
-	// Reorder packages to ensure dms-shell-git dependencies are installed first
+	// Reorder packages to ensure hype-shell-git dependencies are installed first
 	orderedPackages := a.reorderAURPackages(packages)
 
 	baseProgress := 0.67
@@ -590,18 +590,18 @@ func (a *ArchDistribution) installAURPackages(ctx context.Context, packages []st
 }
 
 func (a *ArchDistribution) reorderAURPackages(packages []string) []string {
-	dmsDepencies := []string{"quickshell", "quickshell-git", "dgop"}
+	hypeDepencies := []string{"quickshell", "quickshell-git", "dgop"}
 
 	var deps []string
 	var others []string
-	var dmsShell []string
+	var hypeShell []string
 
 	for _, pkg := range packages {
-		if pkg == "dms-shell-git" {
-			dmsShell = append(dmsShell, pkg)
+		if pkg == "hype-shell-git" {
+			hypeShell = append(hypeShell, pkg)
 		} else {
 			isDep := false
-			if slices.Contains(dmsDepencies, pkg) {
+			if slices.Contains(hypeDepencies, pkg) {
 				deps = append(deps, pkg)
 				isDep = true
 			}
@@ -612,7 +612,7 @@ func (a *ArchDistribution) reorderAURPackages(packages []string) []string {
 	}
 
 	result := append(deps, others...)
-	result = append(result, dmsShell...)
+	result = append(result, hypeShell...)
 	return result
 }
 
@@ -632,7 +632,7 @@ func (a *ArchDistribution) installSingleAURPackageInternal(ctx context.Context, 
 		return fmt.Errorf("failed to get user home directory: %w", err)
 	}
 
-	buildDir := filepath.Join(homeDir, ".cache", "dankinstall", "aur-builds", pkg)
+	buildDir := filepath.Join(homeDir, ".cache", "hypeinstall", "aur-builds", pkg)
 
 	// Clean up any existing cache first
 	if err := os.RemoveAll(buildDir); err != nil {
@@ -678,7 +678,7 @@ func (a *ArchDistribution) installSingleAURPackageInternal(ctx context.Context, 
 		}
 	}
 
-	if pkg == "dms-shell-git" {
+	if pkg == "hype-shell-git" {
 		srcinfoPath := filepath.Join(packageDir, ".SRCINFO")
 		depsToRemove := []string{
 			"depends = quickshell",

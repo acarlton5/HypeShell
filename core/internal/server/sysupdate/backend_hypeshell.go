@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"os"
 	"strings"
+	"time"
 )
 
 const (
@@ -63,20 +64,23 @@ func (hypeShellBackend) Upgrade(ctx context.Context, opts UpgradeOptions, onLine
 }
 
 func hypeShellUpdateArgv(shellCmd string) []string {
-	argv := []string{"pkexec", "bash", "-lc", shellCmd}
 	if !commandExists("systemd-run") {
-		return argv
+		return []string{"pkexec", "bash", "-lc", shellCmd}
 	}
-	scoped := []string{
+	// Run pkexec first outside the transient scope to guarantee active session authentication.
+	// We append a timestamp to the unit name to avoid conflicts if the daemon hasn't restarted.
+	return []string{
+		"pkexec",
 		"systemd-run",
-		"--user",
 		"--scope",
 		"--collect",
 		"--unit",
-		fmt.Sprintf("hypeshell-self-update-%d", os.Getpid()),
+		fmt.Sprintf("hypeshell-self-update-%d-%d", os.Getpid(), time.Now().Unix()),
 		"--",
+		"bash",
+		"-lc",
+		shellCmd,
 	}
-	return append(scoped, argv...)
 }
 
 func hypeShellSelfUpdateScript() string {
@@ -114,10 +118,10 @@ install -D -m 644 "$tmp/install-fingerprint" "/usr/local/share/hypeshell/install
 
 echo "Restarting HypeShell service..."
 if [ -n "$invoking_uid" ]; then
-    runuser -u "$update_user" -- env HOME="$update_home" systemctl --user daemon-reload || true
-    runuser -u "$update_user" -- env HOME="$update_home" systemctl --user import-environment WAYLAND_DISPLAY DISPLAY XDG_CURRENT_DESKTOP XDG_SESSION_DESKTOP XDG_SESSION_TYPE HYPRLAND_INSTANCE_SIGNATURE XDG_RUNTIME_DIR DBUS_SESSION_BUS_ADDRESS || true
-    if ! runuser -u "$update_user" -- env HOME="$update_home" systemctl --user restart hype.service && ! runuser -u "$update_user" -- env HOME="$update_home" systemctl --user start hype.service; then
-        runuser -u "$update_user" -- env HOME="$update_home" nohup /usr/local/bin/hype run --session >/tmp/hypeshell-update-restart.log 2>&1 &
+    runuser -u "$update_user" -- env HOME="$update_home" XDG_RUNTIME_DIR="/run/user/$invoking_uid" DBUS_SESSION_BUS_ADDRESS="unix:path=/run/user/$invoking_uid/bus" systemctl --user daemon-reload || true
+    runuser -u "$update_user" -- env HOME="$update_home" XDG_RUNTIME_DIR="/run/user/$invoking_uid" DBUS_SESSION_BUS_ADDRESS="unix:path=/run/user/$invoking_uid/bus" systemctl --user import-environment WAYLAND_DISPLAY DISPLAY XDG_CURRENT_DESKTOP XDG_SESSION_DESKTOP XDG_SESSION_TYPE HYPRLAND_INSTANCE_SIGNATURE XDG_RUNTIME_DIR DBUS_SESSION_BUS_ADDRESS || true
+    if ! runuser -u "$update_user" -- env HOME="$update_home" XDG_RUNTIME_DIR="/run/user/$invoking_uid" DBUS_SESSION_BUS_ADDRESS="unix:path=/run/user/$invoking_uid/bus" systemctl --user restart hype.service && ! runuser -u "$update_user" -- env HOME="$update_home" XDG_RUNTIME_DIR="/run/user/$invoking_uid" DBUS_SESSION_BUS_ADDRESS="unix:path=/run/user/$invoking_uid/bus" systemctl --user start hype.service; then
+        runuser -u "$update_user" -- env HOME="$update_home" XDG_RUNTIME_DIR="/run/user/$invoking_uid" DBUS_SESSION_BUS_ADDRESS="unix:path=/run/user/$invoking_uid/bus" nohup /usr/local/bin/hype run --session >/tmp/hypeshell-update-restart.log 2>&1 &
     fi
 else
     systemctl --user daemon-reload || true

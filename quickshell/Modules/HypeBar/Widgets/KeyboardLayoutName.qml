@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import Quickshell
 import Quickshell.Hyprland
 import qs.Common
@@ -129,7 +129,7 @@ BasePill {
                 anchors.centerIn: parent
                 spacing: 1
 
-                DankIcon {
+                HypeIcon {
                     name: "keyboard"
                     size: Theme.barIconSize(root.barThickness, undefined, root.barConfig?.maximizeWidgetIcons, root.barConfig?.iconScale)
                     color: Theme.widgetTextColor

@@ -1,9 +1,9 @@
-import QtQuick
+﻿import QtQuick
 import qs.Common
 import qs.Services
 import qs.Widgets
 
-DankListView {
+HypeListView {
     id: listView
 
     property var keyboardController: null

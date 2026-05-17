@@ -1,4 +1,4 @@
-package pam
+﻿package pam
 
 import (
 	"fmt"
@@ -21,8 +21,8 @@ func writeTestFile(t *testing.T, path string, content string) {
 type pamTestEnv struct {
 	pamDir               string
 	greetdPath           string
-	dankshellPath        string
-	dankshellU2fPath     string
+	hypeshellPath        string
+	hypeshellU2fPath     string
 	tmpDir               string
 	homeDir              string
 	availableModules     map[string]bool
@@ -46,8 +46,8 @@ func newPamTestEnv(t *testing.T) *pamTestEnv {
 	return &pamTestEnv{
 		pamDir:           pamDir,
 		greetdPath:       filepath.Join(pamDir, "greetd"),
-		dankshellPath:    filepath.Join(pamDir, "dankshell"),
-		dankshellU2fPath: filepath.Join(pamDir, "dankshell-u2f"),
+		hypeshellPath:    filepath.Join(pamDir, "hypeshell"),
+		hypeshellU2fPath: filepath.Join(pamDir, "hypeshell-u2f"),
 		tmpDir:           tmpDir,
 		homeDir:          homeDir,
 		availableModules: map[string]bool{},
@@ -61,15 +61,15 @@ func (e *pamTestEnv) writePamFile(t *testing.T, name string, content string) {
 
 func (e *pamTestEnv) writeSettings(t *testing.T, content string) {
 	t.Helper()
-	writeTestFile(t, filepath.Join(e.homeDir, ".config", "DankMaterialShell", "settings.json"), content)
+	writeTestFile(t, filepath.Join(e.homeDir, ".config", "HypeMaterialShell", "settings.json"), content)
 }
 
 func (e *pamTestEnv) deps(isNixOS bool) syncDeps {
 	return syncDeps{
 		pamDir:           e.pamDir,
 		greetdPath:       e.greetdPath,
-		dankshellPath:    e.dankshellPath,
-		dankshellU2fPath: e.dankshellU2fPath,
+		hypeshellPath:    e.hypeshellPath,
+		hypeshellU2fPath: e.hypeshellU2fPath,
 		isNixOS:          func() bool { return isNixOS },
 		readFile:         os.ReadFile,
 		stat:             os.Stat,
@@ -317,12 +317,12 @@ func TestBuildManagedLockscreenPamContent(t *testing.T) {
 func TestSyncLockscreenPamConfigWithDeps(t *testing.T) {
 	t.Parallel()
 
-	t.Run("custom dankshell file is skipped untouched", func(t *testing.T) {
+	t.Run("custom hypeshell file is skipped untouched", func(t *testing.T) {
 		t.Parallel()
 
 		env := newPamTestEnv(t)
 		customContent := "#%PAM-1.0\nauth required pam_unix.so\n"
-		env.writePamFile(t, "dankshell", customContent)
+		env.writePamFile(t, "hypeshell", customContent)
 
 		var logs []string
 		err := syncLockscreenPamConfigWithDeps(func(msg string) {
@@ -332,21 +332,21 @@ func TestSyncLockscreenPamConfigWithDeps(t *testing.T) {
 			t.Fatalf("syncLockscreenPamConfigWithDeps returned error: %v", err)
 		}
 
-		if got := readFileString(t, env.dankshellPath); got != customContent {
-			t.Fatalf("custom dankshell content changed\ngot:\n%s\nwant:\n%s", got, customContent)
+		if got := readFileString(t, env.hypeshellPath); got != customContent {
+			t.Fatalf("custom hypeshell content changed\ngot:\n%s\nwant:\n%s", got, customContent)
 		}
-		if len(logs) == 0 || !strings.Contains(logs[0], "Custom /etc/pam.d/dankshell found") {
+		if len(logs) == 0 || !strings.Contains(logs[0], "Custom /etc/pam.d/hypeshell found") {
 			t.Fatalf("expected custom-file skip log, got %v", logs)
 		}
 	})
 
-	t.Run("managed dankshell file is rewritten from resolved login stack", func(t *testing.T) {
+	t.Run("managed hypeshell file is rewritten from resolved login stack", func(t *testing.T) {
 		t.Parallel()
 
 		env := newPamTestEnv(t)
 		env.writePamFile(t, "login", "#%PAM-1.0\nauth include system-auth\naccount include system-auth\n")
 		env.writePamFile(t, "system-auth", "auth sufficient pam_unix.so try_first_pass nullok\nauth sufficient pam_u2f.so cue\naccount required pam_access.so\n")
-		env.writePamFile(t, "dankshell", "#%PAM-1.0\n"+LockscreenPamManagedBlockStart+"\nauth required pam_env.so\n"+LockscreenPamManagedBlockEnd+"\n")
+		env.writePamFile(t, "hypeshell", "#%PAM-1.0\n"+LockscreenPamManagedBlockStart+"\nauth required pam_env.so\n"+LockscreenPamManagedBlockEnd+"\n")
 
 		var logs []string
 		err := syncLockscreenPamConfigWithDeps(func(msg string) {
@@ -356,7 +356,7 @@ func TestSyncLockscreenPamConfigWithDeps(t *testing.T) {
 			t.Fatalf("syncLockscreenPamConfigWithDeps returned error: %v", err)
 		}
 
-		output := readFileString(t, env.dankshellPath)
+		output := readFileString(t, env.hypeshellPath)
 		for _, want := range []string{
 			LockscreenPamManagedBlockStart,
 			"auth sufficient pam_unix.so try_first_pass nullok",
@@ -364,13 +364,13 @@ func TestSyncLockscreenPamConfigWithDeps(t *testing.T) {
 			LockscreenPamManagedBlockEnd,
 		} {
 			if !strings.Contains(output, want) {
-				t.Errorf("missing expected string %q in rewritten dankshell:\n%s", want, output)
+				t.Errorf("missing expected string %q in rewritten hypeshell:\n%s", want, output)
 			}
 		}
 		if strings.Contains(output, "pam_u2f") {
-			t.Errorf("rewritten dankshell still contains pam_u2f:\n%s", output)
+			t.Errorf("rewritten hypeshell still contains pam_u2f:\n%s", output)
 		}
-		if len(logs) == 0 || !strings.Contains(logs[len(logs)-1], "Created or updated /etc/pam.d/dankshell") {
+		if len(logs) == 0 || !strings.Contains(logs[len(logs)-1], "Created or updated /etc/pam.d/hypeshell") {
 			t.Fatalf("expected success log, got %v", logs)
 		}
 	})
@@ -388,7 +388,7 @@ func TestSyncLockscreenPamConfigWithDeps(t *testing.T) {
 		}
 	})
 
-	t.Run("NixOS remains informational and does not write dankshell", func(t *testing.T) {
+	t.Run("NixOS remains informational and does not write hypeshell", func(t *testing.T) {
 		t.Parallel()
 
 		env := newPamTestEnv(t)
@@ -403,8 +403,8 @@ func TestSyncLockscreenPamConfigWithDeps(t *testing.T) {
 		if len(logs) == 0 || !strings.Contains(logs[0], "NixOS detected") || !strings.Contains(logs[0], "/etc/pam.d/login") {
 			t.Fatalf("expected NixOS informational log mentioning /etc/pam.d/login, got %v", logs)
 		}
-		if _, err := os.Stat(env.dankshellPath); !os.IsNotExist(err) {
-			t.Fatalf("expected no dankshell file to be written on NixOS path, stat err = %v", err)
+		if _, err := os.Stat(env.hypeshellPath); !os.IsNotExist(err) {
+			t.Fatalf("expected no hypeshell file to be written on NixOS path, stat err = %v", err)
 		}
 	})
 }
@@ -425,11 +425,11 @@ func TestSyncLockscreenU2FPamConfigWithDeps(t *testing.T) {
 			t.Fatalf("syncLockscreenU2FPamConfigWithDeps returned error: %v", err)
 		}
 
-		got := readFileString(t, env.dankshellU2fPath)
+		got := readFileString(t, env.hypeshellU2fPath)
 		if got != buildManagedLockscreenU2FPamContent() {
-			t.Fatalf("unexpected managed dankshell-u2f content:\n%s", got)
+			t.Fatalf("unexpected managed hypeshell-u2f content:\n%s", got)
 		}
-		if len(logs) == 0 || !strings.Contains(logs[len(logs)-1], "Created or updated /etc/pam.d/dankshell-u2f") {
+		if len(logs) == 0 || !strings.Contains(logs[len(logs)-1], "Created or updated /etc/pam.d/hypeshell-u2f") {
 			t.Fatalf("expected create log, got %v", logs)
 		}
 	})
@@ -438,21 +438,21 @@ func TestSyncLockscreenU2FPamConfigWithDeps(t *testing.T) {
 		t.Parallel()
 
 		env := newPamTestEnv(t)
-		env.writePamFile(t, "dankshell-u2f", "#%PAM-1.0\n"+LockscreenU2FPamManagedBlockStart+"\nauth required pam_u2f.so old\n"+LockscreenU2FPamManagedBlockEnd+"\n")
+		env.writePamFile(t, "hypeshell-u2f", "#%PAM-1.0\n"+LockscreenU2FPamManagedBlockStart+"\nauth required pam_u2f.so old\n"+LockscreenU2FPamManagedBlockEnd+"\n")
 
 		if err := syncLockscreenU2FPamConfigWithDeps(func(string) {}, "", true, env.deps(false)); err != nil {
 			t.Fatalf("syncLockscreenU2FPamConfigWithDeps returned error: %v", err)
 		}
-		if got := readFileString(t, env.dankshellU2fPath); got != buildManagedLockscreenU2FPamContent() {
-			t.Fatalf("managed dankshell-u2f was not rewritten:\n%s", got)
+		if got := readFileString(t, env.hypeshellU2fPath); got != buildManagedLockscreenU2FPamContent() {
+			t.Fatalf("managed hypeshell-u2f was not rewritten:\n%s", got)
 		}
 	})
 
-	t.Run("disabled removes DMS-managed file", func(t *testing.T) {
+	t.Run("disabled removes HYPE-managed file", func(t *testing.T) {
 		t.Parallel()
 
 		env := newPamTestEnv(t)
-		env.writePamFile(t, "dankshell-u2f", buildManagedLockscreenU2FPamContent())
+		env.writePamFile(t, "hypeshell-u2f", buildManagedLockscreenU2FPamContent())
 
 		var logs []string
 		err := syncLockscreenU2FPamConfigWithDeps(func(msg string) {
@@ -461,10 +461,10 @@ func TestSyncLockscreenU2FPamConfigWithDeps(t *testing.T) {
 		if err != nil {
 			t.Fatalf("syncLockscreenU2FPamConfigWithDeps returned error: %v", err)
 		}
-		if _, err := os.Stat(env.dankshellU2fPath); !os.IsNotExist(err) {
-			t.Fatalf("expected managed dankshell-u2f to be removed, stat err = %v", err)
+		if _, err := os.Stat(env.hypeshellU2fPath); !os.IsNotExist(err) {
+			t.Fatalf("expected managed hypeshell-u2f to be removed, stat err = %v", err)
 		}
-		if len(logs) == 0 || !strings.Contains(logs[len(logs)-1], "Removed DMS-managed /etc/pam.d/dankshell-u2f") {
+		if len(logs) == 0 || !strings.Contains(logs[len(logs)-1], "Removed HYPE-managed /etc/pam.d/hypeshell-u2f") {
 			t.Fatalf("expected removal log, got %v", logs)
 		}
 	})
@@ -474,7 +474,7 @@ func TestSyncLockscreenU2FPamConfigWithDeps(t *testing.T) {
 
 		env := newPamTestEnv(t)
 		customContent := "#%PAM-1.0\nauth required pam_u2f.so cue\n"
-		env.writePamFile(t, "dankshell-u2f", customContent)
+		env.writePamFile(t, "hypeshell-u2f", customContent)
 
 		var logs []string
 		err := syncLockscreenU2FPamConfigWithDeps(func(msg string) {
@@ -483,10 +483,10 @@ func TestSyncLockscreenU2FPamConfigWithDeps(t *testing.T) {
 		if err != nil {
 			t.Fatalf("syncLockscreenU2FPamConfigWithDeps returned error: %v", err)
 		}
-		if got := readFileString(t, env.dankshellU2fPath); got != customContent {
-			t.Fatalf("custom dankshell-u2f content changed\ngot:\n%s\nwant:\n%s", got, customContent)
+		if got := readFileString(t, env.hypeshellU2fPath); got != customContent {
+			t.Fatalf("custom hypeshell-u2f content changed\ngot:\n%s\nwant:\n%s", got, customContent)
 		}
-		if len(logs) == 0 || !strings.Contains(logs[0], "Custom /etc/pam.d/dankshell-u2f found") {
+		if len(logs) == 0 || !strings.Contains(logs[0], "Custom /etc/pam.d/hypeshell-u2f found") {
 			t.Fatalf("expected custom-file log, got %v", logs)
 		}
 	})
@@ -568,10 +568,10 @@ func TestRemoveManagedGreeterPamBlockWithDeps(t *testing.T) {
 
 	got := readFileString(t, env.greetdPath)
 	if strings.Contains(got, GreeterPamManagedBlockStart) || strings.Contains(got, legacyGreeterPamFprintComment) {
-		t.Fatalf("managed or legacy DMS auth lines remained in greetd PAM:\n%s", got)
+		t.Fatalf("managed or legacy HYPE auth lines remained in greetd PAM:\n%s", got)
 	}
 	if !strings.Contains(got, "auth include system-auth") {
-		t.Fatalf("expected non-DMS greetd auth lines to remain:\n%s", got)
+		t.Fatalf("expected non-HYPE greetd auth lines to remain:\n%s", got)
 	}
 }
 
@@ -594,11 +594,11 @@ func TestSyncAuthConfigWithDeps(t *testing.T) {
 			t.Fatalf("syncAuthConfigWithDeps returned error: %v", err)
 		}
 
-		if _, err := os.Stat(env.dankshellPath); err != nil {
-			t.Fatalf("expected dankshell to be created: %v", err)
+		if _, err := os.Stat(env.hypeshellPath); err != nil {
+			t.Fatalf("expected hypeshell to be created: %v", err)
 		}
-		if got := readFileString(t, env.dankshellU2fPath); got != buildManagedLockscreenU2FPamContent() {
-			t.Fatalf("unexpected dankshell-u2f content:\n%s", got)
+		if got := readFileString(t, env.hypeshellU2fPath); got != buildManagedLockscreenU2FPamContent() {
+			t.Fatalf("unexpected hypeshell-u2f content:\n%s", got)
 		}
 		if len(logs) == 0 || !strings.Contains(logs[len(logs)-1], "greetd not found") {
 			t.Fatalf("expected greetd skip log, got %v", logs)
@@ -620,12 +620,12 @@ func TestSyncAuthConfigWithDeps(t *testing.T) {
 			t.Fatalf("syncAuthConfigWithDeps returned error: %v", err)
 		}
 
-		dankshell := readFileString(t, env.dankshellPath)
-		if strings.Contains(dankshell, "pam_fprintd") || strings.Contains(dankshell, "pam_u2f") {
-			t.Fatalf("lockscreen PAM should strip fingerprint and U2F modules:\n%s", dankshell)
+		hypeshell := readFileString(t, env.hypeshellPath)
+		if strings.Contains(hypeshell, "pam_fprintd") || strings.Contains(hypeshell, "pam_u2f") {
+			t.Fatalf("lockscreen PAM should strip fingerprint and U2F modules:\n%s", hypeshell)
 		}
-		if _, err := os.Stat(env.dankshellU2fPath); !os.IsNotExist(err) {
-			t.Fatalf("expected dankshell-u2f to remain absent when enableU2f is false, stat err = %v", err)
+		if _, err := os.Stat(env.hypeshellU2fPath); !os.IsNotExist(err) {
+			t.Fatalf("expected hypeshell-u2f to remain absent when enableU2f is false, stat err = %v", err)
 		}
 
 		greetd := readFileString(t, env.greetdPath)
@@ -655,11 +655,11 @@ func TestSyncAuthConfigWithDeps(t *testing.T) {
 			t.Fatalf("syncAuthConfigWithDeps returned error: %v", err)
 		}
 
-		if _, err := os.Stat(env.dankshellPath); !os.IsNotExist(err) {
-			t.Fatalf("expected dankshell to remain absent on NixOS path, stat err = %v", err)
+		if _, err := os.Stat(env.hypeshellPath); !os.IsNotExist(err) {
+			t.Fatalf("expected hypeshell to remain absent on NixOS path, stat err = %v", err)
 		}
-		if _, err := os.Stat(env.dankshellU2fPath); !os.IsNotExist(err) {
-			t.Fatalf("expected dankshell-u2f to remain absent on NixOS path, stat err = %v", err)
+		if _, err := os.Stat(env.hypeshellU2fPath); !os.IsNotExist(err) {
+			t.Fatalf("expected hypeshell-u2f to remain absent on NixOS path, stat err = %v", err)
 		}
 		if got := readFileString(t, env.greetdPath); got != originalGreetd {
 			t.Fatalf("expected greetd PAM to remain unchanged on NixOS path\ngot:\n%s\nwant:\n%s", got, originalGreetd)

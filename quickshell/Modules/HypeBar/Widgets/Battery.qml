@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import Quickshell.Services.UPower
 import qs.Common
 import qs.Modules.Plugins
@@ -44,7 +44,7 @@ BasePill {
                 anchors.centerIn: parent
                 spacing: 1
 
-                DankIcon {
+                HypeIcon {
                     name: BatteryService.getBatteryIcon()
                     size: Theme.barIconSize(battery.barThickness, undefined, battery.barConfig?.maximizeWidgetIcons, root.barConfig?.iconScale)
                     color: {
@@ -80,7 +80,7 @@ BasePill {
                 anchors.centerIn: parent
                 spacing: (barConfig?.noBackground ?? false) ? 1 : 2
 
-                DankIcon {
+                HypeIcon {
                     name: BatteryService.getBatteryIcon()
                     size: Theme.barIconSize(battery.barThickness, -4, battery.barConfig?.maximizeWidgetIcons, root.barConfig?.iconScale)
                     color: {

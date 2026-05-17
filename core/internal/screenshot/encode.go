@@ -1,4 +1,4 @@
-package screenshot
+﻿package screenshot
 
 import (
 	"bufio"
@@ -99,7 +99,7 @@ func GenerateFilename(format Format) string {
 }
 
 func GetOutputDir() string {
-	if dir := os.Getenv("DMS_SCREENSHOT_DIR"); dir != "" {
+	if dir := os.Getenv("HYPE_SCREENSHOT_DIR"); dir != "" {
 		return dir
 	}
 

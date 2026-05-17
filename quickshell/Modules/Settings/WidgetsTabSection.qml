@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import QtQuick.Controls
 import qs.Common
 import qs.Widgets
@@ -14,7 +14,7 @@ Column {
     property string titleIcon: "widgets"
     property string sectionId: ""
 
-    DankTooltipV2 {
+    HypeTooltipV2 {
         id: sharedTooltip
     }
 
@@ -56,7 +56,7 @@ Column {
     Row {
         spacing: Theme.spacingM
 
-        DankIcon {
+        HypeIcon {
             name: root.titleIcon
             size: Theme.iconSize
             color: Theme.primary
@@ -101,7 +101,7 @@ Column {
                     border.color: Qt.rgba(Theme.outline.r, Theme.outline.g, Theme.outline.b, 0.2)
                     border.width: 0
 
-                    DankIcon {
+                    HypeIcon {
                         name: "drag_indicator"
                         size: Theme.iconSize - 4
                         color: Theme.outline
@@ -111,7 +111,7 @@ Column {
                         opacity: 0.8
                     }
 
-                    DankIcon {
+                    HypeIcon {
                         name: modelData.icon
                         size: Theme.iconSize
                         color: modelData.enabled ? Theme.primary : Theme.outline
@@ -165,7 +165,7 @@ Column {
                         anchors.verticalCenter: parent.verticalCenter
                         spacing: Theme.spacingXS
 
-                        DankActionButton {
+                        HypeActionButton {
                             id: gpuMenuButton
                             visible: modelData.id === "gpuTemp"
                             buttonSize: 32
@@ -203,7 +203,7 @@ Column {
                             width: 120
                             height: 32
                             visible: modelData.id === "diskUsage"
-                            DankDropdown {
+                            HypeDropdown {
                                 id: diskMountDropdown
                                 anchors.fill: parent
                                 currentValue: {
@@ -231,7 +231,7 @@ Column {
                             }
                         }
 
-                        DankActionButton {
+                        HypeActionButton {
                             id: diskMenuButton
                             visible: modelData.id === "diskUsage"
                             buttonSize: 32
@@ -264,7 +264,7 @@ Column {
                             height: 32
                             visible: modelData.warning !== undefined && modelData.warning !== ""
 
-                            DankIcon {
+                            HypeIcon {
                                 name: "warning"
                                 size: 20
                                 color: Theme.error
@@ -316,7 +316,7 @@ Column {
                             }
                         }
 
-                        DankActionButton {
+                        HypeActionButton {
                             id: minimumWidthButton
                             buttonSize: 28
                             visible: modelData.id === "cpuUsage" || modelData.id === "memUsage" || modelData.id === "cpuTemp" || modelData.id === "gpuTemp"
@@ -337,7 +337,7 @@ Column {
                             }
                         }
 
-                        DankActionButton {
+                        HypeActionButton {
                             id: hideWhenIdleButton
                             buttonSize: 28
                             visible: modelData.id === "systemUpdate"
@@ -356,7 +356,7 @@ Column {
                             }
                         }
 
-                        DankActionButton {
+                        HypeActionButton {
                             id: memMenuButton
                             visible: modelData.id === "memUsage"
                             buttonSize: 32
@@ -390,7 +390,7 @@ Column {
                             }
                         }
 
-                        DankActionButton {
+                        HypeActionButton {
                             id: musicMenuButton
                             visible: modelData.id === "music"
                             buttonSize: 32
@@ -423,7 +423,7 @@ Column {
                             }
                         }
 
-                        DankActionButton {
+                        HypeActionButton {
                             id: runningAppsMenuButton
                             visible: modelData.id === "runningApps"
                             buttonSize: 32
@@ -460,7 +460,7 @@ Column {
                             spacing: Theme.spacingXS
                             visible: modelData.id === "clock" || modelData.id === "focusedWindow" || modelData.id === "keyboard_layout_name" || modelData.id === "appsDock" || modelData.id === "systemTray"
 
-                            DankActionButton {
+                            HypeActionButton {
                                 id: compactModeButton
                                 buttonSize: 28
                                 visible: modelData.id === "clock" || modelData.id === "focusedWindow" || modelData.id === "keyboard_layout_name"
@@ -531,7 +531,7 @@ Column {
                                 }
                             }
 
-                            DankActionButton {
+                            HypeActionButton {
                                 id: appsDockMenuButton
                                 buttonSize: 32
                                 visible: modelData.id === "appsDock"
@@ -564,7 +564,7 @@ Column {
                                 }
                             }
 
-                            DankActionButton {
+                            HypeActionButton {
                                 id: trayMenuButton
                                 buttonSize: 32
                                 visible: modelData.id === "systemTray"
@@ -628,7 +628,7 @@ Column {
                             }
                         }
 
-                        DankActionButton {
+                        HypeActionButton {
                             id: ccMenuButton
                             visible: modelData.id === "controlCenterButton"
                             buttonSize: 32
@@ -663,7 +663,7 @@ Column {
                             }
                         }
 
-                        DankActionButton {
+                        HypeActionButton {
                             id: privacyMenuButton
                             visible: modelData.id === "privacyIndicator"
                             buttonSize: 32
@@ -697,7 +697,7 @@ Column {
                             }
                         }
 
-                        DankActionButton {
+                        HypeActionButton {
                             id: visibilityButton
                             visible: modelData.id !== "spacer"
                             buttonSize: 32
@@ -721,7 +721,7 @@ Column {
                             spacing: Theme.spacingXS
                             anchors.verticalCenter: parent.verticalCenter
 
-                            DankActionButton {
+                            HypeActionButton {
                                 buttonSize: 24
                                 iconName: "remove"
                                 iconSize: 14
@@ -740,7 +740,7 @@ Column {
                                 anchors.verticalCenter: parent.verticalCenter
                             }
 
-                            DankActionButton {
+                            HypeActionButton {
                                 buttonSize: 24
                                 iconName: "add"
                                 iconSize: 14
@@ -753,7 +753,7 @@ Column {
                             }
                         }
 
-                        DankActionButton {
+                        HypeActionButton {
                             buttonSize: 32
                             iconName: "close"
                             iconSize: 18
@@ -888,7 +888,7 @@ Column {
                         anchors.verticalCenter: parent.verticalCenter
                         spacing: Theme.spacingS
 
-                        DankIcon {
+                        HypeIcon {
                             name: "swap_horiz"
                             size: 16
                             color: Theme.surfaceText
@@ -904,7 +904,7 @@ Column {
                         }
                     }
 
-                    DankToggle {
+                    HypeToggle {
                         id: swapToggle
                         anchors.right: parent.right
                         anchors.rightMargin: Theme.spacingS
@@ -941,7 +941,7 @@ Column {
                         anchors.verticalCenter: parent.verticalCenter
                         spacing: Theme.spacingS
 
-                        DankIcon {
+                        HypeIcon {
                             name: "straighten"
                             size: 16
                             color: Theme.surfaceText
@@ -957,7 +957,7 @@ Column {
                         }
                     }
 
-                    DankToggle {
+                    HypeToggle {
                         id: gbToggle
                         anchors.right: parent.right
                         anchors.rightMargin: Theme.spacingS
@@ -1026,7 +1026,7 @@ Column {
                         anchors.verticalCenter: parent.verticalCenter
                         spacing: Theme.spacingS
 
-                        DankIcon {
+                        HypeIcon {
                             name: "arrow_selector_tool"
                             size: 16
                             color: Theme.surfaceText
@@ -1042,7 +1042,7 @@ Column {
                         }
                     }
 
-                    DankToggle {
+                    HypeToggle {
                         id: trayOverflowToggle
                         anchors.right: parent.right
                         anchors.rightMargin: Theme.spacingS
@@ -1156,7 +1156,7 @@ Column {
                             anchors.verticalCenter: parent.verticalCenter
                             spacing: Theme.spacingS
 
-                            DankIcon {
+                            HypeIcon {
                                 name: modelData.icon
                                 size: 16
                                 color: isSelected() ? Theme.primary : Theme.surfaceText
@@ -1172,7 +1172,7 @@ Column {
                             }
                         }
 
-                        DankIcon {
+                        HypeIcon {
                             anchors.right: parent.right
                             anchors.rightMargin: Theme.spacingS
                             anchors.verticalCenter: parent.verticalCenter
@@ -1609,7 +1609,7 @@ Column {
                                                 height: 16
                                                 anchors.verticalCenter: parent.verticalCenter
 
-                                                DankIcon {
+                                                HypeIcon {
                                                     anchors.centerIn: parent
                                                     name: "drag_indicator"
                                                     size: 16
@@ -1649,7 +1649,7 @@ Column {
                                                 }
                                             }
 
-                                            DankIcon {
+                                            HypeIcon {
                                                 name: rowData.icon
                                                 size: 16
                                                 color: Theme.surfaceText
@@ -1665,7 +1665,7 @@ Column {
                                             }
                                         }
 
-                                        DankToggle {
+                                        HypeToggle {
                                             id: toggle
                                             anchors.right: parent.right
                                             anchors.rightMargin: Theme.spacingS
@@ -1783,7 +1783,7 @@ Column {
                         anchors.verticalCenter: parent.verticalCenter
                         spacing: Theme.spacingS
 
-                        DankIcon {
+                        HypeIcon {
                             name: "mic"
                             size: 16
                             color: Theme.surfaceText
@@ -1799,7 +1799,7 @@ Column {
                         }
                     }
 
-                    DankToggle {
+                    HypeToggle {
                         id: micToggle
                         anchors.right: parent.right
                         anchors.rightMargin: Theme.spacingS
@@ -1835,7 +1835,7 @@ Column {
                         anchors.verticalCenter: parent.verticalCenter
                         spacing: Theme.spacingS
 
-                        DankIcon {
+                        HypeIcon {
                             name: "camera_video"
                             size: 16
                             color: Theme.surfaceText
@@ -1851,7 +1851,7 @@ Column {
                         }
                     }
 
-                    DankToggle {
+                    HypeToggle {
                         id: cameraToggle
                         anchors.right: parent.right
                         anchors.rightMargin: Theme.spacingS
@@ -1887,7 +1887,7 @@ Column {
                         anchors.verticalCenter: parent.verticalCenter
                         spacing: Theme.spacingS
 
-                        DankIcon {
+                        HypeIcon {
                             name: "screen_share"
                             size: 16
                             color: Theme.surfaceText
@@ -1903,7 +1903,7 @@ Column {
                         }
                     }
 
-                    DankToggle {
+                    HypeToggle {
                         id: screenshareToggle
                         anchors.right: parent.right
                         anchors.rightMargin: Theme.spacingS
@@ -1984,7 +1984,7 @@ Column {
                             anchors.verticalCenter: parent.verticalCenter
                             spacing: Theme.spacingS
 
-                            DankIcon {
+                            HypeIcon {
                                 name: "memory"
                                 size: 18
                                 color: isSelected ? Theme.primary : Theme.surfaceText
@@ -2012,7 +2012,7 @@ Column {
                             }
                         }
 
-                        DankIcon {
+                        HypeIcon {
                             id: checkIcon
                             anchors.right: parent.right
                             anchors.rightMargin: Theme.spacingS
@@ -2112,7 +2112,7 @@ Column {
                             anchors.verticalCenter: parent.verticalCenter
                             spacing: Theme.spacingS
 
-                            DankIcon {
+                            HypeIcon {
                                 name: modelData.icon
                                 size: 18
                                 color: isSelected() ? Theme.primary : Theme.surfaceText
@@ -2128,7 +2128,7 @@ Column {
                             }
                         }
 
-                        DankIcon {
+                        HypeIcon {
                             anchors.right: parent.right
                             anchors.rightMargin: Theme.spacingS
                             anchors.verticalCenter: parent.verticalCenter
@@ -2213,7 +2213,7 @@ Column {
                         anchors.verticalCenter: parent.verticalCenter
                         spacing: Theme.spacingS
 
-                        DankIcon {
+                        HypeIcon {
                             name: "zoom_in"
                             size: 16
                             color: Theme.surfaceText
@@ -2228,7 +2228,7 @@ Column {
                         }
                     }
 
-                    DankToggle {
+                    HypeToggle {
                         id: raCompactToggle
                         anchors.right: parent.right
                         anchors.rightMargin: Theme.spacingS
@@ -2265,7 +2265,7 @@ Column {
                         anchors.verticalCenter: parent.verticalCenter
                         spacing: Theme.spacingS
 
-                        DankIcon {
+                        HypeIcon {
                             name: "apps"
                             size: 16
                             color: Theme.surfaceText
@@ -2280,7 +2280,7 @@ Column {
                         }
                     }
 
-                    DankToggle {
+                    HypeToggle {
                         id: raGroupToggle
                         anchors.right: parent.right
                         anchors.rightMargin: Theme.spacingS
@@ -2317,7 +2317,7 @@ Column {
                         anchors.verticalCenter: parent.verticalCenter
                         spacing: Theme.spacingS
 
-                        DankIcon {
+                        HypeIcon {
                             name: "workspaces"
                             size: 16
                             color: Theme.surfaceText
@@ -2332,7 +2332,7 @@ Column {
                         }
                     }
 
-                    DankToggle {
+                    HypeToggle {
                         id: raWorkspaceToggle
                         anchors.right: parent.right
                         anchors.rightMargin: Theme.spacingS
@@ -2369,7 +2369,7 @@ Column {
                         anchors.verticalCenter: parent.verticalCenter
                         spacing: Theme.spacingS
 
-                        DankIcon {
+                        HypeIcon {
                             name: "monitor"
                             size: 16
                             color: Theme.surfaceText
@@ -2384,7 +2384,7 @@ Column {
                         }
                     }
 
-                    DankToggle {
+                    HypeToggle {
                         id: raDisplayToggle
                         anchors.right: parent.right
                         anchors.rightMargin: Theme.spacingS
@@ -2479,7 +2479,7 @@ Column {
                             spacing: Theme.spacingXS
                             anchors.verticalCenter: parent.verticalCenter
 
-                            DankActionButton {
+                            HypeActionButton {
                                 buttonSize: 24
                                 iconName: "remove"
                                 iconSize: 14
@@ -2503,7 +2503,7 @@ Column {
                                 width: 30
                             }
 
-                            DankActionButton {
+                            HypeActionButton {
                                 buttonSize: 24
                                 iconName: "add"
                                 iconSize: 14
@@ -2533,7 +2533,7 @@ Column {
                             spacing: Theme.spacingXS
                             anchors.verticalCenter: parent.verticalCenter
 
-                            DankActionButton {
+                            HypeActionButton {
                                 buttonSize: 24
                                 iconName: "remove"
                                 iconSize: 14
@@ -2557,7 +2557,7 @@ Column {
                                 width: 30
                             }
 
-                            DankActionButton {
+                            HypeActionButton {
                                 buttonSize: 24
                                 iconName: "add"
                                 iconSize: 14
@@ -2590,7 +2590,7 @@ Column {
                             anchors.verticalCenter: parent.verticalCenter
                             spacing: Theme.spacingS
 
-                            DankIcon {
+                            HypeIcon {
                                 name: "notifications"
                                 size: 16
                                 color: Theme.surfaceText
@@ -2606,7 +2606,7 @@ Column {
                             }
                         }
 
-                        DankToggle {
+                        HypeToggle {
                             id: badgeToggle
                             anchors.right: parent.right
                             anchors.rightMargin: Theme.spacingS
@@ -2659,7 +2659,7 @@ Column {
                             anchors.verticalCenter: parent.verticalCenter
                             spacing: Theme.spacingS
 
-                            DankIcon {
+                            HypeIcon {
                                 name: "visibility_off"
                                 size: 16
                                 color: Theme.surfaceText
@@ -2675,7 +2675,7 @@ Column {
                             }
                         }
 
-                        DankToggle {
+                        HypeToggle {
                             id: hideIndicatorsToggle
                             anchors.right: parent.right
                             anchors.rightMargin: Theme.spacingS
@@ -2712,7 +2712,7 @@ Column {
                             anchors.verticalCenter: parent.verticalCenter
                             spacing: Theme.spacingS
 
-                            DankIcon {
+                            HypeIcon {
                                 name: "palette"
                                 size: 16
                                 color: Theme.surfaceText
@@ -2728,7 +2728,7 @@ Column {
                             }
                         }
 
-                        DankToggle {
+                        HypeToggle {
                             id: colorizeActiveToggle
                             anchors.right: parent.right
                             anchors.rightMargin: Theme.spacingS
@@ -2767,7 +2767,7 @@ Column {
                             width: 90
                         }
 
-                        DankButtonGroup {
+                        HypeButtonGroup {
                             anchors.verticalCenter: parent.verticalCenter
                             model: ["pri", "sec", "pc", "err", "ok"]
                             buttonHeight: 22
@@ -2811,7 +2811,7 @@ Column {
                             anchors.verticalCenter: parent.verticalCenter
                             spacing: Theme.spacingS
 
-                            DankIcon {
+                            HypeIcon {
                                 name: "zoom_in"
                                 size: 16
                                 color: Theme.surfaceText
@@ -2827,7 +2827,7 @@ Column {
                             }
                         }
 
-                        DankToggle {
+                        HypeToggle {
                             id: enlargeOnHoverToggle
                             anchors.right: parent.right
                             anchors.rightMargin: Theme.spacingS
@@ -2869,7 +2869,7 @@ Column {
                             spacing: Theme.spacingXS
                             anchors.verticalCenter: parent.verticalCenter
 
-                            DankActionButton {
+                            HypeActionButton {
                                 buttonSize: 24
                                 iconName: "remove"
                                 iconSize: 14
@@ -2890,7 +2890,7 @@ Column {
                                 width: 50
                             }
 
-                            DankActionButton {
+                            HypeActionButton {
                                 buttonSize: 24
                                 iconName: "add"
                                 iconSize: 14
@@ -2920,7 +2920,7 @@ Column {
                             spacing: Theme.spacingXS
                             anchors.verticalCenter: parent.verticalCenter
 
-                            DankActionButton {
+                            HypeActionButton {
                                 buttonSize: 24
                                 iconName: "remove"
                                 iconSize: 14
@@ -2941,7 +2941,7 @@ Column {
                                 width: 50
                             }
 
-                            DankActionButton {
+                            HypeActionButton {
                                 buttonSize: 24
                                 iconName: "add"
                                 iconSize: 14

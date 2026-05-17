@@ -1,4 +1,4 @@
-package ipp
+﻿package ipp
 
 // ipp status codes
 const (
@@ -437,7 +437,7 @@ var (
 		AttributeJobPrinterStateMessage:  TagString,
 		AttributeJobImpressionsCompleted: TagInteger,
 		AttributePrintScaling:            TagKeyword,
-		// IPP Subscription/Notification attributes (added for dankdots)
+		// IPP Subscription/Notification attributes (added for hypedots)
 		"notify-events":           TagKeyword,
 		"notify-pull-method":      TagKeyword,
 		"notify-lease-duration":   TagInteger,

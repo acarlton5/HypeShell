@@ -1,4 +1,4 @@
-package headless
+﻿package headless
 
 import (
 	"strings"
@@ -72,8 +72,8 @@ func TestDepExists(t *testing.T) {
 	dependencies := []deps.Dependency{
 		{Name: "niri", Status: deps.StatusInstalled},
 		{Name: "ghostty", Status: deps.StatusMissing},
-		{Name: "dms (DankMaterialShell)", Status: deps.StatusInstalled},
-		{Name: "dms-greeter", Status: deps.StatusMissing},
+		{Name: "hype (HypeMaterialShell)", Status: deps.StatusInstalled},
+		{Name: "hype-greeter", Status: deps.StatusMissing},
 	}
 
 	tests := []struct {
@@ -82,8 +82,8 @@ func TestDepExists(t *testing.T) {
 		want bool
 	}{
 		{"existing dep", "niri", true},
-		{"existing dep with special chars", "dms (DankMaterialShell)", true},
-		{"existing optional dep", "dms-greeter", true},
+		{"existing dep with special chars", "hype (HypeMaterialShell)", true},
+		{"existing optional dep", "hype-greeter", true},
 		{"non-existing dep", "firefox", false},
 		{"empty name", "", false},
 	}
@@ -102,7 +102,7 @@ func TestNewRunner(t *testing.T) {
 	cfg := Config{
 		Compositor:  "niri",
 		Terminal:    "ghostty",
-		IncludeDeps: []string{"dms-greeter"},
+		IncludeDeps: []string{"hype-greeter"},
 		ExcludeDeps: []string{"some-pkg"},
 		Yes:         true,
 	}
@@ -344,8 +344,8 @@ func TestBuildDisabledItems(t *testing.T) {
 	dependencies := []deps.Dependency{
 		{Name: "niri", Status: deps.StatusInstalled},
 		{Name: "ghostty", Status: deps.StatusMissing},
-		{Name: "dms (DankMaterialShell)", Status: deps.StatusInstalled},
-		{Name: "dms-greeter", Status: deps.StatusMissing},
+		{Name: "hype (HypeMaterialShell)", Status: deps.StatusInstalled},
+		{Name: "hype-greeter", Status: deps.StatusMissing},
 		{Name: "waybar", Status: deps.StatusMissing},
 	}
 
@@ -360,19 +360,19 @@ func TestBuildDisabledItems(t *testing.T) {
 		wantEnabled  []string // dep names that should NOT be in disabledItems (extra check)
 	}{
 		{
-			name:         "no flags set, dms-greeter disabled by default",
-			wantDisabled: []string{"dms-greeter"},
+			name:         "no flags set, hype-greeter disabled by default",
+			wantDisabled: []string{"hype-greeter"},
 			wantEnabled:  []string{"niri", "ghostty", "waybar"},
 		},
 		{
-			name:        "include dms-greeter enables it",
-			includeDeps: []string{"dms-greeter"},
-			wantEnabled: []string{"dms-greeter"},
+			name:        "include hype-greeter enables it",
+			includeDeps: []string{"hype-greeter"},
+			wantEnabled: []string{"hype-greeter"},
 		},
 		{
 			name:         "exclude a regular dep",
 			excludeDeps:  []string{"waybar"},
-			wantDisabled: []string{"dms-greeter", "waybar"},
+			wantDisabled: []string{"hype-greeter", "waybar"},
 		},
 		{
 			name:        "include unknown dep returns error",
@@ -387,24 +387,24 @@ func TestBuildDisabledItems(t *testing.T) {
 			errContains: "--exclude-deps",
 		},
 		{
-			name:        "exclude DMS itself is forbidden",
-			excludeDeps: []string{"dms (DankMaterialShell)"},
+			name:        "exclude HYPE itself is forbidden",
+			excludeDeps: []string{"hype (HypeMaterialShell)"},
 			wantErr:     true,
 			errContains: "cannot exclude required package",
 		},
 		{
 			name:         "include and exclude same dep",
-			includeDeps:  []string{"dms-greeter"},
-			excludeDeps:  []string{"dms-greeter"},
-			wantDisabled: []string{"dms-greeter"},
+			includeDeps:  []string{"hype-greeter"},
+			excludeDeps:  []string{"hype-greeter"},
+			wantDisabled: []string{"hype-greeter"},
 		},
 		{
 			name:        "whitespace entries are skipped",
-			includeDeps: []string{"  ", "dms-greeter"},
-			wantEnabled: []string{"dms-greeter"},
+			includeDeps: []string{"  ", "hype-greeter"},
+			wantEnabled: []string{"hype-greeter"},
 		},
 		{
-			name: "no dms-greeter in deps, nothing disabled by default",
+			name: "no hype-greeter in deps, nothing disabled by default",
 			deps: []deps.Dependency{
 				{Name: "niri", Status: deps.StatusInstalled},
 			},

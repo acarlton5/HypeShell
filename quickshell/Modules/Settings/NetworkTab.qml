@@ -1,4 +1,4 @@
-pragma ComponentBehavior: Bound
+﻿pragma ComponentBehavior: Bound
 
 import QtQuick
 import QtQuick.Layouts
@@ -92,7 +92,7 @@ Item {
         id: forgetNetworkConfirm
     }
 
-    DankFlickable {
+    HypeFlickable {
         anchors.fill: parent
         clip: true
         contentHeight: mainColumn.height + Theme.spacingXL
@@ -123,7 +123,7 @@ Item {
                         width: parent.width
                         spacing: Theme.spacingM
 
-                        DankIcon {
+                        HypeIcon {
                             name: "lan"
                             size: Theme.iconSize
                             color: Theme.primary
@@ -255,7 +255,7 @@ Item {
                             height: 1
                         }
 
-                        DankButtonGroup {
+                        HypeButtonGroup {
                             id: preferenceButtons
                             model: [I18n.tr("Auto"), I18n.tr("Ethernet"), I18n.tr("WiFi")]
                             currentIndex: {
@@ -312,7 +312,7 @@ Item {
                         width: parent.width
                         spacing: Theme.spacingM
 
-                        DankIcon {
+                        HypeIcon {
                             name: "settings_ethernet"
                             size: Theme.iconSize
                             color: Theme.primary
@@ -413,7 +413,7 @@ Item {
                                             anchors.rightMargin: Theme.spacingS
                                             spacing: Theme.spacingS
 
-                                            DankIcon {
+                                            HypeIcon {
                                                 name: "lan"
                                                 size: 20
                                                 color: isConnected ? Theme.primary : Theme.surfaceText
@@ -487,7 +487,7 @@ Item {
                                                 color: ethExpandBtn.containsMouse ? Theme.surfacePressed : "transparent"
                                                 visible: isConnected
 
-                                                DankIcon {
+                                                HypeIcon {
                                                     anchors.centerIn: parent
                                                     name: isExpanded ? "expand_less" : "expand_more"
                                                     size: 18
@@ -517,7 +517,7 @@ Item {
                                                 color: ethDisconnectBtn.containsMouse ? Theme.errorHover : "transparent"
                                                 visible: isConnected
 
-                                                DankIcon {
+                                                HypeIcon {
                                                     anchors.centerIn: parent
                                                     name: "link_off"
                                                     size: 18
@@ -647,7 +647,7 @@ Item {
                                                         anchors.centerIn: parent
                                                         spacing: Theme.spacingS
 
-                                                        DankIcon {
+                                                        HypeIcon {
                                                             id: wiredLoadIcon
                                                             name: "sync"
                                                             size: 16
@@ -728,7 +728,7 @@ Item {
                                     anchors.verticalCenter: parent.verticalCenter
                                     spacing: Theme.spacingS
 
-                                    DankIcon {
+                                    HypeIcon {
                                         name: "lan"
                                         size: 20
                                         color: modelData.isActive ? Theme.primary : Theme.surfaceText
@@ -790,7 +790,7 @@ Item {
                         width: parent.width
                         spacing: Theme.spacingM
 
-                        DankIcon {
+                        HypeIcon {
                             name: NetworkService.wifiEnabled ? "wifi" : "wifi_off"
                             size: Theme.iconSize
                             color: Theme.primary
@@ -833,21 +833,21 @@ Item {
                             anchors.verticalCenter: parent.verticalCenter
                             spacing: Theme.spacingS
 
-                            DankActionButton {
+                            HypeActionButton {
                                 iconName: "wifi_find"
                                 buttonSize: 32
                                 visible: NetworkService.backend === "networkmanager" && NetworkService.wifiEnabled && !NetworkService.wifiToggling
                                 onClicked: PopoutService.showHiddenNetworkModal()
                             }
 
-                            DankActionButton {
+                            HypeActionButton {
                                 iconName: "refresh"
                                 buttonSize: 32
                                 visible: NetworkService.wifiEnabled && !NetworkService.wifiToggling && !NetworkService.isScanning
                                 onClicked: NetworkService.scanWifi()
                             }
 
-                            DankToggle {
+                            HypeToggle {
                                 checked: NetworkService.wifiEnabled
                                 enabled: !NetworkService.wifiToggling
                                 onToggled: NetworkService.toggleWifiRadio()
@@ -872,7 +872,7 @@ Item {
                             height: 1
                         }
 
-                        DankDropdown {
+                        HypeDropdown {
                             id: wifiDeviceDropdown
                             dropdownWidth: 150
                             popupWidth: 180
@@ -969,7 +969,7 @@ Item {
                                     spacing: Theme.spacingXS
                                     anchors.verticalCenter: parent.verticalCenter
 
-                                    DankIcon {
+                                    HypeIcon {
                                         name: {
                                             const s = NetworkService.wifiSignalStrength;
                                             if (s >= 50)
@@ -1032,7 +1032,7 @@ Item {
                                 anchors.centerIn: parent
                                 spacing: Theme.spacingS
 
-                                DankIcon {
+                                HypeIcon {
                                     id: scanningIcon
                                     name: "wifi_find"
                                     size: 32
@@ -1139,7 +1139,7 @@ Item {
                                                 anchors.rightMargin: Theme.spacingS
                                                 spacing: Theme.spacingS
 
-                                                DankIcon {
+                                                HypeIcon {
                                                     name: {
                                                         const s = modelData.signal || 0;
                                                         if (s >= 50)
@@ -1170,7 +1170,7 @@ Item {
                                                             elide: Text.ElideRight
                                                         }
 
-                                                        DankIcon {
+                                                        HypeIcon {
                                                             name: "push_pin"
                                                             size: 14
                                                             color: Theme.primary
@@ -1178,7 +1178,7 @@ Item {
                                                             anchors.verticalCenter: parent.verticalCenter
                                                         }
 
-                                                        DankIcon {
+                                                        HypeIcon {
                                                             name: "visibility_off"
                                                             size: 14
                                                             color: Theme.surfaceVariantText
@@ -1254,7 +1254,7 @@ Item {
                                                     color: wifiExpandBtn.containsMouse ? Theme.surfacePressed : "transparent"
                                                     visible: isConnected || modelData.saved
 
-                                                    DankIcon {
+                                                    HypeIcon {
                                                         anchors.centerIn: parent
                                                         name: isExpanded ? "expand_less" : "expand_more"
                                                         size: 18
@@ -1277,7 +1277,7 @@ Item {
                                                     }
                                                 }
 
-                                                DankActionButton {
+                                                HypeActionButton {
                                                     iconName: "qr_code"
                                                     buttonSize: 28
                                                     visible: modelData.secured && modelData.saved
@@ -1286,7 +1286,7 @@ Item {
                                                     }
                                                 }
 
-                                                DankActionButton {
+                                                HypeActionButton {
                                                     iconName: isPinned ? "push_pin" : "push_pin"
                                                     buttonSize: 28
                                                     iconColor: isPinned ? Theme.primary : Theme.surfaceVariantText
@@ -1295,7 +1295,7 @@ Item {
                                                     }
                                                 }
 
-                                                DankActionButton {
+                                                HypeActionButton {
                                                     iconName: "delete"
                                                     buttonSize: 28
                                                     iconColor: Theme.error
@@ -1360,7 +1360,7 @@ Item {
                                                             anchors.centerIn: parent
                                                             spacing: Theme.spacingS
 
-                                                            DankIcon {
+                                                            HypeIcon {
                                                                 id: wifiInfoLoadIcon
                                                                 name: "sync"
                                                                 size: 16
@@ -1480,9 +1480,9 @@ Item {
 
                                                     Row {
                                                         spacing: Theme.spacingS
-                                                        visible: (modelData.saved || isConnected) && DMSService.apiVersion > 13
+                                                        visible: (modelData.saved || isConnected) && HYPEService.apiVersion > 13
 
-                                                        DankToggle {
+                                                        HypeToggle {
                                                             id: autoconnectToggle
                                                             text: I18n.tr("Autoconnect")
                                                             checked: modelData.autoconnect || false
@@ -1507,7 +1507,7 @@ Item {
                 height: vpnSection.implicitHeight + Theme.spacingL * 2
                 radius: Theme.cornerRadius
                 color: Theme.surfaceContainerHigh
-                visible: DMSNetworkService.vpnAvailable
+                visible: HYPENetworkService.vpnAvailable
 
                 Column {
                     id: vpnSection
@@ -1520,8 +1520,8 @@ Item {
                         width: parent.width
                         spacing: Theme.spacingM
 
-                        DankIcon {
-                            name: DMSNetworkService.connected ? "vpn_lock" : "vpn_key_off"
+                        HypeIcon {
+                            name: HYPENetworkService.connected ? "vpn_lock" : "vpn_key_off"
                             size: Theme.iconSize
                             color: Theme.primary
                             anchors.verticalCenter: parent.verticalCenter
@@ -1543,15 +1543,15 @@ Item {
 
                             StyledText {
                                 text: {
-                                    if (!DMSNetworkService.connected)
+                                    if (!HYPENetworkService.connected)
                                         return I18n.tr("Disconnected");
-                                    const names = DMSNetworkService.activeNames || [];
+                                    const names = HYPENetworkService.activeNames || [];
                                     if (names.length <= 1)
                                         return names[0] || I18n.tr("Connected");
                                     return names[0] + " +" + (names.length - 1);
                                 }
                                 font.pixelSize: Theme.fontSizeSmall
-                                color: DMSNetworkService.connected ? Theme.primary : Theme.surfaceVariantText
+                                color: HYPENetworkService.connected ? Theme.primary : Theme.surfaceVariantText
                                 width: parent.width
                                 horizontalAlignment: Text.AlignLeft
                             }
@@ -1574,7 +1574,7 @@ Item {
                                     anchors.centerIn: parent
                                     spacing: Theme.spacingXS
 
-                                    DankIcon {
+                                    HypeIcon {
                                         name: VPNService.importing ? "sync" : "add"
                                         size: Theme.fontSizeSmall
                                         color: Theme.primary
@@ -1603,15 +1603,15 @@ Item {
                                 radius: 14
                                 width: disconnectAllRow.width + Theme.spacingM * 2
                                 color: disconnectAllArea.containsMouse ? Theme.errorHover : Theme.surfaceLight
-                                visible: DMSNetworkService.connected
-                                opacity: DMSNetworkService.isBusy ? 0.5 : 1.0
+                                visible: HYPENetworkService.connected
+                                opacity: HYPENetworkService.isBusy ? 0.5 : 1.0
 
                                 Row {
                                     id: disconnectAllRow
                                     anchors.centerIn: parent
                                     spacing: Theme.spacingXS
 
-                                    DankIcon {
+                                    HypeIcon {
                                         name: "link_off"
                                         size: Theme.fontSizeSmall
                                         color: Theme.surfaceText
@@ -1629,9 +1629,9 @@ Item {
                                     id: disconnectAllArea
                                     anchors.fill: parent
                                     hoverEnabled: true
-                                    cursorShape: DMSNetworkService.isBusy ? Qt.BusyCursor : Qt.PointingHandCursor
-                                    enabled: !DMSNetworkService.isBusy
-                                    onClicked: DMSNetworkService.disconnectAllActive()
+                                    cursorShape: HYPENetworkService.isBusy ? Qt.BusyCursor : Qt.PointingHandCursor
+                                    enabled: !HYPENetworkService.isBusy
+                                    onClicked: HYPENetworkService.disconnectAllActive()
                                 }
                             }
                         }
@@ -1646,13 +1646,13 @@ Item {
                     Item {
                         width: parent.width
                         height: 100
-                        visible: DMSNetworkService.profiles.length === 0
+                        visible: HYPENetworkService.profiles.length === 0
 
                         Column {
                             anchors.centerIn: parent
                             spacing: Theme.spacingS
 
-                            DankIcon {
+                            HypeIcon {
                                 name: "vpn_key_off"
                                 size: 36
                                 color: Theme.surfaceVariantText
@@ -1678,17 +1678,17 @@ Item {
                     Column {
                         width: parent.width
                         spacing: 4
-                        visible: DMSNetworkService.profiles.length > 0
+                        visible: HYPENetworkService.profiles.length > 0
 
                         Repeater {
-                            model: DMSNetworkService.profiles
+                            model: HYPENetworkService.profiles
 
                             delegate: Rectangle {
                                 id: vpnProfileRow
                                 required property var modelData
                                 required property int index
 
-                                readonly property bool isActive: DMSNetworkService.isActiveUuid(modelData.uuid)
+                                readonly property bool isActive: HYPENetworkService.isActiveUuid(modelData.uuid)
                                 readonly property bool isTransient: !!modelData.transient
                                 readonly property bool canExpand: modelData.canExpand !== false
                                 readonly property bool canDelete: modelData.canDelete !== false
@@ -1701,7 +1701,7 @@ Item {
                                 color: vpnRowArea.containsMouse ? Theme.primaryHoverLight : (isActive ? Theme.primaryPressed : Theme.surfaceLight)
                                 border.width: isActive ? 2 : 0
                                 border.color: Theme.primary
-                                opacity: DMSNetworkService.isBusy ? 0.6 : 1.0
+                                opacity: HYPENetworkService.isBusy ? 0.6 : 1.0
                                 clip: true
 
                                 Behavior on height {
@@ -1715,9 +1715,9 @@ Item {
                                     id: vpnRowArea
                                     anchors.fill: parent
                                     hoverEnabled: true
-                                    cursorShape: DMSNetworkService.isBusy ? Qt.BusyCursor : Qt.PointingHandCursor
-                                    enabled: !DMSNetworkService.isBusy
-                                    onClicked: DMSNetworkService.toggle(modelData.uuid)
+                                    cursorShape: HYPENetworkService.isBusy ? Qt.BusyCursor : Qt.PointingHandCursor
+                                    enabled: !HYPENetworkService.isBusy
+                                    onClicked: HYPENetworkService.toggle(modelData.uuid)
                                 }
 
                                 Column {
@@ -1730,7 +1730,7 @@ Item {
                                         height: 56 - Theme.spacingS * 2
                                         spacing: Theme.spacingS
 
-                                        DankIcon {
+                                        HypeIcon {
                                             name: isActive ? "vpn_lock" : "vpn_key_off"
                                             size: 20
                                             color: isActive ? Theme.primary : Theme.surfaceText
@@ -1772,7 +1772,7 @@ Item {
                                             anchors.verticalCenter: parent.verticalCenter
                                             visible: canExpand
 
-                                            DankIcon {
+                                            HypeIcon {
                                                 anchors.centerIn: parent
                                                 name: isExpanded ? "expand_less" : "expand_more"
                                                 size: 18
@@ -1803,7 +1803,7 @@ Item {
                                             anchors.verticalCenter: parent.verticalCenter
                                             visible: canDelete
 
-                                            DankIcon {
+                                            HypeIcon {
                                                 anchors.centerIn: parent
                                                 name: "delete"
                                                 size: 18
@@ -1849,7 +1849,7 @@ Item {
                                                 anchors.centerIn: parent
                                                 spacing: Theme.spacingS
 
-                                                DankIcon {
+                                                HypeIcon {
                                                     id: vpnLoadIcon
                                                     name: "sync"
                                                     size: 16
@@ -1968,7 +1968,7 @@ Item {
                                             }
                                         }
 
-                                        DankToggle {
+                                        HypeToggle {
                                             width: parent.width
                                             text: I18n.tr("Autoconnect")
                                             checked: configData ? (configData.autoconnect || false) : false

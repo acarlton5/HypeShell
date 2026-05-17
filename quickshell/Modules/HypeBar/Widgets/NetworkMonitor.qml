@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import QtQuick.Controls
 import qs.Common
 import qs.Modules.Plugins
@@ -39,7 +39,7 @@ BasePill {
                 spacing: 2
                 visible: root.isVerticalOrientation
 
-                DankIcon {
+                HypeIcon {
                     name: "network_check"
                     size: Theme.barIconSize(root.barThickness, undefined, root.barConfig?.maximizeWidgetIcons, root.barConfig?.iconScale)
                     color: Theme.widgetTextColor
@@ -77,7 +77,7 @@ BasePill {
                 spacing: Theme.spacingS
                 visible: !root.isVerticalOrientation
 
-                DankIcon {
+                HypeIcon {
                     name: "network_check"
                     size: Theme.barIconSize(root.barThickness, undefined, root.barConfig?.maximizeWidgetIcons, root.barConfig?.iconScale)
                     color: Theme.widgetTextColor

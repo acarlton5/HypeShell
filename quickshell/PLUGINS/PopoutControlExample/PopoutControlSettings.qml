@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import qs.Common
 import qs.Widgets
 import qs.Modules.Plugins
@@ -45,8 +45,8 @@ PluginSettings {
                 value: "processList"
             },
             {
-                label: "DankDash",
-                value: "dankDash"
+                label: "HypeDash",
+                value: "hypeDash"
             },
             {
                 label: "Battery Info",

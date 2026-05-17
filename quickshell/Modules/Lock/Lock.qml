@@ -1,4 +1,4 @@
-pragma ComponentBehavior: Bound
+﻿pragma ComponentBehavior: Bound
 
 import QtQuick
 import Quickshell
@@ -49,12 +49,12 @@ Scope {
     }
 
     function notifyLoginctl(lockAction: bool) {
-        if (!SettingsData.loginctlLockIntegration || !DMSService.isConnected)
+        if (!SettingsData.loginctlLockIntegration || !HYPEService.isConnected)
             return;
         if (lockAction)
-            DMSService.lockSession(() => {});
+            HYPEService.lockSession(() => {});
         else
-            DMSService.unlockSession(() => {});
+            HYPEService.unlockSession(() => {});
     }
 
     function lock() {

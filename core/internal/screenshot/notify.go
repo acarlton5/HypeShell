@@ -1,4 +1,4 @@
-package screenshot
+﻿package screenshot
 
 import (
 	"fmt"
@@ -77,7 +77,7 @@ func SendNotification(result NotifyResult) {
 	call := obj.Call(
 		notifyInterface+".Notify",
 		0,
-		"DMS",
+		"HYPE",
 		uint32(0),
 		"",
 		summary,

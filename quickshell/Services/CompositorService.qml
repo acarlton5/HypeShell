@@ -1,4 +1,4 @@
-pragma Singleton
+﻿pragma Singleton
 pragma ComponentBehavior: Bound
 
 import QtQuick
@@ -21,7 +21,7 @@ Singleton {
     property bool isMiracle: false
     property bool isLabwc: false
     property string compositor: "unknown"
-    readonly property bool useHyprlandFocusGrab: isHyprland && Quickshell.env("DMS_HYPRLAND_EXCLUSIVE_FOCUS") !== "1"
+    readonly property bool useHyprlandFocusGrab: isHyprland && Quickshell.env("HYPE_HYPRLAND_EXCLUSIVE_FOCUS") !== "1"
 
     readonly property string hyprlandSignature: Quickshell.env("HYPRLAND_INSTANCE_SIGNATURE")
     readonly property string niriSocket: Quickshell.env("NIRI_SOCKET")
@@ -640,7 +640,7 @@ Singleton {
             return;
         }
 
-        if (DMSService.dmsAvailable) {
+        if (HYPEService.hypeAvailable) {
             Qt.callLater(checkForDwl);
         } else {
             isHyprland = false;
@@ -656,7 +656,7 @@ Singleton {
     }
 
     Connections {
-        target: DMSService
+        target: HYPEService
         function onCapabilitiesReceived() {
             if (!isHyprland && !isNiri && !isDwl && !isLabwc) {
                 checkForDwl();
@@ -665,7 +665,7 @@ Singleton {
     }
 
     function checkForDwl() {
-        if (DMSService.apiVersion >= 12 && DMSService.capabilities.includes("dwl")) {
+        if (HYPEService.apiVersion >= 12 && HYPEService.capabilities.includes("dwl")) {
             isHyprland = false;
             isNiri = false;
             isDwl = true;

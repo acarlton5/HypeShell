@@ -1,4 +1,4 @@
-{
+﻿{
   "%1 Animation Speed": {
     "%1 Animation Speed": "Скорость анимации %1"
   },
@@ -1152,7 +1152,7 @@
     "Choose the border accent color": "Выбрать акцентный цвет рамки"
   },
   "Choose the logo displayed on the launcher button in Hype Bar": {
-    "Choose the logo displayed on the launcher button in Hype Bar": "Выбрать логотип, отображаемый на кнопке запуска приложений в DankBar"
+    "Choose the logo displayed on the launcher button in Hype Bar": "Выбрать логотип, отображаемый на кнопке запуска приложений в HypeBar"
   },
   "Choose where notification popups appear on screen": {
     "Choose where notification popups appear on screen": "Выбрать, где на экране будут отображаться всплывающие уведомления"
@@ -1757,8 +1757,8 @@
   "HypeShell Shortcuts": {
     "HypeShell Shortcuts": "Комбинации клавиш HypeShell"
   },
-  "HypeShell Greeter needs: greetd, dms-greeter. Fingerprint: fprintd, pam_fprintd. Security keys: pam_u2f. Add your user to the greeter group. Authentication changes apply automatically and may open a terminal when sudo authentication is required.": {
-    "HypeShell Greeter needs: greetd, dms-greeter. Fingerprint: fprintd, pam_fprintd. Security keys: pam_u2f. Add your user to the greeter group. Authentication changes apply automatically and may open a terminal when sudo authentication is required.": ""
+  "HypeShell Greeter needs: greetd, hype-greeter. Fingerprint: fprintd, pam_fprintd. Security keys: pam_u2f. Add your user to the greeter group. Authentication changes apply automatically and may open a terminal when sudo authentication is required.": {
+    "HypeShell Greeter needs: greetd, hype-greeter. Fingerprint: fprintd, pam_fprintd. Security keys: pam_u2f. Add your user to the greeter group. Authentication changes apply automatically and may open a terminal when sudo authentication is required.": ""
   },
   "HypeShell out of date": {
     "HypeShell out of date": "HypeShell устарел"
@@ -1769,8 +1769,8 @@
   "HypeShell shell actions (launcher, clipboard, etc.)": {
     "HypeShell shell actions (launcher, clipboard, etc.)": "Действия оболочки HypeShell (лаунчер, буфер обмена и т.д.)"
   },
-  "DMS_SOCKET not available": {
-    "DMS_SOCKET not available": "DMS_SOCKET не доступен"
+  "HYPE_SOCKET not available": {
+    "HYPE_SOCKET not available": "HYPE_SOCKET не доступен"
   },
   "DWL service not available": {
     "DWL service not available": "Служба DWL недоступна"
@@ -1785,7 +1785,7 @@
     "HypeShell": "HypeShell"
   },
   "Hype Bar": {
-    "Hype Bar": "Панель Dank"
+    "Hype Bar": "Панель Hype"
   },
   "Hype Bar": {
     "Hype Bar": "Hype Bar"
@@ -1794,7 +1794,7 @@
     "HypeShell is ready to use": "HypeShell готов к использованию"
   },
   "HypeShell & System Icons (requires restart)": {
-    "HypeShell & System Icons (requires restart)": "DankShell и системные значки (требуется перезапуск)"
+    "HypeShell & System Icons (requires restart)": "HypeShell и системные значки (требуется перезапуск)"
   },
   "Dark Mode": {
     "Dark Mode": "Тёмный режим"
@@ -2252,8 +2252,8 @@
   "Enable a custom override below to set per-bar shadow intensity, opacity, and color.": {
     "Enable a custom override below to set per-bar shadow intensity, opacity, and color.": ""
   },
-  "Enable compositor-targetable blur layer (namespace: dms:blurwallpaper). Requires manual niri configuration.": {
-    "Enable compositor-targetable blur layer (namespace: dms:blurwallpaper). Requires manual niri configuration.": "Включить слой размытия, доступный для композитора (пространство имён: dms:blurwallpaper). Требуется ручная настройка niri."
+  "Enable compositor-targetable blur layer (namespace: hype:blurwallpaper). Requires manual niri configuration.": {
+    "Enable compositor-targetable blur layer (namespace: hype:blurwallpaper). Requires manual niri configuration.": "Включить слой размытия, доступный для композитора (пространство имён: hype:blurwallpaper). Требуется ручная настройка niri."
   },
   "Enable fingerprint at login": {
     "Enable fingerprint at login": ""
@@ -2600,8 +2600,8 @@
   "Failed to ring device": {
     "Failed to ring device": "Не удалось вызвать устройство"
   },
-  "Failed to run 'dms greeter status'. Ensure HypeShell is installed and dms is in PATH.": {
-    "Failed to run 'dms greeter status'. Ensure HypeShell is installed and dms is in PATH.": ""
+  "Failed to run 'hype greeter status'. Ensure HypeShell is installed and hype is in PATH.": {
+    "Failed to run 'hype greeter status'. Ensure HypeShell is installed and hype is in PATH.": ""
   },
   "Failed to save audio config": {
     "Failed to save audio config": "Не удалось сохранить аудиоконфиг"
@@ -5610,10 +5610,10 @@
     "Scale": "Масштаб"
   },
   "Scale Hype Bar font sizes independently": {
-    "Scale Hype Bar font sizes independently": "Изменять размер шрифта DankBar независимо"
+    "Scale Hype Bar font sizes independently": "Изменять размер шрифта HypeBar независимо"
   },
   "Scale Hype Bar icon sizes independently": {
-    "Scale Hype Bar icon sizes independently": "Масштабировать размеры значков DankBar независимо"
+    "Scale Hype Bar icon sizes independently": "Масштабировать размеры значков HypeBar независимо"
   },
   "Scale all font sizes throughout the shell": {
     "Scale all font sizes throughout the shell": "Масштабировать все размеры шрифтов во всей оболочке"
@@ -6539,8 +6539,8 @@
   "Terminal custom additional parameters": {
     "Terminal custom additional parameters": "Пользовательские дополнительные параметры терминала"
   },
-  "Terminal fallback failed. Install a supported terminal emulator or run 'dms auth sync' manually.": {
-    "Terminal fallback failed. Install a supported terminal emulator or run 'dms auth sync' manually.": ""
+  "Terminal fallback failed. Install a supported terminal emulator or run 'hype auth sync' manually.": {
+    "Terminal fallback failed. Install a supported terminal emulator or run 'hype auth sync' manually.": ""
   },
   "Terminal fallback failed. Install one of the supported terminal emulators or run 'HypeShell Greeter sync' manually.": {
     "Terminal fallback failed. Install one of the supported terminal emulators or run 'HypeShell Greeter sync' manually.": ""
@@ -6587,8 +6587,8 @@
   "The 'dgop' tool is required for system monitoring.\nPlease install dgop to use this feature.": {
     "The 'dgop' tool is required for system monitoring.\nPlease install dgop to use this feature.": "Инструмент 'dgop' требуется для системного мониторинга.\nУстановите dgop для использования этой функции."
   },
-  "The DMS_SOCKET environment variable is not set or the socket is unavailable. Automated plugin management requires the DMS_SOCKET.": {
-    "The DMS_SOCKET environment variable is not set or the socket is unavailable. Automated plugin management requires the DMS_SOCKET.": "Переменная окружения DMS_SOCKET не установлена или сокет недоступен. Автоматизированное управление плагинами требует DMS_SOCKET."
+  "The HYPE_SOCKET environment variable is not set or the socket is unavailable. Automated plugin management requires the HYPE_SOCKET.": {
+    "The HYPE_SOCKET environment variable is not set or the socket is unavailable. Automated plugin management requires the HYPE_SOCKET.": "Переменная окружения HYPE_SOCKET не установлена или сокет недоступен. Автоматизированное управление плагинами требует HYPE_SOCKET."
   },
   "The below settings will modify your GTK and Qt settings. If you wish to preserve your current configurations, please back them up (qt5ct.conf|qt6ct.conf and ~/.config/gtk-3.0|gtk-4.0).": {
     "The below settings will modify your GTK and Qt settings. If you wish to preserve your current configurations, please back them up (qt5ct.conf|qt6ct.conf and ~/.config/gtk-3.0|gtk-4.0).": "Приведённые ниже настройки изменят ваши настройки GTK и Qt. Если вы хотите сохранить текущие конфигурации, сделайте их резервную копию (qt5ct.conf|qt6ct.conf и ~/.config/gtk-3.0|gtk-4.0)."
@@ -7490,11 +7490,11 @@
   "HypeShell is a highly customizable, modern desktop shell with a <a href=\"https://m3.material.io/\" style=\"text-decoration:none; color:%1;\">material 3 inspired</a> design.<br /><br/>It is built with <a href=\"https://quickshell.org\" style=\"text-decoration:none; color:%1;\">Quickshell</a>, a QT6 framework for building desktop shells, and <a href=\"https://go.dev\" style=\"text-decoration:none; color:%1;\">Go</a>, a statically typed, compiled programming language.": {
     "HypeShell is a highly customizable, modern desktop shell with a <a href=\"https://m3.material.io/\" style=\"text-decoration:none; color:%1;\">material 3 inspired</a> design.<br /><br/>It is built with <a href=\"https://quickshell.org\" style=\"text-decoration:none; color:%1;\">Quickshell</a>, a QT6 framework for building desktop shells, and <a href=\"https://go.dev\" style=\"text-decoration:none; color:%1;\">Go</a>, a statically typed, compiled programming language.": ""
   },
-  "dms/cursor config exists but is not included. Cursor settings won't apply.": {
-    "dms/cursor config exists but is not included. Cursor settings won't apply.": "конфигурация dms/cursor существует но не включена. Настройки курсора не будут применены."
+  "hype/cursor config exists but is not included. Cursor settings won't apply.": {
+    "hype/cursor config exists but is not included. Cursor settings won't apply.": "конфигурация hype/cursor существует но не включена. Настройки курсора не будут применены."
   },
-  "dms/outputs config exists but is not included in your compositor config. Display changes won't persist.": {
-    "dms/outputs config exists but is not included in your compositor config. Display changes won't persist.": "dms/outputs config существует, но не включён в ваш конфиг композитора. Изменения дисплеев не сохранятся."
+  "hype/outputs config exists but is not included in your compositor config. Display changes won't persist.": {
+    "hype/outputs config exists but is not included in your compositor config. Display changes won't persist.": "hype/outputs config существует, но не включён в ваш конфиг композитора. Изменения дисплеев не сохранятся."
   },
   "e.g., firefox, kitty --title foo": {
     "e.g., firefox, kitty --title foo": "например, firefox, kitty --title foo"
@@ -7553,8 +7553,8 @@
   "niri shortcuts config": {
     "niri shortcuts config": "конфигурация комбинаций клавиш niri"
   },
-  "niri/dms Discord": {
-    "niri/dms Discord": ""
+  "niri/hype Discord": {
+    "niri/hype Discord": ""
   },
   "now": {
     "now": "сейчас"
@@ -7614,7 +7614,7 @@
     "up": "вверх"
   },
   "update HypeShell for NM integration.": {
-    "update HypeShell for NM integration.": "обновите dms для NM интеграции."
+    "update HypeShell for NM integration.": "обновите hype для NM интеграции."
   },
   "v%1 by %2": {
     "v%1 by %2": "v%1 от %2"

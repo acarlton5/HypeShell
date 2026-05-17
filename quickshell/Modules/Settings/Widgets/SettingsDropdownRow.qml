@@ -1,11 +1,11 @@
-pragma ComponentBehavior: Bound
+﻿pragma ComponentBehavior: Bound
 
 import QtQuick
 import qs.Common
 import qs.Services
 import qs.Widgets
 
-DankDropdown {
+HypeDropdown {
     id: root
 
     LayoutMirroring.enabled: I18n.isRtl

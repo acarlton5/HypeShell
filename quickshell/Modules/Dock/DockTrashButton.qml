@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import Quickshell.Widgets
 import qs.Common
 import qs.Services
@@ -126,7 +126,7 @@ Item {
                 visible: status === Image.Ready
             }
 
-            DankIcon {
+            HypeIcon {
                 anchors.centerIn: parent
                 visible: parent.iconPath === "" || trashIcon.status !== Image.Ready
                 name: "delete"

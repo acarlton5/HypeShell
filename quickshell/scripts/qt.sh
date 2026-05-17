@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+﻿#!/usr/bin/env bash
 
 CONFIG_DIR="$1"
 
@@ -10,7 +10,7 @@ fi
 apply_qt_colors() {
     local config_dir="$1"
     local color_scheme_path
-    color_scheme_path="$(dirname "$config_dir")/.local/share/color-schemes/DankMatugen.colors"
+    color_scheme_path="$(dirname "$config_dir")/.local/share/color-schemes/HypeMatugen.colors"
 
     if [ ! -f "$color_scheme_path" ]; then
         echo "Error: Qt color scheme not found at $color_scheme_path" >&2

@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import qs.Common
 import qs.Widgets
 
@@ -59,7 +59,7 @@ Rectangle {
         anchors.rightMargin: Theme.spacingM
         spacing: Theme.spacingM
 
-        DankIcon {
+        HypeIcon {
             name: root.iconName
             size: Theme.iconSize
             color: isActive ? Theme.ccTileActiveText : Theme.ccTileInactiveIcon
@@ -100,7 +100,7 @@ Rectangle {
         }
     }
 
-    DankRipple {
+    HypeRipple {
         id: ripple
         cornerRadius: root.radius
     }

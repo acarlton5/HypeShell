@@ -1,4 +1,4 @@
-pragma Singleton
+﻿pragma Singleton
 pragma ComponentBehavior: Bound
 
 import QtCore
@@ -48,7 +48,7 @@ Singleton {
     }
 
     property var deviceAliases: ({})
-    property string wireplumberConfigPath: Paths.strip(StandardPaths.writableLocation(StandardPaths.ConfigLocation)) + "/wireplumber/wireplumber.conf.d/51-dms-audio-aliases.conf"
+    property string wireplumberConfigPath: Paths.strip(StandardPaths.writableLocation(StandardPaths.ConfigLocation)) + "/wireplumber/wireplumber.conf.d/51-hype-audio-aliases.conf"
     property bool wireplumberReloading: false
 
     readonly property int sinkMaxVolume: {

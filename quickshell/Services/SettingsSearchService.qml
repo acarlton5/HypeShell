@@ -1,4 +1,4 @@
-pragma Singleton
+﻿pragma Singleton
 pragma ComponentBehavior: Bound
 
 import QtQuick
@@ -28,7 +28,7 @@ Singleton {
             "soundsAvailable": () => AudioService.soundsAvailable,
             "cupsAvailable": () => CupsService.cupsAvailable,
             "networkNotLegacy": () => !NetworkService.usingLegacy,
-            "dmsConnected": () => DMSService.isConnected && DMSService.apiVersion >= 23,
+            "hypeConnected": () => HYPEService.isConnected && HYPEService.apiVersion >= 23,
             "matugenAvailable": () => Theme.matugenAvailable
         })
 

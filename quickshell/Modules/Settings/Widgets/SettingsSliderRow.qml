@@ -1,4 +1,4 @@
-pragma ComponentBehavior: Bound
+﻿pragma ComponentBehavior: Bound
 
 import QtQuick
 import qs.Common
@@ -121,7 +121,7 @@ Item {
                 height: 36
                 anchors.verticalCenter: parent.verticalCenter
 
-                DankActionButton {
+                HypeActionButton {
                     id: resetButton
                     anchors.centerIn: parent
                     buttonSize: 36
@@ -139,7 +139,7 @@ Item {
             }
         }
 
-        DankSlider {
+        HypeSlider {
             id: slider
             width: parent.width
             height: 32

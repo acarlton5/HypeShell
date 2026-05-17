@@ -1,4 +1,4 @@
-pragma Singleton
+﻿pragma Singleton
 pragma ComponentBehavior: Bound
 
 import QtCore
@@ -13,7 +13,7 @@ Singleton {
     readonly property var log: Log.scoped("DwlService")
 
     readonly property string configDir: Paths.strip(StandardPaths.writableLocation(StandardPaths.ConfigLocation))
-    readonly property string mangoDmsDir: configDir + "/mango/dms"
+    readonly property string mangoDmsDir: configDir + "/mango/hype"
     readonly property string outputsPath: mangoDmsDir + "/outputs.conf"
     readonly property string layoutPath: mangoDmsDir + "/layout.conf"
     readonly property string cursorPath: mangoDmsDir + "/cursor.conf"
@@ -57,12 +57,12 @@ Singleton {
     }
 
     Connections {
-        target: DMSService
+        target: HYPEService
         function onCapabilitiesReceived() {
             checkCapabilities();
         }
         function onConnectionStateChanged() {
-            if (DMSService.isConnected) {
+            if (HYPEService.isConnected) {
                 checkCapabilities();
             } else {
                 dwlAvailable = false;
@@ -76,7 +76,7 @@ Singleton {
     }
 
     Component.onCompleted: {
-        if (DMSService.dmsAvailable)
+        if (HYPEService.hypeAvailable)
             checkCapabilities();
         if (dwlAvailable)
             refreshOutputScales();
@@ -85,12 +85,12 @@ Singleton {
     }
 
     function checkCapabilities() {
-        if (!DMSService.capabilities || !Array.isArray(DMSService.capabilities)) {
+        if (!HYPEService.capabilities || !Array.isArray(HYPEService.capabilities)) {
             dwlAvailable = false;
             return;
         }
 
-        const hasDwl = DMSService.capabilities.includes("dwl");
+        const hasDwl = HYPEService.capabilities.includes("dwl");
         if (hasDwl && !dwlAvailable) {
             dwlAvailable = true;
             log.info("DWL capability detected");
@@ -102,11 +102,11 @@ Singleton {
     }
 
     function requestState() {
-        if (!DMSService.isConnected || !dwlAvailable) {
+        if (!HYPEService.isConnected || !dwlAvailable) {
             return;
         }
 
-        DMSService.sendRequest("dwl.getState", null, response => {
+        HYPEService.sendRequest("dwl.getState", null, response => {
             if (response.result) {
                 handleStateUpdate(response.result);
             }
@@ -122,11 +122,11 @@ Singleton {
     }
 
     function setTags(outputName, tagmask, toggleTagset) {
-        if (!DMSService.isConnected || !dwlAvailable) {
+        if (!HYPEService.isConnected || !dwlAvailable) {
             return;
         }
 
-        DMSService.sendRequest("dwl.setTags", {
+        HYPEService.sendRequest("dwl.setTags", {
             "output": outputName,
             "tagmask": tagmask,
             "toggleTagset": toggleTagset
@@ -138,11 +138,11 @@ Singleton {
     }
 
     function setClientTags(outputName, andTags, xorTags) {
-        if (!DMSService.isConnected || !dwlAvailable) {
+        if (!HYPEService.isConnected || !dwlAvailable) {
             return;
         }
 
-        DMSService.sendRequest("dwl.setClientTags", {
+        HYPEService.sendRequest("dwl.setClientTags", {
             "output": outputName,
             "andTags": andTags,
             "xorTags": xorTags
@@ -154,11 +154,11 @@ Singleton {
     }
 
     function setLayout(outputName, index) {
-        if (!DMSService.isConnected || !dwlAvailable) {
+        if (!HYPEService.isConnected || !dwlAvailable) {
             return;
         }
 
-        DMSService.sendRequest("dwl.setLayout", {
+        HYPEService.sendRequest("dwl.setLayout", {
             "output": outputName,
             "index": index
         }, response => {

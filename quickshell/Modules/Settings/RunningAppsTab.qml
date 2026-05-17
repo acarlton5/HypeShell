@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import qs.Common
 import qs.Widgets
 import qs.Modules.Settings.Widgets
@@ -6,7 +6,7 @@ import qs.Modules.Settings.Widgets
 Item {
     id: root
 
-    DankFlickable {
+    HypeFlickable {
         anchors.fill: parent
         clip: true
         contentHeight: mainColumn.height + Theme.spacingXL
@@ -27,7 +27,7 @@ Item {
                 tags: ["app", "icon", "substitution", "replacement", "pattern", "window", "class", "regex"]
 
                 headerActions: [
-                    DankActionButton {
+                    HypeActionButton {
                         buttonSize: 36
                         iconName: "restart_alt"
                         iconSize: 20
@@ -36,7 +36,7 @@ Item {
                         iconColor: Theme.surfaceVariantText
                         onClicked: SettingsData.resetAppIdSubstitutions()
                     },
-                    DankActionButton {
+                    HypeActionButton {
                         buttonSize: 36
                         iconName: "add"
                         iconSize: 20
@@ -89,7 +89,7 @@ Item {
                                             color: Theme.surfaceVariantText
                                         }
 
-                                        DankTextField {
+                                        HypeTextField {
                                             id: patternField
                                             width: parent.width
                                             text: modelData.pattern
@@ -108,7 +108,7 @@ Item {
                                             color: Theme.surfaceVariantText
                                         }
 
-                                        DankTextField {
+                                        HypeTextField {
                                             id: replacementField
                                             width: parent.width
                                             text: modelData.replacement
@@ -129,7 +129,7 @@ Item {
                                             color: deleteArea.containsMouse ? Theme.withAlpha(Theme.error, 0.2) : "transparent"
                                         }
 
-                                        DankIcon {
+                                        HypeIcon {
                                             anchors.centerIn: parent
                                             name: "delete"
                                             size: 18
@@ -156,7 +156,7 @@ Item {
                                         color: Theme.surfaceVariantText
                                     }
 
-                                    DankDropdown {
+                                    HypeDropdown {
                                         width: parent.width
                                         compactMode: true
                                         dropdownWidth: 120

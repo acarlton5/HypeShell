@@ -1,4 +1,4 @@
-{
+﻿{
   "%1 Animation Speed": {
     "%1 Animation Speed": "%1 アニメーション速度"
   },
@@ -1757,8 +1757,8 @@
   "HypeShell Shortcuts": {
     "HypeShell Shortcuts": "HypeShell ショートカット"
   },
-  "HypeShell Greeter needs: greetd, dms-greeter. Fingerprint: fprintd, pam_fprintd. Security keys: pam_u2f. Add your user to the greeter group. Authentication changes apply automatically and may open a terminal when sudo authentication is required.": {
-    "HypeShell Greeter needs: greetd, dms-greeter. Fingerprint: fprintd, pam_fprintd. Security keys: pam_u2f. Add your user to the greeter group. Authentication changes apply automatically and may open a terminal when sudo authentication is required.": "HypeShell Greeter には greetd と dms-greeter が必要です。指紋認証には fprintd と pam_fprintd、セキュリティキーには pam_u2f が必要です。ユーザーを greeter グループに追加してください。認証の変更は自動的に適用され、sudo 認証が必要な場合は端末が開くことがあります。"
+  "HypeShell Greeter needs: greetd, hype-greeter. Fingerprint: fprintd, pam_fprintd. Security keys: pam_u2f. Add your user to the greeter group. Authentication changes apply automatically and may open a terminal when sudo authentication is required.": {
+    "HypeShell Greeter needs: greetd, hype-greeter. Fingerprint: fprintd, pam_fprintd. Security keys: pam_u2f. Add your user to the greeter group. Authentication changes apply automatically and may open a terminal when sudo authentication is required.": "HypeShell Greeter には greetd と hype-greeter が必要です。指紋認証には fprintd と pam_fprintd、セキュリティキーには pam_u2f が必要です。ユーザーを greeter グループに追加してください。認証の変更は自動的に適用され、sudo 認証が必要な場合は端末が開くことがあります。"
   },
   "HypeShell out of date": {
     "HypeShell out of date": "HypeShellに更新があります"
@@ -1769,8 +1769,8 @@
   "HypeShell shell actions (launcher, clipboard, etc.)": {
     "HypeShell shell actions (launcher, clipboard, etc.)": "HypeShell シェルアクション（ランチャー、クリップボードなど）"
   },
-  "DMS_SOCKET not available": {
-    "DMS_SOCKET not available": "DMS_SOCKETが利用できません"
+  "HYPE_SOCKET not available": {
+    "HYPE_SOCKET not available": "HYPE_SOCKETが利用できません"
   },
   "DWL service not available": {
     "DWL service not available": "DWLサービスが利用できません"
@@ -1794,7 +1794,7 @@
     "HypeShell is ready to use": "HypeShell は使用可能です"
   },
   "HypeShell & System Icons (requires restart)": {
-    "HypeShell & System Icons (requires restart)": "DankShell とシステムアイコン（再起動が必要）"
+    "HypeShell & System Icons (requires restart)": "HypeShell とシステムアイコン（再起動が必要）"
   },
   "Dark Mode": {
     "Dark Mode": "ダークモード"
@@ -2252,8 +2252,8 @@
   "Enable a custom override below to set per-bar shadow intensity, opacity, and color.": {
     "Enable a custom override below to set per-bar shadow intensity, opacity, and color.": "以下のカスタムオーバーライドを有効にして、バーごとの影の強さ、透明度、色を設定します。"
   },
-  "Enable compositor-targetable blur layer (namespace: dms:blurwallpaper). Requires manual niri configuration.": {
-    "Enable compositor-targetable blur layer (namespace: dms:blurwallpaper). Requires manual niri configuration.": "コンポジターをターゲットに設定できるぼかしレイヤー(名前空間：dms:blurwallpaper)を有効にします。Niri を手動で設定する必要があります。"
+  "Enable compositor-targetable blur layer (namespace: hype:blurwallpaper). Requires manual niri configuration.": {
+    "Enable compositor-targetable blur layer (namespace: hype:blurwallpaper). Requires manual niri configuration.": "コンポジターをターゲットに設定できるぼかしレイヤー(名前空間：hype:blurwallpaper)を有効にします。Niri を手動で設定する必要があります。"
   },
   "Enable fingerprint at login": {
     "Enable fingerprint at login": "ログイン時に指紋認証を有効にする"
@@ -2600,8 +2600,8 @@
   "Failed to ring device": {
     "Failed to ring device": "デバイスの呼び出しに失敗しました"
   },
-  "Failed to run 'dms greeter status'. Ensure HypeShell is installed and dms is in PATH.": {
-    "Failed to run 'dms greeter status'. Ensure HypeShell is installed and dms is in PATH.": "'dms greeter status' の実行に失敗しました。HypeShell がインストールされ、dms が PATH にあることを確認してください。"
+  "Failed to run 'hype greeter status'. Ensure HypeShell is installed and hype is in PATH.": {
+    "Failed to run 'hype greeter status'. Ensure HypeShell is installed and hype is in PATH.": "'hype greeter status' の実行に失敗しました。HypeShell がインストールされ、hype が PATH にあることを確認してください。"
   },
   "Failed to save audio config": {
     "Failed to save audio config": "オーディオ設定の保存に失敗しました"
@@ -5613,7 +5613,7 @@
     "Scale Hype Bar font sizes independently": "Hype Barのフォントサイズを個別に調整"
   },
   "Scale Hype Bar icon sizes independently": {
-    "Scale Hype Bar icon sizes independently": "DankBar のアイコンサイズを個別に調整"
+    "Scale Hype Bar icon sizes independently": "HypeBar のアイコンサイズを個別に調整"
   },
   "Scale all font sizes throughout the shell": {
     "Scale all font sizes throughout the shell": "シェル全体のフォントサイズを調整"
@@ -6539,8 +6539,8 @@
   "Terminal custom additional parameters": {
     "Terminal custom additional parameters": "端末のカスタム追加パラメーター"
   },
-  "Terminal fallback failed. Install a supported terminal emulator or run 'dms auth sync' manually.": {
-    "Terminal fallback failed. Install a supported terminal emulator or run 'dms auth sync' manually.": "端末フォールバックに失敗しました。対応する端末エミュレーターをインストールするか、'dms auth sync' を手動で実行してください。"
+  "Terminal fallback failed. Install a supported terminal emulator or run 'hype auth sync' manually.": {
+    "Terminal fallback failed. Install a supported terminal emulator or run 'hype auth sync' manually.": "端末フォールバックに失敗しました。対応する端末エミュレーターをインストールするか、'hype auth sync' を手動で実行してください。"
   },
   "Terminal fallback failed. Install one of the supported terminal emulators or run 'HypeShell Greeter sync' manually.": {
     "Terminal fallback failed. Install one of the supported terminal emulators or run 'HypeShell Greeter sync' manually.": "端末フォールバックに失敗しました。対応する端末エミュレーターのいずれかをインストールするか、'HypeShell Greeter sync' を手動で実行してください。"
@@ -6587,8 +6587,8 @@
   "The 'dgop' tool is required for system monitoring.\nPlease install dgop to use this feature.": {
     "The 'dgop' tool is required for system monitoring.\nPlease install dgop to use this feature.": "システム監視には 'dgop' ツールが必要です。\nこの機能を使うには dgop をインストールしてください。"
   },
-  "The DMS_SOCKET environment variable is not set or the socket is unavailable. Automated plugin management requires the DMS_SOCKET.": {
-    "The DMS_SOCKET environment variable is not set or the socket is unavailable. Automated plugin management requires the DMS_SOCKET.": "DMS_SOCKET環境変数が設定されていないか、ソケットが利用できません。自動プラグイン管理にはDMS_SOCKETが必要です。"
+  "The HYPE_SOCKET environment variable is not set or the socket is unavailable. Automated plugin management requires the HYPE_SOCKET.": {
+    "The HYPE_SOCKET environment variable is not set or the socket is unavailable. Automated plugin management requires the HYPE_SOCKET.": "HYPE_SOCKET環境変数が設定されていないか、ソケットが利用できません。自動プラグイン管理にはHYPE_SOCKETが必要です。"
   },
   "The below settings will modify your GTK and Qt settings. If you wish to preserve your current configurations, please back them up (qt5ct.conf|qt6ct.conf and ~/.config/gtk-3.0|gtk-4.0).": {
     "The below settings will modify your GTK and Qt settings. If you wish to preserve your current configurations, please back them up (qt5ct.conf|qt6ct.conf and ~/.config/gtk-3.0|gtk-4.0).": "以下の設定は、GTKとQtの設定を変更します。現在の設定を維持したい場合は、バックアップを作成してください（qt5ct.conf|qt6ct.conf および ~/.config/gtk-3.0|gtk-4.0）。"
@@ -7488,13 +7488,13 @@
     "direct": ""
   },
   "HypeShell is a highly customizable, modern desktop shell with a <a href=\"https://m3.material.io/\" style=\"text-decoration:none; color:%1;\">material 3 inspired</a> design.<br /><br/>It is built with <a href=\"https://quickshell.org\" style=\"text-decoration:none; color:%1;\">Quickshell</a>, a QT6 framework for building desktop shells, and <a href=\"https://go.dev\" style=\"text-decoration:none; color:%1;\">Go</a>, a statically typed, compiled programming language.": {
-    "HypeShell is a highly customizable, modern desktop shell with a <a href=\"https://m3.material.io/\" style=\"text-decoration:none; color:%1;\">material 3 inspired</a> design.<br /><br/>It is built with <a href=\"https://quickshell.org\" style=\"text-decoration:none; color:%1;\">Quickshell</a>, a QT6 framework for building desktop shells, and <a href=\"https://go.dev\" style=\"text-decoration:none; color:%1;\">Go</a>, a statically typed, compiled programming language.": "dms は、<a href=\"https://m3.material.io/\" style=\"text-decoration:none; color:%1;\">Material 3 に着想を得た</a>デザインを持つ、高度にカスタマイズ可能なモダンなデスクトップシェルです。<br /><br/>デスクトップシェルを構築するための QT6 フレームワークである <a href=\"https://quickshell.org\" style=\"text-decoration:none; color:%1;\">Quickshell</a> と、静的型付けのコンパイル言語である <a href=\"https://go.dev\" style=\"text-decoration:none; color:%1;\">Go</a> で構築されています。"
+    "HypeShell is a highly customizable, modern desktop shell with a <a href=\"https://m3.material.io/\" style=\"text-decoration:none; color:%1;\">material 3 inspired</a> design.<br /><br/>It is built with <a href=\"https://quickshell.org\" style=\"text-decoration:none; color:%1;\">Quickshell</a>, a QT6 framework for building desktop shells, and <a href=\"https://go.dev\" style=\"text-decoration:none; color:%1;\">Go</a>, a statically typed, compiled programming language.": "hype は、<a href=\"https://m3.material.io/\" style=\"text-decoration:none; color:%1;\">Material 3 に着想を得た</a>デザインを持つ、高度にカスタマイズ可能なモダンなデスクトップシェルです。<br /><br/>デスクトップシェルを構築するための QT6 フレームワークである <a href=\"https://quickshell.org\" style=\"text-decoration:none; color:%1;\">Quickshell</a> と、静的型付けのコンパイル言語である <a href=\"https://go.dev\" style=\"text-decoration:none; color:%1;\">Go</a> で構築されています。"
   },
-  "dms/cursor config exists but is not included. Cursor settings won't apply.": {
-    "dms/cursor config exists but is not included. Cursor settings won't apply.": "dms/cursor 設定は存在しますが、読み込まれていません。カーソル設定は適用されません。"
+  "hype/cursor config exists but is not included. Cursor settings won't apply.": {
+    "hype/cursor config exists but is not included. Cursor settings won't apply.": "hype/cursor 設定は存在しますが、読み込まれていません。カーソル設定は適用されません。"
   },
-  "dms/outputs config exists but is not included in your compositor config. Display changes won't persist.": {
-    "dms/outputs config exists but is not included in your compositor config. Display changes won't persist.": "dms/outputs 設定は存在しますが、コンポジター設定に含まれていません。ディスプレイ変更は保持されません。"
+  "hype/outputs config exists but is not included in your compositor config. Display changes won't persist.": {
+    "hype/outputs config exists but is not included in your compositor config. Display changes won't persist.": "hype/outputs 設定は存在しますが、コンポジター設定に含まれていません。ディスプレイ変更は保持されません。"
   },
   "e.g., firefox, kitty --title foo": {
     "e.g., firefox, kitty --title foo": "例: firefox、kitty --title foo"
@@ -7553,8 +7553,8 @@
   "niri shortcuts config": {
     "niri shortcuts config": "niri ショートカット設定"
   },
-  "niri/dms Discord": {
-    "niri/dms Discord": "niri/dms Discord"
+  "niri/hype Discord": {
+    "niri/hype Discord": "niri/hype Discord"
   },
   "now": {
     "now": "今"

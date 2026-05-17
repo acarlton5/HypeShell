@@ -1,4 +1,4 @@
-pragma Singleton
+﻿pragma Singleton
 pragma ComponentBehavior: Bound
 
 import QtQuick
@@ -45,7 +45,7 @@ Singleton {
     property bool prepareForSleepSubscriptionPending: false
     property double lastResumeSignalTimestamp: 0
 
-    readonly property string socketPath: Quickshell.env("HYPE_SOCKET") || Quickshell.env("DMS_SOCKET")
+    readonly property string socketPath: Quickshell.env("HYPE_SOCKET") || Quickshell.env("HYPE_SOCKET")
 
     Timer {
         id: sessionInitTimer
@@ -62,7 +62,7 @@ Singleton {
                 return;
             }
             if (socketPath && socketPath.length > 0) {
-                checkDMSCapabilities();
+                checkHYPECapabilities();
             } else {
                 log.debug("HYPE_SOCKET not set");
             }
@@ -220,7 +220,7 @@ Singleton {
         }
 
         const userPrefix = SettingsData.launchPrefix?.trim() || "";
-        const defaultPrefix = Quickshell.env("DMS_DEFAULT_LAUNCH_PREFIX") || "";
+        const defaultPrefix = Quickshell.env("HYPE_DEFAULT_LAUNCH_PREFIX") || "";
         const prefix = userPrefix.length > 0 ? userPrefix : defaultPrefix;
         const workDir = desktopEntry.workingDirectory || Quickshell.env("HOME");
         const cursorEnv = typeof SettingsData.getCursorEnvironment === "function" ? SettingsData.getCursorEnvironment() : {};
@@ -270,7 +270,7 @@ Singleton {
             cmd = [nvidiaCommand].concat(cmd);
 
         const userPrefix = SettingsData.launchPrefix?.trim() || "";
-        const defaultPrefix = Quickshell.env("DMS_DEFAULT_LAUNCH_PREFIX") || "";
+        const defaultPrefix = Quickshell.env("HYPE_DEFAULT_LAUNCH_PREFIX") || "";
         const prefix = userPrefix.length > 0 ? userPrefix : defaultPrefix;
         const workDir = desktopEntry.workingDirectory || Quickshell.env("HOME");
         const cursorEnv = typeof SettingsData.getCursorEnvironment === "function" ? SettingsData.getCursorEnvironment() : {};
@@ -411,11 +411,11 @@ Singleton {
     }
 
     Connections {
-        target: DMSService
+        target: HYPEService
 
         function onConnectionStateChanged() {
-            if (DMSService.isConnected) {
-                checkDMSCapabilities();
+            if (HYPEService.isConnected) {
+                checkHYPECapabilities();
             } else {
                 clearPrepareForSleepSubscriptionState();
             }
@@ -427,11 +427,11 @@ Singleton {
     }
 
     Connections {
-        target: DMSService
-        enabled: DMSService.isConnected
+        target: HYPEService
+        enabled: HYPEService.isConnected
 
         function onCapabilitiesChanged() {
-            checkDMSCapabilities();
+            checkHYPECapabilities();
         }
 
         function onDbusSignalReceived(subscriptionId, data) {
@@ -469,7 +469,7 @@ Singleton {
     }
 
     Connections {
-        target: DMSService
+        target: HYPEService
         enabled: SettingsData.loginctlLockIntegration
 
         function onLoginctlStateUpdate(data) {
@@ -477,16 +477,16 @@ Singleton {
         }
     }
 
-    function checkDMSCapabilities() {
-        if (!DMSService.isConnected) {
+    function checkHYPECapabilities() {
+        if (!HYPEService.isConnected) {
             return;
         }
 
-        if (DMSService.capabilities.length === 0) {
+        if (HYPEService.capabilities.length === 0) {
             return;
         }
 
-        if (DMSService.capabilities.includes("loginctl")) {
+        if (HYPEService.capabilities.includes("loginctl")) {
             loginctlAvailable = true;
             if (SettingsData.loginctlLockIntegration && !stateInitialized) {
                 stateInitialized = true;
@@ -498,7 +498,7 @@ Singleton {
             log.debug("loginctl capability not available in HypeShell");
         }
 
-        if (DMSService.capabilities.includes("dbus")) {
+        if (HYPEService.capabilities.includes("dbus")) {
             ensurePrepareForSleepSubscription();
         } else {
             clearPrepareForSleepSubscriptionState();
@@ -511,7 +511,7 @@ Singleton {
     }
 
     function ensurePrepareForSleepSubscription() {
-        if (!DMSService.isConnected || !DMSService.capabilities.includes("dbus")) {
+        if (!HYPEService.isConnected || !HYPEService.capabilities.includes("dbus")) {
             return;
         }
 
@@ -520,7 +520,7 @@ Singleton {
         }
 
         prepareForSleepSubscriptionPending = true;
-        DMSService.dbusSubscribe("system", "org.freedesktop.login1", "/org/freedesktop/login1", "org.freedesktop.login1.Manager", "PrepareForSleep", response => {
+        HYPEService.dbusSubscribe("system", "org.freedesktop.login1", "/org/freedesktop/login1", "org.freedesktop.login1.Manager", "PrepareForSleep", response => {
             prepareForSleepSubscriptionPending = false;
 
             if (response.error) {
@@ -557,7 +557,7 @@ Singleton {
     function getLoginctlState() {
         if (!loginctlAvailable)
             return;
-        DMSService.sendRequest("loginctl.getState", null, response => {
+        HYPEService.sendRequest("loginctl.getState", null, response => {
             if (response.result) {
                 updateLoginctlState(response.result);
             }
@@ -567,7 +567,7 @@ Singleton {
     function syncLockBeforeSuspend() {
         if (!loginctlAvailable)
             return;
-        DMSService.sendRequest("loginctl.setLockBeforeSuspend", {
+        HYPEService.sendRequest("loginctl.setLockBeforeSuspend", {
             enabled: SettingsData.lockBeforeSuspend
         }, response => {
             if (response.error) {
@@ -581,9 +581,9 @@ Singleton {
     function syncSleepInhibitor() {
         if (!loginctlAvailable)
             return;
-        if (!DMSService.apiVersion || DMSService.apiVersion < 4)
+        if (!HYPEService.apiVersion || HYPEService.apiVersion < 4)
             return;
-        DMSService.sendRequest("loginctl.setSleepInhibitorEnabled", {
+        HYPEService.sendRequest("loginctl.setSleepInhibitorEnabled", {
             enabled: SettingsData.loginctlLockIntegration && SettingsData.lockBeforeSuspend
         }, response => {
             if (response.error) {

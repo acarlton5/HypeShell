@@ -1,10 +1,10 @@
-import QtQuick
+﻿import QtQuick
 import qs.Common
 import qs.Modals.Common
 import qs.Widgets
 import qs.Services
 
-DankModal {
+HypeModal {
     id: root
     readonly property var log: Log.scoped("AppPickerModal")
 
@@ -210,7 +210,7 @@ DankModal {
                         anchors.rightMargin: Theme.spacingS
                         anchors.verticalCenter: parent.verticalCenter
 
-                        DankActionButton {
+                        HypeActionButton {
                             buttonSize: 36
                             circular: false
                             iconName: "view_list"
@@ -222,7 +222,7 @@ DankModal {
                             }
                         }
 
-                        DankActionButton {
+                        HypeActionButton {
                             buttonSize: 36
                             circular: false
                             iconName: "grid_view"
@@ -236,7 +236,7 @@ DankModal {
                     }
                 }
 
-                DankTextField {
+                HypeTextField {
                     id: searchField
 
                     width: parent.width - Theme.spacingS * 2
@@ -314,7 +314,7 @@ DankModal {
                     radius: Theme.cornerRadius
                     color: "transparent"
 
-                    DankListView {
+                    HypeListView {
                         id: appList
 
                         property int itemHeight: 60
@@ -370,7 +370,7 @@ DankModal {
                         }
                     }
 
-                    DankGridView {
+                    HypeGridView {
                         id: appGrid
 
                         function ensureVisible(index) {

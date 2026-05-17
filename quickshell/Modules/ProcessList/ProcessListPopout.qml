@@ -1,14 +1,14 @@
-import QtQuick
+﻿import QtQuick
 import QtQuick.Layouts
 import qs.Common
 import qs.Modules.ProcessList
 import qs.Services
 import qs.Widgets
 
-DankPopout {
+HypePopout {
     id: processListPopout
 
-    layerNamespace: "dms:process-list-popout"
+    layerNamespace: "hype:process-list-popout"
 
     property var parentWidget: null
     property var triggerScreen: null
@@ -129,7 +129,7 @@ DankPopout {
                     Row {
                         spacing: Theme.spacingS
 
-                        DankIcon {
+                        HypeIcon {
                             name: "analytics"
                             size: Theme.iconSize
                             color: Theme.primary
@@ -149,7 +149,7 @@ DankPopout {
                         Layout.fillWidth: true
                     }
 
-                    DankButtonGroup {
+                    HypeButtonGroup {
                         id: processFilterGroup
                         Layout.minimumWidth: implicitWidth
                         model: [I18n.tr("All"), I18n.tr("User"), I18n.tr("System")]
@@ -177,7 +177,7 @@ DankPopout {
                         }
                     }
 
-                    DankTextField {
+                    HypeTextField {
                         id: searchField
                         Layout.fillWidth: true
                         Layout.minimumWidth: Theme.fontSizeMedium * 8
@@ -263,7 +263,7 @@ DankPopout {
                                 Row {
                                     spacing: Theme.spacingXS
 
-                                    DankIcon {
+                                    HypeIcon {
                                         name: "schedule"
                                         size: Theme.fontSizeSmall
                                         color: Theme.surfaceVariantText

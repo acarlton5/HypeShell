@@ -1,4 +1,4 @@
-pragma Singleton
+﻿pragma Singleton
 pragma ComponentBehavior: Bound
 
 import QtQuick
@@ -15,21 +15,21 @@ Singleton {
     onRefCountChanged: {
         if (refCount > 0) {
             ensureSubscription();
-        } else if (refCount === 0 && DMSService.activeSubscriptions.includes("cups")) {
-            DMSService.removeSubscription("cups");
+        } else if (refCount === 0 && HYPEService.activeSubscriptions.includes("cups")) {
+            HYPEService.removeSubscription("cups");
         }
     }
 
     function ensureSubscription() {
         if (refCount <= 0)
             return;
-        if (!DMSService.isConnected)
+        if (!HYPEService.isConnected)
             return;
-        if (DMSService.activeSubscriptions.includes("cups"))
+        if (HYPEService.activeSubscriptions.includes("cups"))
             return;
-        if (DMSService.activeSubscriptions.includes("all"))
+        if (HYPEService.activeSubscriptions.includes("all"))
             return;
-        DMSService.addSubscription("cups");
+        HYPEService.addSubscription("cups");
         if (cupsAvailable) {
             getState();
         }
@@ -183,28 +183,28 @@ Singleton {
 
     signal cupsStateUpdate
 
-    readonly property string socketPath: Quickshell.env("HYPE_SOCKET") || Quickshell.env("DMS_SOCKET")
+    readonly property string socketPath: Quickshell.env("HYPE_SOCKET") || Quickshell.env("HYPE_SOCKET")
 
     Component.onCompleted: {
         if (socketPath && socketPath.length > 0) {
-            checkDMSCapabilities();
+            checkHYPECapabilities();
         }
     }
 
     Connections {
-        target: DMSService
+        target: HYPEService
 
         function onConnectionStateChanged() {
-            if (DMSService.isConnected) {
-                checkDMSCapabilities();
+            if (HYPEService.isConnected) {
+                checkHYPECapabilities();
                 ensureSubscription();
             }
         }
     }
 
     Connections {
-        target: DMSService
-        enabled: DMSService.isConnected
+        target: HYPEService
+        enabled: HYPEService.isConnected
 
         function onCupsStateUpdate(data) {
             log.debug("Subscription update received");
@@ -212,16 +212,16 @@ Singleton {
         }
 
         function onCapabilitiesChanged() {
-            checkDMSCapabilities();
+            checkHYPECapabilities();
         }
     }
 
-    function checkDMSCapabilities() {
-        if (!DMSService.isConnected)
+    function checkHYPECapabilities() {
+        if (!HYPEService.isConnected)
             return;
-        if (DMSService.capabilities.length === 0)
+        if (HYPEService.capabilities.length === 0)
             return;
-        cupsAvailable = DMSService.capabilities.includes("cups");
+        cupsAvailable = HYPEService.capabilities.includes("cups");
 
         if (cupsAvailable && !stateInitialized) {
             stateInitialized = true;
@@ -232,7 +232,7 @@ Singleton {
     function getState() {
         if (!cupsAvailable)
             return;
-        DMSService.sendRequest("cups.getPrinters", null, response => {
+        HYPEService.sendRequest("cups.getPrinters", null, response => {
             if (response.result) {
                 updatePrinters(response.result);
                 fetchAllJobs();
@@ -282,7 +282,7 @@ Singleton {
             "printerName": printerName
         };
 
-        DMSService.sendRequest("cups.getJobs", params, response => {
+        HYPEService.sendRequest("cups.getJobs", params, response => {
             if (response.result && printers[printerName]) {
                 let updatedPrinters = Object.assign({}, printers);
                 updatedPrinters[printerName].jobs = response.result;
@@ -387,7 +387,7 @@ Singleton {
             "printerName": printerName
         };
 
-        DMSService.sendRequest("cups.pausePrinter", params, response => {
+        HYPEService.sendRequest("cups.pausePrinter", params, response => {
             if (response.error) {
                 ToastService.showError(I18n.tr("Failed to pause printer"), response.error);
             } else {
@@ -403,7 +403,7 @@ Singleton {
             "printerName": printerName
         };
 
-        DMSService.sendRequest("cups.resumePrinter", params, response => {
+        HYPEService.sendRequest("cups.resumePrinter", params, response => {
             if (response.error) {
                 ToastService.showError(I18n.tr("Failed to resume printer"), response.error);
             } else {
@@ -420,7 +420,7 @@ Singleton {
             "jobID": jobID
         };
 
-        DMSService.sendRequest("cups.cancelJob", params, response => {
+        HYPEService.sendRequest("cups.cancelJob", params, response => {
             if (response.error) {
                 ToastService.showError(I18n.tr("Failed to cancel selected job"), response.error);
             } else {
@@ -436,7 +436,7 @@ Singleton {
             "printerName": printerName
         };
 
-        DMSService.sendRequest("cups.purgeJobs", params, response => {
+        HYPEService.sendRequest("cups.purgeJobs", params, response => {
             if (response.error) {
                 ToastService.showError(I18n.tr("Failed to cancel all jobs"), response.error);
             } else {
@@ -449,7 +449,7 @@ Singleton {
         if (!cupsAvailable)
             return;
         loadingDevices = true;
-        DMSService.sendRequest("cups.getDevices", null, response => {
+        HYPEService.sendRequest("cups.getDevices", null, response => {
             loadingDevices = false;
             if (response.result) {
                 devices = response.result;
@@ -461,7 +461,7 @@ Singleton {
         if (!cupsAvailable)
             return;
         loadingPPDs = true;
-        DMSService.sendRequest("cups.getPPDs", null, response => {
+        HYPEService.sendRequest("cups.getPPDs", null, response => {
             loadingPPDs = false;
             if (response.result) {
                 ppds = response.result;
@@ -473,7 +473,7 @@ Singleton {
         if (!cupsAvailable)
             return;
         loadingClasses = true;
-        DMSService.sendRequest("cups.getClasses", null, response => {
+        HYPEService.sendRequest("cups.getClasses", null, response => {
             loadingClasses = false;
             if (response.result) {
                 printerClasses = response.result;
@@ -490,7 +490,7 @@ Singleton {
             "protocol": protocol
         };
 
-        DMSService.sendRequest("cups.testConnection", params, response => {
+        HYPEService.sendRequest("cups.testConnection", params, response => {
             if (callback)
                 callback(response);
         });
@@ -516,7 +516,7 @@ Singleton {
                 params.errorPolicy = options.errorPolicy;
         }
 
-        DMSService.sendRequest("cups.createPrinter", params, response => {
+        HYPEService.sendRequest("cups.createPrinter", params, response => {
             creatingPrinter = false;
             if (response.error) {
                 ToastService.showError(I18n.tr("Failed to create printer"), response.error);
@@ -534,7 +534,7 @@ Singleton {
             "printerName": printerName
         };
 
-        DMSService.sendRequest("cups.deletePrinter", params, response => {
+        HYPEService.sendRequest("cups.deletePrinter", params, response => {
             if (response.error) {
                 ToastService.showError(I18n.tr("Failed to delete printer"), response.error);
             } else {
@@ -554,7 +554,7 @@ Singleton {
             "printerName": printerName
         };
 
-        DMSService.sendRequest("cups.acceptJobs", params, response => {
+        HYPEService.sendRequest("cups.acceptJobs", params, response => {
             if (response.error) {
                 ToastService.showError(I18n.tr("Failed to enable job acceptance"), response.error);
             } else {
@@ -570,7 +570,7 @@ Singleton {
             "printerName": printerName
         };
 
-        DMSService.sendRequest("cups.rejectJobs", params, response => {
+        HYPEService.sendRequest("cups.rejectJobs", params, response => {
             if (response.error) {
                 ToastService.showError(I18n.tr("Failed to disable job acceptance"), response.error);
             } else {
@@ -587,7 +587,7 @@ Singleton {
             "shared": shared
         };
 
-        DMSService.sendRequest("cups.setPrinterShared", params, response => {
+        HYPEService.sendRequest("cups.setPrinterShared", params, response => {
             if (response.error) {
                 ToastService.showError(I18n.tr("Failed to update sharing"), response.error);
             } else {
@@ -604,7 +604,7 @@ Singleton {
             "location": location
         };
 
-        DMSService.sendRequest("cups.setPrinterLocation", params, response => {
+        HYPEService.sendRequest("cups.setPrinterLocation", params, response => {
             if (response.error) {
                 ToastService.showError(I18n.tr("Failed to update location"), response.error);
             } else {
@@ -621,7 +621,7 @@ Singleton {
             "info": info
         };
 
-        DMSService.sendRequest("cups.setPrinterInfo", params, response => {
+        HYPEService.sendRequest("cups.setPrinterInfo", params, response => {
             if (response.error) {
                 ToastService.showError(I18n.tr("Failed to update description"), response.error);
             } else {
@@ -637,7 +637,7 @@ Singleton {
             "printerName": printerName
         };
 
-        DMSService.sendRequest("cups.printTestPage", params, response => {
+        HYPEService.sendRequest("cups.printTestPage", params, response => {
             if (response.error) {
                 ToastService.showError(I18n.tr("Failed to print test page"), response.error);
             } else {
@@ -655,7 +655,7 @@ Singleton {
             "destPrinter": destPrinter
         };
 
-        DMSService.sendRequest("cups.moveJob", params, response => {
+        HYPEService.sendRequest("cups.moveJob", params, response => {
             if (response.error) {
                 ToastService.showError(I18n.tr("Failed to move job"), response.error);
             } else {
@@ -671,7 +671,7 @@ Singleton {
             "jobID": jobID
         };
 
-        DMSService.sendRequest("cups.restartJob", params, response => {
+        HYPEService.sendRequest("cups.restartJob", params, response => {
             if (response.error) {
                 ToastService.showError(I18n.tr("Failed to restart job"), response.error);
             } else {
@@ -690,7 +690,7 @@ Singleton {
             params.holdUntil = holdUntil;
         }
 
-        DMSService.sendRequest("cups.holdJob", params, response => {
+        HYPEService.sendRequest("cups.holdJob", params, response => {
             if (response.error) {
                 ToastService.showError(I18n.tr("Failed to hold job"), response.error);
             } else {
@@ -707,7 +707,7 @@ Singleton {
             "printerName": printerName
         };
 
-        DMSService.sendRequest("cups.addPrinterToClass", params, response => {
+        HYPEService.sendRequest("cups.addPrinterToClass", params, response => {
             if (response.error) {
                 ToastService.showError(I18n.tr("Failed to add printer to class"), response.error);
             } else {
@@ -724,7 +724,7 @@ Singleton {
             "printerName": printerName
         };
 
-        DMSService.sendRequest("cups.removePrinterFromClass", params, response => {
+        HYPEService.sendRequest("cups.removePrinterFromClass", params, response => {
             if (response.error) {
                 ToastService.showError(I18n.tr("Failed to remove printer from class"), response.error);
             } else {
@@ -740,7 +740,7 @@ Singleton {
             "className": className
         };
 
-        DMSService.sendRequest("cups.deleteClass", params, response => {
+        HYPEService.sendRequest("cups.deleteClass", params, response => {
             if (response.error) {
                 ToastService.showError(I18n.tr("Failed to delete class"), response.error);
             } else {

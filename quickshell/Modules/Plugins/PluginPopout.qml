@@ -1,11 +1,11 @@
-import QtQuick
+﻿import QtQuick
 import qs.Common
 import qs.Widgets
 
-DankPopout {
+HypePopout {
     id: root
 
-    layerNamespace: "dms:plugins:" + layerNamespacePlugin
+    layerNamespace: "hype:plugins:" + layerNamespacePlugin
 
     property var triggerScreen: null
     property Component pluginContent: null

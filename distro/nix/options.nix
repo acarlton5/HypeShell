@@ -1,6 +1,6 @@
-{
+﻿{
   lib,
-  dmsPkgs,
+  hypePkgs,
   pkgs,
   ...
 }:
@@ -8,10 +8,10 @@ let
   inherit (lib) types;
   path = [
     "programs"
-    "dank-material-shell"
+    "hype-material-shell"
   ];
   jsonFormat = pkgs.formats.json { };
-  builtInRemovedMsg = "This is now built-in in DMS and doesn't need additional dependencies.";
+  builtInRemovedMsg = "This is now built-in in HYPE and doesn't need additional dependencies.";
 in
 {
   imports = [
@@ -20,22 +20,22 @@ in
     (lib.mkRemovedOptionModule (path ++ [ "enableClipboard" ]) builtInRemovedMsg)
     (lib.mkRemovedOptionModule (
       path ++ [ "enableSystemSound" ]
-    ) "qtmultimedia is now included on dms-shell package.")
-    ./dms-rename.nix
+    ) "qtmultimedia is now included on hype-shell package.")
+    ./hype-rename.nix
   ];
 
-  options.programs.dank-material-shell = {
-    enable = lib.mkEnableOption "DankMaterialShell";
-    package = lib.mkPackageOption dmsPkgs "dms-shell" {
-      extraDescription = "The DankMaterialShell package to use (defaults to be built from source)";
+  options.programs.hype-material-shell = {
+    enable = lib.mkEnableOption "HypeMaterialShell";
+    package = lib.mkPackageOption hypePkgs "hype-shell" {
+      extraDescription = "The HypeMaterialShell package to use (defaults to be built from source)";
     };
 
     systemd = {
-      enable = lib.mkEnableOption "DankMaterialShell systemd startup";
+      enable = lib.mkEnableOption "HypeMaterialShell systemd startup";
       restartIfChanged = lib.mkOption {
         type = types.bool;
         default = true;
-        description = "Auto-restart dms.service when dank-material-shell changes";
+        description = "Auto-restart hype.service when hype-material-shell changes";
       };
     };
 
@@ -80,8 +80,8 @@ in
     };
 
     quickshell = {
-      package = lib.mkPackageOption dmsPkgs "quickshell" {
-        extraDescription = "The quickshell package to use (defaults to be built from source, due to unreleased features used by DMS).";
+      package = lib.mkPackageOption hypePkgs "quickshell" {
+        extraDescription = "The quickshell package to use (defaults to be built from source, due to unreleased features used by HYPE).";
       };
     };
 
@@ -107,7 +107,7 @@ in
         }
       );
       default = { };
-      description = "DMS Plugins to install and enable";
+      description = "HYPE Plugins to install and enable";
       example = lib.literalExpression ''
         {
           DockerManager = {

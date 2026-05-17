@@ -1,4 +1,4 @@
-package plugins
+﻿package plugins
 
 import (
 	"fmt"
@@ -60,7 +60,7 @@ func HandleListInstalled(conn net.Conn, req models.Request) {
 				Dependencies: plugin.Dependencies,
 				FirstParty:   strings.HasPrefix(plugin.Repo, "https://github.com/acarlton5/"),
 				HasUpdate:    hasUpdate,
-				RequiresDMS:  plugin.RequiresDMS,
+				RequiresHYPE:  plugin.RequiresHYPE,
 			})
 		} else {
 			result = append(result, PluginInfo{

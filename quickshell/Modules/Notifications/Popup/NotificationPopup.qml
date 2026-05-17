@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import QtQuick.Controls
 import Quickshell
 import Quickshell.Wayland
@@ -46,7 +46,7 @@ PanelWindow {
         blurRadius: win.connectedFrameMode ? Theme.connectedSurfaceRadius : Theme.cornerRadius
     }
 
-    WlrLayershell.namespace: "dms:notification-popup"
+    WlrLayershell.namespace: "hype:notification-popup"
 
     required property var notificationData
     required property string notificationId
@@ -156,7 +156,7 @@ PanelWindow {
 
     visible: !_finalized
     WlrLayershell.layer: {
-        const envLayer = Quickshell.env("DMS_NOTIFICATION_LAYER");
+        const envLayer = Quickshell.env("HYPE_NOTIFICATION_LAYER");
         if (envLayer) {
             switch (envLayer) {
             case "bottom":
@@ -779,7 +779,7 @@ PanelWindow {
                 height: effectiveCollapsedHeight + extraHeight
                 clip: SettingsData.notificationPopupPrivacyMode && !descriptionExpanded
 
-                DankCircularImage {
+                HypeCircularImage {
                     id: iconContainer
 
                     readonly property string rawImage: notificationData?.image || ""
@@ -955,7 +955,7 @@ PanelWindow {
                 }
             }
 
-            DankActionButton {
+            HypeActionButton {
                 id: closeButton
 
                 anchors.right: parent.right
@@ -973,7 +973,7 @@ PanelWindow {
                 }
             }
 
-            DankActionButton {
+            HypeActionButton {
                 id: expandButton
 
                 anchors.right: closeButton.left

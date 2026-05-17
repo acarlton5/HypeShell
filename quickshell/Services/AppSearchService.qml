@@ -1,4 +1,4 @@
-pragma Singleton
+﻿pragma Singleton
 pragma ComponentBehavior: Bound
 
 import QtQuick
@@ -162,13 +162,13 @@ Singleton {
         });
     }
 
-    readonly property string dmsLogoPath: Qt.resolvedUrl("../assets/hypeshell-logo.svg")
+    readonly property string hypeLogoPath: Qt.resolvedUrl("../assets/hypeshell-logo.svg")
 
     readonly property var builtInPlugins: ({
-            "dms_settings": {
-                id: "dms_settings",
+            "hype_settings": {
+                id: "hype_settings",
                 name: I18n.tr("Settings", "settings window title"),
-                icon: "svg+corner:" + dmsLogoPath + "|settings",
+                icon: "svg+corner:" + hypeLogoPath + "|settings",
                 cornerIcon: "settings",
                 comment: "HypeShell",
                 action: "ipc:settings",
@@ -176,10 +176,10 @@ Singleton {
                 defaultTrigger: "",
                 isLauncher: false
             },
-            "dms_notepad": {
-                id: "dms_notepad",
+            "hype_notepad": {
+                id: "hype_notepad",
                 name: I18n.tr("Notepad", "Notepad"),
-                icon: "svg+corner:" + dmsLogoPath + "|description",
+                icon: "svg+corner:" + hypeLogoPath + "|description",
                 cornerIcon: "description",
                 comment: "HypeShell",
                 action: "ipc:notepad",
@@ -187,10 +187,10 @@ Singleton {
                 defaultTrigger: "",
                 isLauncher: false
             },
-            "dms_sysmon": {
-                id: "dms_sysmon",
+            "hype_sysmon": {
+                id: "hype_sysmon",
                 name: I18n.tr("System Monitor", "sysmon window title"),
-                icon: "svg+corner:" + dmsLogoPath + "|monitor_heart",
+                icon: "svg+corner:" + hypeLogoPath + "|monitor_heart",
                 cornerIcon: "monitor_heart",
                 comment: "HypeShell",
                 action: "ipc:processlist",
@@ -198,10 +198,10 @@ Singleton {
                 defaultTrigger: "",
                 isLauncher: false
             },
-            "dms_colorpicker": {
-                id: "dms_colorpicker",
+            "hype_colorpicker": {
+                id: "hype_colorpicker",
                 name: I18n.tr("Color Picker"),
-                icon: "svg+corner:" + dmsLogoPath + "|palette",
+                icon: "svg+corner:" + hypeLogoPath + "|palette",
                 cornerIcon: "palette",
                 comment: "HypeShell",
                 action: "ipc:color-picker",
@@ -209,8 +209,8 @@ Singleton {
                 defaultTrigger: "",
                 isLauncher: false
             },
-            "dms_settings_search": {
-                id: "dms_settings_search",
+            "hype_settings_search": {
+                id: "hype_settings_search",
                 name: I18n.tr("Settings", "settings window title"),
                 cornerIcon: "search",
                 comment: "HypeShell",
@@ -285,7 +285,7 @@ Singleton {
     }
 
     function getBuiltInLauncherItems(pluginId, query) {
-        if (pluginId !== "dms_settings_search")
+        if (pluginId !== "hype_settings_search")
             return [];
 
         SettingsSearchService.search(query);

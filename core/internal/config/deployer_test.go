@@ -1,4 +1,4 @@
-package config
+﻿package config
 
 import (
 	"context"
@@ -182,7 +182,7 @@ layout {
 }
 
 func TestConfigDeploymentFlow(t *testing.T) {
-	tempDir, err := os.MkdirTemp("", "dankinstall-test")
+	tempDir, err := os.MkdirTemp("", "hypeinstall-test")
 	require.NoError(t, err)
 	defer os.RemoveAll(tempDir)
 
@@ -386,7 +386,7 @@ input {
 }
 
 func TestHyprlandConfigDeployment(t *testing.T) {
-	tempDir, err := os.MkdirTemp("", "dankinstall-hyprland-test")
+	tempDir, err := os.MkdirTemp("", "hypeinstall-hyprland-test")
 	require.NoError(t, err)
 	defer os.RemoveAll(tempDir)
 
@@ -468,7 +468,7 @@ func TestHyprlandConfigStructure(t *testing.T) {
 func TestGhosttyConfigStructure(t *testing.T) {
 	assert.Contains(t, GhosttyConfig, "window-decoration = false")
 	assert.Contains(t, GhosttyConfig, "background-opacity = 1.0")
-	assert.Contains(t, GhosttyConfig, "theme = dankcolors")
+	assert.Contains(t, GhosttyConfig, "theme = hypecolors")
 }
 
 func TestGhosttyColorConfigStructure(t *testing.T) {
@@ -483,8 +483,8 @@ func TestKittyConfigStructure(t *testing.T) {
 	assert.Contains(t, KittyConfig, "font_size 12.0")
 	assert.Contains(t, KittyConfig, "window_padding_width 12")
 	assert.Contains(t, KittyConfig, "background_opacity 1.0")
-	assert.Contains(t, KittyConfig, "include dank-tabs.conf")
-	assert.Contains(t, KittyConfig, "include dank-theme.conf")
+	assert.Contains(t, KittyConfig, "include hype-tabs.conf")
+	assert.Contains(t, KittyConfig, "include hype-theme.conf")
 }
 
 func TestKittyThemeConfigStructure(t *testing.T) {
@@ -504,7 +504,7 @@ func TestKittyTabsConfigStructure(t *testing.T) {
 
 func TestAlacrittyConfigStructure(t *testing.T) {
 	assert.Contains(t, AlacrittyConfig, "[general]")
-	assert.Contains(t, AlacrittyConfig, "~/.config/alacritty/dank-theme.toml")
+	assert.Contains(t, AlacrittyConfig, "~/.config/alacritty/hype-theme.toml")
 	assert.Contains(t, AlacrittyConfig, "[window]")
 	assert.Contains(t, AlacrittyConfig, "decorations = \"None\"")
 	assert.Contains(t, AlacrittyConfig, "padding = { x = 12, y = 12 }")
@@ -523,7 +523,7 @@ func TestAlacrittyThemeConfigStructure(t *testing.T) {
 }
 
 func TestKittyConfigDeployment(t *testing.T) {
-	tempDir, err := os.MkdirTemp("", "dankinstall-kitty-test")
+	tempDir, err := os.MkdirTemp("", "hypeinstall-kitty-test")
 	require.NoError(t, err)
 	defer os.RemoveAll(tempDir)
 
@@ -546,7 +546,7 @@ func TestKittyConfigDeployment(t *testing.T) {
 
 		content, err := os.ReadFile(mainResult.Path)
 		require.NoError(t, err)
-		assert.Contains(t, string(content), "include dank-theme.conf")
+		assert.Contains(t, string(content), "include hype-theme.conf")
 
 		themeResult := results[1]
 		assert.Equal(t, "Kitty Theme", themeResult.ConfigType)
@@ -561,7 +561,7 @@ func TestKittyConfigDeployment(t *testing.T) {
 }
 
 func TestAlacrittyConfigDeployment(t *testing.T) {
-	tempDir, err := os.MkdirTemp("", "dankinstall-alacritty-test")
+	tempDir, err := os.MkdirTemp("", "hypeinstall-alacritty-test")
 	require.NoError(t, err)
 	defer os.RemoveAll(tempDir)
 
@@ -584,7 +584,7 @@ func TestAlacrittyConfigDeployment(t *testing.T) {
 
 		content, err := os.ReadFile(mainResult.Path)
 		require.NoError(t, err)
-		assert.Contains(t, string(content), "~/.config/alacritty/dank-theme.toml")
+		assert.Contains(t, string(content), "~/.config/alacritty/hype-theme.toml")
 		assert.Contains(t, string(content), "[window]")
 
 		themeResult := results[1]
@@ -636,7 +636,7 @@ func TestShouldReplaceConfigDeployIfMissing(t *testing.T) {
 	}
 
 	t.Run("replaceConfigs nil deploys config", func(t *testing.T) {
-		tempDir, err := os.MkdirTemp("", "dankinstall-replace-nil-test")
+		tempDir, err := os.MkdirTemp("", "hypeinstall-replace-nil-test")
 		require.NoError(t, err)
 		defer os.RemoveAll(tempDir)
 
@@ -669,7 +669,7 @@ func TestShouldReplaceConfigDeployIfMissing(t *testing.T) {
 	})
 
 	t.Run("replaceConfigs all false and config missing deploys config", func(t *testing.T) {
-		tempDir, err := os.MkdirTemp("", "dankinstall-replace-missing-test")
+		tempDir, err := os.MkdirTemp("", "hypeinstall-replace-missing-test")
 		require.NoError(t, err)
 		defer os.RemoveAll(tempDir)
 
@@ -702,7 +702,7 @@ func TestShouldReplaceConfigDeployIfMissing(t *testing.T) {
 	})
 
 	t.Run("replaceConfigs false and config exists skips config", func(t *testing.T) {
-		tempDir, err := os.MkdirTemp("", "dankinstall-replace-exists-test")
+		tempDir, err := os.MkdirTemp("", "hypeinstall-replace-exists-test")
 		require.NoError(t, err)
 		defer os.RemoveAll(tempDir)
 
@@ -744,7 +744,7 @@ func TestShouldReplaceConfigDeployIfMissing(t *testing.T) {
 	})
 
 	t.Run("replaceConfigs true and config exists deploys config", func(t *testing.T) {
-		tempDir, err := os.MkdirTemp("", "dankinstall-replace-true-test")
+		tempDir, err := os.MkdirTemp("", "hypeinstall-replace-true-test")
 		require.NoError(t, err)
 		defer os.RemoveAll(tempDir)
 

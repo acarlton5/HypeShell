@@ -1,4 +1,4 @@
-pragma ComponentBehavior: Bound
+﻿pragma ComponentBehavior: Bound
 
 import QtQuick
 import qs.Common
@@ -52,7 +52,7 @@ StyledRect {
                     spacing: Theme.spacingM
                     width: parent.width
 
-                    DankIcon {
+                    HypeIcon {
                         id: headerIcon
                         name: root.iconName
                         size: Theme.iconSize
@@ -86,7 +86,7 @@ StyledRect {
                 }
             }
 
-            DankToggle {
+            HypeToggle {
                 id: toggleSwitch
                 anchors.right: parent.right
                 anchors.verticalCenter: parent.verticalCenter

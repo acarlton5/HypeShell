@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import Quickshell.Io
 import qs.Common
 import qs.Services
@@ -117,7 +117,7 @@ Item {
                     radius: root.centerIconContainerSize / 2
                     color: Theme.primaryContainer
 
-                    DankIcon {
+                    HypeIcon {
                         anchors.centerIn: parent
                         name: "vital_signs"
                         size: Theme.iconSizeLarge
@@ -199,7 +199,7 @@ Item {
                     color: root.errorCount > 0 ? Theme.errorContainer : Theme.primaryContainer
                     anchors.verticalCenter: parent.verticalCenter
 
-                    DankIcon {
+                    HypeIcon {
                         anchors.centerIn: parent
                         name: root.errorCount > 0 ? "warning" : "check_circle"
                         size: Theme.iconSize + 4
@@ -299,7 +299,7 @@ Item {
                 spacing: Theme.spacingS
                 visible: root.filteredResults.length === 0
 
-                DankIcon {
+                HypeIcon {
                     name: {
                         switch (root.selectedFilter) {
                         case "error":
@@ -336,7 +336,7 @@ Item {
                 }
             }
 
-            DankFlickable {
+            HypeFlickable {
                 anchors.fill: parent
                 anchors.margins: Theme.spacingM
                 clip: true
@@ -368,7 +368,7 @@ Item {
             anchors.bottomMargin: Theme.spacingL
             spacing: Theme.spacingM
 
-            DankButton {
+            HypeButton {
                 text: I18n.tr("Run Again", "greeter doctor page button")
                 iconName: "refresh"
                 backgroundColor: Theme.surfaceContainerHighest

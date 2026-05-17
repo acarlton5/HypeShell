@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import qs.Common
 import qs.Widgets
 
@@ -79,7 +79,7 @@ Rectangle {
                     anchors.verticalCenter: parent.verticalCenter
                 }
 
-                DankIcon {
+                HypeIcon {
                     id: pinIcon
                     visible: model.pinned === true
                     name: "push_pin"

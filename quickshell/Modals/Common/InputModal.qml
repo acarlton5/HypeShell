@@ -1,12 +1,12 @@
-import QtQuick
+﻿import QtQuick
 import qs.Common
 import qs.Modals.Common
 import qs.Widgets
 
-DankModal {
+HypeModal {
     id: root
 
-    layerNamespace: "dms:input-modal"
+    layerNamespace: "hype:input-modal"
     keepPopoutsOpen: true
 
     property string inputTitle: ""

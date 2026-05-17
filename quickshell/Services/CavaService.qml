@@ -1,4 +1,4 @@
-pragma Singleton
+﻿pragma Singleton
 pragma ComponentBehavior: Bound
 
 import QtQuick
@@ -18,7 +18,7 @@ Singleton {
         command: ["which", "cava"]
         running: false
         onExited: exitCode => {
-            root.cavaAvailable = exitCode === 0 && Quickshell.env("DMS_DISABLE_CAVA") !== "1";
+            root.cavaAvailable = exitCode === 0 && Quickshell.env("HYPE_DISABLE_CAVA") !== "1";
         }
     }
 

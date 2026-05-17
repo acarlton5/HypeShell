@@ -1,4 +1,4 @@
-pragma ComponentBehavior: Bound
+﻿pragma ComponentBehavior: Bound
 
 import QtQuick
 import qs.Common
@@ -78,7 +78,7 @@ Item {
                             border.width: 1
                             anchors.horizontalCenter: parent.horizontalCenter
 
-                            DankIcon {
+                            HypeIcon {
                                 visible: modelData.id === "custom"
                                 anchors.centerIn: parent
                                 name: "colorize"

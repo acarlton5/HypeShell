@@ -1,12 +1,12 @@
-import QtQuick
+﻿import QtQuick
 import qs.Common
 import qs.Services
 import qs.Widgets
 
-DankPopout {
+HypePopout {
     id: root
 
-    layerNamespace: "dms:notification-center-popout"
+    layerNamespace: "hype:notification-center-popout"
     fullHeightSurface: true
 
     property bool notificationHistoryVisible: false

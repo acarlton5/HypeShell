@@ -1,19 +1,19 @@
-#!/usr/bin/env bash
-# Build a DMS per-series upload plan by comparing Git/GitHub with Launchpad.
+﻿#!/usr/bin/env bash
+# Build a HYPE per-series upload plan by comparing Git/GitHub with Launchpad.
 
 set -euo pipefail
 
 PPA_OWNER="avengemedia"
 LAUNCHPAD_API="https://api.launchpad.net/1.0"
 SERIES_LIST=(questing resolute)
-PACKAGE_FILTER="dms-git"
+PACKAGE_FILTER="hype-git"
 REBUILD_RELEASE=""
 JSON=false
 
 PACKAGES=(
-    "dms:dms:release"
-    "dms-git:dms-git:git"
-    "dms-greeter:danklinux:release"
+    "hype:hype:release"
+    "hype-git:hype-git:git"
+    "hype-greeter:hypelinux:release"
 )
 
 while [[ $# -gt 0 ]]; do
@@ -38,7 +38,7 @@ while [[ $# -gt 0 ]]; do
 done
 
 latest_tag() {
-    git ls-remote --tags --refs --sort='-v:refname' https://github.com/AvengeMedia/DankMaterialShell.git |
+    git ls-remote --tags --refs --sort='-v:refname' https://github.com/AvengeMedia/HypeMaterialShell.git |
         sed -n '1s|.*/v\{0,1\}||p'
 }
 

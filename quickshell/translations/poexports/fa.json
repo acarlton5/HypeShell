@@ -1,4 +1,4 @@
-{
+﻿{
   "%1 Animation Speed": {
     "%1 Animation Speed": "سرعت انیمیشن %1"
   },
@@ -1757,8 +1757,8 @@
   "HypeShell Shortcuts": {
     "HypeShell Shortcuts": "میانبرهای HypeShell"
   },
-  "HypeShell Greeter needs: greetd, dms-greeter. Fingerprint: fprintd, pam_fprintd. Security keys: pam_u2f. Add your user to the greeter group. Authentication changes apply automatically and may open a terminal when sudo authentication is required.": {
-    "HypeShell Greeter needs: greetd, dms-greeter. Fingerprint: fprintd, pam_fprintd. Security keys: pam_u2f. Add your user to the greeter group. Authentication changes apply automatically and may open a terminal when sudo authentication is required.": ""
+  "HypeShell Greeter needs: greetd, hype-greeter. Fingerprint: fprintd, pam_fprintd. Security keys: pam_u2f. Add your user to the greeter group. Authentication changes apply automatically and may open a terminal when sudo authentication is required.": {
+    "HypeShell Greeter needs: greetd, hype-greeter. Fingerprint: fprintd, pam_fprintd. Security keys: pam_u2f. Add your user to the greeter group. Authentication changes apply automatically and may open a terminal when sudo authentication is required.": ""
   },
   "HypeShell out of date": {
     "HypeShell out of date": "HypeShell بروز نیست"
@@ -1769,8 +1769,8 @@
   "HypeShell shell actions (launcher, clipboard, etc.)": {
     "HypeShell shell actions (launcher, clipboard, etc.)": "اقدام‌های شِل HypeShell (لانچر، کلیپ‌بورد و غیره)"
   },
-  "DMS_SOCKET not available": {
-    "DMS_SOCKET not available": "DMS_SOCKET در دسترس نیست"
+  "HYPE_SOCKET not available": {
+    "HYPE_SOCKET not available": "HYPE_SOCKET در دسترس نیست"
   },
   "DWL service not available": {
     "DWL service not available": "سرویس DWL در دسترس نیست"
@@ -1794,7 +1794,7 @@
     "HypeShell is ready to use": "دَنک متریال شل آماده استفاده می‌باشد"
   },
   "HypeShell & System Icons (requires restart)": {
-    "HypeShell & System Icons (requires restart)": "آیکون‌های DankShell و سیستم (نیازمند راه‌اندازی مجدد)"
+    "HypeShell & System Icons (requires restart)": "آیکون‌های HypeShell و سیستم (نیازمند راه‌اندازی مجدد)"
   },
   "Dark Mode": {
     "Dark Mode": "حالت تاریک"
@@ -2252,8 +2252,8 @@
   "Enable a custom override below to set per-bar shadow intensity, opacity, and color.": {
     "Enable a custom override below to set per-bar shadow intensity, opacity, and color.": ""
   },
-  "Enable compositor-targetable blur layer (namespace: dms:blurwallpaper). Requires manual niri configuration.": {
-    "Enable compositor-targetable blur layer (namespace: dms:blurwallpaper). Requires manual niri configuration.": "فعال‌سازی لایه مات قابل کنترل توسط کامپازیتور (namespace: dms:blurwallpaper). نیازمند پیکربندی دستی niri است."
+  "Enable compositor-targetable blur layer (namespace: hype:blurwallpaper). Requires manual niri configuration.": {
+    "Enable compositor-targetable blur layer (namespace: hype:blurwallpaper). Requires manual niri configuration.": "فعال‌سازی لایه مات قابل کنترل توسط کامپازیتور (namespace: hype:blurwallpaper). نیازمند پیکربندی دستی niri است."
   },
   "Enable fingerprint at login": {
     "Enable fingerprint at login": ""
@@ -2600,8 +2600,8 @@
   "Failed to ring device": {
     "Failed to ring device": "زنگ زدن دستگاه ناموفق بود"
   },
-  "Failed to run 'dms greeter status'. Ensure HypeShell is installed and dms is in PATH.": {
-    "Failed to run 'dms greeter status'. Ensure HypeShell is installed and dms is in PATH.": ""
+  "Failed to run 'hype greeter status'. Ensure HypeShell is installed and hype is in PATH.": {
+    "Failed to run 'hype greeter status'. Ensure HypeShell is installed and hype is in PATH.": ""
   },
   "Failed to save audio config": {
     "Failed to save audio config": "ذخیره پیکربندی صوتی ناموفق بود"
@@ -6539,8 +6539,8 @@
   "Terminal custom additional parameters": {
     "Terminal custom additional parameters": "پارامتر‌های اضافی سفارشی ترمینال"
   },
-  "Terminal fallback failed. Install a supported terminal emulator or run 'dms auth sync' manually.": {
-    "Terminal fallback failed. Install a supported terminal emulator or run 'dms auth sync' manually.": ""
+  "Terminal fallback failed. Install a supported terminal emulator or run 'hype auth sync' manually.": {
+    "Terminal fallback failed. Install a supported terminal emulator or run 'hype auth sync' manually.": ""
   },
   "Terminal fallback failed. Install one of the supported terminal emulators or run 'HypeShell Greeter sync' manually.": {
     "Terminal fallback failed. Install one of the supported terminal emulators or run 'HypeShell Greeter sync' manually.": ""
@@ -6587,8 +6587,8 @@
   "The 'dgop' tool is required for system monitoring.\nPlease install dgop to use this feature.": {
     "The 'dgop' tool is required for system monitoring.\nPlease install dgop to use this feature.": "ابزار «dgop» برای نظارت سیستم نیاز است.\nلطفا برای استفاده از این قابلیت dgop را نصب کنید."
   },
-  "The DMS_SOCKET environment variable is not set or the socket is unavailable. Automated plugin management requires the DMS_SOCKET.": {
-    "The DMS_SOCKET environment variable is not set or the socket is unavailable. Automated plugin management requires the DMS_SOCKET.": "متغیر محیطی DMS_SOCKET تنظیم نشده یا سوکت موجود نیست. مدیریت افزونه خودکار به DMS_SOCKET نیاز دارد."
+  "The HYPE_SOCKET environment variable is not set or the socket is unavailable. Automated plugin management requires the HYPE_SOCKET.": {
+    "The HYPE_SOCKET environment variable is not set or the socket is unavailable. Automated plugin management requires the HYPE_SOCKET.": "متغیر محیطی HYPE_SOCKET تنظیم نشده یا سوکت موجود نیست. مدیریت افزونه خودکار به HYPE_SOCKET نیاز دارد."
   },
   "The below settings will modify your GTK and Qt settings. If you wish to preserve your current configurations, please back them up (qt5ct.conf|qt6ct.conf and ~/.config/gtk-3.0|gtk-4.0).": {
     "The below settings will modify your GTK and Qt settings. If you wish to preserve your current configurations, please back them up (qt5ct.conf|qt6ct.conf and ~/.config/gtk-3.0|gtk-4.0).": "تنظیمات پایین، تنظیمات Qt و GTK شما را تغییر می‌دهند. اگر می‌خواهید تنظیمات کنونی خود را نگه دارید، لطفا از آنها نسخه پشتیبان تهیه کنید (qt5ctl.conf |qt6ctl.conf و ~/.config/gtk-3.0|gtk-4.0)"
@@ -7490,11 +7490,11 @@
   "HypeShell is a highly customizable, modern desktop shell with a <a href=\"https://m3.material.io/\" style=\"text-decoration:none; color:%1;\">material 3 inspired</a> design.<br /><br/>It is built with <a href=\"https://quickshell.org\" style=\"text-decoration:none; color:%1;\">Quickshell</a>, a QT6 framework for building desktop shells, and <a href=\"https://go.dev\" style=\"text-decoration:none; color:%1;\">Go</a>, a statically typed, compiled programming language.": {
     "HypeShell is a highly customizable, modern desktop shell with a <a href=\"https://m3.material.io/\" style=\"text-decoration:none; color:%1;\">material 3 inspired</a> design.<br /><br/>It is built with <a href=\"https://quickshell.org\" style=\"text-decoration:none; color:%1;\">Quickshell</a>, a QT6 framework for building desktop shells, and <a href=\"https://go.dev\" style=\"text-decoration:none; color:%1;\">Go</a>, a statically typed, compiled programming language.": ""
   },
-  "dms/cursor config exists but is not included. Cursor settings won't apply.": {
-    "dms/cursor config exists but is not included. Cursor settings won't apply.": "پیکربندی dms/cursor وجود دارد اما وارد نشده است. تنظیمات اشاره‌گر موس اعمال نخواهند شد."
+  "hype/cursor config exists but is not included. Cursor settings won't apply.": {
+    "hype/cursor config exists but is not included. Cursor settings won't apply.": "پیکربندی hype/cursor وجود دارد اما وارد نشده است. تنظیمات اشاره‌گر موس اعمال نخواهند شد."
   },
-  "dms/outputs config exists but is not included in your compositor config. Display changes won't persist.": {
-    "dms/outputs config exists but is not included in your compositor config. Display changes won't persist.": "پیکربندی dms/outputs وجود دارد اما در پیکربندی کامپوزیتور شما گنجانده نشده است. تغییرات نمایشگر پایدار نخواهند بود."
+  "hype/outputs config exists but is not included in your compositor config. Display changes won't persist.": {
+    "hype/outputs config exists but is not included in your compositor config. Display changes won't persist.": "پیکربندی hype/outputs وجود دارد اما در پیکربندی کامپوزیتور شما گنجانده نشده است. تغییرات نمایشگر پایدار نخواهند بود."
   },
   "e.g., firefox, kitty --title foo": {
     "e.g., firefox, kitty --title foo": "مانند firefox، kitty --title foo"
@@ -7553,8 +7553,8 @@
   "niri shortcuts config": {
     "niri shortcuts config": "پیکربندی میانبرهای نیری"
   },
-  "niri/dms Discord": {
-    "niri/dms Discord": ""
+  "niri/hype Discord": {
+    "niri/hype Discord": ""
   },
   "now": {
     "now": "اکنون"

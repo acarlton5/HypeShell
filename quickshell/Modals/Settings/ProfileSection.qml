@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import qs.Common
 import qs.Services
 import qs.Widgets
@@ -28,7 +28,7 @@ Rectangle {
             height: 80
             anchors.verticalCenter: parent.verticalCenter
 
-            DankCircularImage {
+            HypeCircularImage {
                 id: profileImage
 
                 anchors.fill: parent
@@ -60,7 +60,7 @@ Rectangle {
                         radius: 14
                         color: Qt.rgba(255, 255, 255, 0.9)
 
-                        DankIcon {
+                        HypeIcon {
                             anchors.centerIn: parent
                             name: "edit"
                             size: 16
@@ -87,7 +87,7 @@ Rectangle {
                         color: Qt.rgba(255, 255, 255, 0.9)
                         visible: profileImage.hasImage
 
-                        DankIcon {
+                        HypeIcon {
                             anchors.centerIn: parent
                             name: "close"
                             size: 16

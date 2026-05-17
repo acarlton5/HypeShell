@@ -1,4 +1,4 @@
-pragma Singleton
+﻿pragma Singleton
 pragma ComponentBehavior: Bound
 
 import QtQuick
@@ -17,14 +17,14 @@ Singleton {
     signal configurationApplied(bool success, string message)
 
     Connections {
-        target: DMSService
+        target: HYPEService
 
         function onCapabilitiesReceived() {
             checkCapabilities();
         }
 
         function onConnectionStateChanged() {
-            if (DMSService.isConnected) {
+            if (HYPEService.isConnected) {
                 checkCapabilities();
                 return;
             }
@@ -40,19 +40,19 @@ Singleton {
     }
 
     Component.onCompleted: {
-        if (!DMSService.dmsAvailable) {
+        if (!HYPEService.hypeAvailable) {
             return;
         }
         checkCapabilities();
     }
 
     function checkCapabilities() {
-        if (!DMSService.capabilities || !Array.isArray(DMSService.capabilities)) {
+        if (!HYPEService.capabilities || !Array.isArray(HYPEService.capabilities)) {
             wlrOutputAvailable = false;
             return;
         }
 
-        const hasWlrOutput = DMSService.capabilities.includes("wlroutput");
+        const hasWlrOutput = HYPEService.capabilities.includes("wlroutput");
         if (hasWlrOutput && !wlrOutputAvailable) {
             wlrOutputAvailable = true;
             log.info("wlr-output-management capability detected");
@@ -66,11 +66,11 @@ Singleton {
     }
 
     function requestState() {
-        if (!DMSService.isConnected || !wlrOutputAvailable) {
+        if (!HYPEService.isConnected || !wlrOutputAvailable) {
             return;
         }
 
-        DMSService.sendRequest("wlroutput.getState", null, response => {
+        HYPEService.sendRequest("wlroutput.getState", null, response => {
             if (!response.result) {
                 return;
             }
@@ -107,7 +107,7 @@ Singleton {
     }
 
     function applyConfiguration(heads, callback) {
-        if (!DMSService.isConnected || !wlrOutputAvailable) {
+        if (!HYPEService.isConnected || !wlrOutputAvailable) {
             if (callback) {
                 callback(false, "Not connected");
             }
@@ -119,7 +119,7 @@ Singleton {
             log.debug("Head", index, "- name:", head.name, "enabled:", head.enabled, "modeId:", head.modeId, "customMode:", JSON.stringify(head.customMode), "position:", JSON.stringify(head.position), "scale:", head.scale, "transform:", head.transform, "adaptiveSync:", head.adaptiveSync);
         });
 
-        DMSService.sendRequest("wlroutput.applyConfiguration", {
+        HYPEService.sendRequest("wlroutput.applyConfiguration", {
             "heads": heads
         }, response => {
             const success = !response.error;
@@ -139,7 +139,7 @@ Singleton {
     }
 
     function testConfiguration(heads, callback) {
-        if (!DMSService.isConnected || !wlrOutputAvailable) {
+        if (!HYPEService.isConnected || !wlrOutputAvailable) {
             if (callback) {
                 callback(false, "Not connected");
             }
@@ -148,7 +148,7 @@ Singleton {
 
         log.debug("Testing configuration for", heads.length, "outputs");
 
-        DMSService.sendRequest("wlroutput.testConfiguration", {
+        HYPEService.sendRequest("wlroutput.testConfiguration", {
             "heads": heads
         }, response => {
             const success = !response.error;

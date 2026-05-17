@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import qs.Common
 import qs.Widgets
 
@@ -9,7 +9,7 @@ Row {
 
     spacing: Theme.spacingS
 
-    DankIcon {
+    HypeIcon {
         name: "arrow_right"
         size: Theme.iconSizeSmall - 2
         color: Theme.surfaceVariantText

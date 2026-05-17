@@ -1,4 +1,4 @@
-package matugen
+﻿package matugen
 
 import (
 	"os"
@@ -436,8 +436,8 @@ func TestBuildMergedConfigColorsOnly(t *testing.T) {
 	}
 
 	content := string(output)
-	assert.Contains(t, content, "[templates.dank]")
-	assert.Contains(t, content, "output_path = '"+filepath.Join(opts.StateDir, "dms-colors.json")+"'")
+	assert.Contains(t, content, "[templates.hype]")
+	assert.Contains(t, content, "output_path = '"+filepath.Join(opts.StateDir, "hype-colors.json")+"'")
 	assert.NotContains(t, content, "[templates.gtk]")
 	assert.False(t, strings.Contains(content, "output_path = 'CONFIG_DIR/"), "colors-only config should not emit app template outputs")
 }

@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import Quickshell.Io
 import qs.Common
 import qs.Widgets
@@ -126,7 +126,7 @@ Rectangle {
             width: parent.width
             spacing: Theme.spacingS
 
-            DankIcon {
+            HypeIcon {
                 name: "info"
                 size: Theme.iconSize
                 color: Theme.secondary

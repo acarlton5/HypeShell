@@ -1,4 +1,4 @@
-package windowrules
+﻿package windowrules
 
 type MatchCriteria struct {
 	AppID              string `json:"appId,omitempty"`
@@ -70,12 +70,12 @@ type WindowRule struct {
 	Source        string        `json:"source,omitempty"`
 }
 
-type DMSRulesStatus struct {
+type HYPERulesStatus struct {
 	Exists          bool   `json:"exists"`
 	Included        bool   `json:"included"`
 	IncludePosition int    `json:"includePosition"`
 	TotalIncludes   int    `json:"totalIncludes"`
-	RulesAfterDMS   int    `json:"rulesAfterDms"`
+	RulesAfterHYPE   int    `json:"rulesAfterDms"`
 	Effective       bool   `json:"effective"`
 	OverriddenBy    int    `json:"overriddenBy"`
 	StatusMessage   string `json:"statusMessage"`
@@ -85,8 +85,8 @@ type RuleSet struct {
 	Title            string          `json:"title"`
 	Provider         string          `json:"provider"`
 	Rules            []WindowRule    `json:"rules"`
-	DMSRulesIncluded bool            `json:"dmsRulesIncluded"`
-	DMSStatus        *DMSRulesStatus `json:"dmsStatus,omitempty"`
+	HYPERulesIncluded bool            `json:"hypeRulesIncluded"`
+	HYPEStatus        *HYPERulesStatus `json:"hypeStatus,omitempty"`
 }
 
 type Provider interface {

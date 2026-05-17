@@ -1,4 +1,4 @@
-pragma Singleton
+﻿pragma Singleton
 pragma ComponentBehavior: Bound
 
 import QtCore
@@ -41,9 +41,9 @@ Singleton {
     property bool saving: false
     property bool fixing: false
     property string lastError: ""
-    property bool dmsBindsIncluded: true
+    property bool hypeBindsIncluded: true
 
-    property var dmsStatus: ({
+    property var hypeStatus: ({
             "exists": true,
             "included": true,
             "includePosition": -1,
@@ -77,13 +77,13 @@ Singleton {
             return "";
         }
     }
-    readonly property string dmsBindsPath: {
+    readonly property string hypeBindsPath: {
         switch (currentProvider) {
         case "niri":
-            return compositorConfigDir + "/dms/binds.kdl";
+            return compositorConfigDir + "/hype/binds.kdl";
         case "hyprland":
         case "mangowc":
-            return compositorConfigDir + "/dms/binds.conf";
+            return compositorConfigDir + "/hype/binds.conf";
         default:
             return "";
         }
@@ -101,13 +101,13 @@ Singleton {
         }
     }
     readonly property var actionTypes: Actions.getActionTypes()
-    readonly property var dmsActions: getDmsActions()
+    readonly property var hypeActions: getDmsActions()
 
     signal bindsLoaded
     signal bindSaved(string key)
     signal bindSaveCompleted(bool success)
     signal bindRemoved(string key)
-    signal dmsBindsFixed
+    signal hypeBindsFixed
     signal cheatsheetLoaded
 
     Connections {
@@ -245,30 +245,30 @@ Singleton {
                 return;
             }
             root.lastError = "";
-            root.dmsBindsIncluded = true;
-            root.dmsBindsFixed();
-            const bindsFile = root.currentProvider === "niri" ? "dms/binds.kdl" : "dms/binds.conf";
+            root.hypeBindsIncluded = true;
+            root.hypeBindsFixed();
+            const bindsFile = root.currentProvider === "niri" ? "hype/binds.kdl" : "hype/binds.conf";
             ToastService.showInfo(I18n.tr("Binds include added"), I18n.tr("%1 is now included in config").arg(bindsFile), "", "keybinds");
             Qt.callLater(root.forceReload);
         }
     }
 
     function fixDmsBindsInclude() {
-        if (fixing || dmsBindsIncluded || !compositorConfigDir)
+        if (fixing || hypeBindsIncluded || !compositorConfigDir)
             return;
         fixing = true;
         const timestamp = Math.floor(Date.now() / 1000);
-        const backupPath = `${mainConfigPath}.dmsbackup${timestamp}`;
+        const backupPath = `${mainConfigPath}.hypebackup${timestamp}`;
         let script;
         switch (currentProvider) {
         case "niri":
-            script = `mkdir -p "${compositorConfigDir}/dms" && touch "${compositorConfigDir}/dms/binds.kdl" && cp "${mainConfigPath}" "${backupPath}" && echo 'include "dms/binds.kdl"' >> "${mainConfigPath}"`;
+            script = `mkdir -p "${compositorConfigDir}/hype" && touch "${compositorConfigDir}/hype/binds.kdl" && cp "${mainConfigPath}" "${backupPath}" && echo 'include "hype/binds.kdl"' >> "${mainConfigPath}"`;
             break;
         case "hyprland":
-            script = `mkdir -p "${compositorConfigDir}/dms" && touch "${compositorConfigDir}/dms/binds.conf" && cp "${mainConfigPath}" "${backupPath}" && echo 'source = ./dms/binds.conf' >> "${mainConfigPath}"`;
+            script = `mkdir -p "${compositorConfigDir}/hype" && touch "${compositorConfigDir}/hype/binds.conf" && cp "${mainConfigPath}" "${backupPath}" && echo 'source = ./hype/binds.conf' >> "${mainConfigPath}"`;
             break;
         case "mangowc":
-            script = `mkdir -p "${compositorConfigDir}/dms" && touch "${compositorConfigDir}/dms/binds.conf" && cp "${mainConfigPath}" "${backupPath}" && echo 'source = ./dms/binds.conf' >> "${mainConfigPath}"`;
+            script = `mkdir -p "${compositorConfigDir}/hype" && touch "${compositorConfigDir}/hype/binds.conf" && cp "${mainConfigPath}" "${backupPath}" && echo 'source = ./hype/binds.conf' >> "${mainConfigPath}"`;
             break;
         default:
             fixing = false;
@@ -307,10 +307,10 @@ Singleton {
 
     function _processData() {
         keybinds = _rawData || {};
-        dmsBindsIncluded = _rawData?.dmsBindsIncluded ?? true;
-        const status = _rawData?.dmsStatus;
+        hypeBindsIncluded = _rawData?.hypeBindsIncluded ?? true;
+        const status = _rawData?.hypeStatus;
         if (status) {
-            dmsStatus = {
+            hypeStatus = {
                 "exists": status.exists ?? true,
                 "included": status.included ?? true,
                 "includePosition": status.includePosition ?? -1,
@@ -368,7 +368,7 @@ Singleton {
                 const keyData = {
                     "key": bind.key || "",
                     "source": bind.source || "config",
-                    "isOverride": bind.source === "dms",
+                    "isOverride": bind.source === "hype",
                     "cooldownMs": bind.cooldownMs || 0,
                     "flags": bind.flags || "",
                     "allowWhenLocked": bind.allowWhenLocked || false,

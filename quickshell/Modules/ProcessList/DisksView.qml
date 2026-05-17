@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import QtQuick.Layouts
 import qs.Common
 import qs.Services
@@ -47,7 +47,7 @@ Item {
                     Row {
                         spacing: Theme.spacingS
 
-                        DankIcon {
+                        HypeIcon {
                             name: "storage"
                             size: Theme.iconSize
                             color: Theme.primary
@@ -120,7 +120,7 @@ Item {
                 Row {
                     spacing: Theme.spacingS
 
-                    DankIcon {
+                    HypeIcon {
                         name: "folder"
                         size: Theme.iconSize - 2
                         color: Theme.secondary
@@ -142,7 +142,7 @@ Item {
                     color: Theme.outlineLight
                 }
 
-                DankListView {
+                HypeListView {
                     id: mountListView
 
                     Layout.fillWidth: true
@@ -184,7 +184,7 @@ Item {
                                 Row {
                                     spacing: Theme.spacingS
 
-                                    DankIcon {
+                                    HypeIcon {
                                         name: {
                                             const mp = modelData?.mount ?? "";
                                             if (mp === "/")
@@ -324,7 +324,7 @@ Item {
                             anchors.centerIn: parent
                             spacing: Theme.spacingM
 
-                            DankIcon {
+                            HypeIcon {
                                 name: "storage"
                                 size: 32
                                 color: Theme.surfaceVariantText

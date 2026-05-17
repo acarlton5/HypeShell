@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import QtQuick.Effects
 import Quickshell
 import qs.Common
@@ -43,7 +43,7 @@ Item {
         WallpaperCyclingService.cyclingActive;
     }
 
-    DankFlickable {
+    HypeFlickable {
         anchors.fill: parent
         clip: true
         contentHeight: mainColumn.height + Theme.spacingXL
@@ -118,7 +118,7 @@ Item {
                             layer.enabled: true
                         }
 
-                        DankIcon {
+                        HypeIcon {
                             anchors.centerIn: parent
                             name: "image"
                             size: Theme.iconSizeLarge + 8
@@ -143,7 +143,7 @@ Item {
                                     radius: 16
                                     color: Qt.rgba(255, 255, 255, 0.9)
 
-                                    DankIcon {
+                                    HypeIcon {
                                         anchors.centerIn: parent
                                         name: "folder_open"
                                         size: 18
@@ -163,7 +163,7 @@ Item {
                                     radius: 16
                                     color: Qt.rgba(255, 255, 255, 0.9)
 
-                                    DankIcon {
+                                    HypeIcon {
                                         anchors.centerIn: parent
                                         name: "palette"
                                         size: 18
@@ -197,7 +197,7 @@ Item {
                                     color: Qt.rgba(255, 255, 255, 0.9)
                                     visible: root.currentWallpaper !== ""
 
-                                    DankIcon {
+                                    HypeIcon {
                                         anchors.centerIn: parent
                                         name: "clear"
                                         size: 18
@@ -263,7 +263,7 @@ Item {
                             layoutDirection: I18n.isRtl ? Qt.RightToLeft : Qt.LeftToRight
                             visible: root.currentWallpaper !== ""
 
-                            DankActionButton {
+                            HypeActionButton {
                                 buttonSize: 32
                                 iconName: "skip_previous"
                                 iconSize: Theme.iconSizeSmall
@@ -280,7 +280,7 @@ Item {
                                 }
                             }
 
-                            DankActionButton {
+                            HypeActionButton {
                                 buttonSize: 32
                                 iconName: "skip_next"
                                 iconSize: Theme.iconSizeSmall
@@ -305,7 +305,7 @@ Item {
                     height: fillModeGroup.height
                     visible: root.currentWallpaper !== "" && !root.currentWallpaper.startsWith("#")
 
-                    DankButtonGroup {
+                    HypeButtonGroup {
                         id: fillModeGroup
                         property var internalModes: ["Stretch", "Fit", "Fill", "Tile", "TileVertically", "TileHorizontally", "Pad"]
                         anchors.horizontalCenter: parent.horizontalCenter
@@ -453,7 +453,7 @@ Item {
                                     layer.enabled: true
                                 }
 
-                                DankIcon {
+                                HypeIcon {
                                     anchors.centerIn: parent
                                     name: "light_mode"
                                     size: Theme.iconSizeLarge
@@ -478,7 +478,7 @@ Item {
                                             radius: 14
                                             color: Qt.rgba(255, 255, 255, 0.9)
 
-                                            DankIcon {
+                                            HypeIcon {
                                                 anchors.centerIn: parent
                                                 name: "folder_open"
                                                 size: 16
@@ -498,7 +498,7 @@ Item {
                                             radius: 14
                                             color: Qt.rgba(255, 255, 255, 0.9)
 
-                                            DankIcon {
+                                            HypeIcon {
                                                 anchors.centerIn: parent
                                                 name: "palette"
                                                 size: 16
@@ -531,7 +531,7 @@ Item {
                                             color: Qt.rgba(255, 255, 255, 0.9)
                                             visible: SessionData.wallpaperPathLight !== ""
 
-                                            DankIcon {
+                                            HypeIcon {
                                                 anchors.centerIn: parent
                                                 name: "clear"
                                                 size: 16
@@ -643,7 +643,7 @@ Item {
                                     layer.enabled: true
                                 }
 
-                                DankIcon {
+                                HypeIcon {
                                     anchors.centerIn: parent
                                     name: "dark_mode"
                                     size: Theme.iconSizeLarge
@@ -668,7 +668,7 @@ Item {
                                             radius: 14
                                             color: Qt.rgba(255, 255, 255, 0.9)
 
-                                            DankIcon {
+                                            HypeIcon {
                                                 anchors.centerIn: parent
                                                 name: "folder_open"
                                                 size: 16
@@ -688,7 +688,7 @@ Item {
                                             radius: 14
                                             color: Qt.rgba(255, 255, 255, 0.9)
 
-                                            DankIcon {
+                                            HypeIcon {
                                                 anchors.centerIn: parent
                                                 name: "palette"
                                                 size: 16
@@ -721,7 +721,7 @@ Item {
                                             color: Qt.rgba(255, 255, 255, 0.9)
                                             visible: SessionData.wallpaperPathDark !== ""
 
-                                            DankIcon {
+                                            HypeIcon {
                                                 anchors.centerIn: parent
                                                 name: "clear"
                                                 size: 16
@@ -947,7 +947,7 @@ Item {
                             width: 200
                             height: 45 + Theme.spacingM
 
-                            DankTabBar {
+                            HypeTabBar {
                                 id: modeTabBar
                                 width: 200
                                 height: 45
@@ -1064,7 +1064,7 @@ Item {
                             anchors.verticalCenter: parent.verticalCenter
                         }
 
-                        DankTextField {
+                        HypeTextField {
                             id: timeTextField
                             width: 100
                             height: 40
@@ -1212,7 +1212,7 @@ Item {
                         width: parent.width - Theme.spacingM * 2
                     }
 
-                    DankButtonGroup {
+                    HypeButtonGroup {
                         id: transitionGroup
                         width: parent.width - Theme.spacingM * 2
                         selectionMode: "multi"
@@ -1278,7 +1278,7 @@ Item {
                     tags: ["blur", "duplicate", "layer", "compositor"]
                     settingKey: "blurredWallpaperLayer"
                     text: I18n.tr("Duplicate Wallpaper with Blur")
-                    description: I18n.tr("Enable compositor-targetable blur layer (namespace: dms:blurwallpaper). Requires manual niri configuration.")
+                    description: I18n.tr("Enable compositor-targetable blur layer (namespace: hype:blurwallpaper). Requires manual niri configuration.")
                     checked: SettingsData.blurredWallpaperLayer
                     onToggled: checked => SettingsData.set("blurredWallpaperLayer", checked)
                 }

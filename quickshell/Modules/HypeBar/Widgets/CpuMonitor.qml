@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import qs.Common
 import qs.Modules.Plugins
 import qs.Services
@@ -34,7 +34,7 @@ BasePill {
                 anchors.centerIn: parent
                 spacing: 1
 
-                DankIcon {
+                HypeIcon {
                     name: "memory"
                     size: Theme.barIconSize(root.barThickness, undefined, root.barConfig?.maximizeWidgetIcons, root.barConfig?.iconScale)
                     color: {
@@ -71,7 +71,7 @@ BasePill {
                 anchors.centerIn: parent
                 spacing: Theme.spacingXS
 
-                DankIcon {
+                HypeIcon {
                     id: cpuIcon
                     name: "memory"
                     size: Theme.barIconSize(root.barThickness, undefined, root.barConfig?.maximizeWidgetIcons, root.barConfig?.iconScale)

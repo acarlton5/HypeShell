@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import QtQuick.Layouts
 import Quickshell
 import qs.Common
@@ -118,7 +118,7 @@ Item {
         SettingsData.set("showOnLastDisplay", newPrefs);
     }
 
-    DankFlickable {
+    HypeFlickable {
         anchors.fill: parent
         clip: true
         contentHeight: mainColumn.height + Theme.spacingXL
@@ -151,7 +151,7 @@ Item {
                         width: parent.width
                         spacing: Theme.spacingM
 
-                        DankIcon {
+                        HypeIcon {
                             name: "monitor"
                             size: Theme.iconSize
                             color: Theme.primary
@@ -220,7 +220,7 @@ Item {
                                         anchors.horizontalCenter: parent.horizontalCenter
                                     }
 
-                                    DankButtonGroup {
+                                    HypeButtonGroup {
                                         id: displayModeGroup
                                         model: [I18n.tr("Name"), I18n.tr("Model")]
                                         currentIndex: SettingsData.displayNameMode === "model" ? 1 : 0
@@ -260,7 +260,7 @@ Item {
                                     anchors.margins: Theme.spacingS
                                     spacing: Theme.spacingM
 
-                                    DankIcon {
+                                    HypeIcon {
                                         name: "desktop_windows"
                                         size: Theme.iconSize - 4
                                         color: Theme.primary
@@ -345,7 +345,7 @@ Item {
                                 width: parent.width
                                 spacing: Theme.spacingM
 
-                                DankIcon {
+                                HypeIcon {
                                     name: modelData.icon
                                     size: Theme.iconSize
                                     color: Theme.primary
@@ -396,7 +396,7 @@ Item {
                                     width: parent.width
                                     spacing: Theme.spacingXS
 
-                                    DankToggle {
+                                    HypeToggle {
                                         width: parent.width
                                         text: I18n.tr("All displays")
                                         description: I18n.tr("Show on all connected displays")
@@ -410,14 +410,14 @@ Item {
                                             } else {
                                                 root.setScreenPreferences(parent.componentId, []);
                                                 const cid = parent.componentId;
-                                                if (["dankBar", "dock", "notifications", "osd", "toast"].includes(cid) || cid.startsWith("bar:")) {
+                                                if (["hypeBar", "dock", "notifications", "osd", "toast"].includes(cid) || cid.startsWith("bar:")) {
                                                     root.setShowOnLastDisplay(cid, true);
                                                 }
                                             }
                                         }
                                     }
 
-                                    DankToggle {
+                                    HypeToggle {
                                         width: parent.width
                                         text: I18n.tr("Focused monitor only")
                                         description: I18n.tr("Show notifications only on the currently focused monitor")
@@ -426,7 +426,7 @@ Item {
                                         onToggled: checked => SettingsData.set("notificationFocusedMonitor", checked)
                                     }
 
-                                    DankToggle {
+                                    HypeToggle {
                                         width: parent.width
                                         text: I18n.tr("Show on Last Display")
                                         description: I18n.tr("Always show when there's only one connected display")
@@ -435,7 +435,7 @@ Item {
                                             const prefs = root.getScreenPreferences(parent.componentId);
                                             const isAll = prefs.includes("all") || (typeof prefs[0] === "string" && prefs[0] === "all");
                                             const cid = parent.componentId;
-                                            const isRelevantComponent = ["dankBar", "dock", "notifications", "osd", "toast", "notepad"].includes(cid) || cid.startsWith("bar:");
+                                            const isRelevantComponent = ["hypeBar", "dock", "notifications", "osd", "toast", "notepad"].includes(cid) || cid.startsWith("bar:");
                                             return !isAll && isRelevantComponent;
                                         }
                                         onToggled: checked => {
@@ -465,7 +465,7 @@ Item {
                                         Repeater {
                                             model: Quickshell.screens
 
-                                            delegate: DankToggle {
+                                            delegate: HypeToggle {
                                                 property var screenData: modelData
                                                 property string componentId: parent.parent.componentId
 

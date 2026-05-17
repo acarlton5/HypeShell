@@ -1,4 +1,4 @@
-package cups
+﻿package cups
 
 import (
 	"fmt"
@@ -81,7 +81,7 @@ func (sm *DBusSubscriptionManager) Start() error {
 func (sm *DBusSubscriptionManager) createDBusSubscription() (int, error) {
 	req := ipp.NewRequest(ipp.OperationCreatePrinterSubscriptions, 2)
 	req.OperationAttributes[ipp.AttributePrinterURI] = fmt.Sprintf("%s/", sm.baseURL)
-	req.OperationAttributes[ipp.AttributeRequestingUserName] = "dms"
+	req.OperationAttributes[ipp.AttributeRequestingUserName] = "hype"
 
 	req.SubscriptionAttributes = map[string]any{
 		"notify-events": []string{
@@ -283,7 +283,7 @@ func (sm *DBusSubscriptionManager) Stop() {
 func (sm *DBusSubscriptionManager) cancelSubscription() {
 	req := ipp.NewRequest(ipp.OperationCancelSubscription, 1)
 	req.OperationAttributes[ipp.AttributePrinterURI] = fmt.Sprintf("%s/", sm.baseURL)
-	req.OperationAttributes[ipp.AttributeRequestingUserName] = "dms"
+	req.OperationAttributes[ipp.AttributeRequestingUserName] = "hype"
 	req.OperationAttributes["notify-subscription-id"] = sm.subscriptionID
 
 	_, err := sm.client.SendRequest(fmt.Sprintf("%s/", sm.baseURL), req, nil)

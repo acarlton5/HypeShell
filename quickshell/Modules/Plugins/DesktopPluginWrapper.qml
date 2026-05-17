@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import QtQuick.Controls
 import Quickshell
 import Quickshell.Wayland
@@ -288,7 +288,7 @@ Item {
 
         mask: root.clickThrough ? emptyMask : null
 
-        WlrLayershell.namespace: "dms:desktop-widget:" + root.pluginId + (root.instanceId ? ":" + root.instanceId : "")
+        WlrLayershell.namespace: "hype:desktop-widget:" + root.pluginId + (root.instanceId ? ":" + root.instanceId : "")
         WlrLayershell.layer: {
             if (root.isInteracting && !CompositorService.useHyprlandFocusGrab)
                 return WlrLayer.Overlay;
@@ -556,7 +556,7 @@ Item {
 
             mask: Region {}
 
-            WlrLayershell.namespace: "dms:desktop-widget-preview"
+            WlrLayershell.namespace: "hype:desktop-widget-preview"
             WlrLayershell.layer: WlrLayer.Bottom
             WlrLayershell.exclusionMode: ExclusionMode.Ignore
             WlrLayershell.keyboardFocus: WlrKeyboardFocus.None
@@ -636,7 +636,7 @@ Item {
 
             mask: Region {}
 
-            WlrLayershell.namespace: "dms:desktop-widget-grid"
+            WlrLayershell.namespace: "hype:desktop-widget-grid"
             WlrLayershell.layer: root.overviewActive && (root.showOnOverview || root.showOnOverviewOnly) ? WlrLayer.Overlay : WlrLayer.Background
             WlrLayershell.exclusionMode: ExclusionMode.Ignore
             WlrLayershell.keyboardFocus: WlrKeyboardFocus.None
@@ -682,7 +682,7 @@ Item {
             screen: root.screen
             color: "transparent"
 
-            WlrLayershell.namespace: "dms:desktop-widget-helper"
+            WlrLayershell.namespace: "hype:desktop-widget-helper"
             WlrLayershell.layer: WlrLayer.Overlay
             WlrLayershell.exclusionMode: ExclusionMode.Ignore
             WlrLayershell.keyboardFocus: WlrKeyboardFocus.None
@@ -711,7 +711,7 @@ Item {
                     spacing: Theme.spacingM
                     height: parent.height
 
-                    DankIcon {
+                    HypeIcon {
                         name: "grid_on"
                         size: 16
                         color: root.gridEnabled ? Theme.primary : Theme.surfaceText

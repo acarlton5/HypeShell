@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import Quickshell
 import qs.Common
 import qs.Services
@@ -105,7 +105,7 @@ PluginComponent {
                 width: parent.width
                 implicitHeight: root.popoutHeight - popoutColumn.headerHeight - popoutColumn.detailsHeight - Theme.spacingXL
 
-                DankGridView {
+                HypeGridView {
                     id: emojiGrid
                     anchors.horizontalCenter: parent.horizontalCenter
                     width: Math.floor(parent.width / 50) * 50

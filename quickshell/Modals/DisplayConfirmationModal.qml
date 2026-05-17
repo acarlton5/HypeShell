@@ -1,9 +1,9 @@
-import QtQuick
+﻿import QtQuick
 import qs.Common
 import qs.Modals.Common
 import qs.Widgets
 
-DankModal {
+HypeModal {
     id: root
 
     property string outputName: ""
@@ -194,7 +194,7 @@ DankModal {
                 }
             }
 
-            DankActionButton {
+            HypeActionButton {
                 anchors.top: parent.top
                 anchors.right: parent.right
                 anchors.topMargin: Theme.spacingM

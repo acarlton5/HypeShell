@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import QtQuick.Layouts
 import Quickshell
 import qs.Common
@@ -52,9 +52,9 @@ Rectangle {
 
             StyledText {
                 text: {
-                    if (!DMSNetworkService.connected)
+                    if (!HYPENetworkService.connected)
                         return I18n.tr("Active: None");
-                    const names = DMSNetworkService.activeNames || [];
+                    const names = HYPENetworkService.activeNames || [];
                     if (names.length <= 1)
                         return I18n.tr("Active: %1").arg(names[0] || "VPN");
                     return I18n.tr("Active: %1 +%2").arg(names[0]).arg(names.length - 1);
@@ -79,7 +79,7 @@ Rectangle {
                     anchors.centerIn: parent
                     spacing: Theme.spacingXS
 
-                    DankIcon {
+                    HypeIcon {
                         name: VPNService.importing ? "sync" : "add"
                         size: Theme.fontSizeSmall
                         color: Theme.primary
@@ -107,16 +107,16 @@ Rectangle {
                 height: 28
                 radius: 14
                 color: discAllArea.containsMouse ? Theme.errorHover : Theme.surfaceLight
-                visible: DMSNetworkService.connected
+                visible: HYPENetworkService.connected
                 width: 100
                 Layout.alignment: Qt.AlignVCenter
-                opacity: DMSNetworkService.isBusy ? 0.5 : 1.0
+                opacity: HYPENetworkService.isBusy ? 0.5 : 1.0
 
                 Row {
                     anchors.centerIn: parent
                     spacing: Theme.spacingXS
 
-                    DankIcon {
+                    HypeIcon {
                         name: "link_off"
                         size: Theme.fontSizeSmall
                         color: Theme.surfaceText
@@ -134,13 +134,13 @@ Rectangle {
                     id: discAllArea
                     anchors.fill: parent
                     hoverEnabled: true
-                    cursorShape: DMSNetworkService.isBusy ? Qt.BusyCursor : Qt.PointingHandCursor
-                    enabled: !DMSNetworkService.isBusy
-                    onClicked: DMSNetworkService.disconnectAllActive()
+                    cursorShape: HYPENetworkService.isBusy ? Qt.BusyCursor : Qt.PointingHandCursor
+                    enabled: !HYPENetworkService.isBusy
+                    onClicked: HYPENetworkService.disconnectAllActive()
                 }
             }
 
-            DankActionButton {
+            HypeActionButton {
                 Layout.alignment: Qt.AlignVCenter
                 iconName: "settings"
                 buttonSize: 28
@@ -166,9 +166,9 @@ Rectangle {
             Column {
                 anchors.centerIn: parent
                 spacing: Theme.spacingS
-                visible: DMSNetworkService.profiles.length === 0
+                visible: HYPENetworkService.profiles.length === 0
 
-                DankIcon {
+                HypeIcon {
                     name: "vpn_key_off"
                     size: 36
                     color: Theme.surfaceVariantText
@@ -190,16 +190,16 @@ Rectangle {
                 }
             }
 
-            DankListView {
+            HypeListView {
                 id: vpnListView
                 anchors.fill: parent
-                visible: DMSNetworkService.profiles.length > 0
+                visible: HYPENetworkService.profiles.length > 0
                 spacing: 4
                 cacheBuffer: 200
                 clip: true
 
                 model: ScriptModel {
-                    values: DMSNetworkService.profiles
+                    values: HYPENetworkService.profiles
                     objectProp: "uuid"
                 }
 

@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import qs.Common
 import qs.Modals.FileBrowser
 import qs.Services
@@ -17,7 +17,7 @@ Item {
         onFileSelected: path => SettingsData.set("launcherLogoCustomPath", path.replace("file://", ""))
     }
 
-    DankFlickable {
+    HypeFlickable {
         anchors.fill: parent
         clip: true
         contentHeight: mainColumn.height + Theme.spacingXL
@@ -49,14 +49,14 @@ Item {
                     height: logoModeGroup.implicitHeight
                     clip: true
 
-                    DankButtonGroup {
+                    HypeButtonGroup {
                         id: logoModeGroup
                         anchors.horizontalCenter: parent.horizontalCenter
                         buttonPadding: parent.width < 480 ? Theme.spacingS : Theme.spacingL
                         minButtonWidth: parent.width < 480 ? 44 : 64
                         textSize: parent.width < 480 ? Theme.fontSizeSmall : Theme.fontSizeMedium
                         model: {
-                            const modes = [I18n.tr("Apps Icon"), I18n.tr("OS Logo"), I18n.tr("Dank")];
+                            const modes = [I18n.tr("Apps Icon"), I18n.tr("OS Logo"), I18n.tr("Hype")];
                             if (CompositorService.isNiri) {
                                 modes.push("niri");
                             } else if (CompositorService.isHyprland) {
@@ -80,7 +80,7 @@ Item {
                                 return 0;
                             if (SettingsData.launcherLogoMode === "os")
                                 return 1;
-                            if (SettingsData.launcherLogoMode === "dank")
+                            if (SettingsData.launcherLogoMode === "hype")
                                 return 2;
                             if (SettingsData.launcherLogoMode === "compositor")
                                 return 3;
@@ -99,7 +99,7 @@ Item {
                                 SettingsData.set("launcherLogoMode", "os");
                                 break;
                             case 2:
-                                SettingsData.set("launcherLogoMode", "dank");
+                                SettingsData.set("launcherLogoMode", "hype");
                                 break;
                             case 3:
                                 SettingsData.set("launcherLogoMode", "compositor");
@@ -137,7 +137,7 @@ Item {
                         }
                     }
 
-                    DankActionButton {
+                    HypeActionButton {
                         id: selectButton
                         iconName: "folder_open"
                         width: 36
@@ -173,7 +173,7 @@ Item {
                                 anchors.horizontalCenter: parent.horizontalCenter
                                 spacing: Theme.spacingM
 
-                                DankButtonGroup {
+                                HypeButtonGroup {
                                     id: colorModeGroup
                                     buttonPadding: parent.parent.width < 480 ? Theme.spacingS : Theme.spacingL
                                     minButtonWidth: parent.parent.width < 480 ? 44 : 64
@@ -319,7 +319,7 @@ Item {
                     wrapMode: Text.WordWrap
                 }
 
-                DankTextField {
+                HypeTextField {
                     width: parent.width
                     text: SettingsData.launchPrefix
                     placeholderText: I18n.tr("Enter launch prefix (e.g., 'uwsm-app')")
@@ -361,7 +361,7 @@ Item {
                 width: parent.width
                 iconName: "tune"
                 title: I18n.tr("Appearance", "launcher appearance settings")
-                settingKey: "dankLauncherV2Appearance"
+                settingKey: "hypeLauncherV2Appearance"
 
                 Column {
                     width: parent.width
@@ -380,7 +380,7 @@ Item {
                         height: sizeGroup.implicitHeight
                         clip: true
 
-                        DankButtonGroup {
+                        HypeButtonGroup {
                             id: sizeGroup
                             anchors.horizontalCenter: parent.horizontalCenter
                             buttonPadding: parent.width < 400 ? Theme.spacingS : Theme.spacingL
@@ -388,7 +388,7 @@ Item {
                             textSize: parent.width < 400 ? Theme.fontSizeSmall : Theme.fontSizeMedium
                             model: ["1", "2", "3", "4"]
                             currentIndex: {
-                                switch (SettingsData.dankLauncherV2Size) {
+                                switch (SettingsData.hypeLauncherV2Size) {
                                 case "micro":
                                     return 0;
                                 case "compact":
@@ -403,54 +403,54 @@ Item {
                                 if (!selected)
                                     return;
                                 var sizes = ["micro", "compact", "medium", "large"];
-                                SettingsData.set("dankLauncherV2Size", sizes[index]);
+                                SettingsData.set("hypeLauncherV2Size", sizes[index]);
                             }
                         }
                     }
                 }
 
                 SettingsToggleRow {
-                    settingKey: "dankLauncherV2ShowFooter"
+                    settingKey: "hypeLauncherV2ShowFooter"
                     tags: ["launcher", "footer", "hints", "shortcuts"]
                     text: I18n.tr("Show Footer", "launcher footer visibility")
                     description: I18n.tr("Show mode tabs and keyboard hints at the bottom.", "launcher footer description")
-                    checked: SettingsData.dankLauncherV2ShowFooter
-                    enabled: SettingsData.dankLauncherV2Size !== "micro"
-                    onToggled: checked => SettingsData.set("dankLauncherV2ShowFooter", checked)
+                    checked: SettingsData.hypeLauncherV2ShowFooter
+                    enabled: SettingsData.hypeLauncherV2Size !== "micro"
+                    onToggled: checked => SettingsData.set("hypeLauncherV2ShowFooter", checked)
                 }
 
                 SettingsToggleRow {
-                    settingKey: "dankLauncherV2UnloadOnClose"
+                    settingKey: "hypeLauncherV2UnloadOnClose"
                     tags: ["launcher", "unload", "close", "memory", "vram"]
                     text: I18n.tr("Unload on Close")
                     description: I18n.tr("Free VRAM/memory when the launcher is closed. May cause a slight delay when reopening.")
-                    checked: SettingsData.dankLauncherV2UnloadOnClose
-                    onToggled: checked => SettingsData.set("dankLauncherV2UnloadOnClose", checked)
+                    checked: SettingsData.hypeLauncherV2UnloadOnClose
+                    onToggled: checked => SettingsData.set("hypeLauncherV2UnloadOnClose", checked)
                 }
 
                 SettingsToggleRow {
-                    settingKey: "dankLauncherV2BorderEnabled"
+                    settingKey: "hypeLauncherV2BorderEnabled"
                     tags: ["launcher", "border", "outline"]
                     text: I18n.tr("Border", "launcher border option")
-                    checked: SettingsData.dankLauncherV2BorderEnabled
-                    onToggled: checked => SettingsData.set("dankLauncherV2BorderEnabled", checked)
+                    checked: SettingsData.hypeLauncherV2BorderEnabled
+                    onToggled: checked => SettingsData.set("hypeLauncherV2BorderEnabled", checked)
                 }
 
                 Column {
                     width: parent.width
                     spacing: Theme.spacingM
-                    visible: SettingsData.dankLauncherV2BorderEnabled
+                    visible: SettingsData.hypeLauncherV2BorderEnabled
 
                     SettingsSliderRow {
-                        settingKey: "dankLauncherV2BorderThickness"
+                        settingKey: "hypeLauncherV2BorderThickness"
                         tags: ["launcher", "border", "thickness"]
                         text: I18n.tr("Thickness", "border thickness")
                         minimum: 1
                         maximum: 6
-                        value: SettingsData.dankLauncherV2BorderThickness
+                        value: SettingsData.hypeLauncherV2BorderThickness
                         defaultValue: 2
                         unit: "px"
-                        onSliderValueChanged: newValue => SettingsData.set("dankLauncherV2BorderThickness", newValue)
+                        onSliderValueChanged: newValue => SettingsData.set("hypeLauncherV2BorderThickness", newValue)
                     }
 
                     Column {
@@ -470,18 +470,18 @@ Item {
                             height: borderColorGroup.implicitHeight
                             clip: true
 
-                            DankButtonGroup {
+                            HypeButtonGroup {
                                 id: borderColorGroup
                                 anchors.horizontalCenter: parent.horizontalCenter
                                 buttonPadding: parent.width < 400 ? Theme.spacingS : Theme.spacingL
                                 minButtonWidth: parent.width < 400 ? 50 : 70
                                 textSize: parent.width < 400 ? Theme.fontSizeSmall : Theme.fontSizeMedium
                                 model: [I18n.tr("Primary", "primary color"), I18n.tr("Secondary", "secondary color"), I18n.tr("Outline", "outline color"), I18n.tr("Text", "text color")]
-                                currentIndex: SettingsData.dankLauncherV2BorderColor === "secondary" ? 1 : SettingsData.dankLauncherV2BorderColor === "outline" ? 2 : SettingsData.dankLauncherV2BorderColor === "surfaceText" ? 3 : 0
+                                currentIndex: SettingsData.hypeLauncherV2BorderColor === "secondary" ? 1 : SettingsData.hypeLauncherV2BorderColor === "outline" ? 2 : SettingsData.hypeLauncherV2BorderColor === "surfaceText" ? 3 : 0
                                 onSelectionChanged: (index, selected) => {
                                     if (!selected)
                                         return;
-                                    SettingsData.set("dankLauncherV2BorderColor", index === 1 ? "secondary" : index === 2 ? "outline" : index === 3 ? "surfaceText" : "primary");
+                                    SettingsData.set("hypeLauncherV2BorderColor", index === 1 ? "secondary" : index === 2 ? "outline" : index === 3 ? "surfaceText" : "primary");
                                 }
                             }
                         }
@@ -526,7 +526,7 @@ Item {
                     spacing: Theme.spacingS
 
                     Repeater {
-                        model: ["dms_settings", "dms_notepad", "dms_sysmon", "dms_settings_search"]
+                        model: ["hype_settings", "hype_notepad", "hype_sysmon", "hype_settings_search"]
 
                         delegate: Rectangle {
                             id: pluginDelegate
@@ -545,7 +545,7 @@ Item {
                                 anchors.verticalCenter: parent.verticalCenter
                                 spacing: Theme.spacingM
 
-                                DankIcon {
+                                HypeIcon {
                                     name: pluginDelegate.plugin?.cornerIcon ?? "extension"
                                     size: Theme.iconSize
                                     color: Theme.primary
@@ -576,7 +576,7 @@ Item {
                                 anchors.verticalCenter: parent.verticalCenter
                                 spacing: Theme.spacingM
 
-                                DankTextField {
+                                HypeTextField {
                                     id: triggerField
                                     width: 60
                                     visible: pluginDelegate.plugin?.isLauncher === true
@@ -586,7 +586,7 @@ Item {
                                     Component.onCompleted: text = SettingsData.getBuiltInPluginSetting(pluginDelegate.modelData, "trigger", pluginDelegate.plugin?.defaultTrigger ?? "")
                                 }
 
-                                DankToggle {
+                                HypeToggle {
                                     id: enableToggle
                                     anchors.verticalCenter: parent.verticalCenter
                                     checked: SettingsData.getBuiltInPluginSetting(pluginDelegate.modelData, "enabled", true)
@@ -608,8 +608,8 @@ Item {
                 property var allLauncherPlugins: {
                     SettingsData.launcherPluginVisibility;
                     SettingsData.launcherPluginOrder;
-                    SettingsData.dankLauncherV2IncludeFilesInAll;
-                    SettingsData.dankLauncherV2IncludeFoldersInAll;
+                    SettingsData.hypeLauncherV2IncludeFilesInAll;
+                    SettingsData.hypeLauncherV2IncludeFoldersInAll;
                     var plugins = [];
                     var builtIn = AppSearchService.getBuiltInLauncherPlugins() || {};
                     for (var pluginId in builtIn) {
@@ -638,7 +638,7 @@ Item {
                             trigger: PluginService.getPluginTrigger(pluginId) || ""
                         });
                     }
-                    if (SettingsData.dankLauncherV2IncludeFilesInAll) {
+                    if (SettingsData.hypeLauncherV2IncludeFilesInAll) {
                         plugins.push({
                             id: "__files",
                             name: I18n.tr("Files"),
@@ -649,7 +649,7 @@ Item {
                             trigger: "/"
                         });
                     }
-                    if (SettingsData.dankLauncherV2IncludeFoldersInAll) {
+                    if (SettingsData.hypeLauncherV2IncludeFoldersInAll) {
                         plugins.push({
                             id: "__folders",
                             name: I18n.tr("Folders"),
@@ -718,7 +718,7 @@ Item {
                                         height: Theme.iconSize
                                         anchors.verticalCenter: parent.verticalCenter
 
-                                        DankIcon {
+                                        HypeIcon {
                                             anchors.centerIn: parent
                                             visible: visibilityDelegateItem.modelData.iconType !== "unicode"
                                             name: visibilityDelegateItem.modelData.icon
@@ -750,14 +750,14 @@ Item {
 
                                             Rectangle {
                                                 visible: visibilityDelegateItem.modelData.isBuiltIn
-                                                width: dmsBadgeLabel.implicitWidth + Theme.spacingS
+                                                width: hypeBadgeLabel.implicitWidth + Theme.spacingS
                                                 height: 16
                                                 radius: 8
                                                 color: Theme.primaryContainer
                                                 anchors.verticalCenter: parent.verticalCenter
 
                                                 StyledText {
-                                                    id: dmsBadgeLabel
+                                                    id: hypeBadgeLabel
                                                     anchors.centerIn: parent
                                                     text: "HypeShell"
                                                     font.pixelSize: Theme.fontSizeSmall - 2
@@ -774,16 +774,16 @@ Item {
                                     }
                                 }
 
-                                DankToggle {
+                                HypeToggle {
                                     anchors.right: parent.right
                                     anchors.rightMargin: Theme.spacingM
                                     anchors.verticalCenter: parent.verticalCenter
                                     checked: {
                                         switch (visibilityDelegateItem.modelData.id) {
                                         case "__files":
-                                            return SettingsData.dankLauncherV2IncludeFilesInAll;
+                                            return SettingsData.hypeLauncherV2IncludeFilesInAll;
                                         case "__folders":
-                                            return SettingsData.dankLauncherV2IncludeFoldersInAll;
+                                            return SettingsData.hypeLauncherV2IncludeFoldersInAll;
                                         default:
                                             return SettingsData.getPluginAllowWithoutTrigger(visibilityDelegateItem.modelData.id);
                                         }
@@ -791,10 +791,10 @@ Item {
                                     onToggled: function (isChecked) {
                                         switch (visibilityDelegateItem.modelData.id) {
                                         case "__files":
-                                            SettingsData.set("dankLauncherV2IncludeFilesInAll", isChecked);
+                                            SettingsData.set("hypeLauncherV2IncludeFilesInAll", isChecked);
                                             break;
                                         case "__folders":
-                                            SettingsData.set("dankLauncherV2IncludeFoldersInAll", isChecked);
+                                            SettingsData.set("hypeLauncherV2IncludeFoldersInAll", isChecked);
                                             break;
                                         default:
                                             SettingsData.setPluginAllowWithoutTrigger(visibilityDelegateItem.modelData.id, isChecked);
@@ -833,7 +833,7 @@ Item {
                                 }
                             }
 
-                            DankIcon {
+                            HypeIcon {
                                 x: Theme.spacingXS
                                 anchors.verticalCenter: parent.verticalCenter
                                 name: "drag_indicator"
@@ -888,21 +888,21 @@ Item {
                 }
 
                 SettingsToggleRow {
-                    settingKey: "dankLauncherV2IncludeFilesInAll"
+                    settingKey: "hypeLauncherV2IncludeFilesInAll"
                     tags: ["launcher", "files", "dsearch", "all", "results", "indexed"]
                     text: I18n.tr("Include Files in All Tab")
                     description: I18n.tr("Merge indexed file results into the All tab (requires dsearch).")
-                    checked: SettingsData.dankLauncherV2IncludeFilesInAll
-                    onToggled: checked => SettingsData.set("dankLauncherV2IncludeFilesInAll", checked)
+                    checked: SettingsData.hypeLauncherV2IncludeFilesInAll
+                    onToggled: checked => SettingsData.set("hypeLauncherV2IncludeFilesInAll", checked)
                 }
 
                 SettingsToggleRow {
-                    settingKey: "dankLauncherV2IncludeFoldersInAll"
+                    settingKey: "hypeLauncherV2IncludeFoldersInAll"
                     tags: ["launcher", "folders", "dirs", "dsearch", "all", "results", "indexed"]
                     text: I18n.tr("Include Folders in All Tab")
                     description: I18n.tr("Merge indexed folder results into the All tab (requires dsearch).")
-                    checked: SettingsData.dankLauncherV2IncludeFoldersInAll
-                    onToggled: checked => SettingsData.set("dankLauncherV2IncludeFoldersInAll", checked)
+                    checked: SettingsData.hypeLauncherV2IncludeFoldersInAll
+                    onToggled: checked => SettingsData.set("hypeLauncherV2IncludeFoldersInAll", checked)
                 }
             }
 
@@ -1001,7 +1001,7 @@ Item {
                                 }
                             }
 
-                            DankActionButton {
+                            HypeActionButton {
                                 anchors.right: parent.right
                                 anchors.rightMargin: Theme.spacingM
                                 anchors.verticalCenter: parent.verticalCenter
@@ -1111,7 +1111,7 @@ Item {
                                 }
                             }
 
-                            DankActionButton {
+                            HypeActionButton {
                                 anchors.right: parent.right
                                 anchors.rightMargin: Theme.spacingM
                                 anchors.verticalCenter: parent.verticalCenter
@@ -1181,7 +1181,7 @@ Item {
                         anchors.verticalCenter: parent.verticalCenter
                     }
 
-                    DankActionButton {
+                    HypeActionButton {
                         id: clearAllButton
                         iconName: "delete_sweep"
                         iconSize: Theme.iconSize - 2
@@ -1275,7 +1275,7 @@ Item {
                                 }
                             }
 
-                            DankActionButton {
+                            HypeActionButton {
                                 anchors.right: parent.right
                                 anchors.rightMargin: Theme.spacingM
                                 anchors.verticalCenter: parent.verticalCenter

@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import qs.Common
 import qs.Modules.Plugins
 import qs.Services
@@ -54,11 +54,11 @@ BasePill {
                         "pciId": pciId
                     };
                     if (sectionId === "left") {
-                        SettingsData.setDankBarLeftWidgets(widgets);
+                        SettingsData.setHypeBarLeftWidgets(widgets);
                     } else if (sectionId === "center") {
-                        SettingsData.setDankBarCenterWidgets(widgets);
+                        SettingsData.setHypeBarCenterWidgets(widgets);
                     } else if (sectionId === "right") {
-                        SettingsData.setDankBarRightWidgets(widgets);
+                        SettingsData.setHypeBarRightWidgets(widgets);
                     }
                     return;
                 }
@@ -102,7 +102,7 @@ BasePill {
                 anchors.centerIn: parent
                 spacing: 1
 
-                DankIcon {
+                HypeIcon {
                     name: "auto_awesome_mosaic"
                     size: Theme.barIconSize(root.barThickness, undefined, root.barConfig?.maximizeWidgetIcons, root.barConfig?.iconScale)
                     color: {
@@ -139,7 +139,7 @@ BasePill {
                 anchors.centerIn: parent
                 spacing: Theme.spacingXS
 
-                DankIcon {
+                HypeIcon {
                     id: gpuTempIcon
                     name: "auto_awesome_mosaic"
                     size: Theme.barIconSize(root.barThickness, undefined, root.barConfig?.maximizeWidgetIcons, root.barConfig?.iconScale)

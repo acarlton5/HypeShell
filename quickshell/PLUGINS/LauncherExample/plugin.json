@@ -1,9 +1,9 @@
-{
+﻿{
     "id": "launcherExample",
     "name": "LauncherExample",
     "description": "Example launcher plugin demonstrating the launcher plugin system",
     "version": "1.0.0",
-    "author": "DMS Team",
+    "author": "HYPE Team",
     "icon": "extension",
     "type": "launcher",
     "capabilities": ["clipboard", "command-execution"],

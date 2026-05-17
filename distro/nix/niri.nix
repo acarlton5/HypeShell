@@ -1,18 +1,18 @@
-{
+﻿{
   config,
   lib,
   ...
 }: let
-  cfg = config.programs.dank-material-shell;
+  cfg = config.programs.hype-material-shell;
 in {
   imports = [
-    ./dms-rename.nix
+    ./hype-rename.nix
   ];
 
-  options.programs.dank-material-shell = {
+  options.programs.hype-material-shell = {
     niri = {
-      enableKeybinds = lib.mkEnableOption "DankMaterialShell niri keybinds";
-      enableSpawn = lib.mkEnableOption "DankMaterialShell niri spawn-at-startup";
+      enableKeybinds = lib.mkEnableOption "HypeMaterialShell niri keybinds";
+      enableSpawn = lib.mkEnableOption "HypeMaterialShell niri spawn-at-startup";
       includes = {
         enable =
           (lib.mkEnableOption "includes for niri-flake")
@@ -22,7 +22,7 @@ in {
         override = lib.mkOption {
           type = lib.types.bool;
           description = ''
-            Whether DMS settings will be prioritized over settings defined in niri-flake or not
+            Whether HYPE settings will be prioritized over settings defined in niri-flake or not
           '';
           default = true;
           example = false;
@@ -38,7 +38,7 @@ in {
         filesToInclude = lib.mkOption {
           type = lib.types.listOf lib.types.str;
           description = ''
-            A list of dms-generated files to include
+            A list of hype-generated files to include
           '';
           default = [
             "alttab"
@@ -72,10 +72,10 @@ in {
       let
         cfg' = cfg.niri.includes;
 
-        withOriginalConfig = dmsFiles:
+        withOriginalConfig = hypeFiles:
           if cfg'.override
-          then [cfg'.originalFileName] ++ dmsFiles
-          else dmsFiles ++ [cfg'.originalFileName];
+          then [cfg'.originalFileName] ++ hypeFiles
+          else hypeFiles ++ [cfg'.originalFileName];
 
         fixes = map (fix: "\n${fix}") (
           lib.optional (cfg'.enable && config.programs.niri.settings.layout.border.enable)
@@ -88,10 +88,10 @@ in {
         );
       in {
         niri-config.target = lib.mkForce "niri/${cfg'.originalFileName}.kdl";
-        niri-config-dms = {
+        niri-config-hype = {
           target = "niri/config.kdl";
           text = lib.pipe cfg'.filesToInclude [
-            (map (filename: "dms/${filename}"))
+            (map (filename: "hype/${filename}"))
             withOriginalConfig
             (map (filename: "include \"${filename}.kdl\""))
             (files: files ++ fixes)
@@ -104,70 +104,70 @@ in {
     programs.niri.settings = lib.mkMerge [
       (lib.mkIf cfg.niri.enableKeybinds {
         binds = with config.lib.niri.actions; let
-          dms-ipc = spawn "dms" "ipc";
+          hype-ipc = spawn "hype" "ipc";
         in
           {
             "Mod+Space" = {
-              action = dms-ipc "spotlight" "toggle";
+              action = hype-ipc "spotlight" "toggle";
               hotkey-overlay.title = "Toggle Application Launcher";
             };
             "Mod+N" = {
-              action = dms-ipc "notifications" "toggle";
+              action = hype-ipc "notifications" "toggle";
               hotkey-overlay.title = "Toggle Notification Center";
             };
             "Mod+Comma" = {
-              action = dms-ipc "settings" "toggle";
+              action = hype-ipc "settings" "toggle";
               hotkey-overlay.title = "Toggle Settings";
             };
             "Mod+P" = {
-              action = dms-ipc "notepad" "toggle";
+              action = hype-ipc "notepad" "toggle";
               hotkey-overlay.title = "Toggle Notepad";
             };
             "Super+Alt+L" = {
-              action = dms-ipc "lock" "lock";
+              action = hype-ipc "lock" "lock";
               hotkey-overlay.title = "Toggle Lock Screen";
             };
             "Mod+X" = {
-              action = dms-ipc "powermenu" "toggle";
+              action = hype-ipc "powermenu" "toggle";
               hotkey-overlay.title = "Toggle Power Menu";
             };
             "XF86AudioRaiseVolume" = {
               allow-when-locked = true;
-              action = dms-ipc "audio" "increment" "3";
+              action = hype-ipc "audio" "increment" "3";
             };
             "XF86AudioLowerVolume" = {
               allow-when-locked = true;
-              action = dms-ipc "audio" "decrement" "3";
+              action = hype-ipc "audio" "decrement" "3";
             };
             "XF86AudioMute" = {
               allow-when-locked = true;
-              action = dms-ipc "audio" "mute";
+              action = hype-ipc "audio" "mute";
             };
             "XF86AudioMicMute" = {
               allow-when-locked = true;
-              action = dms-ipc "audio" "micmute";
+              action = hype-ipc "audio" "micmute";
             };
             "XF86MonBrightnessUp" = {
               allow-when-locked = true;
-              action = dms-ipc "brightness" "increment" "5" "";
+              action = hype-ipc "brightness" "increment" "5" "";
             };
             "XF86MonBrightnessDown" = {
               allow-when-locked = true;
-              action = dms-ipc "brightness" "decrement" "5" "";
+              action = hype-ipc "brightness" "decrement" "5" "";
             };
             "Mod+Alt+N" = {
               allow-when-locked = true;
-              action = dms-ipc "night" "toggle";
+              action = hype-ipc "night" "toggle";
               hotkey-overlay.title = "Toggle Night Mode";
             };
             "Mod+V" = {
-              action = dms-ipc "clipboard" "toggle";
+              action = hype-ipc "clipboard" "toggle";
               hotkey-overlay.title = "Toggle Clipboard Manager";
             };
           }
           // lib.attrsets.optionalAttrs cfg.enableSystemMonitoring {
             "Mod+M" = {
-              action = dms-ipc "processlist" "toggle";
+              action = hype-ipc "processlist" "toggle";
               hotkey-overlay.title = "Toggle Process List";
             };
           };
@@ -177,7 +177,7 @@ in {
         spawn-at-startup = [
           {
             command = [
-              "dms"
+              "hype"
               "run"
             ];
           }

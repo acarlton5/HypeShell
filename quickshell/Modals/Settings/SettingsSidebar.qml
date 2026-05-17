@@ -1,4 +1,4 @@
-pragma ComponentBehavior: Bound
+﻿pragma ComponentBehavior: Bound
 
 import QtQuick
 import Quickshell
@@ -105,18 +105,18 @@ Rectangle {
             ]
         },
         {
-            "id": "dankbar",
+            "id": "hypebar",
             "text": I18n.tr("Hype Bar"),
             "icon": "toolbar",
             "children": [
                 {
-                    "id": "dankbar_settings",
+                    "id": "hypebar_settings",
                     "text": I18n.tr("Settings"),
                     "icon": "tune",
                     "tabIndex": 3
                 },
                 {
-                    "id": "dankbar_widgets",
+                    "id": "hypebar_widgets",
                     "text": I18n.tr("Widgets"),
                     "icon": "widgets",
                     "tabIndex": 22
@@ -239,7 +239,7 @@ Rectangle {
             "text": I18n.tr("Network"),
             "icon": "wifi",
             "tabIndex": 7,
-            "dmsOnly": true
+            "hypeOnly": true
         },
         {
             "id": "system",
@@ -333,7 +333,7 @@ Rectangle {
     ]
 
     function isItemVisible(item) {
-        if (item.dmsOnly && NetworkService.usingLegacy)
+        if (item.hypeOnly && NetworkService.usingLegacy)
             return false;
         if (item.cupsOnly && !CupsService.cupsAvailable)
             return false;
@@ -345,7 +345,7 @@ Rectangle {
             return false;
         if (item.niriOnly && !CompositorService.isNiri)
             return false;
-        if (item.clipboardOnly && (!DMSService.isConnected || DMSService.apiVersion < 23))
+        if (item.clipboardOnly && (!HYPEService.isConnected || HYPEService.apiVersion < 23))
             return false;
         if (item.updaterOnly && !SystemUpdateService.sysupdateAvailable)
             return false;
@@ -613,7 +613,7 @@ Rectangle {
         searchSelectedIndex = Math.max(0, Math.min(searchSelectedIndex + delta, SettingsSearchService.results.length - 1));
     }
 
-    DankFlickable {
+    HypeFlickable {
         anchors.fill: parent
         clip: true
         contentHeight: sidebarColumn.height
@@ -644,7 +644,7 @@ Rectangle {
                 height: Theme.spacingXS
             }
 
-            DankTextField {
+            HypeTextField {
                 id: searchField
                 width: parent.width - parent.leftPadding - parent.rightPadding
                 placeholderText: I18n.tr("Search...")
@@ -747,7 +747,7 @@ Rectangle {
                             return "transparent";
                         }
 
-                        DankRipple {
+                        HypeRipple {
                             id: resultRipple
                             rippleColor: root.searchSelectedIndex === resultDelegate.index ? Theme.buttonText : Theme.surfaceText
                             cornerRadius: resultDelegate.radius
@@ -762,7 +762,7 @@ Rectangle {
                             anchors.verticalCenter: parent.verticalCenter
                             spacing: Theme.spacingM
 
-                            DankIcon {
+                            HypeIcon {
                                 name: resultDelegate.modelData.icon || "settings"
                                 size: Theme.iconSize - 2
                                 color: root.searchSelectedIndex === resultDelegate.index ? Theme.buttonText : Theme.surfaceText
@@ -877,7 +877,7 @@ Rectangle {
                             return "transparent";
                         }
 
-                        DankRipple {
+                        HypeRipple {
                             id: categoryRipple
                             rippleColor: categoryRow.isActive ? Theme.buttonText : Theme.surfaceText
                             cornerRadius: categoryRow.radius
@@ -890,7 +890,7 @@ Rectangle {
                             anchors.verticalCenter: parent.verticalCenter
                             spacing: Theme.spacingM
 
-                            DankIcon {
+                            HypeIcon {
                                 name: categoryDelegate.modelData.icon || ""
                                 size: Theme.iconSize - 2
                                 color: categoryRow.isActive ? Theme.buttonText : Theme.surfaceText
@@ -906,7 +906,7 @@ Rectangle {
                             }
                         }
 
-                        DankIcon {
+                        HypeIcon {
                             id: expandIcon
                             name: root.isCategoryExpanded(categoryDelegate.modelData.id) ? "expand_less" : "expand_more"
                             size: Theme.iconSize - 4
@@ -974,7 +974,7 @@ Rectangle {
                                     return "transparent";
                                 }
 
-                                DankRipple {
+                                HypeRipple {
                                     id: childRipple
                                     rippleColor: childDelegate.isActive ? Theme.buttonText : Theme.surfaceText
                                     cornerRadius: childDelegate.radius
@@ -987,7 +987,7 @@ Rectangle {
                                     anchors.verticalCenter: parent.verticalCenter
                                     spacing: Theme.spacingM
 
-                                    DankIcon {
+                                    HypeIcon {
                                         name: childDelegate.modelData.icon || ""
                                         size: Theme.iconSize - 4
                                         color: childDelegate.isActive ? Theme.buttonText : Theme.surfaceVariantText

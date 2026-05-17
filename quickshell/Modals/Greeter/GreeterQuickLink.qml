@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import qs.Common
 import qs.Widgets
 
@@ -26,7 +26,7 @@ Rectangle {
         anchors.centerIn: parent
         spacing: Theme.spacingS
 
-        DankIcon {
+        HypeIcon {
             name: root.iconName
             size: Theme.iconSizeSmall + 2
             color: Theme.primary
@@ -41,7 +41,7 @@ Rectangle {
             anchors.verticalCenter: parent.verticalCenter
         }
 
-        DankIcon {
+        HypeIcon {
             visible: root.isExternal
             name: "open_in_new"
             size: Theme.iconSizeSmall - 2

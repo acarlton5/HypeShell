@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import QtQuick.Controls
 import Quickshell
 import qs.Common
@@ -93,7 +93,7 @@ PluginComponent {
                             spacing: Theme.spacingS
                             enabled: false
 
-                            DankIcon {
+                            HypeIcon {
                                 name: detailRoot.currentSelection === modelData ? "radio_button_checked" : "radio_button_unchecked"
                                 color: detailRoot.currentSelection === modelData ? Theme.primary : Theme.surfaceVariantText
                                 size: Theme.iconSize
@@ -117,7 +117,7 @@ PluginComponent {
         Row {
             spacing: Theme.spacingXS
 
-            DankIcon {
+            HypeIcon {
                 name: root.isEnabled ? "settings" : "settings_off"
                 color: root.isEnabled ? Theme.primary : Theme.surfaceVariantText
                 font.pixelSize: Theme.iconSize - 4

@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import QtQuick.Effects
 import Quickshell
 import Quickshell.Hyprland
@@ -7,10 +7,10 @@ import qs.Modals.Common
 import qs.Services
 import qs.Widgets
 
-DankModal {
+HypeModal {
     id: root
 
-    layerNamespace: "dms:power-menu"
+    layerNamespace: "hype:power-menu"
     keepPopoutsOpen: true
 
     HyprlandFocusGrab {
@@ -561,7 +561,7 @@ DankModal {
                             anchors.centerIn: parent
                             spacing: Theme.spacingS
 
-                            DankIcon {
+                            HypeIcon {
                                 name: gridButtonRect.actionData.icon
                                 size: Theme.iconSize + 8
                                 color: {
@@ -704,7 +704,7 @@ DankModal {
                             }
                             spacing: Theme.spacingM
 
-                            DankIcon {
+                            HypeIcon {
                                 name: listButtonRect.actionData.icon
                                 size: Theme.iconSize + 4
                                 color: {
@@ -781,7 +781,7 @@ DankModal {
                     }
                 }
 
-                DankIcon {
+                HypeIcon {
                     name: root.showHoldHint ? "warning" : "touch_app"
                     size: Theme.fontSizeSmall
                     color: root.showHoldHint ? Theme.warning : Qt.rgba(Theme.surfaceText.r, Theme.surfaceText.g, Theme.surfaceText.b, 0.6)

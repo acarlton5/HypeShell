@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import qs.Common
 import qs.Widgets
 
@@ -15,7 +15,7 @@ Row {
     visible: saveMode
     spacing: Theme.spacingM
 
-    DankTextField {
+    HypeTextField {
         id: fileNameInput
 
         width: parent.width - saveButton.width - Theme.spacingM

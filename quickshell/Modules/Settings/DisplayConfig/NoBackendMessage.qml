@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import qs.Common
 import qs.Widgets
 
@@ -25,7 +25,7 @@ StyledRect {
             width: parent.width
             spacing: Theme.spacingM
 
-            DankIcon {
+            HypeIcon {
                 name: "monitor"
                 size: Theme.iconSize
                 color: Theme.surfaceVariantText

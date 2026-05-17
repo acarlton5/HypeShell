@@ -1,29 +1,29 @@
-{
+﻿{
   self,
   pkgs,
   ...
 }:
 let
-  fakeDms = pkgs.writeShellScriptBin "dms" ''
-    printf '%s\n' "$@" > /tmp/dms-service-args
+  fakeDms = pkgs.writeShellScriptBin "hype" ''
+    printf '%s\n' "$@" > /tmp/hype-service-args
     exec ${pkgs.coreutils}/bin/sleep 300
   '';
 in
 pkgs.testers.runNixOSTest {
-  name = "dms-nixos-service-start-module";
+  name = "hype-nixos-service-start-module";
 
   nodes.machine = {
     imports = [
-      self.nixosModules.dank-material-shell
+      self.nixosModules.hype-material-shell
     ];
 
-    users.users.danklinux = {
+    users.users.hypelinux = {
       isNormalUser = true;
       linger = true;
       extraGroups = [ "wheel" ];
     };
 
-    programs.dank-material-shell = {
+    programs.hype-material-shell = {
       enable = true;
       package = fakeDms;
       systemd = {
@@ -39,10 +39,10 @@ pkgs.testers.runNixOSTest {
     machine.wait_for_unit("multi-user.target")
     machine.wait_for_unit("user@1000.service")
 
-    machine.succeed("systemctl --machine=danklinux@ --user start dms.service")
-    machine.wait_until_succeeds("systemctl --machine=danklinux@ --user is-active dms.service")
-    machine.wait_until_succeeds("test -f /tmp/dms-service-args")
-    machine.succeed("grep -Fx run /tmp/dms-service-args")
-    machine.succeed("grep -Fx -- --session /tmp/dms-service-args")
+    machine.succeed("systemctl --machine=hypelinux@ --user start hype.service")
+    machine.wait_until_succeeds("systemctl --machine=hypelinux@ --user is-active hype.service")
+    machine.wait_until_succeeds("test -f /tmp/hype-service-args")
+    machine.succeed("grep -Fx run /tmp/hype-service-args")
+    machine.succeed("grep -Fx -- --session /tmp/hype-service-args")
   '';
 }

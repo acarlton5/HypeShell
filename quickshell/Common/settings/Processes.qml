@@ -1,4 +1,4 @@
-pragma Singleton
+﻿pragma Singleton
 pragma ComponentBehavior: Bound
 
 import QtQuick
@@ -20,7 +20,7 @@ Singleton {
     property string systemLocalLoginPamText: ""
     property string commonAuthPcPamText: ""
     property string loginPamText: ""
-    property string dankshellU2fPamText: ""
+    property string hypeshellU2fPamText: ""
     property string u2fKeysText: ""
 
     property string fingerprintProbeOutput: ""
@@ -33,7 +33,7 @@ Singleton {
     readonly property string homeDir: Quickshell.env("HOME") || ""
     readonly property string u2fKeysPath: homeDir ? homeDir + "/.config/Yubico/u2f_keys" : ""
     readonly property bool homeU2fKeysDetected: u2fKeysPath !== "" && u2fKeysWatcher.loaded && u2fKeysText.trim() !== ""
-    readonly property bool lockU2fCustomConfigDetected: pamModuleEnabled(dankshellU2fPamText, "pam_u2f")
+    readonly property bool lockU2fCustomConfigDetected: pamModuleEnabled(hypeshellU2fPamText, "pam_u2f")
     readonly property bool greeterPamHasFprint: greeterPamStackHasModule("pam_fprintd")
     readonly property bool greeterPamHasU2f: greeterPamStackHasModule("pam_u2f")
 
@@ -46,8 +46,8 @@ Singleton {
         return null;
     }
 
-    readonly property var forcedFprintAvailable: envFlag("DMS_FORCE_FPRINT_AVAILABLE")
-    readonly property var forcedU2fAvailable: envFlag("DMS_FORCE_U2F_AVAILABLE")
+    readonly property var forcedFprintAvailable: envFlag("HYPE_FORCE_FPRINT_AVAILABLE")
+    readonly property var forcedU2fAvailable: envFlag("HYPE_FORCE_U2F_AVAILABLE")
 
     // --- Derived auth probe state ---
 
@@ -130,13 +130,13 @@ Singleton {
 
     readonly property string greeterFingerprintSource: {
         if (forcedFprintAvailable !== null)
-            return forcedFprintAvailable ? "dms" : "none";
+            return forcedFprintAvailable ? "hype" : "none";
         if (greeterPamHasFprint)
             return "pam";
         switch (fingerprintProbeState) {
         case "ready":
         case "missing_enrollment":
-            return "dms";
+            return "hype";
         default:
             return "none";
         }
@@ -198,11 +198,11 @@ Singleton {
 
     readonly property string greeterU2fSource: {
         if (forcedU2fAvailable !== null)
-            return forcedU2fAvailable ? "dms" : "none";
+            return forcedU2fAvailable ? "hype" : "none";
         if (greeterPamHasU2f)
             return "pam";
         if (greeterU2fCanEnable)
-            return "dms";
+            return "hype";
         return "none";
     }
 
@@ -574,11 +574,11 @@ Singleton {
     }
 
     FileView {
-        id: dankshellU2fPamWatcher
-        path: "/etc/pam.d/dankshell-u2f"
+        id: hypeshellU2fPamWatcher
+        path: "/etc/pam.d/hypeshell-u2f"
         printErrors: false
-        onLoaded: root.dankshellU2fPamText = text()
-        onLoadFailed: root.dankshellU2fPamText = ""
+        onLoaded: root.hypeshellU2fPamText = text()
+        onLoadFailed: root.hypeshellU2fPamText = ""
     }
 
     FileView {

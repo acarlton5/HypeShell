@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import Quickshell
 import qs.Common
 import qs.Services
@@ -380,7 +380,7 @@ FloatingWindow {
                     anchors.right: parent.right
                     spacing: Theme.spacingXS
 
-                    DankActionButton {
+                    HypeActionButton {
                         visible: windowControls.canMaximize
                         iconName: root.maximized ? "fullscreen_exit" : "fullscreen"
                         iconSize: Theme.iconSize - 4
@@ -388,7 +388,7 @@ FloatingWindow {
                         onClicked: windowControls.tryToggleMaximize()
                     }
 
-                    DankActionButton {
+                    HypeActionButton {
                         iconName: "close"
                         iconSize: Theme.iconSize - 4
                         iconColor: Theme.surfaceText
@@ -411,7 +411,7 @@ FloatingWindow {
                     onClicked: ssidInput.forceActiveFocus()
                 }
 
-                DankTextField {
+                HypeTextField {
                     id: ssidInput
 
                     anchors.fill: parent
@@ -440,7 +440,7 @@ FloatingWindow {
                     border.color: fieldInput.activeFocus ? Theme.primary : Theme.outlineStrong
                     border.width: fieldInput.activeFocus ? 2 : 1
 
-                    DankTextField {
+                    HypeTextField {
                         id: fieldInput
                         anchors.fill: parent
                         font.pixelSize: Theme.fontSizeMedium
@@ -510,7 +510,7 @@ FloatingWindow {
                     onClicked: usernameInput.forceActiveFocus()
                 }
 
-                DankTextField {
+                HypeTextField {
                     id: usernameInput
 
                     anchors.fill: parent
@@ -541,7 +541,7 @@ FloatingWindow {
                     onClicked: passwordInput.forceActiveFocus()
                 }
 
-                DankTextField {
+                HypeTextField {
                     id: passwordInput
 
                     anchors.fill: parent
@@ -580,7 +580,7 @@ FloatingWindow {
                     onClicked: anonInput.forceActiveFocus()
                 }
 
-                DankTextField {
+                HypeTextField {
                     id: anonInput
 
                     anchors.fill: parent
@@ -611,7 +611,7 @@ FloatingWindow {
                     onClicked: domainMatchInput.forceActiveFocus()
                 }
 
-                DankTextField {
+                HypeTextField {
                     id: domainMatchInput
 
                     anchors.fill: parent
@@ -644,7 +644,7 @@ FloatingWindow {
                     border.color: checked ? Theme.primary : Theme.outlineButton
                     border.width: 2
 
-                    DankIcon {
+                    HypeIcon {
                         anchors.centerIn: parent
                         name: "check"
                         size: 12

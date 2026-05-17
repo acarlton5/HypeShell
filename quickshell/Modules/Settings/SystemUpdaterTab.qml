@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import qs.Common
 import qs.Services
 import qs.Widgets
@@ -48,7 +48,7 @@ Item {
         return 1800;
     }
 
-    DankFlickable {
+    HypeFlickable {
         anchors.fill: parent
         clip: true
         contentHeight: mainColumn.height + Theme.spacingXL
@@ -171,7 +171,7 @@ Item {
                             color: Theme.surfaceVariantText
                         }
 
-                        DankTextField {
+                        HypeTextField {
                             id: updaterCustomCommand
                             width: parent.width
                             placeholderText: "topgrade --no-retry"
@@ -216,7 +216,7 @@ Item {
                             color: Theme.surfaceVariantText
                         }
 
-                        DankTextField {
+                        HypeTextField {
                             id: updaterTerminalCustomClass
                             width: parent.width
                             placeholderText: "-T updater"

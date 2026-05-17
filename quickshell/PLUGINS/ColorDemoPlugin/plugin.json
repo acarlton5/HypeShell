@@ -1,9 +1,9 @@
-{
+﻿{
     "id": "colorDemo",
     "name": "Color Demo",
     "description": "Demonstrates color picker plugin setting",
     "version": "1.0.0",
-    "author": "DMS",
+    "author": "HYPE",
     "icon": "palette",
     "type": "widget",
     "component": "./ColorDemoWidget.qml",

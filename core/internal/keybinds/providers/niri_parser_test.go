@@ -1,4 +1,4 @@
-package providers
+﻿package providers
 
 import (
 	"os"
@@ -212,7 +212,7 @@ func TestNiriParseRecentWindows(t *testing.T) {
 
 func TestNiriParseInclude(t *testing.T) {
 	tmpDir := t.TempDir()
-	subDir := filepath.Join(tmpDir, "dms")
+	subDir := filepath.Join(tmpDir, "hype")
 	if err := os.MkdirAll(subDir, 0o755); err != nil {
 		t.Fatalf("Failed to create subdir: %v", err)
 	}
@@ -223,7 +223,7 @@ func TestNiriParseInclude(t *testing.T) {
 	mainContent := `binds {
     Mod+Q { close-window; }
 }
-include "dms/binds.kdl"
+include "hype/binds.kdl"
 `
 	includeContent := `binds {
     Mod+T hotkey-overlay-title="Terminal" { spawn "kitty"; }
@@ -249,7 +249,7 @@ include "dms/binds.kdl"
 
 func TestNiriParseIncludeOverride(t *testing.T) {
 	tmpDir := t.TempDir()
-	subDir := filepath.Join(tmpDir, "dms")
+	subDir := filepath.Join(tmpDir, "hype")
 	if err := os.MkdirAll(subDir, 0o755); err != nil {
 		t.Fatalf("Failed to create subdir: %v", err)
 	}
@@ -260,7 +260,7 @@ func TestNiriParseIncludeOverride(t *testing.T) {
 	mainContent := `binds {
     Mod+T hotkey-overlay-title="Main Terminal" { spawn "alacritty"; }
 }
-include "dms/binds.kdl"
+include "hype/binds.kdl"
 `
 	includeContent := `binds {
     Mod+T hotkey-overlay-title="Override Terminal" { spawn "kitty"; }
@@ -532,7 +532,7 @@ func TestNiriParseMultipleArgs(t *testing.T) {
 
 	content := `binds {
     Mod+Space hotkey-overlay-title="Application Launcher" {
-        spawn "dms" "ipc" "call" "spotlight" "toggle";
+        spawn "hype" "ipc" "call" "spotlight" "toggle";
     }
 }
 `
@@ -554,7 +554,7 @@ func TestNiriParseMultipleArgs(t *testing.T) {
 		t.Errorf("Expected 5 args, got %d: %v", len(kb.Args), kb.Args)
 	}
 
-	expectedArgs := []string{"dms", "ipc", "call", "spotlight", "toggle"}
+	expectedArgs := []string{"hype", "ipc", "call", "spotlight", "toggle"}
 	for i, arg := range expectedArgs {
 		if i < len(kb.Args) && kb.Args[i] != arg {
 			t.Errorf("Args[%d] = %q, want %q", i, kb.Args[i], arg)

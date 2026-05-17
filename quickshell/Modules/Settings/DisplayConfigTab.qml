@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import qs.Common
 import qs.Modals
 import qs.Services
@@ -81,7 +81,7 @@ Item {
         }
     }
 
-    DankFlickable {
+    HypeFlickable {
         anchors.fill: parent
         clip: true
         contentHeight: mainColumn.height + Theme.spacingXL
@@ -118,7 +118,7 @@ Item {
                         width: parent.width
                         spacing: Theme.spacingM
 
-                        DankIcon {
+                        HypeIcon {
                             name: "tune"
                             size: Theme.iconSize
                             color: Theme.primary
@@ -163,7 +163,7 @@ Item {
                                 anchors.horizontalCenter: parent.horizontalCenter
                             }
 
-                            DankToggle {
+                            HypeToggle {
                                 id: autoSelectToggle
                                 checked: SettingsData.displayProfileAutoSelect
                                 onToggled: checked => {
@@ -184,7 +184,7 @@ Item {
                         visible: !root.showNewProfileDialog && !root.showDeleteConfirmDialog && !root.showRenameDialog && !root.showEditMonitorsDialog
                         opacity: SettingsData.displayProfileAutoSelect ? 0.4 : 1.0
 
-                        DankDropdown {
+                        HypeDropdown {
                             id: profileDropdown
                             width: parent.width - newButton.width - editMonitorsButton.width - deleteButton.width - Theme.spacingS * 3
                             compactMode: true
@@ -205,7 +205,7 @@ Item {
                             value: SettingsData.displayProfileAutoSelect ? I18n.tr("Auto") : root.getProfileNameById(root.selectedProfileId)
                         }
 
-                        DankButton {
+                        HypeButton {
                             id: newButton
                             iconName: "add"
                             text: ""
@@ -220,7 +220,7 @@ Item {
                             }
                         }
 
-                        DankButton {
+                        HypeButton {
                             id: editMonitorsButton
                             iconName: "edit"
                             text: ""
@@ -232,7 +232,7 @@ Item {
                             onClicked: root.openEditMonitorsDialog()
                         }
 
-                        DankButton {
+                        HypeButton {
                             id: deleteButton
                             iconName: "delete"
                             text: ""
@@ -258,7 +258,7 @@ Item {
                             width: parent.width - Theme.spacingM * 2
                             spacing: Theme.spacingS
 
-                            DankTextField {
+                            HypeTextField {
                                 id: newProfileField
                                 width: parent.width - createButton.width - cancelNewButton.width - Theme.spacingS * 2
                                 placeholderText: I18n.tr("Profile name")
@@ -272,7 +272,7 @@ Item {
                                 Component.onCompleted: forceActiveFocus()
                             }
 
-                            DankButton {
+                            HypeButton {
                                 id: createButton
                                 text: I18n.tr("Create")
                                 enabled: root.newProfileName.trim() !== ""
@@ -282,7 +282,7 @@ Item {
                                 }
                             }
 
-                            DankButton {
+                            HypeButton {
                                 id: cancelNewButton
                                 text: I18n.tr("Cancel")
                                 backgroundColor: "transparent"
@@ -318,7 +318,7 @@ Item {
                                 spacing: Theme.spacingS
                                 anchors.right: parent.right
 
-                                DankButton {
+                                HypeButton {
                                     text: I18n.tr("Delete")
                                     backgroundColor: Theme.error
                                     textColor: Theme.primaryText
@@ -328,7 +328,7 @@ Item {
                                     }
                                 }
 
-                                DankButton {
+                                HypeButton {
                                     text: I18n.tr("Cancel")
                                     backgroundColor: "transparent"
                                     textColor: Theme.surfaceText
@@ -365,7 +365,7 @@ Item {
                                     width: parent.width
                                     spacing: Theme.spacingM
 
-                                    DankToggle {
+                                    HypeToggle {
                                         id: monitorToggle
                                         checked: root.editMonitorSelection[modelData] ?? false
                                         anchors.verticalCenter: parent.verticalCenter
@@ -404,7 +404,7 @@ Item {
                                 spacing: Theme.spacingS
                                 anchors.right: parent.right
 
-                                DankButton {
+                                HypeButton {
                                     text: I18n.tr("Save")
                                     enabled: Object.values(root.editMonitorSelection).some(v => v)
                                     onClicked: {
@@ -414,7 +414,7 @@ Item {
                                     }
                                 }
 
-                                DankButton {
+                                HypeButton {
                                     text: I18n.tr("Cancel")
                                     backgroundColor: "transparent"
                                     textColor: Theme.surfaceText
@@ -445,7 +445,7 @@ Item {
                         width: parent.width
                         spacing: Theme.spacingM
 
-                        DankIcon {
+                        HypeIcon {
                             name: "monitor"
                             size: Theme.iconSize
                             color: Theme.primary
@@ -490,7 +490,7 @@ Item {
                                 anchors.horizontalCenter: parent.horizontalCenter
                             }
 
-                            DankToggle {
+                            HypeToggle {
                                 id: snapToggle
                                 checked: SettingsData.displaySnapToEdge
                                 onToggled: checked => {
@@ -514,7 +514,7 @@ Item {
                                 anchors.horizontalCenter: parent.horizontalCenter
                             }
 
-                            DankButtonGroup {
+                            HypeButtonGroup {
                                 id: displayFormatGroup
                                 model: [I18n.tr("Name"), I18n.tr("Model")]
                                 currentIndex: SettingsData.displayNameMode === "model" ? 1 : 0
@@ -606,13 +606,13 @@ Item {
                         visible: DisplayConfigState.hasPendingChanges
                         layoutDirection: Qt.RightToLeft
 
-                        DankButton {
+                        HypeButton {
                             text: I18n.tr("Apply Changes")
                             iconName: "check"
                             onClicked: DisplayConfigState.applyChanges()
                         }
 
-                        DankButton {
+                        HypeButton {
                             text: I18n.tr("Discard")
                             backgroundColor: "transparent"
                             textColor: Theme.surfaceText

@@ -1,4 +1,4 @@
-pragma ComponentBehavior: Bound
+﻿pragma ComponentBehavior: Bound
 
 import QtQuick
 import qs.Common
@@ -7,10 +7,10 @@ import qs.Modals.Common
 import qs.Services
 import qs.Widgets
 
-DankPopout {
+HypePopout {
     id: root
 
-    layerNamespace: "dms:clipboard-popout"
+    layerNamespace: "hype:clipboard-popout"
 
     property var parentWidget: null
     property var triggerScreen: null

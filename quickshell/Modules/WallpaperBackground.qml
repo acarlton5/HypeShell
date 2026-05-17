@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import QtQuick.Effects
 import Quickshell
 import Quickshell.Wayland
@@ -337,7 +337,7 @@ Variants {
                 active: !root.source || root.isColorSource
                 asynchronous: true
 
-                sourceComponent: DankBackdrop {
+                sourceComponent: HypeBackdrop {
                     screenName: modelData.name
                 }
             }

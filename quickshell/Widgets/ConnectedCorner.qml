@@ -1,11 +1,11 @@
-import QtQuick
+﻿import QtQuick
 import QtQuick.Shapes
 import "../Common/ConnectorGeometry.js" as ConnectorGeometry
 
 // Concave arc connector filling the gap between a bar corner and an adjacent surface.
 //
 // NOTE: FrameWindow now uses ConnectedShape.qml for frame-owned connected chrome
-// (unified single-path rendering). This component is still used by DankPopout's
+// (unified single-path rendering). This component is still used by HypePopout's
 // own shadow source for non-frame-owned chrome (popouts on non-frame screens).
 
 Item {

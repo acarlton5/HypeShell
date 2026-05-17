@@ -1,4 +1,4 @@
-pragma ComponentBehavior: Bound
+﻿pragma ComponentBehavior: Bound
 import QtQuick
 import Quickshell
 import qs.Common
@@ -484,7 +484,7 @@ BasePill {
                             root.refreshInteractionRefs();
                         }
 
-                        DankIcon {
+                        HypeIcon {
                             anchors.centerIn: parent
                             visible: !verticalGroupItem.modelData.composite
                             name: {
@@ -526,7 +526,7 @@ BasePill {
                             }
                         }
 
-                        DankIcon {
+                        HypeIcon {
                             id: audioIconV
                             visible: verticalGroupItem.modelData.id === "audio"
                             name: root.getVolumeIconName()
@@ -548,7 +548,7 @@ BasePill {
                             anchors.topMargin: 2
                         }
 
-                        DankIcon {
+                        HypeIcon {
                             id: micIconV
                             visible: verticalGroupItem.modelData.id === "microphone"
                             name: root.getMicIconName()
@@ -570,7 +570,7 @@ BasePill {
                             anchors.topMargin: 2
                         }
 
-                        DankIcon {
+                        HypeIcon {
                             id: brightnessIconV
                             visible: verticalGroupItem.modelData.id === "brightness"
                             name: root.getBrightnessIconName()
@@ -599,7 +599,7 @@ BasePill {
                     height: root.vIconSize
                     visible: root.hasNoVisibleIcons()
 
-                    DankIcon {
+                    HypeIcon {
                         name: "settings"
                         size: root.vIconSize
                         color: root.isActive ? Theme.primary : Theme.widgetIconColor
@@ -654,7 +654,7 @@ BasePill {
                             root.refreshInteractionRefs();
                         }
 
-                        DankIcon {
+                        HypeIcon {
                             id: iconOnlyItem
                             anchors.verticalCenter: parent.verticalCenter
                             anchors.left: parent.left
@@ -714,7 +714,7 @@ BasePill {
                                 anchors.verticalCenter: parent.verticalCenter
                                 spacing: 2
 
-                                DankIcon {
+                                HypeIcon {
                                     id: audioIcon
                                     name: root.getVolumeIconName()
                                     size: root.getControlCenterIconSize()
@@ -751,7 +751,7 @@ BasePill {
                                 anchors.verticalCenter: parent.verticalCenter
                                 spacing: 2
 
-                                DankIcon {
+                                HypeIcon {
                                     id: micIcon
                                     name: root.getMicIconName()
                                     size: root.getControlCenterIconSize()
@@ -788,7 +788,7 @@ BasePill {
                                 anchors.verticalCenter: parent.verticalCenter
                                 spacing: 2
 
-                                DankIcon {
+                                HypeIcon {
                                     id: brightnessIcon
                                     name: root.getBrightnessIconName()
                                     size: root.getControlCenterIconSize()
@@ -811,7 +811,7 @@ BasePill {
                     }
                 }
 
-                DankIcon {
+                HypeIcon {
                     name: "settings"
                     size: root.getControlCenterIconSize()
                     color: root.isActive ? Theme.primary : Theme.widgetIconColor

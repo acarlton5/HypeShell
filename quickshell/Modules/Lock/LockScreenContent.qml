@@ -1,4 +1,4 @@
-pragma ComponentBehavior: Bound
+﻿pragma ComponentBehavior: Bound
 
 import QtQuick
 import QtQuick.Effects
@@ -93,8 +93,8 @@ Item {
         if (root.unlocking)
             return;
         lockerReadySent = true;
-        if (SessionService.loginctlAvailable && DMSService.apiVersion >= 2) {
-            DMSService.sendRequest("loginctl.lockerReady", null, resp => {
+        if (SessionService.loginctlAvailable && HYPEService.apiVersion >= 2) {
+            HYPEService.sendRequest("loginctl.lockerReady", null, resp => {
                 if (resp?.error)
                     log.warn("lockerReady failed:", resp.error);
                 else
@@ -185,7 +185,7 @@ Item {
         }
         asynchronous: true
 
-        sourceComponent: DankBackdrop {
+        sourceComponent: HypeBackdrop {
             screenName: root.screenName
         }
     }
@@ -455,7 +455,7 @@ Item {
                         anchors.centerIn: parent
                         spacing: Theme.spacingS
 
-                        DankIcon {
+                        HypeIcon {
                             name: "notifications"
                             size: Theme.iconSize
                             color: "white"
@@ -504,7 +504,7 @@ Item {
                                     width: parent.width
                                     spacing: Theme.spacingS
 
-                                    DankIcon {
+                                    HypeIcon {
                                         name: "notifications"
                                         size: Theme.iconSize - 4
                                         color: "white"
@@ -681,7 +681,7 @@ Item {
                 spacing: Theme.spacingL
                 Layout.fillWidth: true
 
-                DankCircularImage {
+                HypeCircularImage {
                     Layout.preferredWidth: 60
                     Layout.preferredHeight: 60
                     imageSource: {
@@ -714,7 +714,7 @@ Item {
                         width: 20
                         height: 20
 
-                        DankIcon {
+                        HypeIcon {
                             id: lockIcon
 
                             anchors.centerIn: parent
@@ -923,7 +923,7 @@ Item {
                         }
                     }
 
-                    DankActionButton {
+                    HypeActionButton {
                         id: revealButton
 
                         anchors.right: virtualKeyboardButton.visible ? virtualKeyboardButton.left : (enterButton.visible ? enterButton.left : (loadingSpinner.visible ? loadingSpinner.left : parent.right))
@@ -935,7 +935,7 @@ Item {
                         enabled: visible
                         onClicked: parent.showPassword = !parent.showPassword
                     }
-                    DankActionButton {
+                    HypeActionButton {
                         id: virtualKeyboardButton
 
                         anchors.right: enterButton.visible ? enterButton.left : (loadingSpinner.visible ? loadingSpinner.left : parent.right)
@@ -966,7 +966,7 @@ Item {
                         color: "transparent"
                         visible: !demoMode && (pam.passwd.active || root.unlocking)
 
-                        DankIcon {
+                        HypeIcon {
                             anchors.centerIn: parent
                             name: "check_circle"
                             size: 20
@@ -1036,7 +1036,7 @@ Item {
                         }
                     }
 
-                    DankActionButton {
+                    HypeActionButton {
                         id: enterButton
 
                         anchors.right: parent.right
@@ -1097,9 +1097,9 @@ Item {
             anchors.topMargin: Theme.spacingS
             anchors.horizontalCenter: passwordLayout.horizontalCenter
             spacing: 4
-            opacity: DMSService.capsLockState ? 1 : 0
+            opacity: HYPEService.capsLockState ? 1 : 0
 
-            DankIcon {
+            HypeIcon {
                 name: "shift_lock"
                 size: 14
                 color: Theme.error
@@ -1160,7 +1160,7 @@ Item {
                         width: Theme.iconSize
                         height: Theme.iconSize
 
-                        DankIcon {
+                        HypeIcon {
                             name: "keyboard"
                             size: Theme.iconSize
                             color: "white"
@@ -1318,7 +1318,7 @@ Item {
                         visible: MprisController.activePlayer
                         opacity: (MprisController.activePlayer?.canGoPrevious ?? false) ? 1 : 0.3
 
-                        DankIcon {
+                        HypeIcon {
                             anchors.centerIn: parent
                             name: "skip_previous"
                             size: 12
@@ -1343,7 +1343,7 @@ Item {
                         color: MprisController.activePlayer?.playbackState === MprisPlaybackState.Playing ? Qt.rgba(255, 255, 255, 0.9) : Qt.rgba(255, 255, 255, 0.2)
                         visible: MprisController.activePlayer
 
-                        DankIcon {
+                        HypeIcon {
                             anchors.centerIn: parent
                             name: MprisController.activePlayer?.playbackState === MprisPlaybackState.Playing ? "pause" : "play_arrow"
                             size: 14
@@ -1368,7 +1368,7 @@ Item {
                         visible: MprisController.activePlayer
                         opacity: (MprisController.activePlayer?.canGoNext ?? false) ? 1 : 0.3
 
-                        DankIcon {
+                        HypeIcon {
                             anchors.centerIn: parent
                             name: "skip_next"
                             size: 12
@@ -1400,7 +1400,7 @@ Item {
                 visible: WeatherService.weather.available
                 anchors.verticalCenter: parent.verticalCenter
 
-                DankIcon {
+                HypeIcon {
                     name: WeatherService.getWeatherIcon(WeatherService.weather.wCode)
                     size: Theme.iconSize
                     color: "white"
@@ -1429,7 +1429,7 @@ Item {
                 anchors.verticalCenter: parent.verticalCenter
                 visible: NetworkService.networkAvailable || (BluetoothService.available && BluetoothService.enabled) || (AudioService.sink && AudioService.sink.audio)
 
-                DankIcon {
+                HypeIcon {
                     name: "screen_record"
                     size: Theme.iconSize - 2
                     color: NiriService.hasActiveCast ? "white" : Qt.rgba(255, 255, 255, 0.5)
@@ -1437,7 +1437,7 @@ Item {
                     visible: NiriService.hasCasts
                 }
 
-                DankIcon {
+                HypeIcon {
                     name: {
                         if (NetworkService.wifiToggling)
                             return "sync";
@@ -1456,7 +1456,7 @@ Item {
                     visible: NetworkService.networkAvailable
                 }
 
-                DankIcon {
+                HypeIcon {
                     name: "vpn_lock"
                     size: Theme.iconSize - 2
                     color: "white"
@@ -1464,7 +1464,7 @@ Item {
                     visible: NetworkService.vpnAvailable && NetworkService.vpnConnected
                 }
 
-                DankIcon {
+                HypeIcon {
                     name: "bluetooth"
                     size: Theme.iconSize - 2
                     color: "white"
@@ -1472,7 +1472,7 @@ Item {
                     visible: BluetoothService.available && BluetoothService.enabled
                 }
 
-                DankIcon {
+                HypeIcon {
                     name: {
                         if (!AudioService.sink?.audio) {
                             return "volume_up";
@@ -1506,7 +1506,7 @@ Item {
                 visible: BatteryService.batteryAvailable
                 anchors.verticalCenter: parent.verticalCenter
 
-                DankIcon {
+                HypeIcon {
                     name: {
                         if (BatteryService.isCharging) {
                             if (BatteryService.batteryLevel >= 90) {
@@ -1613,7 +1613,7 @@ Item {
             }
         }
 
-        DankActionButton {
+        HypeActionButton {
             anchors.bottom: parent.bottom
             anchors.left: parent.left
             anchors.margins: Theme.spacingXL

@@ -1,4 +1,4 @@
-[
+﻿[
   {
     "term": "%1 Animation Speed",
     "translation": "",
@@ -4088,7 +4088,7 @@
     "comment": ""
   },
   {
-    "term": "HypeShell Greeter needs: greetd, dms-greeter. Fingerprint: fprintd, pam_fprintd. Security keys: pam_u2f. Add your user to the greeter group. Authentication changes apply automatically and may open a terminal when sudo authentication is required.",
+    "term": "HypeShell Greeter needs: greetd, hype-greeter. Fingerprint: fprintd, pam_fprintd. Security keys: pam_u2f. Add your user to the greeter group. Authentication changes apply automatically and may open a terminal when sudo authentication is required.",
     "translation": "",
     "context": "",
     "reference": "",
@@ -4116,7 +4116,7 @@
     "comment": ""
   },
   {
-    "term": "DMS_SOCKET not available",
+    "term": "HYPE_SOCKET not available",
     "translation": "",
     "context": "",
     "reference": "",
@@ -5236,7 +5236,7 @@
     "comment": ""
   },
   {
-    "term": "Enable compositor-targetable blur layer (namespace: dms:blurwallpaper). Requires manual niri configuration.",
+    "term": "Enable compositor-targetable blur layer (namespace: hype:blurwallpaper). Requires manual niri configuration.",
     "translation": "",
     "context": "",
     "reference": "",
@@ -6027,7 +6027,7 @@
     "comment": ""
   },
   {
-    "term": "Failed to run 'dms greeter status'. Ensure HypeShell is installed and dms is in PATH.",
+    "term": "Failed to run 'hype greeter status'. Ensure HypeShell is installed and hype is in PATH.",
     "translation": "",
     "context": "greeter status error",
     "reference": "",
@@ -14751,7 +14751,7 @@
   {
     "term": "Strict auto-hide",
     "translation": "",
-    "context": "Dank bar setting: hide the bar when the pointer leaves even if a menu or bar popover is still open",
+    "context": "Hype bar setting: hide the bar when the pointer leaves even if a menu or bar popover is still open",
     "reference": "",
     "comment": ""
   },
@@ -15113,7 +15113,7 @@
     "comment": ""
   },
   {
-    "term": "Terminal fallback failed. Install a supported terminal emulator or run 'dms auth sync' manually.",
+    "term": "Terminal fallback failed. Install a supported terminal emulator or run 'hype auth sync' manually.",
     "translation": "",
     "context": "",
     "reference": "",
@@ -15225,7 +15225,7 @@
     "comment": ""
   },
   {
-    "term": "The DMS_SOCKET environment variable is not set or the socket is unavailable. Automated plugin management requires the DMS_SOCKET.",
+    "term": "The HYPE_SOCKET environment variable is not set or the socket is unavailable. Automated plugin management requires the HYPE_SOCKET.",
     "translation": "",
     "context": "",
     "reference": "",
@@ -16963,7 +16963,7 @@
   {
     "term": "Widgets, layout, style",
     "translation": "",
-    "context": "greeter dankbar description",
+    "context": "greeter hypebar description",
     "reference": "",
     "comment": ""
   },
@@ -17318,14 +17318,14 @@
     "comment": ""
   },
   {
-    "term": "dms/cursor config exists but is not included. Cursor settings won't apply.",
+    "term": "hype/cursor config exists but is not included. Cursor settings won't apply.",
     "translation": "",
     "context": "",
     "reference": "",
     "comment": ""
   },
   {
-    "term": "dms/outputs config exists but is not included in your compositor config. Display changes won't persist.",
+    "term": "hype/outputs config exists but is not included in your compositor config. Display changes won't persist.",
     "translation": "",
     "context": "",
     "reference": "",
@@ -17465,7 +17465,7 @@
     "comment": ""
   },
   {
-    "term": "niri/dms Discord",
+    "term": "niri/hype Discord",
     "translation": "",
     "context": "",
     "reference": "",

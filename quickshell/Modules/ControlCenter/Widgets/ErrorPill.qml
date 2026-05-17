@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import qs.Common
 import qs.Widgets
 
@@ -21,7 +21,7 @@ StyledRect {
         anchors.margins: Theme.spacingM
         spacing: Theme.spacingXS
 
-        DankIcon {
+        HypeIcon {
             name: "warning"
             size: 16
             color: Theme.warning

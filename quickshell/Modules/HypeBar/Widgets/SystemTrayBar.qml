@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import QtQuick.Effects
 import Quickshell
 import Quickshell.Hyprland
@@ -23,7 +23,7 @@ BasePill {
     property bool isAutoHideBar: false
     property bool useOverflowPopup: !widgetData?.trayUseInlineExpansion
     readonly property var hiddenTrayIds: {
-        const envValue = Quickshell.env("DMS_HIDE_TRAYIDS") || "";
+        const envValue = Quickshell.env("HYPE_HIDE_TRAYIDS") || "";
         return envValue ? envValue.split(",").map(id => id.trim().toLowerCase()) : [];
     }
     readonly property var allTrayItems: {
@@ -114,7 +114,7 @@ BasePill {
         return root.menuOpen != (root.section === "right") ? "keyboard_arrow_left" : "keyboard_arrow_right";
     }
 
-    // ! TODO - replace with either native dbus client (like plugins use) or just a DMS cli or something
+    // ! TODO - replace with either native dbus client (like plugins use) or just a HYPE cli or something
     function callContextMenuFallback(trayItemId, globalX, globalY) {
         const script = ['ITEMS=$(dbus-send --session --print-reply --dest=org.kde.StatusNotifierWatcher /StatusNotifierWatcher org.freedesktop.DBus.Properties.Get string:org.kde.StatusNotifierWatcher string:RegisteredStatusNotifierItems 2>/dev/null)', 'while IFS= read -r line; do', '  line="${line#*\\\"}"', '  line="${line%\\\"*}"', '  [ -z "$line" ] && continue', '  BUS="${line%%/*}"', '  OBJ="/${line#*/}"', '  ID=$(dbus-send --session --print-reply --dest="$BUS" "$OBJ" org.freedesktop.DBus.Properties.Get string:org.kde.StatusNotifierItem string:Id 2>/dev/null | grep -oP "(?<=\\\")(.*?)(?=\\\")" | tail -1)', '  if [ "$ID" = "$1" ]; then', '    dbus-send --session --type=method_call --dest="$BUS" "$OBJ" org.kde.StatusNotifierItem.ContextMenu int32:"$2" int32:"$3"', '    exit 0', '  fi', 'done <<< "$ITEMS"',].join("\n");
         Quickshell.execDetached(["bash", "-c", script, "_", trayItemId, String(globalX), String(globalY)]);
@@ -441,7 +441,7 @@ BasePill {
                             color: Theme.widgetTextColor
                         }
 
-                        DankRipple {
+                        HypeRipple {
                             id: itemRipple
                             cornerRadius: Theme.cornerRadius
                         }
@@ -550,14 +550,14 @@ BasePill {
                     radius: Theme.cornerRadius
                     color: caretArea.containsMouse ? BlurService.hoverColor(Theme.widgetBaseHoverColor) : "transparent"
 
-                    DankIcon {
+                    HypeIcon {
                         anchors.centerIn: parent
                         name: root.toggleIconName()
                         size: Theme.barIconSize(root.barThickness, undefined, root.barConfig?.maximizeWidgetIcons, root.barConfig?.iconScale)
                         color: Theme.widgetTextColor
                     }
 
-                    DankRipple {
+                    HypeRipple {
                         id: caretRipple
                         cornerRadius: Theme.cornerRadius
                     }
@@ -662,7 +662,7 @@ BasePill {
                     color: Theme.widgetTextColor
                 }
 
-                DankRipple {
+                HypeRipple {
                     id: inlineItemRipple
                     cornerRadius: Theme.cornerRadius
                 }
@@ -796,7 +796,7 @@ BasePill {
                     color: Theme.widgetTextColor
                 }
 
-                DankRipple {
+                HypeRipple {
                     id: itemRipple
                     cornerRadius: Theme.cornerRadius
                 }
@@ -921,14 +921,14 @@ BasePill {
                     radius: Theme.cornerRadius
                     color: caretAreaVert.containsMouse ? BlurService.hoverColor(Theme.widgetBaseHoverColor) : "transparent"
 
-                    DankIcon {
+                    HypeIcon {
                         anchors.centerIn: parent
                         name: root.toggleIconName()
                         size: Theme.barIconSize(root.barThickness, undefined, root.barConfig?.maximizeWidgetIcons, root.barConfig?.iconScale)
                         color: Theme.widgetTextColor
                     }
 
-                    DankRipple {
+                    HypeRipple {
                         id: caretRippleVert
                         cornerRadius: Theme.cornerRadius
                     }
@@ -987,7 +987,7 @@ BasePill {
                 return WlrKeyboardFocus.OnDemand;
             return WlrKeyboardFocus.Exclusive;
         }
-        WlrLayershell.namespace: "dms:tray-overflow-menu"
+        WlrLayershell.namespace: "hype:tray-overflow-menu"
         color: "transparent"
 
         HyprlandFocusGrab {
@@ -1443,7 +1443,7 @@ BasePill {
                     blurRadius: Theme.cornerRadius
                 }
 
-                WlrLayershell.namespace: "dms:tray-menu-window"
+                WlrLayershell.namespace: "hype:tray-menu-window"
                 visible: menuRoot.showMenu && (menuRoot.trayItem?.hasMenu ?? false)
                 screen: menuRoot.parentScreen
                 WlrLayershell.layer: WlrLayershell.Top
@@ -1746,7 +1746,7 @@ BasePill {
                                 width: parent.width - Theme.spacingS * 2 - 24
                             }
 
-                            DankIcon {
+                            HypeIcon {
                                 anchors.right: parent.right
                                 anchors.rightMargin: Theme.spacingS
                                 anchors.verticalCenter: parent.verticalCenter
@@ -1794,7 +1794,7 @@ BasePill {
                                 anchors.verticalCenter: parent.verticalCenter
                                 spacing: Theme.spacingXS
 
-                                DankIcon {
+                                HypeIcon {
                                     name: "arrow_back"
                                     size: 16
                                     color: Theme.widgetTextColor
@@ -1892,7 +1892,7 @@ BasePill {
                                             visible: menuEntry?.checkState === 2
                                         }
 
-                                        DankIcon {
+                                        HypeIcon {
                                             anchors.centerIn: parent
                                             name: "check"
                                             size: 10
@@ -1932,7 +1932,7 @@ BasePill {
                                         height: 16
                                         anchors.verticalCenter: parent.verticalCenter
 
-                                        DankIcon {
+                                        HypeIcon {
                                             anchors.centerIn: parent
                                             name: "chevron_right"
                                             size: 14

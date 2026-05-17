@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import Quickshell
 import qs.Common
 import qs.Modals.FileBrowser
@@ -64,7 +64,7 @@ Item {
         onFileSelected: path => SettingsData.set("lockScreenVideoPath", path)
     }
 
-    DankFlickable {
+    HypeFlickable {
         anchors.fill: parent
         clip: true
         contentHeight: mainColumn.height + Theme.spacingXL
@@ -309,7 +309,7 @@ Item {
                         width: parent.width
                         spacing: Theme.spacingS
 
-                        DankTextField {
+                        HypeTextField {
                             id: videoPathField
                             width: parent.width - browseVideoButton.width - Theme.spacingS
                             placeholderText: I18n.tr("/path/to/videos")
@@ -322,7 +322,7 @@ Item {
                             }
                         }
 
-                        DankButton {
+                        HypeButton {
                             id: browseVideoButton
                             text: I18n.tr("Browse")
                             onClicked: videoBrowserModal.open()

@@ -1,4 +1,4 @@
-import QtCore
+﻿import QtCore
 import QtQuick
 import QtQuick.Effects
 import Quickshell
@@ -35,9 +35,9 @@ Item {
         case "niri":
             return {
                 "configFile": configDir + "/niri/config.kdl",
-                "cursorFile": configDir + "/niri/dms/cursor.kdl",
-                "grepPattern": 'include.*"dms/cursor.kdl"',
-                "includeLine": 'include "dms/cursor.kdl"'
+                "cursorFile": configDir + "/niri/hype/cursor.kdl",
+                "grepPattern": 'include.*"hype/cursor.kdl"',
+                "includeLine": 'include "hype/cursor.kdl"'
             };
         case "hyprland":
             return {
@@ -49,9 +49,9 @@ Item {
         case "dwl":
             return {
                 "configFile": configDir + "/mango/config.conf",
-                "cursorFile": configDir + "/mango/dms/cursor.conf",
-                "grepPattern": 'source.*dms/cursor.conf',
-                "includeLine": "source=./dms/cursor.conf"
+                "cursorFile": configDir + "/mango/hype/cursor.conf",
+                "grepPattern": 'source.*hype/cursor.conf',
+                "includeLine": "source=./hype/cursor.conf"
             };
         default:
             return null;
@@ -164,8 +164,8 @@ Item {
     Component.onCompleted: {
         SettingsData.detectAvailableIconThemes();
         SettingsData.detectAvailableCursorThemes();
-        if (DMSService.dmsAvailable)
-            DMSService.listInstalledThemes();
+        if (HYPEService.hypeAvailable)
+            HYPEService.listInstalledThemes();
         if (PopoutService.pendingThemeInstall)
             Qt.callLater(() => showThemeBrowser());
         Proc.runCommand("template-check", ["hype", "matugen", "check"], (output, exitCode) => {
@@ -180,7 +180,7 @@ Item {
     }
 
     Connections {
-        target: DMSService
+        target: HYPEService
         function onInstalledThemesReceived(themes) {
             themeColorsTab.installedRegistryThemes = themes;
         }
@@ -194,7 +194,7 @@ Item {
         }
     }
 
-    DankFlickable {
+    HypeFlickable {
         anchors.fill: parent
         clip: true
         contentHeight: mainColumn.height + Theme.spacingXL
@@ -273,7 +273,7 @@ Item {
                         height: themeCategoryGroup.implicitHeight
                         clip: true
 
-                        DankButtonGroup {
+                        HypeButtonGroup {
                             id: themeCategoryGroup
                             anchors.horizontalCenter: parent.horizontalCenter
                             buttonPadding: parent.width < 420 ? Theme.spacingS : Theme.spacingL
@@ -291,7 +291,7 @@ Item {
                                 return 0;
                             }
 
-                            model: DMSService.dmsAvailable ? [I18n.tr("Generic", "theme category option"), I18n.tr("Auto", "theme category option"), I18n.tr("Custom", "theme category option"), I18n.tr("Browse", "theme category option")] : [I18n.tr("Generic", "theme category option"), I18n.tr("Auto", "theme category option"), I18n.tr("Custom", "theme category option")]
+                            model: HYPEService.hypeAvailable ? [I18n.tr("Generic", "theme category option"), I18n.tr("Auto", "theme category option"), I18n.tr("Custom", "theme category option"), I18n.tr("Browse", "theme category option")] : [I18n.tr("Generic", "theme category option"), I18n.tr("Auto", "theme category option"), I18n.tr("Custom", "theme category option")]
                             currentIndex: pendingIndex >= 0 ? pendingIndex : computedIndex
                             selectionMode: "single"
                             onSelectionChanged: (index, selected) => {
@@ -451,7 +451,7 @@ Item {
                                     layer.enabled: true
                                 }
 
-                                DankIcon {
+                                HypeIcon {
                                     anchors.centerIn: parent
                                     name: (ToastService.wallpaperErrorStatus === "error" || ToastService.wallpaperErrorStatus === "matugen_missing") ? "error" : "palette"
                                     size: Theme.iconSizeLarge
@@ -561,7 +561,7 @@ Item {
                             width: parent.width
                             spacing: Theme.spacingM
 
-                            DankActionButton {
+                            HypeActionButton {
                                 buttonSize: 48
                                 iconName: "folder_open"
                                 iconSize: Theme.iconSize
@@ -652,7 +652,7 @@ Item {
                                         mipmap: true
                                     }
 
-                                    DankIcon {
+                                    HypeIcon {
                                         anchors.centerIn: parent
                                         name: "palette"
                                         size: themeGrid.cardWidth < 120 ? 24 : 32
@@ -690,7 +690,7 @@ Item {
                                         color: Theme.primary
                                         visible: themeCard.isActive
 
-                                        DankIcon {
+                                        HypeIcon {
                                             anchors.centerIn: parent
                                             name: "check"
                                             size: themeGrid.cardWidth < 120 ? 10 : 14
@@ -752,7 +752,7 @@ Item {
                                             }
                                         }
 
-                                        DankIcon {
+                                        HypeIcon {
                                             anchors.centerIn: parent
                                             name: "close"
                                             size: themeGrid.cardWidth < 120 ? 10 : 14
@@ -766,13 +766,13 @@ Item {
                                             cursorShape: Qt.PointingHandCursor
                                             onClicked: {
                                                 ToastService.showInfo(I18n.tr("Uninstalling: %1", "uninstallation progress").arg(modelData.name));
-                                                DMSService.uninstallTheme(modelData.id, response => {
+                                                HYPEService.uninstallTheme(modelData.id, response => {
                                                     if (response.error) {
                                                         ToastService.showError(I18n.tr("Uninstall failed: %1", "uninstallation error").arg(response.error));
                                                         return;
                                                     }
                                                     ToastService.showInfo(I18n.tr("Uninstalled: %1", "uninstallation success").arg(modelData.name));
-                                                    DMSService.listInstalledThemes();
+                                                    HYPEService.listInstalledThemes();
                                                 });
                                             }
                                         }
@@ -791,14 +791,14 @@ Item {
                             horizontalAlignment: Text.AlignHCenter
                         }
 
-                        DankButton {
+                        HypeButton {
                             text: I18n.tr("Browse Themes", "browse themes button")
                             iconName: "store"
                             anchors.horizontalCenter: parent.horizontalCenter
                             onClicked: showThemeBrowser()
                         }
 
-                        DankButton {
+                        HypeButton {
                             text: registryThemeUpdateRunning ? I18n.tr("Updating...", "theme update button running") : I18n.tr("Update Installed Themes", "theme update button")
                             iconName: "refresh"
                             enabled: !registryThemeUpdateRunning
@@ -908,7 +908,7 @@ Item {
                             clip: true
                             visible: variantSelector.isMultiVariant && variantSelector.flavorOptions.length > 1
 
-                            DankButtonGroup {
+                            HypeButtonGroup {
                                 id: flavorButtonGroup
                                 anchors.horizontalCenter: parent.horizontalCenter
                                 property int _count: variantSelector.flavorNames.length
@@ -1019,7 +1019,7 @@ Item {
                             clip: true
                             visible: !variantSelector.isMultiVariant && variantSelector.variantNames.length > 0
 
-                            DankButtonGroup {
+                            HypeButtonGroup {
                                 id: variantButtonGroup
                                 anchors.horizontalCenter: parent.horizontalCenter
                                 property int _count: variantSelector.variantNames.length
@@ -1065,7 +1065,7 @@ Item {
                     width: parent.width
                     spacing: Theme.spacingM
 
-                    DankToggle {
+                    HypeToggle {
                         id: themeModeAutoToggle
                         width: parent.width
                         text: I18n.tr("Automatic Control")
@@ -1087,7 +1087,7 @@ Item {
                         spacing: Theme.spacingM
                         visible: SessionData.themeModeAutoEnabled
 
-                        DankToggle {
+                        HypeToggle {
                             width: parent.width
                             text: I18n.tr("Share Gamma Control Settings")
                             checked: SessionData.themeModeShareGammaSettings
@@ -1100,7 +1100,7 @@ Item {
                             width: parent.width
                             height: 45 + Theme.spacingM
 
-                            DankTabBar {
+                            HypeTabBar {
                                 id: themeModeTabBar
                                 width: 200
                                 height: 45
@@ -1183,7 +1183,7 @@ Item {
                                         verticalAlignment: Text.AlignVCenter
                                     }
 
-                                    DankDropdown {
+                                    HypeDropdown {
                                         dropdownWidth: 70
                                         currentValue: SessionData.themeModeStartHour.toString()
                                         options: {
@@ -1197,7 +1197,7 @@ Item {
                                         }
                                     }
 
-                                    DankDropdown {
+                                    HypeDropdown {
                                         dropdownWidth: 70
                                         currentValue: SessionData.themeModeStartMinute.toString().padStart(2, '0')
                                         options: {
@@ -1225,7 +1225,7 @@ Item {
                                         verticalAlignment: Text.AlignVCenter
                                     }
 
-                                    DankDropdown {
+                                    HypeDropdown {
                                         dropdownWidth: 70
                                         currentValue: SessionData.themeModeEndHour.toString()
                                         options: {
@@ -1239,7 +1239,7 @@ Item {
                                         }
                                     }
 
-                                    DankDropdown {
+                                    HypeDropdown {
                                         dropdownWidth: 70
                                         currentValue: SessionData.themeModeEndMinute.toString().padStart(2, '0')
                                         options: {
@@ -1262,7 +1262,7 @@ Item {
                             spacing: Theme.spacingM
                             visible: SessionData.themeModeAutoMode === "location" && !SessionData.themeModeShareGammaSettings
 
-                            DankToggle {
+                            HypeToggle {
                                 id: themeModeIpLocationToggle
                                 width: parent.width
                                 text: I18n.tr("Use IP Location")
@@ -1305,7 +1305,7 @@ Item {
                                             color: Theme.surfaceVariantText
                                         }
 
-                                        DankTextField {
+                                        HypeTextField {
                                             width: 120
                                             height: 40
                                             text: SessionData.latitude.toString()
@@ -1328,7 +1328,7 @@ Item {
                                             color: Theme.surfaceVariantText
                                         }
 
-                                        DankTextField {
+                                        HypeTextField {
                                             width: 120
                                             height: 40
                                             text: SessionData.longitude.toString()
@@ -1420,7 +1420,7 @@ Item {
                                         anchors.horizontalCenter: parent.horizontalCenter
                                         spacing: Theme.spacingS
 
-                                        DankIcon {
+                                        HypeIcon {
                                             name: SessionData.isLightMode ? "light_mode" : "dark_mode"
                                             size: Theme.iconSize
                                             color: SessionData.isLightMode ? "#FFA726" : "#7E57C2"
@@ -1456,7 +1456,7 @@ Item {
                                         spacing: Theme.spacingS
                                         anchors.horizontalCenter: parent.horizontalCenter
 
-                                        DankIcon {
+                                        HypeIcon {
                                             name: "schedule"
                                             size: Theme.iconSize
                                             color: Theme.primary
@@ -2343,7 +2343,7 @@ Item {
                             anchors.margins: Theme.spacingM
                             spacing: Theme.spacingM
 
-                            DankIcon {
+                            HypeIcon {
                                 name: "warning"
                                 size: Theme.iconSize
                                 color: Theme.warning
@@ -2371,7 +2371,7 @@ Item {
                                 }
                             }
 
-                            DankButton {
+                            HypeButton {
                                 id: cursorFixButton
                                 visible: cursorWarningBox.showError || cursorWarningBox.showSetup
                                 text: themeColorsTab.fixingCursorInclude ? I18n.tr("Fixing...") : (cursorWarningBox.showSetup ? I18n.tr("Setup") : I18n.tr("Fix Now"))
@@ -2512,7 +2512,7 @@ Item {
                     tags: ["icon", "theme", "system"]
                     settingKey: "iconTheme"
                     text: I18n.tr("Icon Theme")
-                    description: I18n.tr("DankShell & System Icons (requires restart)")
+                    description: I18n.tr("HypeShell & System Icons (requires restart)")
                     currentValue: SettingsData.iconTheme
                     enableFuzzySearch: true
                     popupWidthOffset: 100
@@ -2931,7 +2931,7 @@ Item {
                     anchors.margins: Theme.spacingM
                     spacing: Theme.spacingM
 
-                    DankIcon {
+                    HypeIcon {
                         name: "info"
                         size: Theme.iconSizeSmall
                         color: Theme.warning
@@ -2971,7 +2971,7 @@ Item {
                             anchors.centerIn: parent
                             spacing: Theme.spacingS
 
-                            DankIcon {
+                            HypeIcon {
                                 name: "folder"
                                 size: 16
                                 color: Theme.primary
@@ -3005,7 +3005,7 @@ Item {
                             anchors.centerIn: parent
                             spacing: Theme.spacingS
 
-                            DankIcon {
+                            HypeIcon {
                                 name: "settings"
                                 size: 16
                                 color: Theme.primary
@@ -3097,7 +3097,7 @@ Item {
 
         for (var i = 0; i < installedRegistryThemes.length; i++) {
             const themeId = installedRegistryThemes[i].id;
-            DMSService.updateTheme(themeId, response => {
+            HYPEService.updateTheme(themeId, response => {
                 registryThemeUpdatePending--;
                 if (response.error)
                     ToastService.showError(I18n.tr("Theme update failed: %1", "theme update error").arg(response.error));
@@ -3107,7 +3107,7 @@ Item {
 
                 registryThemeUpdateRunning = false;
                 ToastService.showInfo(I18n.tr("Installed themes updated", "theme update success"));
-                DMSService.listInstalledThemes();
+                HYPEService.listInstalledThemes();
                 if (Theme.currentThemeCategory === "registry" && SettingsData.customThemeFile) {
                     Theme.reloadCustomThemeFile();
                     Theme.switchTheme("custom", true, false);

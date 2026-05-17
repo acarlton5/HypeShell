@@ -1,4 +1,4 @@
-package providers
+﻿package providers
 
 import (
 	"os"
@@ -148,13 +148,13 @@ func TestMangoWCGetKeybindAtLine(t *testing.T) {
 		},
 		{
 			name: "bindl_flag",
-			line: "bindl=SUPER+ALT,l,spawn,dms ipc call lock lock",
+			line: "bindl=SUPER+ALT,l,spawn,hype ipc call lock lock",
 			expected: &MangoWCKeyBinding{
 				Mods:    []string{"SUPER", "ALT"},
 				Key:     "l",
 				Command: "spawn",
-				Params:  "dms ipc call lock lock",
-				Comment: "dms ipc call lock lock",
+				Params:  "hype ipc call lock lock",
+				Comment: "hype ipc call lock lock",
 			},
 		},
 		{
@@ -436,8 +436,8 @@ func TestMangoWCRealWorldConfig(t *testing.T) {
 
 	content := `# Application Launchers
 bind=Alt,t,spawn,kitty
-bind=Alt,space,spawn,dms ipc call spotlight toggle
-bind=Alt,v,spawn,dms ipc call clipboard toggle
+bind=Alt,space,spawn,hype ipc call spotlight toggle
+bind=Alt,v,spawn,hype ipc call clipboard toggle
 
 # exit
 bind=ALT+SHIFT,e,quit

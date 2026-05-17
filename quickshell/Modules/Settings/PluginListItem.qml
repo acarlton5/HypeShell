@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import qs.Common
 import qs.Services
 import qs.Widgets
@@ -34,7 +34,7 @@ StyledRect {
     property bool isDesktopPlugin: pluginData ? (pluginData.type === "desktop") : false
     property bool showSettings: hasSettings && !isDesktopPlugin
     property bool isSystemPlugin: pluginData ? (pluginData.source === "system") : false
-    property string requiresDms: pluginData ? (pluginData.requires_dms || "") : ""
+    property string requiresDms: pluginData ? (pluginData.requires_hype || "") : ""
     property bool meetsRequirements: requiresDms ? PluginService.checkPluginCompatibility(requiresDms) : true
 
     Connections {
@@ -80,7 +80,7 @@ StyledRect {
             width: parent.width
             spacing: Theme.spacingM
 
-            DankIcon {
+            HypeIcon {
                 name: root.pluginIcon
                 size: Theme.iconSize
                 color: root.isLoaded ? Theme.primary : Theme.surfaceVariantText
@@ -116,7 +116,7 @@ StyledRect {
                             anchors.centerIn: parent
                             spacing: 2
 
-                            DankIcon {
+                            HypeIcon {
                                 id: incompatIcon
                                 name: "warning"
                                 size: 12
@@ -139,7 +139,7 @@ StyledRect {
                         }
                     }
 
-                    DankIcon {
+                    HypeIcon {
                         name: root.showSettings ? (root.isExpanded ? "expand_less" : "expand_more") : ""
                         size: 16
                         color: root.showSettings ? Theme.primary : "transparent"
@@ -184,9 +184,9 @@ StyledRect {
                     height: 28
                     radius: 14
                     color: updateArea.containsMouse ? Theme.surfaceContainerHighest : "transparent"
-                    visible: DMSService.dmsAvailable && root.isLoaded && root.hasUpdate && !root.isSystemPlugin
+                    visible: HYPEService.hypeAvailable && root.isLoaded && root.hasUpdate && !root.isSystemPlugin
 
-                    DankIcon {
+                    HypeIcon {
                         anchors.centerIn: parent
                         name: "download"
                         size: 16
@@ -201,15 +201,15 @@ StyledRect {
                         onClicked: {
                             const currentPluginName = root.pluginName;
                             const currentPluginId = root.pluginId;
-                            DMSService.update(currentPluginName, response => {
+                            HYPEService.update(currentPluginName, response => {
                                 if (response.error) {
                                     ToastService.showError(I18n.tr("Update failed: %1").arg(response.error));
                                     return;
                                 }
                                 ToastService.showInfo(I18n.tr("Plugin updated: %1").arg(currentPluginName));
                                 PluginService.forceRescanPlugin(currentPluginId);
-                                if (DMSService.apiVersion >= 8)
-                                    DMSService.listInstalled();
+                                if (HYPEService.apiVersion >= 8)
+                                    HYPEService.listInstalled();
                             });
                         }
                         onEntered: {
@@ -228,9 +228,9 @@ StyledRect {
                     height: 28
                     radius: 14
                     color: uninstallArea.containsMouse ? Theme.surfaceContainerHighest : "transparent"
-                    visible: DMSService.dmsAvailable && !root.isSystemPlugin
+                    visible: HYPEService.hypeAvailable && !root.isSystemPlugin
 
-                    DankIcon {
+                    HypeIcon {
                         anchors.centerIn: parent
                         name: "delete"
                         size: 16
@@ -244,7 +244,7 @@ StyledRect {
                         cursorShape: Qt.PointingHandCursor
                         onClicked: {
                             const currentPluginName = root.pluginName;
-                            DMSService.uninstall(currentPluginName, response => {
+                            HYPEService.uninstall(currentPluginName, response => {
                                 if (response.error) {
                                     ToastService.showError(I18n.tr("Uninstall failed: %1").arg(response.error));
                                     return;
@@ -273,7 +273,7 @@ StyledRect {
                     color: reloadArea.containsMouse ? Theme.surfaceContainerHighest : "transparent"
                     visible: root.isLoaded
 
-                    DankIcon {
+                    HypeIcon {
                         anchors.centerIn: parent
                         name: "refresh"
                         size: 16
@@ -307,7 +307,7 @@ StyledRect {
                     }
                 }
 
-                DankToggle {
+                HypeToggle {
                     id: pluginToggle
                     anchors.verticalCenter: parent.verticalCenter
                     checked: root.isLoaded

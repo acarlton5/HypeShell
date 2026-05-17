@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import qs.Common
 import qs.Widgets
 
@@ -62,7 +62,7 @@ Rectangle {
                 fallbackBottomMargin: root.iconFallbackBottomMargin
             }
 
-            DankIcon {
+            HypeIcon {
                 visible: model.pinned === true
                 anchors.right: parent.right
                 anchors.bottom: parent.bottom

@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import QtQuick.Effects
 import QtQuick.Layouts
 import qs.Common
@@ -25,7 +25,7 @@ Item {
         return Array(7).fill(0).map((_, i) => new Date(Date.UTC(2026, 2, 1 + i, 0, 0, 0)).toLocaleDateString(I18n.locale(), "dddd")).map(d => d[0].toUpperCase() + d.slice(1));
     }
 
-    DankFlickable {
+    HypeFlickable {
         anchors.fill: parent
         clip: true
         contentHeight: mainColumn.height + Theme.spacingXL
@@ -189,7 +189,7 @@ Item {
                     }
                 }
 
-                DankTextField {
+                HypeTextField {
                     id: customFormatInput
                     width: parent.width - Theme.spacingM * 2
                     x: Theme.spacingM
@@ -276,7 +276,7 @@ Item {
                     }
                 }
 
-                DankTextField {
+                HypeTextField {
                     id: customLockFormatInput
                     width: parent.width - Theme.spacingM * 2
                     x: Theme.spacingM
@@ -504,7 +504,7 @@ Item {
                                             color: Theme.surfaceVariantText
                                         }
 
-                                        DankTextField {
+                                        HypeTextField {
                                             id: latitudeInput
                                             width: parent.width
                                             height: 48
@@ -553,7 +553,7 @@ Item {
                                             color: Theme.surfaceVariantText
                                         }
 
-                                        DankTextField {
+                                        HypeTextField {
                                             id: longitudeInput
                                             width: parent.width
                                             height: 48
@@ -605,7 +605,7 @@ Item {
                                         font.weight: Font.Medium
                                     }
 
-                                    DankLocationSearch {
+                                    HypeLocationSearch {
                                         id: locationSearchInput
                                         width: parent.width
                                         currentLocation: ""
@@ -640,7 +640,7 @@ Item {
                     spacing: Theme.spacingL
                     visible: !WeatherService.weather.available
 
-                    DankIcon {
+                    HypeIcon {
                         name: "cloud_off"
                         size: Theme.iconSize * 2
                         color: Qt.rgba(Theme.surfaceText.r, Theme.surfaceText.g, Theme.surfaceText.b, 0.5)
@@ -664,7 +664,7 @@ Item {
                         width: parent.width
                         height: 70
 
-                        DankIcon {
+                        HypeIcon {
                             id: refreshButton
                             name: "refresh"
                             size: Theme.iconSize - 4
@@ -709,7 +709,7 @@ Item {
                             width: weatherIcon.width + tempColumn.width + sunriseColumn.width + Theme.spacingM * 2
                             height: 70
 
-                            DankIcon {
+                            HypeIcon {
                                 id: weatherIcon
                                 name: WeatherService.getWeatherIcon(WeatherService.weather.wCode)
                                 size: Theme.iconSize * 1.5
@@ -799,7 +799,7 @@ Item {
                                     width: sunriseIcon.width + sunriseText.width + Theme.spacingXS
                                     height: sunriseIcon.height
 
-                                    DankIcon {
+                                    HypeIcon {
                                         id: sunriseIcon
                                         name: "wb_twilight"
                                         size: Theme.iconSize - 6
@@ -823,7 +823,7 @@ Item {
                                     width: sunsetIcon.width + sunsetText.width + Theme.spacingXS
                                     height: sunsetIcon.height
 
-                                    DankIcon {
+                                    HypeIcon {
                                         id: sunsetIcon
                                         name: "bedtime"
                                         size: Theme.iconSize - 6
@@ -875,7 +875,7 @@ Item {
                                     radius: 16
                                     color: Qt.rgba(Theme.primary.r, Theme.primary.g, Theme.primary.b, 0.1)
                                     anchors.horizontalCenter: parent.horizontalCenter
-                                    DankIcon {
+                                    HypeIcon {
                                         anchors.centerIn: parent
                                         name: "device_thermostat"
                                         size: Theme.iconSize - 4
@@ -919,7 +919,7 @@ Item {
                                     radius: 16
                                     color: Qt.rgba(Theme.primary.r, Theme.primary.g, Theme.primary.b, 0.1)
                                     anchors.horizontalCenter: parent.horizontalCenter
-                                    DankIcon {
+                                    HypeIcon {
                                         anchors.centerIn: parent
                                         name: "humidity_low"
                                         size: Theme.iconSize - 4
@@ -963,7 +963,7 @@ Item {
                                     radius: 16
                                     color: Qt.rgba(Theme.primary.r, Theme.primary.g, Theme.primary.b, 0.1)
                                     anchors.horizontalCenter: parent.horizontalCenter
-                                    DankIcon {
+                                    HypeIcon {
                                         anchors.centerIn: parent
                                         name: "air"
                                         size: Theme.iconSize - 4
@@ -1020,7 +1020,7 @@ Item {
                                     radius: 16
                                     color: Qt.rgba(Theme.primary.r, Theme.primary.g, Theme.primary.b, 0.1)
                                     anchors.horizontalCenter: parent.horizontalCenter
-                                    DankIcon {
+                                    HypeIcon {
                                         anchors.centerIn: parent
                                         name: "speed"
                                         size: Theme.iconSize - 4
@@ -1070,7 +1070,7 @@ Item {
                                     radius: 16
                                     color: Qt.rgba(Theme.primary.r, Theme.primary.g, Theme.primary.b, 0.1)
                                     anchors.horizontalCenter: parent.horizontalCenter
-                                    DankIcon {
+                                    HypeIcon {
                                         anchors.centerIn: parent
                                         name: "rainy"
                                         size: Theme.iconSize - 4
@@ -1114,7 +1114,7 @@ Item {
                                     radius: 16
                                     color: Qt.rgba(Theme.primary.r, Theme.primary.g, Theme.primary.b, 0.1)
                                     anchors.horizontalCenter: parent.horizontalCenter
-                                    DankIcon {
+                                    HypeIcon {
                                         anchors.centerIn: parent
                                         name: "wb_sunny"
                                         size: Theme.iconSize - 4

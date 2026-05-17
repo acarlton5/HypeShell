@@ -1,4 +1,4 @@
-pragma Singleton
+﻿pragma Singleton
 pragma ComponentBehavior: Bound
 
 import QtCore
@@ -23,7 +23,7 @@ Singleton {
     readonly property string pluginDirectory: Paths.strip(Paths.config) + "/plugins"
 
     property bool pluginDirectoryExists: false
-    property string systemPluginDirectory: "/etc/xdg/quickshell/dms-plugins"
+    property string systemPluginDirectory: "/etc/xdg/quickshell/hype-plugins"
 
     property var knownManifests: ({})
     property var pathToPluginId: ({})
@@ -241,7 +241,7 @@ Singleton {
         info.loaded = isPluginLoaded(manifest.id);
         info.type = manifest.type || "widget";
         info.source = sourceTag;
-        info.requires_dms = manifest.requires_dms || null;
+        info.requires_hype = manifest.requires_hype || null;
 
         const existing = availablePlugins[manifest.id];
         const shouldReplace = (!existing) || (existing && existing.source === "system" && sourceTag === "user");
@@ -505,12 +505,12 @@ Singleton {
         SettingsData.setPluginSetting(pluginId, "variants", newVariants);
 
         const fullId = pluginId + ":" + variantId;
-        removeWidgetFromDankBar(fullId);
+        removeWidgetFromHypeBar(fullId);
 
         pluginDataChanged(pluginId);
     }
 
-    function removeWidgetFromDankBar(widgetId) {
+    function removeWidgetFromHypeBar(widgetId) {
         function filterWidget(widget) {
             const id = typeof widget === "string" ? widget : widget.id;
             return id !== widgetId;
@@ -528,13 +528,13 @@ Singleton {
         const newRight = rightWidgets.filter(filterWidget);
 
         if (newLeft.length !== leftWidgets.length) {
-            SettingsData.setDankBarLeftWidgets(newLeft);
+            SettingsData.setHypeBarLeftWidgets(newLeft);
         }
         if (newCenter.length !== centerWidgets.length) {
-            SettingsData.setDankBarCenterWidgets(newCenter);
+            SettingsData.setHypeBarCenterWidgets(newCenter);
         }
         if (newRight.length !== rightWidgets.length) {
-            SettingsData.setDankBarRightWidgets(newRight);
+            SettingsData.setHypeBarRightWidgets(newRight);
         }
     }
 
@@ -895,7 +895,7 @@ Singleton {
         const result = [];
         for (const pluginId in availablePlugins) {
             const plugin = availablePlugins[pluginId];
-            if (plugin.loaded && plugin.requires_dms && !checkPluginCompatibility(plugin.requires_dms)) {
+            if (plugin.loaded && plugin.requires_hype && !checkPluginCompatibility(plugin.requires_hype)) {
                 result.push(plugin);
             }
         }

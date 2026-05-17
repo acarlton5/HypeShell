@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import QtQuick.Effects
 import Quickshell.Widgets
 import qs.Common
@@ -17,7 +17,7 @@ BasePill {
             implicitWidth: root.widgetThickness - root.horizontalPadding * 2
             implicitHeight: root.widgetThickness - root.horizontalPadding * 2
 
-            DankIcon {
+            HypeIcon {
                 visible: SettingsData.launcherLogoMode === "apps"
                 anchors.centerIn: parent
                 name: "apps"
@@ -36,7 +36,7 @@ BasePill {
             }
 
             IconImage {
-                visible: SettingsData.launcherLogoMode === "dank"
+                visible: SettingsData.launcherLogoMode === "hype"
                 anchors.centerIn: parent
                 width: Theme.barIconSize(root.barThickness, SettingsData.launcherLogoSizeOffset, root.barConfig?.maximizeWidgetIcons, root.barConfig?.iconScale)
                 height: Theme.barIconSize(root.barThickness, SettingsData.launcherLogoSizeOffset, root.barConfig?.maximizeWidgetIcons, root.barConfig?.iconScale)

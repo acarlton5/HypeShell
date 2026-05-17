@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import QtQuick.Effects
 import Quickshell
 import qs.Common
@@ -83,8 +83,8 @@ Item {
         return I18n.tr("niri GitHub");
     }
 
-    property string dmsDiscordUrl: "https://github.com/acarlton5/HypeShell"
-    property string dmsDiscordTooltip: I18n.tr("HypeShell GitHub")
+    property string hypeDiscordUrl: "https://github.com/acarlton5/HypeShell"
+    property string hypeDiscordTooltip: I18n.tr("HypeShell GitHub")
 
     property string compositorDiscordUrl: {
         if (isHyprland)
@@ -117,9 +117,9 @@ Item {
         if (ShellVersionService.installedCommit)
             return "HypeShell " + ShellVersionService.installedCommit;
         if (ShellVersionService.shellVersion)
-            return "HypeShell " + ShellVersionService.shellVersion.replace(/^dms\s*/i, "").replace(/^hype\s*/i, "");
-        if (DMSService.cliVersion)
-            return "HypeShell " + DMSService.cliVersion;
+            return "HypeShell " + ShellVersionService.shellVersion.replace(/^hype\s*/i, "").replace(/^hype\s*/i, "");
+        if (HYPEService.cliVersion)
+            return "HypeShell " + HYPEService.cliVersion;
         return "HypeShell source build";
     }
 
@@ -177,9 +177,9 @@ Item {
     }
 
     function runHypeUpdate() {
-        if (SystemUpdateService.sysupdateAvailable && DMSService.isConnected) {
+        if (SystemUpdateService.sysupdateAvailable && HYPEService.isConnected) {
             PopoutService.openSystemUpdate();
-            DMSService.sysupdateRefresh(true, refreshResponse => {
+            HYPEService.sysupdateRefresh(true, refreshResponse => {
                 if (refreshResponse.error) {
                     ToastService.showError(I18n.tr("Update check failed"), refreshResponse.error);
                     return;
@@ -194,7 +194,7 @@ Item {
                 }
 
                 PopoutService.openSystemUpdate();
-                DMSService.sysupdateUpgrade({
+                HYPEService.sysupdateUpgrade({
                     "targets": [target]
                 }, response => {
                     if (response.error) {
@@ -220,7 +220,7 @@ Item {
         ToastService.showInfo(I18n.tr("HypeShell update started"), I18n.tr("Follow the terminal window to finish the update."));
     }
 
-    DankFlickable {
+    HypeFlickable {
         anchors.fill: parent
         clip: true
         contentHeight: mainColumn.height + Theme.spacingXL
@@ -321,7 +321,7 @@ Item {
 
                         property bool compactMode: parent.width < 450
 
-                        DankButton {
+                        HypeButton {
                             id: docsButton
                             text: resourceButtonsRow.compactMode ? "" : I18n.tr("Docs")
                             iconName: "menu_book"
@@ -337,7 +337,7 @@ Item {
                             }
                         }
 
-                        DankButton {
+                        HypeButton {
                             id: pluginsButton
                             text: resourceButtonsRow.compactMode ? "" : I18n.tr("Plugins")
                             iconName: "extension"
@@ -353,7 +353,7 @@ Item {
                             }
                         }
 
-                        DankButton {
+                        HypeButton {
                             id: githubButton
                             text: resourceButtonsRow.compactMode ? "" : I18n.tr("GitHub")
                             iconName: "code"
@@ -369,7 +369,7 @@ Item {
                             }
                         }
 
-                        DankButton {
+                        HypeButton {
                             id: kofiButton
                             text: resourceButtonsRow.compactMode ? "" : I18n.tr("Issues")
                             iconName: "bug_report"
@@ -386,7 +386,7 @@ Item {
                         }
                     }
 
-                    DankTooltipV2 {
+                    HypeTooltipV2 {
                         id: resourceTooltip
                     }
 
@@ -395,7 +395,7 @@ Item {
                         anchors.horizontalCenter: parent.horizontalCenter
                         height: 24
                         width: {
-                            let baseWidth = compositorButton.width + dmsDiscordButton.width + Theme.spacingM;
+                            let baseWidth = compositorButton.width + hypeDiscordButton.width + Theme.spacingM;
                             if (showMatrix) {
                                 baseWidth += matrixButton.width + 4;
                             }
@@ -485,7 +485,7 @@ Item {
                             property bool hovered: false
                             property string tooltipText: ircTooltip
 
-                            DankIcon {
+                            HypeIcon {
                                 anchors.centerIn: parent
                                 name: "forum"
                                 size: 20
@@ -503,7 +503,7 @@ Item {
                         }
 
                         Item {
-                            id: dmsDiscordButton
+                            id: hypeDiscordButton
                             width: 20
                             height: 20
                             x: {
@@ -516,9 +516,9 @@ Item {
                             anchors.verticalCenter: parent.verticalCenter
 
                             property bool hovered: false
-                            property string tooltipText: dmsDiscordTooltip
+                            property string tooltipText: hypeDiscordTooltip
 
-                            DankIcon {
+                            HypeIcon {
                                 anchors.centerIn: parent
                                 name: "code"
                                 size: 20
@@ -531,7 +531,7 @@ Item {
                                 hoverEnabled: true
                                 onEntered: parent.hovered = true
                                 onExited: parent.hovered = false
-                                onClicked: Qt.openUrlExternally(dmsDiscordUrl)
+                                onClicked: Qt.openUrlExternally(hypeDiscordUrl)
                             }
                         }
 
@@ -539,7 +539,7 @@ Item {
                             id: compositorDiscordButton
                             width: 20
                             height: 20
-                            x: dmsDiscordButton.x + dmsDiscordButton.width + Theme.spacingM
+                            x: hypeDiscordButton.x + hypeDiscordButton.width + Theme.spacingM
                             anchors.verticalCenter: parent.verticalCenter
                             visible: showCompositorDiscord
 
@@ -568,7 +568,7 @@ Item {
                             id: redditButton
                             width: 20
                             height: 20
-                            x: showCompositorDiscord ? compositorDiscordButton.x + compositorDiscordButton.width + Theme.spacingM : dmsDiscordButton.x + dmsDiscordButton.width + Theme.spacingM
+                            x: showCompositorDiscord ? compositorDiscordButton.x + compositorDiscordButton.width + Theme.spacingM : hypeDiscordButton.x + hypeDiscordButton.width + Theme.spacingM
                             anchors.verticalCenter: parent.verticalCenter
                             visible: showReddit
 
@@ -616,7 +616,7 @@ Item {
                         width: parent.width
                         spacing: Theme.spacingM
 
-                        DankIcon {
+                        HypeIcon {
                             name: "info"
                             size: Theme.iconSize
                             color: Theme.primary
@@ -671,7 +671,7 @@ Item {
                         width: parent.width
                         spacing: Theme.spacingM
 
-                        DankIcon {
+                        HypeIcon {
                             name: "system_update"
                             size: Theme.iconSize
                             color: Theme.primary
@@ -742,7 +742,7 @@ Item {
                         anchors.horizontalCenter: parent.horizontalCenter
                         spacing: Theme.spacingS
 
-                        DankButton {
+                        HypeButton {
                             text: ShellVersionService.updateStatus === "checking" ? I18n.tr("Checking") : I18n.tr("Check for Updates")
                             iconName: "refresh"
                             enabled: ShellVersionService.updateStatus !== "checking"
@@ -751,7 +751,7 @@ Item {
                             onClicked: ShellVersionService.checkForUpdates()
                         }
 
-                        DankButton {
+                        HypeButton {
                             text: I18n.tr("Update Now")
                             iconName: "system_update"
                             visible: ShellVersionService.updateStatus === "available"
@@ -783,7 +783,7 @@ Item {
                         width: parent.width
                         spacing: Theme.spacingM
 
-                        DankIcon {
+                        HypeIcon {
                             name: "dns"
                             size: Theme.iconSize
                             color: Theme.primary
@@ -814,7 +814,7 @@ Item {
                             }
 
                             StyledText {
-                                text: DMSService.cliVersion || "—"
+                                text: HYPEService.cliVersion || "—"
                                 font.pixelSize: Theme.fontSizeMedium
                                 font.weight: Font.Medium
                                 color: Theme.surfaceText
@@ -839,7 +839,7 @@ Item {
                             }
 
                             StyledText {
-                                text: `v${DMSService.apiVersion}`
+                                text: `v${HYPEService.apiVersion}`
                                 font.pixelSize: Theme.fontSizeMedium
                                 font.weight: Font.Medium
                                 color: Theme.surfaceText
@@ -888,7 +888,7 @@ Item {
                     Column {
                         width: parent.width
                         spacing: Theme.spacingS
-                        visible: DMSService.capabilities.length > 0
+                        visible: HYPEService.capabilities.length > 0
 
                         StyledText {
                             text: I18n.tr("Capabilities")
@@ -903,7 +903,7 @@ Item {
                             spacing: 6
 
                             Repeater {
-                                model: DMSService.capabilities
+                                model: HYPEService.capabilities
 
                                 Rectangle {
                                     width: capText.implicitWidth + 16
@@ -944,7 +944,7 @@ Item {
                         width: parent.width
                         spacing: Theme.spacingM
 
-                        DankIcon {
+                        HypeIcon {
                             name: "build"
                             size: Theme.iconSize
                             color: Theme.primary
@@ -964,7 +964,7 @@ Item {
                         anchors.left: parent.left
                         spacing: Theme.spacingS
 
-                        DankButton {
+                        HypeButton {
                             text: I18n.tr("Show Welcome")
                             iconName: "waving_hand"
                             backgroundColor: Qt.rgba(Theme.surfaceText.r, Theme.surfaceText.g, Theme.surfaceText.b, 0.08)
@@ -972,7 +972,7 @@ Item {
                             onClicked: FirstLaunchService.showWelcome()
                         }
 
-                        DankButton {
+                        HypeButton {
                             text: I18n.tr("System Check")
                             iconName: "vital_signs"
                             backgroundColor: Qt.rgba(Theme.surfaceText.r, Theme.surfaceText.g, Theme.surfaceText.b, 0.08)
@@ -1015,8 +1015,8 @@ Item {
                 return matrixButton;
             if (ircButton.visible && ircButton.hovered)
                 return ircButton;
-            if (dmsDiscordButton.hovered)
-                return dmsDiscordButton;
+            if (hypeDiscordButton.hovered)
+                return hypeDiscordButton;
             if (compositorDiscordButton.visible && compositorDiscordButton.hovered)
                 return compositorDiscordButton;
             if (redditButton.visible && redditButton.hovered)

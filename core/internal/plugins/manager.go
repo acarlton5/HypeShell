@@ -1,4 +1,4 @@
-package plugins
+﻿package plugins
 
 import (
 	"crypto/sha256"
@@ -37,7 +37,7 @@ func getPluginsDir() string {
 }
 
 func getLegacyPluginsDir() string {
-	return filepath.Join(userConfigDir(), "DankMaterialShell", "plugins")
+	return filepath.Join(userConfigDir(), "HypeMaterialShell", "plugins")
 }
 
 func userConfigDir() string {
@@ -76,7 +76,7 @@ func (m *Manager) findInstalledPath(pluginID string) (string, error) {
 	}
 
 	// Check system plugins directory
-	systemDir := "/etc/xdg/quickshell/dms-plugins"
+	systemDir := "/etc/xdg/quickshell/hype-plugins"
 	return m.findInDir(systemDir, pluginID)
 }
 
@@ -219,7 +219,7 @@ func (m *Manager) Update(plugin Plugin) error {
 		return fmt.Errorf("plugin not installed: %s", plugin.Name)
 	}
 
-	if strings.HasPrefix(pluginPath, "/etc/xdg/quickshell/dms-plugins") {
+	if strings.HasPrefix(pluginPath, "/etc/xdg/quickshell/hype-plugins") {
 		return fmt.Errorf("cannot update system plugin: %s", plugin.Name)
 	}
 
@@ -271,7 +271,7 @@ func (m *Manager) Uninstall(plugin Plugin) error {
 		return fmt.Errorf("plugin not installed: %s", plugin.Name)
 	}
 
-	if strings.HasPrefix(pluginPath, "/etc/xdg/quickshell/dms-plugins") {
+	if strings.HasPrefix(pluginPath, "/etc/xdg/quickshell/hype-plugins") {
 		return fmt.Errorf("cannot uninstall system plugin: %s", plugin.Name)
 	}
 
@@ -391,7 +391,7 @@ func (m *Manager) ListInstalled() ([]string, error) {
 		}
 	}
 
-	systemPluginsDir := "/etc/xdg/quickshell/dms-plugins"
+	systemPluginsDir := "/etc/xdg/quickshell/hype-plugins"
 	systemExists, err := afero.DirExists(m.fs, systemPluginsDir)
 	if err == nil && systemExists {
 		entries, err := afero.ReadDir(m.fs, systemPluginsDir)
@@ -459,7 +459,7 @@ func (m *Manager) UninstallByIDOrName(idOrName string) error {
 		return fmt.Errorf("plugin not found: %s", idOrName)
 	}
 
-	if strings.HasPrefix(pluginPath, "/etc/xdg/quickshell/dms-plugins") {
+	if strings.HasPrefix(pluginPath, "/etc/xdg/quickshell/hype-plugins") {
 		return fmt.Errorf("cannot uninstall system plugin: %s", idOrName)
 	}
 
@@ -491,7 +491,7 @@ func (m *Manager) UpdateByIDOrName(idOrName string) error {
 		return fmt.Errorf("plugin not found: %s", idOrName)
 	}
 
-	if strings.HasPrefix(pluginPath, "/etc/xdg/quickshell/dms-plugins") {
+	if strings.HasPrefix(pluginPath, "/etc/xdg/quickshell/hype-plugins") {
 		return fmt.Errorf("cannot update system plugin: %s", idOrName)
 	}
 
@@ -528,7 +528,7 @@ func (m *Manager) findInstalledPathByIDOrName(idOrName string) (string, error) {
 		return path, nil
 	}
 
-	systemDir := "/etc/xdg/quickshell/dms-plugins"
+	systemDir := "/etc/xdg/quickshell/hype-plugins"
 	return m.findInDirByIDOrName(systemDir, idOrName)
 }
 
@@ -590,7 +590,7 @@ func (m *Manager) HasUpdates(pluginID string, plugin Plugin) (bool, error) {
 		return false, fmt.Errorf("plugin not installed: %s", pluginID)
 	}
 
-	if strings.HasPrefix(pluginPath, "/etc/xdg/quickshell/dms-plugins") {
+	if strings.HasPrefix(pluginPath, "/etc/xdg/quickshell/hype-plugins") {
 		return false, nil
 	}
 

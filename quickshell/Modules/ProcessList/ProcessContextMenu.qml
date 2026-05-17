@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import QtQuick.Controls
 import Quickshell
 import qs.Common
@@ -284,7 +284,7 @@ Popup {
                             anchors.verticalCenter: parent.verticalCenter
                             spacing: Theme.spacingS
 
-                            DankIcon {
+                            HypeIcon {
                                 name: modelData.icon || ""
                                 size: 16
                                 color: {
@@ -314,7 +314,7 @@ Popup {
                             }
                         }
 
-                        DankRipple {
+                        HypeRipple {
                             id: menuItemRipple
                             rippleColor: modelData.dangerous ? Theme.error : Theme.surfaceText
                             cornerRadius: menuItem.radius

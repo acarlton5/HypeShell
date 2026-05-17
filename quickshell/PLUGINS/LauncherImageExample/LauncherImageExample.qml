@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import Quickshell
 import qs.Services
 
@@ -12,33 +12,33 @@ QtObject {
 
     readonly property var images: [
         {
-            name: "DankDash",
-            imageUrl: "https://danklinux.com/img/dankdash.png",
-            comment: "DankMaterialShell Dashboard"
+            name: "HypeDash",
+            imageUrl: "https://hypelinux.com/img/hypedash.png",
+            comment: "HypeMaterialShell Dashboard"
         },
         {
             name: "Control Center",
-            imageUrl: "https://danklinux.com/img/cc.png",
+            imageUrl: "https://hypelinux.com/img/cc.png",
             comment: "System Control Center"
         },
         {
             name: "Desktop",
-            imageUrl: "https://danklinux.com/img/desktop.png",
+            imageUrl: "https://hypelinux.com/img/desktop.png",
             comment: "Desktop Environment"
         },
         {
             name: "Search",
-            imageUrl: "https://danklinux.com/img/dsearch.png",
+            imageUrl: "https://hypelinux.com/img/dsearch.png",
             comment: "Application Search"
         },
         {
             name: "Theme Registry",
-            imageUrl: "https://danklinux.com/img/blog/v1.2/themeregistry.png",
+            imageUrl: "https://hypelinux.com/img/blog/v1.2/themeregistry.png",
             comment: "Theme Registry Browser"
         },
         {
             name: "Monitor Settings",
-            imageUrl: "https://danklinux.com/img/blog/v1.2/monitordark.png",
+            imageUrl: "https://hypelinux.com/img/blog/v1.2/monitordark.png",
             comment: "Display Configuration"
         }
     ]

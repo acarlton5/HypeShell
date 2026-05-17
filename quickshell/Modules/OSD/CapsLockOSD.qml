@@ -1,9 +1,9 @@
-import QtQuick
+﻿import QtQuick
 import qs.Common
 import qs.Services
 import qs.Widgets
 
-DankOSD {
+HypeOSD {
     id: root
 
     osdWidth: Theme.iconSize + Theme.spacingS * 2
@@ -14,23 +14,23 @@ DankOSD {
     property bool lastCapsLockState: false
 
     Connections {
-        target: DMSService
+        target: HYPEService
 
         function onCapsLockStateChanged() {
-            if (lastCapsLockState !== DMSService.capsLockState && SettingsData.osdCapsLockEnabled) {
+            if (lastCapsLockState !== HYPEService.capsLockState && SettingsData.osdCapsLockEnabled) {
                 root.show()
             }
-            lastCapsLockState = DMSService.capsLockState
+            lastCapsLockState = HYPEService.capsLockState
         }
     }
 
     Component.onCompleted: {
-        lastCapsLockState = DMSService.capsLockState
+        lastCapsLockState = HYPEService.capsLockState
     }
 
-    content: DankIcon {
+    content: HypeIcon {
         anchors.centerIn: parent
-        name: DMSService.capsLockState ? "shift_lock" : "shift_lock_off"
+        name: HYPEService.capsLockState ? "shift_lock" : "shift_lock_off"
         size: Theme.iconSize
         color: Theme.primary
     }

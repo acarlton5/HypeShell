@@ -1,4 +1,4 @@
-package themes
+﻿package themes
 
 import (
 	"encoding/json"
@@ -37,7 +37,7 @@ func getThemesDir() string {
 }
 
 func getLegacyThemesDir() string {
-	return filepath.Join(userConfigDir(), "DankMaterialShell", "themes")
+	return filepath.Join(userConfigDir(), "HypeMaterialShell", "themes")
 }
 
 func userConfigDir() string {

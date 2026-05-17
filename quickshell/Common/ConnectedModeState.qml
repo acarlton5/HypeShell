@@ -1,4 +1,4 @@
-pragma Singleton
+﻿pragma Singleton
 pragma ComponentBehavior: Bound
 
 import QtQuick
@@ -18,7 +18,7 @@ Singleton {
             "slideY": 0
         })
 
-    // Popout state (updated by DankPopout when connectedFrameModeActive)
+    // Popout state (updated by HypePopout when connectedFrameModeActive)
     property string popoutOwnerId: ""
     property bool popoutVisible: false
     property string popoutBarSide: "top"
@@ -277,7 +277,7 @@ Singleton {
         return true;
     }
 
-    // DankModal / DankLauncherV2Modal State
+    // HypeModal / HypeLauncherV2Modal State
     readonly property var emptyModalState: ({
             "visible": false,
             "barSide": "bottom",

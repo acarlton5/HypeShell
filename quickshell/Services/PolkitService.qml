@@ -1,4 +1,4 @@
-pragma Singleton
+﻿pragma Singleton
 pragma ComponentBehavior: Bound
 
 import QtQuick
@@ -9,7 +9,7 @@ Singleton {
     id: root
     readonly property var log: Log.scoped("PolkitService")
 
-    readonly property bool disablePolkitIntegration: Quickshell.env("DMS_DISABLE_POLKIT") === "1"
+    readonly property bool disablePolkitIntegration: Quickshell.env("HYPE_DISABLE_POLKIT") === "1"
 
     readonly property bool polkitAvailable: !disablePolkitIntegration
     readonly property alias agent: polkitAgentInstance

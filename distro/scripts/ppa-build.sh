@@ -1,12 +1,12 @@
-#!/usr/bin/env bash
-# Generic source package builder for DMS PPA packages
+﻿#!/usr/bin/env bash
+# Generic source package builder for HYPE PPA packages
 # Usage: ./create-source.sh <package-dir> [ubuntu-series]
 #
 # Example:
-#   ./create-source.sh ../dms questing    # Ubuntu 25.10 (default series in ppa-upload)
-#   ./create-source.sh ../dms resolute     # Ubuntu 26.04 LTS
-#   ./create-source.sh ../dms-git questing
-#   ./create-source.sh ../dms-git resolute
+#   ./create-source.sh ../hype questing    # Ubuntu 25.10 (default series in ppa-upload)
+#   ./create-source.sh ../hype resolute     # Ubuntu 26.04 LTS
+#   ./create-source.sh ../hype-git questing
+#   ./create-source.sh ../hype-git resolute
 
 set -e
 
@@ -25,15 +25,15 @@ if [ $# -lt 1 ]; then
     error "Usage: $0 <package-dir> [ubuntu-series]"
     echo
     echo "Arguments:"
-    echo "  package-dir     : Path to package directory (e.g., ../dms)"
+    echo "  package-dir     : Path to package directory (e.g., ../hype)"
     echo "  ubuntu-series   : Ubuntu series (optional, default: noble)"
     echo "                    Options: noble, jammy, oracular, mantic, questing, resolute"
     echo
     echo "Examples:"
-    echo "  $0 ../dms questing"
-    echo "  $0 ../dms resolute"
-    echo "  $0 ../dms-git questing"
-    echo "  $0 ../dms-git resolute"
+    echo "  $0 ../hype questing"
+    echo "  $0 ../hype resolute"
+    echo "  $0 ../hype-git questing"
+    echo "  $0 ../hype-git resolute"
     exit 1
 fi
 
@@ -116,9 +116,9 @@ success "GPG key found"
 get_ppa_name() {
     local pkg="$1"
     case "$pkg" in
-        dms) echo "dms" ;;
-        dms-git) echo "dms-git" ;;
-        dms-greeter) echo "danklinux" ;;
+        hype) echo "hype" ;;
+        hype-git) echo "hype-git" ;;
+        hype-greeter) echo "hypelinux" ;;
         *) echo "" ;;
     esac
 }
@@ -219,19 +219,19 @@ if grep -q "git clone" debian/rules 2>/dev/null; then
     fi
 fi
 case "$PACKAGE_NAME" in
-dms-git)
+hype-git)
     IS_GIT_PACKAGE=true
-    GIT_REPO="AvengeMedia/DankMaterialShell"
-    SOURCE_DIR="dms-git-repo"
+    GIT_REPO="AvengeMedia/HypeMaterialShell"
+    SOURCE_DIR="hype-git-repo"
     ;;
-dms)
-    GIT_REPO="AvengeMedia/DankMaterialShell"
+hype)
+    GIT_REPO="AvengeMedia/HypeMaterialShell"
     ;;
-dms-greeter)
-    GIT_REPO="AvengeMedia/DankMaterialShell"
+hype-greeter)
+    GIT_REPO="AvengeMedia/HypeMaterialShell"
     ;;
-danksearch)
-    GIT_REPO="AvengeMedia/danksearch"
+hypesearch)
+    GIT_REPO="AvengeMedia/hypesearch"
     ;;
 dgop)
     GIT_REPO="AvengeMedia/dgop"
@@ -319,47 +319,47 @@ EOF
     VERSION=$(dpkg-parsechangelog -S Version | sed 's/-[^-]*$//' | sed 's/ppa[0-9]*$//')
 
     case "$PACKAGE_NAME" in
-    dms)
-        info "Downloading pre-built binaries and source for dms..."
-        if [ ! -f "dms-distropkg-amd64.gz" ]; then
-            info "Downloading dms binary for amd64..."
-            if wget -O dms-distropkg-amd64.gz "https://github.com/AvengeMedia/DankMaterialShell/releases/download/v${VERSION}/dms-distropkg-amd64.gz"; then
+    hype)
+        info "Downloading pre-built binaries and source for hype..."
+        if [ ! -f "hype-distropkg-amd64.gz" ]; then
+            info "Downloading hype binary for amd64..."
+            if wget -O hype-distropkg-amd64.gz "https://github.com/AvengeMedia/HypeMaterialShell/releases/download/v${VERSION}/hype-distropkg-amd64.gz"; then
                 success "amd64 binary downloaded"
             else
-                error "Failed to download dms-distropkg-amd64.gz"
+                error "Failed to download hype-distropkg-amd64.gz"
                 exit 1
             fi
         fi
 
-        if [ ! -f "dms-distropkg-arm64.gz" ]; then
-            info "Downloading dms binary for arm64..."
+        if [ ! -f "hype-distropkg-arm64.gz" ]; then
+            info "Downloading hype binary for arm64..."
             # Try to download arm64 binary, but don't fail if it doesn't exist (yet)
-            if wget -O dms-distropkg-arm64.gz "https://github.com/AvengeMedia/DankMaterialShell/releases/download/v${VERSION}/dms-distropkg-arm64.gz"; then
+            if wget -O hype-distropkg-arm64.gz "https://github.com/AvengeMedia/HypeMaterialShell/releases/download/v${VERSION}/hype-distropkg-arm64.gz"; then
                 success "arm64 binary downloaded"
             else
-                warn "Failed to download dms-distropkg-arm64.gz (skipping)"
-                rm -f dms-distropkg-arm64.gz
+                warn "Failed to download hype-distropkg-arm64.gz (skipping)"
+                rm -f hype-distropkg-arm64.gz
             fi
         fi
 
-        if [ ! -f "dms-source.tar.gz" ]; then
-            info "Downloading dms source for QML files..."
-            if wget -O dms-source.tar.gz "https://github.com/AvengeMedia/DankMaterialShell/archive/refs/tags/v${VERSION}.tar.gz"; then
+        if [ ! -f "hype-source.tar.gz" ]; then
+            info "Downloading hype source for QML files..."
+            if wget -O hype-source.tar.gz "https://github.com/AvengeMedia/HypeMaterialShell/archive/refs/tags/v${VERSION}.tar.gz"; then
                 success "source tarball downloaded"
             else
-                error "Failed to download dms-source.tar.gz"
+                error "Failed to download hype-source.tar.gz"
                 exit 1
             fi
         fi
         ;;
-    dms-greeter)
-        info "Downloading source for dms-greeter..."
-        if [ ! -f "dms-greeter-source.tar.gz" ]; then
-            info "Downloading dms-greeter source..."
-            if wget -O dms-greeter-source.tar.gz "https://github.com/AvengeMedia/DankMaterialShell/archive/refs/tags/v${VERSION}.tar.gz"; then
+    hype-greeter)
+        info "Downloading source for hype-greeter..."
+        if [ ! -f "hype-greeter-source.tar.gz" ]; then
+            info "Downloading hype-greeter source..."
+            if wget -O hype-greeter-source.tar.gz "https://github.com/AvengeMedia/HypeMaterialShell/archive/refs/tags/v${VERSION}.tar.gz"; then
                 success "source tarball downloaded"
             else
-                error "Failed to download dms-greeter-source.tar.gz"
+                error "Failed to download hype-greeter-source.tar.gz"
                 exit 1
             fi
         fi
@@ -481,10 +481,10 @@ EOF
         rm -rf "$SOURCE_DIR"
         cp -r "$TEMP_CLONE" "$SOURCE_DIR"
 
-        if [ "$PACKAGE_NAME" = "dms-git" ]; then
-            info "Saving version info to .dms-version for build process..."
-            echo "VERSION=${UPSTREAM_VERSION}+git${GIT_COMMIT_COUNT}.${GIT_COMMIT_HASH}" >"$SOURCE_DIR/.dms-version"
-            echo "COMMIT=${GIT_COMMIT_HASH}" >>"$SOURCE_DIR/.dms-version"
+        if [ "$PACKAGE_NAME" = "hype-git" ]; then
+            info "Saving version info to .hype-version for build process..."
+            echo "VERSION=${UPSTREAM_VERSION}+git${GIT_COMMIT_COUNT}.${GIT_COMMIT_HASH}" >"$SOURCE_DIR/.hype-version"
+            echo "COMMIT=${GIT_COMMIT_HASH}" >>"$SOURCE_DIR/.hype-version"
             success "Version info saved: ${UPSTREAM_VERSION}+git${GIT_COMMIT_COUNT}.${GIT_COMMIT_HASH}"
 
             info "Vendoring Go dependencies for offline build..."
@@ -514,13 +514,13 @@ fi
 # Handle packages that need pre-built binaries downloaded
 cd "$WORK_PACKAGE_DIR"
 case "$PACKAGE_NAME" in
-danksearch)
-    info "Downloading pre-built binaries for danksearch..."
+hypesearch)
+    info "Downloading pre-built binaries for hypesearch..."
     VERSION=$(dpkg-parsechangelog -S Version | sed 's/-[^-]*$//' | sed 's/ppa[0-9]*$//')
 
     if [ ! -f "dsearch-amd64" ]; then
         info "Downloading dsearch binary for amd64..."
-        if wget -O dsearch-amd64.gz "https://github.com/AvengeMedia/danksearch/releases/download/v${VERSION}/dsearch-linux-amd64.gz"; then
+        if wget -O dsearch-amd64.gz "https://github.com/AvengeMedia/hypesearch/releases/download/v${VERSION}/dsearch-linux-amd64.gz"; then
             gunzip dsearch-amd64.gz
             chmod +x dsearch-amd64
             success "amd64 binary downloaded"
@@ -532,7 +532,7 @@ danksearch)
 
     if [ ! -f "dsearch-arm64" ]; then
         info "Downloading dsearch binary for arm64..."
-        if wget -O dsearch-arm64.gz "https://github.com/AvengeMedia/danksearch/releases/download/v${VERSION}/dsearch-linux-arm64.gz"; then
+        if wget -O dsearch-arm64.gz "https://github.com/AvengeMedia/hypesearch/releases/download/v${VERSION}/dsearch-linux-arm64.gz"; then
             gunzip dsearch-arm64.gz
             chmod +x dsearch-arm64
             success "arm64 binary downloaded"
@@ -593,13 +593,13 @@ if yes | DEBIAN_FRONTEND=noninteractive debuild -S $DEBUILD_SOURCE_FLAG -d; then
     echo "     ls -lh ${SOURCE_NAME}_${CHANGELOG_VERSION}*"
     echo
     echo "  2. Upload to PPA (stable):"
-    echo "     dput ppa:avengemedia/dms ${SOURCE_NAME}_${CHANGELOG_VERSION}_source.changes"
+    echo "     dput ppa:avengemedia/hype ${SOURCE_NAME}_${CHANGELOG_VERSION}_source.changes"
     echo
     echo "  3. Or upload to PPA (nightly):"
-    echo "     dput ppa:avengemedia/dms-git ${SOURCE_NAME}_${CHANGELOG_VERSION}_source.changes"
+    echo "     dput ppa:avengemedia/hype-git ${SOURCE_NAME}_${CHANGELOG_VERSION}_source.changes"
     echo
     echo "  4. Or use the upload script:"
-    echo "     ./upload-ppa.sh $PACKAGE_PARENT/${SOURCE_NAME}_${CHANGELOG_VERSION}_source.changes dms"
+    echo "     ./upload-ppa.sh $PACKAGE_PARENT/${SOURCE_NAME}_${CHANGELOG_VERSION}_source.changes hype"
 
 else
     error "Source package build failed!"

@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import Quickshell
 import qs.Common
 import qs.Widgets
@@ -43,7 +43,7 @@ Item {
             onCloseClicked: modal.hide()
         }
 
-        DankTextField {
+        HypeTextField {
             id: searchField
             width: parent.width
             placeholderText: ""
@@ -89,7 +89,7 @@ Item {
         anchors.bottomMargin: (modal.showKeyboardHints ? (ClipboardConstants.keyboardHintsHeight + Theme.spacingM * 2) : 0) + Theme.spacingXS
         clip: true
 
-        DankListView {
+        HypeListView {
             id: clipboardListView
             anchors.fill: parent
             model: ScriptModel {
@@ -148,7 +148,7 @@ Item {
             }
         }
 
-        DankListView {
+        HypeListView {
             id: savedListView
             anchors.fill: parent
             model: ScriptModel {

@@ -1,4 +1,4 @@
-pragma ComponentBehavior: Bound
+﻿pragma ComponentBehavior: Bound
 
 import QtQuick
 import qs.Common
@@ -42,7 +42,7 @@ StyledRect {
             width: parent.width
             spacing: Theme.spacingM
 
-            DankIcon {
+            HypeIcon {
                 id: headerIcon
                 name: root.iconName
                 size: Theme.iconSize
@@ -77,7 +77,7 @@ StyledRect {
                 }
             }
 
-            DankActionButton {
+            HypeActionButton {
                 id: resetButton
                 anchors.verticalCenter: parent.verticalCenter
                 buttonSize: 36
@@ -94,7 +94,7 @@ StyledRect {
             }
         }
 
-        DankSlider {
+        HypeSlider {
             id: slider
             width: parent.width
             height: 32

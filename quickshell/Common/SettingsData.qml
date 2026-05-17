@@ -1,4 +1,4 @@
-pragma Singleton
+﻿pragma Singleton
 pragma ComponentBehavior: Bound
 
 import QtCore
@@ -148,9 +148,9 @@ Singleton {
         });
     }
 
-    property alias dankBarLeftWidgetsModel: leftWidgetsModel
-    property alias dankBarCenterWidgetsModel: centerWidgetsModel
-    property alias dankBarRightWidgetsModel: rightWidgetsModel
+    property alias hypeBarLeftWidgetsModel: leftWidgetsModel
+    property alias hypeBarCenterWidgetsModel: centerWidgetsModel
+    property alias hypeBarRightWidgetsModel: rightWidgetsModel
 
     property string currentThemeName: "purple"
     property string currentThemeCategory: "generic"
@@ -439,14 +439,14 @@ Singleton {
     property var appDrawerSectionViewModes: ({})
     onAppDrawerSectionViewModesChanged: saveSettings()
     property bool niriOverviewOverlayEnabled: true
-    property string dankLauncherV2Size: "compact"
-    property bool dankLauncherV2BorderEnabled: false
-    property int dankLauncherV2BorderThickness: 2
-    property string dankLauncherV2BorderColor: "primary"
-    property bool dankLauncherV2ShowFooter: true
-    property bool dankLauncherV2UnloadOnClose: false
-    property bool dankLauncherV2IncludeFilesInAll: false
-    property bool dankLauncherV2IncludeFoldersInAll: false
+    property string hypeLauncherV2Size: "compact"
+    property bool hypeLauncherV2BorderEnabled: false
+    property int hypeLauncherV2BorderThickness: 2
+    property string hypeLauncherV2BorderColor: "primary"
+    property bool hypeLauncherV2ShowFooter: true
+    property bool hypeLauncherV2UnloadOnClose: false
+    property bool hypeLauncherV2IncludeFilesInAll: false
+    property bool hypeLauncherV2IncludeFoldersInAll: false
 
     property string _legacyWeatherLocation: "New York, NY"
     property string _legacyWeatherCoordinates: "40.7128,-74.0060"
@@ -496,7 +496,7 @@ Singleton {
     property string monoFontFamily: "Fira Code"
     property int fontWeight: Font.Normal
     property real fontScale: 1.0
-    property real dankBarFontScale: 1.0
+    property real hypeBarFontScale: 1.0
     property int textRenderType: SettingsData.TextRenderType.Native
     property int textRenderQuality: SettingsData.TextRenderQuality.Default
 
@@ -1157,7 +1157,7 @@ Singleton {
         return (desktopWidgetInstances || []).filter(inst => !inst.group);
     }
 
-    signal forceDankBarLayoutRefresh
+    signal forceHypeBarLayoutRefresh
     signal forceDockLayoutRefresh
     signal widgetDataChanged
     signal workspaceIconsUpdated
@@ -1255,7 +1255,7 @@ Singleton {
         const gtkThemeName = (iconTheme === "System Default") ? systemDefaultIconTheme : iconTheme;
         if (gtkThemeName === "System Default" || gtkThemeName === "")
             return;
-        if (typeof DMSService !== "undefined" && DMSService.apiVersion >= 3 && typeof PortalService !== "undefined") {
+        if (typeof HYPEService !== "undefined" && HYPEService.apiVersion >= 3 && typeof PortalService !== "undefined") {
             PortalService.setSystemIconTheme(gtkThemeName);
         }
 
@@ -2532,22 +2532,22 @@ Singleton {
         const defaultBar = barConfigs[0] || getBarConfig("default");
         const barPos = defaultBar?.position ?? SettingsData.Position.Top;
         if (position === SettingsData.Position.Bottom && barPos === SettingsData.Position.Bottom && showDock) {
-            setDankBarPosition(SettingsData.Position.Top);
+            setHypeBarPosition(SettingsData.Position.Top);
         }
         if (position === SettingsData.Position.Top && barPos === SettingsData.Position.Top && showDock) {
-            setDankBarPosition(SettingsData.Position.Bottom);
+            setHypeBarPosition(SettingsData.Position.Bottom);
         }
         if (position === SettingsData.Position.Left && barPos === SettingsData.Position.Left && showDock) {
-            setDankBarPosition(SettingsData.Position.Right);
+            setHypeBarPosition(SettingsData.Position.Right);
         }
         if (position === SettingsData.Position.Right && barPos === SettingsData.Position.Right && showDock) {
-            setDankBarPosition(SettingsData.Position.Left);
+            setHypeBarPosition(SettingsData.Position.Left);
         }
         saveSettings();
         Qt.callLater(() => forceDockLayoutRefresh());
     }
 
-    function setDankBarSpacing(spacing) {
+    function setHypeBarSpacing(spacing) {
         const defaultBar = barConfigs[0] || getBarConfig("default");
         if (defaultBar) {
             updateBarConfig(defaultBar.id, {
@@ -2557,7 +2557,7 @@ Singleton {
         updateCompositorLayout();
     }
 
-    function setDankBarPosition(position) {
+    function setHypeBarPosition(position) {
         const defaultBar = barConfigs[0] || getBarConfig("default");
         if (!defaultBar)
             return;
@@ -2582,7 +2582,7 @@ Singleton {
         });
     }
 
-    function setDankBarLeftWidgets(order) {
+    function setHypeBarLeftWidgets(order) {
         const defaultBar = barConfigs[0] || getBarConfig("default");
         if (defaultBar) {
             updateBarConfig(defaultBar.id, {
@@ -2592,7 +2592,7 @@ Singleton {
         }
     }
 
-    function setDankBarCenterWidgets(order) {
+    function setHypeBarCenterWidgets(order) {
         const defaultBar = barConfigs[0] || getBarConfig("default");
         if (defaultBar) {
             updateBarConfig(defaultBar.id, {
@@ -2602,7 +2602,7 @@ Singleton {
         }
     }
 
-    function setDankBarRightWidgets(order) {
+    function setHypeBarRightWidgets(order) {
         const defaultBar = barConfigs[0] || getBarConfig("default");
         if (defaultBar) {
             updateBarConfig(defaultBar.id, {
@@ -2612,7 +2612,7 @@ Singleton {
         }
     }
 
-    function resetDankBarWidgetsToDefault() {
+    function resetHypeBarWidgetsToDefault() {
         var defaultLeft = ["launcherButton", "workspaceSwitcher", "focusedWindow"];
         var defaultCenter = ["music", "clock", "weather"];
         var defaultRight = ["systemTray", "clipboard", "notificationButton", "battery", "controlCenterButton"];
@@ -2900,7 +2900,7 @@ Singleton {
             Theme.reloadCustomThemeVariant();
     }
 
-    function toggleDankBarVisible() {
+    function toggleHypeBarVisible() {
         const defaultBar = barConfigs[0] || getBarConfig("default");
         if (defaultBar) {
             updateBarConfig(defaultBar.id, {

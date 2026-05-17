@@ -1,4 +1,4 @@
-package notify
+﻿package notify
 
 import (
 	"fmt"
@@ -37,7 +37,7 @@ func Send(n Notification) error {
 	}
 
 	if n.AppName == "" {
-		n.AppName = "DMS"
+		n.AppName = "HYPE"
 	}
 	if n.Timeout == 0 {
 		n.Timeout = 5000

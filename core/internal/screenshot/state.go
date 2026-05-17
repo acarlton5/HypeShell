@@ -1,4 +1,4 @@
-package screenshot
+﻿package screenshot
 
 import (
 	"encoding/json"
@@ -16,7 +16,7 @@ func getStateFilePath() string {
 	if err != nil {
 		cacheDir = path.Join(os.Getenv("HOME"), ".cache")
 	}
-	return filepath.Join(cacheDir, "dms", "screenshot-state.json")
+	return filepath.Join(cacheDir, "hype", "screenshot-state.json")
 }
 
 func LoadState() (*PersistentState, error) {

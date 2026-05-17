@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import Quickshell
 import qs.Common
 import qs.Widgets
@@ -216,7 +216,7 @@ FloatingWindow {
                     anchors.verticalCenter: parent.verticalCenter
                     spacing: Theme.spacingM
 
-                    DankIcon {
+                    HypeIcon {
                         name: "add_circle"
                         size: Theme.iconSize
                         color: Theme.primary
@@ -238,7 +238,7 @@ FloatingWindow {
                     anchors.verticalCenter: parent.verticalCenter
                     spacing: Theme.spacingXS
 
-                    DankActionButton {
+                    HypeActionButton {
                         visible: windowControls.canMaximize
                         circular: false
                         iconName: root.maximized ? "fullscreen_exit" : "fullscreen"
@@ -247,7 +247,7 @@ FloatingWindow {
                         onClicked: windowControls.tryToggleMaximize()
                     }
 
-                    DankActionButton {
+                    HypeActionButton {
                         circular: false
                         iconName: "close"
                         iconSize: Theme.iconSize - 4
@@ -275,7 +275,7 @@ FloatingWindow {
                         wrapMode: Text.WordWrap
                     }
 
-                    DankTextField {
+                    HypeTextField {
                         id: searchField
                         width: parent.width
                         height: 48
@@ -310,7 +310,7 @@ FloatingWindow {
                         }
                     }
 
-                    DankListView {
+                    HypeListView {
                         id: widgetList
 
                         width: parent.width
@@ -334,7 +334,7 @@ FloatingWindow {
                                 anchors.margins: Theme.spacingM
                                 spacing: Theme.spacingM
 
-                                DankIcon {
+                                HypeIcon {
                                     name: modelData.icon
                                     size: Theme.iconSize
                                     color: Theme.primary
@@ -365,7 +365,7 @@ FloatingWindow {
                                     }
                                 }
 
-                                DankIcon {
+                                HypeIcon {
                                     name: "add"
                                     size: Theme.iconSize - 4
                                     color: Theme.primary

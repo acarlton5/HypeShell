@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import qs.Common
 import qs.Services
 import qs.Widgets
@@ -8,22 +8,22 @@ PluginComponent {
     id: root
 
     Ref {
-        service: DMSNetworkService
+        service: HYPENetworkService
     }
 
-    ccWidgetIcon: DMSNetworkService.isBusy ? "sync" : (DMSNetworkService.connected ? "vpn_lock" : "vpn_key_off")
+    ccWidgetIcon: HYPENetworkService.isBusy ? "sync" : (HYPENetworkService.connected ? "vpn_lock" : "vpn_key_off")
     ccWidgetPrimaryText: I18n.tr("VPN")
     ccWidgetSecondaryText: {
-        if (!DMSNetworkService.connected)
+        if (!HYPENetworkService.connected)
             return I18n.tr("Disconnected");
-        const names = DMSNetworkService.activeNames || [];
+        const names = HYPENetworkService.activeNames || [];
         if (names.length <= 1)
             return names[0] || I18n.tr("Connected");
         return names[0] + " +" + (names.length - 1);
     }
-    ccWidgetIsActive: DMSNetworkService.connected
+    ccWidgetIsActive: HYPENetworkService.connected
 
-    onCcWidgetToggled: DMSNetworkService.toggleVpn()
+    onCcWidgetToggled: HYPENetworkService.toggleVpn()
 
     ccDetailContent: Component {
         VpnDetailContent {

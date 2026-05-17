@@ -1,4 +1,4 @@
-package providers
+﻿package providers
 
 import (
 	"os"
@@ -83,11 +83,11 @@ func TestSwayGetKeybindAtLine(t *testing.T) {
 		},
 		{
 			name: "keybind_with_comment",
-			line: "bindsym Mod4+Space exec dms ipc call spotlight toggle # Open launcher",
+			line: "bindsym Mod4+Space exec hype ipc call spotlight toggle # Open launcher",
 			expected: &SwayKeyBinding{
 				Mods:    []string{"Mod4"},
 				Key:     "Space",
-				Command: "exec dms ipc call spotlight toggle",
+				Command: "exec hype ipc call spotlight toggle",
 				Comment: "Open launcher",
 			},
 		},

@@ -1,4 +1,4 @@
-package providers
+﻿package providers
 
 import (
 	"fmt"
@@ -31,12 +31,12 @@ type HyprlandRulesParser struct {
 	processedFiles   map[string]bool
 	rules            []HyprlandWindowRule
 	currentSource    string
-	dmsRulesExists   bool
-	dmsRulesIncluded bool
+	hypeRulesExists   bool
+	hypeRulesIncluded bool
 	includeCount     int
-	dmsIncludePos    int
-	rulesAfterDMS    int
-	dmsProcessed     bool
+	hypeIncludePos    int
+	rulesAfterHYPE    int
+	hypeProcessed     bool
 }
 
 func NewHyprlandRulesParser(configDir string) *HyprlandRulesParser {
@@ -44,7 +44,7 @@ func NewHyprlandRulesParser(configDir string) *HyprlandRulesParser {
 		configDir:      configDir,
 		processedFiles: make(map[string]bool),
 		rules:          []HyprlandWindowRule{},
-		dmsIncludePos:  -1,
+		hypeIncludePos:  -1,
 	}
 }
 
@@ -54,9 +54,9 @@ func (p *HyprlandRulesParser) Parse() ([]HyprlandWindowRule, error) {
 		return nil, err
 	}
 
-	dmsRulesPath := filepath.Join(expandedDir, "dms", "windowrules.conf")
-	if _, err := os.Stat(dmsRulesPath); err == nil {
-		p.dmsRulesExists = true
+	hypeRulesPath := filepath.Join(expandedDir, "hype", "windowrules.conf")
+	if _, err := os.Stat(hypeRulesPath); err == nil {
+		p.hypeRulesExists = true
 	}
 
 	mainConfig := filepath.Join(expandedDir, "hyprland.conf")
@@ -64,21 +64,21 @@ func (p *HyprlandRulesParser) Parse() ([]HyprlandWindowRule, error) {
 		return nil, err
 	}
 
-	if p.dmsRulesExists && !p.dmsProcessed {
-		p.parseDMSRulesDirectly(dmsRulesPath)
+	if p.hypeRulesExists && !p.hypeProcessed {
+		p.parseHYPERulesDirectly(hypeRulesPath)
 	}
 
 	return p.rules, nil
 }
 
-func (p *HyprlandRulesParser) parseDMSRulesDirectly(dmsRulesPath string) {
-	data, err := os.ReadFile(dmsRulesPath)
+func (p *HyprlandRulesParser) parseHYPERulesDirectly(hypeRulesPath string) {
+	data, err := os.ReadFile(hypeRulesPath)
 	if err != nil {
 		return
 	}
 
 	prevSource := p.currentSource
-	p.currentSource = dmsRulesPath
+	p.currentSource = hypeRulesPath
 
 	lines := strings.Split(string(data), "\n")
 	for _, line := range lines {
@@ -86,7 +86,7 @@ func (p *HyprlandRulesParser) parseDMSRulesDirectly(dmsRulesPath string) {
 	}
 
 	p.currentSource = prevSource
-	p.dmsProcessed = true
+	p.hypeProcessed = true
 }
 
 func (p *HyprlandRulesParser) parseFile(filePath string) error {
@@ -131,13 +131,13 @@ func (p *HyprlandRulesParser) handleSource(line string, baseDir string) {
 	}
 
 	sourcePath := strings.TrimSpace(parts[1])
-	isDMSSource := sourcePath == "dms/windowrules.conf" || strings.HasSuffix(sourcePath, "/dms/windowrules.conf")
+	isHYPESource := sourcePath == "hype/windowrules.conf" || strings.HasSuffix(sourcePath, "/hype/windowrules.conf")
 
 	p.includeCount++
-	if isDMSSource {
-		p.dmsRulesIncluded = true
-		p.dmsIncludePos = p.includeCount
-		p.dmsProcessed = true
+	if isHYPESource {
+		p.hypeRulesIncluded = true
+		p.hypeIncludePos = p.includeCount
+		p.hypeProcessed = true
 	}
 
 	fullPath := sourcePath
@@ -247,33 +247,33 @@ func (p *HyprlandRulesParser) parseWindowRuleV2(content string, rule *HyprlandWi
 	}
 }
 
-func (p *HyprlandRulesParser) HasDMSRulesIncluded() bool {
-	return p.dmsRulesIncluded
+func (p *HyprlandRulesParser) HasHYPERulesIncluded() bool {
+	return p.hypeRulesIncluded
 }
 
-func (p *HyprlandRulesParser) buildDMSStatus() *windowrules.DMSRulesStatus {
-	status := &windowrules.DMSRulesStatus{
-		Exists:          p.dmsRulesExists,
-		Included:        p.dmsRulesIncluded,
-		IncludePosition: p.dmsIncludePos,
+func (p *HyprlandRulesParser) buildHYPEStatus() *windowrules.HYPERulesStatus {
+	status := &windowrules.HYPERulesStatus{
+		Exists:          p.hypeRulesExists,
+		Included:        p.hypeRulesIncluded,
+		IncludePosition: p.hypeIncludePos,
 		TotalIncludes:   p.includeCount,
-		RulesAfterDMS:   p.rulesAfterDMS,
+		RulesAfterHYPE:   p.rulesAfterHYPE,
 	}
 
 	switch {
-	case !p.dmsRulesExists:
+	case !p.hypeRulesExists:
 		status.Effective = false
-		status.StatusMessage = "dms/windowrules.conf does not exist"
-	case !p.dmsRulesIncluded:
+		status.StatusMessage = "hype/windowrules.conf does not exist"
+	case !p.hypeRulesIncluded:
 		status.Effective = false
-		status.StatusMessage = "dms/windowrules.conf is not sourced in config"
-	case p.rulesAfterDMS > 0:
+		status.StatusMessage = "hype/windowrules.conf is not sourced in config"
+	case p.rulesAfterHYPE > 0:
 		status.Effective = true
-		status.OverriddenBy = p.rulesAfterDMS
-		status.StatusMessage = "Some DMS rules may be overridden by config rules"
+		status.OverriddenBy = p.rulesAfterHYPE
+		status.StatusMessage = "Some HYPE rules may be overridden by config rules"
 	default:
 		status.Effective = true
-		status.StatusMessage = "DMS window rules are active"
+		status.StatusMessage = "HYPE window rules are active"
 	}
 
 	return status
@@ -281,8 +281,8 @@ func (p *HyprlandRulesParser) buildDMSStatus() *windowrules.DMSRulesStatus {
 
 type HyprlandRulesParseResult struct {
 	Rules            []HyprlandWindowRule
-	DMSRulesIncluded bool
-	DMSStatus        *windowrules.DMSRulesStatus
+	HYPERulesIncluded bool
+	HYPEStatus        *windowrules.HYPERulesStatus
 }
 
 func ParseHyprlandWindowRules(configDir string) (*HyprlandRulesParseResult, error) {
@@ -293,8 +293,8 @@ func ParseHyprlandWindowRules(configDir string) (*HyprlandRulesParseResult, erro
 	}
 	return &HyprlandRulesParseResult{
 		Rules:            rules,
-		DMSRulesIncluded: parser.HasDMSRulesIncluded(),
-		DMSStatus:        parser.buildDMSStatus(),
+		HYPERulesIncluded: parser.HasHYPERulesIncluded(),
+		HYPEStatus:        parser.buildHYPEStatus(),
 	}, nil
 }
 
@@ -387,7 +387,7 @@ func (p *HyprlandWritableProvider) Name() string {
 
 func (p *HyprlandWritableProvider) GetOverridePath() string {
 	expanded, _ := utils.ExpandPath(p.configDir)
-	return filepath.Join(expanded, "dms", "windowrules.conf")
+	return filepath.Join(expanded, "hype", "windowrules.conf")
 }
 
 func (p *HyprlandWritableProvider) GetRuleSet() (*windowrules.RuleSet, error) {
@@ -399,13 +399,13 @@ func (p *HyprlandWritableProvider) GetRuleSet() (*windowrules.RuleSet, error) {
 		Title:            "Hyprland Window Rules",
 		Provider:         "hyprland",
 		Rules:            ConvertHyprlandRulesToWindowRules(result.Rules),
-		DMSRulesIncluded: result.DMSRulesIncluded,
-		DMSStatus:        result.DMSStatus,
+		HYPERulesIncluded: result.HYPERulesIncluded,
+		HYPEStatus:        result.HYPEStatus,
 	}, nil
 }
 
 func (p *HyprlandWritableProvider) SetRule(rule windowrules.WindowRule) error {
-	rules, err := p.LoadDMSRules()
+	rules, err := p.LoadHYPERules()
 	if err != nil {
 		rules = []windowrules.WindowRule{}
 	}
@@ -422,11 +422,11 @@ func (p *HyprlandWritableProvider) SetRule(rule windowrules.WindowRule) error {
 		rules = append(rules, rule)
 	}
 
-	return p.writeDMSRules(rules)
+	return p.writeHYPERules(rules)
 }
 
 func (p *HyprlandWritableProvider) RemoveRule(id string) error {
-	rules, err := p.LoadDMSRules()
+	rules, err := p.LoadHYPERules()
 	if err != nil {
 		return err
 	}
@@ -438,11 +438,11 @@ func (p *HyprlandWritableProvider) RemoveRule(id string) error {
 		}
 	}
 
-	return p.writeDMSRules(newRules)
+	return p.writeHYPERules(newRules)
 }
 
 func (p *HyprlandWritableProvider) ReorderRules(ids []string) error {
-	rules, err := p.LoadDMSRules()
+	rules, err := p.LoadHYPERules()
 	if err != nil {
 		return err
 	}
@@ -464,12 +464,12 @@ func (p *HyprlandWritableProvider) ReorderRules(ids []string) error {
 		newRules = append(newRules, r)
 	}
 
-	return p.writeDMSRules(newRules)
+	return p.writeHYPERules(newRules)
 }
 
-var dmsRuleCommentRegex = regexp.MustCompile(`^#\s*DMS-RULE:\s*id=([^,]+),\s*name=(.*)$`)
+var hypeRuleCommentRegex = regexp.MustCompile(`^#\s*HYPE-RULE:\s*id=([^,]+),\s*name=(.*)$`)
 
-func (p *HyprlandWritableProvider) LoadDMSRules() ([]windowrules.WindowRule, error) {
+func (p *HyprlandWritableProvider) LoadHYPERules() ([]windowrules.WindowRule, error) {
 	rulesPath := p.GetOverridePath()
 	data, err := os.ReadFile(rulesPath)
 	if err != nil {
@@ -486,7 +486,7 @@ func (p *HyprlandWritableProvider) LoadDMSRules() ([]windowrules.WindowRule, err
 	for _, line := range lines {
 		trimmed := strings.TrimSpace(line)
 
-		if matches := dmsRuleCommentRegex.FindStringSubmatch(trimmed); matches != nil {
+		if matches := hypeRuleCommentRegex.FindStringSubmatch(trimmed); matches != nil {
 			currentID = matches[1]
 			currentName = matches[2]
 			continue
@@ -532,7 +532,7 @@ func (p *HyprlandWritableProvider) LoadDMSRules() ([]windowrules.WindowRule, err
 	return rules, nil
 }
 
-func (p *HyprlandWritableProvider) writeDMSRules(rules []windowrules.WindowRule) error {
+func (p *HyprlandWritableProvider) writeHYPERules(rules []windowrules.WindowRule) error {
 	rulesPath := p.GetOverridePath()
 
 	if err := os.MkdirAll(filepath.Dir(rulesPath), 0755); err != nil {
@@ -540,7 +540,7 @@ func (p *HyprlandWritableProvider) writeDMSRules(rules []windowrules.WindowRule)
 	}
 
 	var lines []string
-	lines = append(lines, "# DMS Window Rules - Managed by DankMaterialShell")
+	lines = append(lines, "# HYPE Window Rules - Managed by HypeMaterialShell")
 	lines = append(lines, "# Do not edit manually - changes may be overwritten")
 	lines = append(lines, "")
 
@@ -553,7 +553,7 @@ func (p *HyprlandWritableProvider) writeDMSRules(rules []windowrules.WindowRule)
 
 func (p *HyprlandWritableProvider) formatRuleLines(rule windowrules.WindowRule) []string {
 	var lines []string
-	lines = append(lines, fmt.Sprintf("# DMS-RULE: id=%s, name=%s", rule.ID, rule.Name))
+	lines = append(lines, fmt.Sprintf("# HYPE-RULE: id=%s, name=%s", rule.ID, rule.Name))
 
 	var matchParts []string
 	if rule.MatchCriteria.AppID != "" {

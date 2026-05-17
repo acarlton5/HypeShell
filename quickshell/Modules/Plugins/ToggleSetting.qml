@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import qs.Common
 import qs.Widgets
 
@@ -70,7 +70,7 @@ Row {
         }
     }
 
-    DankToggle {
+    HypeToggle {
         id: toggle
         anchors.verticalCenter: parent.verticalCenter
         checked: root.value

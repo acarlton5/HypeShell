@@ -1,4 +1,4 @@
-pragma ComponentBehavior: Bound
+﻿pragma ComponentBehavior: Bound
 import QtQuick
 import qs.Common
 import qs.Widgets
@@ -123,7 +123,7 @@ Item {
                 color: Qt.rgba(Theme.outline.r, Theme.outline.g, Theme.outline.b, 0.2)
             }
 
-            DankToggle {
+            HypeToggle {
                 anchors.left: parent.left
                 anchors.leftMargin: -Theme.spacingM
                 width: parent.width + Theme.spacingM
@@ -135,7 +135,7 @@ Item {
                 }
             }
 
-            DankToggle {
+            HypeToggle {
                 anchors.left: parent.left
                 anchors.leftMargin: -Theme.spacingM
                 width: parent.width + Theme.spacingM
@@ -170,7 +170,7 @@ Item {
                     anchors.verticalCenter: parent.verticalCenter
                     spacing: Theme.spacingM
 
-                    DankIcon {
+                    HypeIcon {
                         name: "search"
                         size: Theme.iconSize - 2
                         color: Theme.primary
@@ -203,7 +203,7 @@ Item {
                 color: "transparent"
                 visible: !SettingsData.notepadUseMonospace
 
-                DankDropdown {
+                HypeDropdown {
                     id: fontDropdown
                     anchors.left: parent.left
                     anchors.leftMargin: -Theme.spacingM
@@ -261,7 +261,7 @@ Item {
                         spacing: Theme.spacingS
                         anchors.verticalCenter: parent.verticalCenter
 
-                        DankActionButton {
+                        HypeActionButton {
                             buttonSize: 32
                             iconName: "remove"
                             iconSize: Theme.iconSizeSmall
@@ -291,7 +291,7 @@ Item {
                             }
                         }
 
-                        DankActionButton {
+                        HypeActionButton {
                             buttonSize: 32
                             iconName: "add"
                             iconSize: Theme.iconSizeSmall
@@ -317,7 +317,7 @@ Item {
                     width: parent.width
                     spacing: Theme.spacingS
 
-                    DankToggle {
+                    HypeToggle {
                         anchors.left: parent.left
                         anchors.leftMargin: -Theme.spacingM
                         width: parent.width + Theme.spacingM
@@ -333,7 +333,7 @@ Item {
                         }
                     }
 
-                    DankSlider {
+                    HypeSlider {
                         anchors.left: parent.left
                         anchors.leftMargin: -Theme.spacingM
                         width: parent.width + Theme.spacingM

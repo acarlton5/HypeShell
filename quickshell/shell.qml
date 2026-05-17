@@ -1,4 +1,4 @@
-//@ pragma Env QSG_RENDER_LOOP=threaded
+﻿//@ pragma Env QSG_RENDER_LOOP=threaded
 //@ pragma Env QT_MEDIA_BACKEND=ffmpeg
 //@ pragma Env QT_FFMPEG_DECODING_HW_DEVICE_TYPES=vaapi
 //@ pragma Env QT_FFMPEG_ENCODING_HW_DEVICE_TYPES=vaapi
@@ -14,23 +14,23 @@ ShellRoot {
     id: entrypoint
 
     readonly property bool runGreeter: Quickshell.env("HYPE_RUN_GREETER") === "1" || Quickshell.env("HYPE_RUN_GREETER") === "true"
-    readonly property bool disableHotReload: Quickshell.env("DMS_DISABLE_HOT_RELOAD") === "1" || Quickshell.env("DMS_DISABLE_HOT_RELOAD") === "true"
+    readonly property bool disableHotReload: Quickshell.env("HYPE_DISABLE_HOT_RELOAD") === "1" || Quickshell.env("HYPE_DISABLE_HOT_RELOAD") === "true"
 
     Component.onCompleted: {
         Quickshell.watchFiles = !disableHotReload;
     }
 
     Loader {
-        id: dmsShellLoader
+        id: hypeShellLoader
         asynchronous: false
-        sourceComponent: DMSShell {}
+        sourceComponent: HYPEShell {}
         active: !entrypoint.runGreeter
     }
 
     Loader {
-        id: dmsGreeterLoader
+        id: hypeGreeterLoader
         asynchronous: false
-        sourceComponent: DMSGreeter {}
+        sourceComponent: HYPEGreeter {}
         active: entrypoint.runGreeter
     }
 }

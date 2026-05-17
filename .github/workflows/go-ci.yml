@@ -1,4 +1,4 @@
-name: Go CI
+﻿name: Go CI
 
 on:
   push:
@@ -45,11 +45,11 @@ jobs:
       - name: Test
         run: go test -v ./...
 
-      - name: Build dms
-        run: go build -v ./cmd/dms
+      - name: Build hype
+        run: go build -v ./cmd/hype
 
-      - name: Build dms (distropkg)
-        run: go build -v -tags distro_binary ./cmd/dms
+      - name: Build hype (distropkg)
+        run: go build -v -tags distro_binary ./cmd/hype
 
-      - name: Build dankinstall
-        run: go build -v ./cmd/dankinstall
+      - name: Build hypeinstall
+        run: go build -v ./cmd/hypeinstall

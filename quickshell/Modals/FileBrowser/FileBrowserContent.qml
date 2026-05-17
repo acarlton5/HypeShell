@@ -1,4 +1,4 @@
-import Qt.labs.folderlistmodel
+﻿import Qt.labs.folderlistmodel
 import QtCore
 import QtQuick
 import QtQuick.Controls
@@ -565,7 +565,7 @@ FocusScope {
                 anchors.left: parent.left
                 anchors.leftMargin: Theme.spacingL
 
-                DankIcon {
+                HypeIcon {
                     name: browserIcon
                     size: Theme.iconSizeLarge
                     color: Theme.primary
@@ -587,7 +587,7 @@ FocusScope {
                 anchors.verticalCenter: parent.verticalCenter
                 spacing: Theme.spacingS
 
-                DankActionButton {
+                HypeActionButton {
                     circular: false
                     iconName: showHiddenFiles ? "visibility_off" : "visibility"
                     iconSize: Theme.iconSize - 4
@@ -595,7 +595,7 @@ FocusScope {
                     onClicked: showHiddenFiles = !showHiddenFiles
                 }
 
-                DankActionButton {
+                HypeActionButton {
                     circular: false
                     iconName: viewMode === "grid" ? "view_list" : "grid_view"
                     iconSize: Theme.iconSize - 4
@@ -603,7 +603,7 @@ FocusScope {
                     onClicked: viewMode = viewMode === "grid" ? "list" : "grid"
                 }
 
-                DankActionButton {
+                HypeActionButton {
                     circular: false
                     iconName: iconSizeIndex === 0 ? "photo_size_select_small" : iconSizeIndex === 1 ? "photo_size_select_large" : iconSizeIndex === 2 ? "photo_size_select_actual" : "zoom_in"
                     iconSize: Theme.iconSize - 4
@@ -612,7 +612,7 @@ FocusScope {
                     onClicked: iconSizeIndex = (iconSizeIndex + 1) % iconSizes.length
                 }
 
-                DankActionButton {
+                HypeActionButton {
                     circular: false
                     iconName: "info"
                     iconSize: Theme.iconSize - 4
@@ -620,7 +620,7 @@ FocusScope {
                     onClicked: root.showKeyboardHints = !root.showKeyboardHints
                 }
 
-                DankActionButton {
+                HypeActionButton {
                     visible: windowControls?.supported ?? false
                     circular: false
                     iconName: windowControls?.targetWindow?.maximized ? "fullscreen_exit" : "fullscreen"
@@ -630,7 +630,7 @@ FocusScope {
                         windowControls.tryToggleMaximize()
                 }
 
-                DankActionButton {
+                HypeActionButton {
                     circular: false
                     iconName: "close"
                     iconSize: Theme.iconSize - 4
@@ -722,7 +722,7 @@ FocusScope {
                             root.actualGridColumns = gridColumns;
                         }
 
-                        DankGridView {
+                        HypeGridView {
                             id: fileGrid
                             anchors.fill: parent
                             anchors.leftMargin: gridContainer.gridLeftMargin
@@ -740,11 +740,11 @@ FocusScope {
                                     positionViewAtIndex(currentIndex, GridView.Contain);
                             }
 
-                            ScrollBar.vertical: DankScrollbar {
+                            ScrollBar.vertical: HypeScrollbar {
                                 id: gridScrollbar
                             }
 
-                            ScrollBar.horizontal: DankScrollbar {
+                            ScrollBar.horizontal: HypeScrollbar {
                                 policy: ScrollBar.AlwaysOff
                             }
 
@@ -790,7 +790,7 @@ FocusScope {
                             }
                         }
 
-                        DankListView {
+                        HypeListView {
                             id: fileList
                             anchors.fill: parent
                             anchors.leftMargin: Theme.spacingM
@@ -806,7 +806,7 @@ FocusScope {
                                     positionViewAtIndex(currentIndex, ListView.Contain);
                             }
 
-                            ScrollBar.vertical: DankScrollbar {
+                            ScrollBar.vertical: HypeScrollbar {
                                 id: listScrollbar
                             }
 

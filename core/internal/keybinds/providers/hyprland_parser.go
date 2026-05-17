@@ -1,4 +1,4 @@
-package providers
+﻿package providers
 
 import (
 	"os"
@@ -38,18 +38,18 @@ type HyprlandParser struct {
 	readingLine        int
 	configDir          string
 	currentSource      string
-	dmsBindsExists     bool
-	dmsBindsIncluded   bool
+	hypeBindsExists     bool
+	hypeBindsIncluded   bool
 	includeCount       int
-	dmsIncludePos      int
-	bindsAfterDMS      int
-	dmsBindKeys        map[string]bool
+	hypeIncludePos      int
+	bindsAfterHYPE      int
+	hypeBindKeys        map[string]bool
 	configBindKeys     map[string]bool
 	conflictingConfigs map[string]*HyprlandKeyBinding
 	bindMap            map[string]*HyprlandKeyBinding
 	bindOrder          []string
 	processedFiles     map[string]bool
-	dmsProcessed       bool
+	hypeProcessed       bool
 }
 
 func NewHyprlandParser(configDir string) *HyprlandParser {
@@ -57,8 +57,8 @@ func NewHyprlandParser(configDir string) *HyprlandParser {
 		contentLines:       []string{},
 		readingLine:        0,
 		configDir:          configDir,
-		dmsIncludePos:      -1,
-		dmsBindKeys:        make(map[string]bool),
+		hypeIncludePos:      -1,
+		hypeBindKeys:        make(map[string]bool),
 		configBindKeys:     make(map[string]bool),
 		conflictingConfigs: make(map[string]*HyprlandKeyBinding),
 		bindMap:            make(map[string]*HyprlandKeyBinding),
@@ -289,41 +289,41 @@ func ParseHyprlandKeys(path string) (*HyprlandSection, error) {
 
 type HyprlandParseResult struct {
 	Section            *HyprlandSection
-	DMSBindsIncluded   bool
-	DMSStatus          *HyprlandDMSStatus
+	HYPEBindsIncluded   bool
+	HYPEStatus          *HyprlandHYPEStatus
 	ConflictingConfigs map[string]*HyprlandKeyBinding
 }
 
-type HyprlandDMSStatus struct {
+type HyprlandHYPEStatus struct {
 	Exists          bool
 	Included        bool
 	IncludePosition int
 	TotalIncludes   int
-	BindsAfterDMS   int
+	BindsAfterHYPE   int
 	Effective       bool
 	OverriddenBy    int
 	StatusMessage   string
 }
 
-func (p *HyprlandParser) buildDMSStatus() *HyprlandDMSStatus {
-	status := &HyprlandDMSStatus{
-		Exists:          p.dmsBindsExists,
-		Included:        p.dmsBindsIncluded,
-		IncludePosition: p.dmsIncludePos,
+func (p *HyprlandParser) buildHYPEStatus() *HyprlandHYPEStatus {
+	status := &HyprlandHYPEStatus{
+		Exists:          p.hypeBindsExists,
+		Included:        p.hypeBindsIncluded,
+		IncludePosition: p.hypeIncludePos,
 		TotalIncludes:   p.includeCount,
-		BindsAfterDMS:   p.bindsAfterDMS,
+		BindsAfterHYPE:   p.bindsAfterHYPE,
 	}
 
 	switch {
-	case !p.dmsBindsExists:
+	case !p.hypeBindsExists:
 		status.Effective = false
 		status.StatusMessage = "hype/binds.conf does not exist"
-	case !p.dmsBindsIncluded:
+	case !p.hypeBindsIncluded:
 		status.Effective = false
 		status.StatusMessage = "hype/binds.conf is not sourced in config"
-	case p.bindsAfterDMS > 0:
+	case p.bindsAfterHYPE > 0:
 		status.Effective = true
-		status.OverriddenBy = p.bindsAfterDMS
+		status.OverriddenBy = p.bindsAfterHYPE
 		status.StatusMessage = "Some HypeShell binds may be overridden by config binds"
 	default:
 		status.Effective = true
@@ -346,18 +346,18 @@ func (p *HyprlandParser) normalizeKey(key string) string {
 
 func isHyprlandShellBindsPath(path string) bool {
 	normalized := strings.ReplaceAll(path, "\\", "/")
-	return strings.Contains(normalized, "hype/binds.conf") || strings.Contains(normalized, "dms/binds.conf")
+	return strings.Contains(normalized, "hype/binds.conf") || strings.Contains(normalized, "hype/binds.conf")
 }
 
 func (p *HyprlandParser) addBind(kb *HyprlandKeyBinding) bool {
 	key := p.formatBindKey(kb)
 	normalizedKey := p.normalizeKey(key)
-	isDMSBind := isHyprlandShellBindsPath(kb.Source)
+	isHYPEBind := isHyprlandShellBindsPath(kb.Source)
 
-	if isDMSBind {
-		p.dmsBindKeys[normalizedKey] = true
-	} else if p.dmsBindKeys[normalizedKey] {
-		p.bindsAfterDMS++
+	if isHYPEBind {
+		p.hypeBindKeys[normalizedKey] = true
+	} else if p.hypeBindKeys[normalizedKey] {
+		p.bindsAfterHYPE++
 		p.conflictingConfigs[normalizedKey] = kb
 		p.configBindKeys[normalizedKey] = true
 		return false
@@ -372,19 +372,19 @@ func (p *HyprlandParser) addBind(kb *HyprlandKeyBinding) bool {
 	return true
 }
 
-func (p *HyprlandParser) ParseWithDMS() (*HyprlandSection, error) {
+func (p *HyprlandParser) ParseWithHYPE() (*HyprlandSection, error) {
 	expandedDir, err := utils.ExpandPath(p.configDir)
 	if err != nil {
 		return nil, err
 	}
 
-	dmsBindsPath := filepath.Join(expandedDir, "hype", "binds.conf")
-	legacyBindsPath := filepath.Join(expandedDir, "dms", "binds.conf")
-	if _, err := os.Stat(dmsBindsPath); err == nil {
-		p.dmsBindsExists = true
+	hypeBindsPath := filepath.Join(expandedDir, "hype", "binds.conf")
+	legacyBindsPath := filepath.Join(expandedDir, "hype", "binds.conf")
+	if _, err := os.Stat(hypeBindsPath); err == nil {
+		p.hypeBindsExists = true
 	} else if _, err := os.Stat(legacyBindsPath); err == nil {
-		dmsBindsPath = legacyBindsPath
-		p.dmsBindsExists = true
+		hypeBindsPath = legacyBindsPath
+		p.hypeBindsExists = true
 	}
 
 	mainConfig := filepath.Join(expandedDir, "hyprland.conf")
@@ -393,8 +393,8 @@ func (p *HyprlandParser) ParseWithDMS() (*HyprlandSection, error) {
 		return nil, err
 	}
 
-	if p.dmsBindsExists && !p.dmsProcessed {
-		p.parseDMSBindsDirectly(dmsBindsPath, section)
+	if p.hypeBindsExists && !p.hypeProcessed {
+		p.parseHYPEBindsDirectly(hypeBindsPath, section)
 	}
 
 	return section, nil
@@ -455,13 +455,13 @@ func (p *HyprlandParser) handleSource(line string, section *HyprlandSection, bas
 	}
 
 	sourcePath := strings.TrimSpace(parts[1])
-	isDMSSource := sourcePath == "hype/binds.conf" || strings.HasSuffix(sourcePath, "/hype/binds.conf") || sourcePath == "dms/binds.conf" || strings.HasSuffix(sourcePath, "/dms/binds.conf")
+	isHYPESource := sourcePath == "hype/binds.conf" || strings.HasSuffix(sourcePath, "/hype/binds.conf") || sourcePath == "hype/binds.conf" || strings.HasSuffix(sourcePath, "/hype/binds.conf")
 
 	p.includeCount++
-	if isDMSSource {
-		p.dmsBindsIncluded = true
-		p.dmsIncludePos = p.includeCount
-		p.dmsProcessed = true
+	if isHYPESource {
+		p.hypeBindsIncluded = true
+		p.hypeIncludePos = p.includeCount
+		p.hypeProcessed = true
 	}
 
 	fullPath := sourcePath
@@ -482,14 +482,14 @@ func (p *HyprlandParser) handleSource(line string, section *HyprlandSection, bas
 	section.Children = append(section.Children, *includedSection)
 }
 
-func (p *HyprlandParser) parseDMSBindsDirectly(dmsBindsPath string, section *HyprlandSection) {
-	data, err := os.ReadFile(dmsBindsPath)
+func (p *HyprlandParser) parseHYPEBindsDirectly(hypeBindsPath string, section *HyprlandSection) {
+	data, err := os.ReadFile(hypeBindsPath)
 	if err != nil {
 		return
 	}
 
 	prevSource := p.currentSource
-	p.currentSource = dmsBindsPath
+	p.currentSource = hypeBindsPath
 
 	lines := strings.Split(string(data), "\n")
 	for _, line := range lines {
@@ -502,14 +502,14 @@ func (p *HyprlandParser) parseDMSBindsDirectly(dmsBindsPath string, section *Hyp
 		if kb == nil {
 			continue
 		}
-		kb.Source = dmsBindsPath
+		kb.Source = hypeBindsPath
 		if p.addBind(kb) {
 			section.Keybinds = append(section.Keybinds, *kb)
 		}
 	}
 
 	p.currentSource = prevSource
-	p.dmsProcessed = true
+	p.hypeProcessed = true
 }
 
 func (p *HyprlandParser) parseBindLine(line string) *HyprlandKeyBinding {
@@ -620,17 +620,17 @@ func extractBindFlags(bindType string) string {
 	return bindType[4:] // Everything after "bind"
 }
 
-func ParseHyprlandKeysWithDMS(path string) (*HyprlandParseResult, error) {
+func ParseHyprlandKeysWithHYPE(path string) (*HyprlandParseResult, error) {
 	parser := NewHyprlandParser(path)
-	section, err := parser.ParseWithDMS()
+	section, err := parser.ParseWithHYPE()
 	if err != nil {
 		return nil, err
 	}
 
 	return &HyprlandParseResult{
 		Section:            section,
-		DMSBindsIncluded:   parser.dmsBindsIncluded,
-		DMSStatus:          parser.buildDMSStatus(),
+		HYPEBindsIncluded:   parser.hypeBindsIncluded,
+		HYPEStatus:          parser.buildHYPEStatus(),
 		ConflictingConfigs: parser.conflictingConfigs,
 	}, nil
 }

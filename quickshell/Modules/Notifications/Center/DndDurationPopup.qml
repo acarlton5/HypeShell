@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import Quickshell
 import Quickshell.Wayland
 import qs.Common
@@ -17,7 +17,7 @@ PanelWindow {
         blurRadius: Theme.cornerRadius
     }
 
-    WlrLayershell.namespace: "dms:dnd-duration-menu"
+    WlrLayershell.namespace: "hype:dnd-duration-menu"
     WlrLayershell.layer: WlrLayershell.Overlay
     WlrLayershell.exclusiveZone: -1
     WlrLayershell.keyboardFocus: WlrKeyboardFocus.None

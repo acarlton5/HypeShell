@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import qs.Common
 import qs.Services
 import qs.Widgets
@@ -28,7 +28,7 @@ Rectangle {
         DgopService.removeRef(["diskmounts"]);
     }
 
-    DankFlickable {
+    HypeFlickable {
         id: diskContent
         anchors.top: parent.top
         anchors.left: parent.left
@@ -53,7 +53,7 @@ Rectangle {
                     anchors.centerIn: parent
                     spacing: Theme.spacingM
 
-                    DankIcon {
+                    HypeIcon {
                         anchors.horizontalCenter: parent.horizontalCenter
                         name: DgopService.dgopAvailable ? "storage" : "error"
                         size: 32
@@ -93,7 +93,7 @@ Rectangle {
                             anchors.verticalCenter: parent.verticalCenter
                             spacing: 2
 
-                            DankIcon {
+                            HypeIcon {
                                 name: "storage"
                                 size: Theme.iconSize
                                 color: {
@@ -155,7 +155,7 @@ Rectangle {
                         }
                     }
 
-                    DankRipple {
+                    HypeRipple {
                         id: mountRipple
                         cornerRadius: parent.radius
                     }

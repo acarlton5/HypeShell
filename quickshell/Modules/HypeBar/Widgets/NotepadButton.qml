@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import Quickshell
 import Quickshell.Wayland
 import Quickshell.Hyprland
@@ -116,7 +116,7 @@ BasePill {
             implicitWidth: notepadIcon.width
             implicitHeight: root.widgetThickness - root.horizontalPadding * 2
 
-            DankIcon {
+            HypeIcon {
                 id: notepadIcon
 
                 anchors.centerIn: parent
@@ -157,7 +157,7 @@ BasePill {
             blurRadius: Theme.cornerRadius
         }
 
-        WlrLayershell.namespace: "dms:notepad-context-menu"
+        WlrLayershell.namespace: "hype:notepad-context-menu"
 
         property bool isVertical: false
         property string edge: "top"
@@ -302,7 +302,7 @@ BasePill {
                             anchors.rightMargin: Theme.spacingS
                             spacing: Theme.spacingS
 
-                            DankIcon {
+                            HypeIcon {
                                 anchors.verticalCenter: parent.verticalCenter
                                 name: "description"
                                 size: 16
@@ -344,7 +344,7 @@ BasePill {
                         anchors.rightMargin: Theme.spacingS
                         spacing: Theme.spacingS
 
-                        DankIcon {
+                        HypeIcon {
                             anchors.verticalCenter: parent.verticalCenter
                             name: "add"
                             size: 16

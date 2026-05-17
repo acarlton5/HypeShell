@@ -1,15 +1,15 @@
-import QtQuick
+﻿import QtQuick
 import Quickshell.Hyprland
 import qs.Common
 import qs.Modals.Common
 import qs.Services
 import qs.Widgets
 
-DankModal {
+HypeModal {
     id: root
     readonly property var log: Log.scoped("BluetoothPairingModal")
 
-    layerNamespace: "dms:bluetooth-pairing"
+    layerNamespace: "hype:bluetooth-pairing"
 
     HyprlandFocusGrab {
         windows: [root.contentWindow]
@@ -74,7 +74,7 @@ DankModal {
 
     onBackgroundClicked: () => {
         if (token) {
-            DMSService.bluetoothCancelPairing(token);
+            HYPEService.bluetoothCancelPairing(token);
         }
         close();
         token = "";
@@ -95,7 +95,7 @@ DankModal {
 
             Keys.onEscapePressed: event => {
                 if (token) {
-                    DMSService.bluetoothCancelPairing(token);
+                    HYPEService.bluetoothCancelPairing(token);
                 }
                 close();
                 token = "";
@@ -167,7 +167,7 @@ DankModal {
                         }
                     }
 
-                    DankTextField {
+                    HypeTextField {
                         id: pinInputField
 
                         anchors.fill: parent
@@ -202,7 +202,7 @@ DankModal {
                         }
                     }
 
-                    DankTextField {
+                    HypeTextField {
                         id: passkeyInputField
 
                         anchors.fill: parent
@@ -284,7 +284,7 @@ DankModal {
                                 cursorShape: Qt.PointingHandCursor
                                 onClicked: () => {
                                     if (token) {
-                                        DMSService.bluetoothCancelPairing(token);
+                                        HYPEService.bluetoothCancelPairing(token);
                                     }
                                     close();
                                     token = "";
@@ -353,7 +353,7 @@ DankModal {
                 }
             }
 
-            DankActionButton {
+            HypeActionButton {
                 anchors.top: parent.top
                 anchors.right: parent.right
                 anchors.topMargin: Theme.spacingM
@@ -363,7 +363,7 @@ DankModal {
                 iconColor: Theme.surfaceText
                 onClicked: () => {
                     if (token) {
-                        DMSService.bluetoothCancelPairing(token);
+                        HYPEService.bluetoothCancelPairing(token);
                     }
                     close();
                     token = "";
@@ -396,7 +396,7 @@ DankModal {
             break;
         }
 
-        DMSService.bluetoothSubmitPairing(token, secrets, true, response => {
+        HYPEService.bluetoothSubmitPairing(token, secrets, true, response => {
             if (response.error) {
                 ToastService.showError(I18n.tr("Pairing failed"), response.error);
             }

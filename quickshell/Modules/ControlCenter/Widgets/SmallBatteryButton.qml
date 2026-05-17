@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import qs.Common
 import qs.Services
 import qs.Widgets
@@ -62,7 +62,7 @@ Rectangle {
         anchors.centerIn: parent
         spacing: 4
 
-        DankIcon {
+        HypeIcon {
             name: BatteryService.getBatteryIcon()
             size: parent.parent.width * 0.25
             color: {
@@ -89,7 +89,7 @@ Rectangle {
         }
     }
 
-    DankRipple {
+    HypeRipple {
         id: ripple
         cornerRadius: root.radius
     }

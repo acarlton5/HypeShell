@@ -1,4 +1,4 @@
-pragma ComponentBehavior: Bound
+﻿pragma ComponentBehavior: Bound
 
 import QtQuick
 import qs.Common
@@ -30,7 +30,7 @@ StyledRect {
         anchors.rightMargin: Theme.spacingM
         spacing: Theme.spacingM
 
-        DankIcon {
+        HypeIcon {
             name: "frame_source"
             size: Theme.iconSize
             color: Theme.primary
@@ -61,7 +61,7 @@ StyledRect {
             }
         }
 
-        DankButton {
+        HypeButton {
             id: openButton
             anchors.verticalCenter: parent.verticalCenter
             text: I18n.tr("Open Frame")

@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import QtQuick.Controls
 import Quickshell
 import qs.Common
@@ -98,7 +98,7 @@ FloatingWindow {
             return;
         setPluginInstalling(pluginName, true);
         ToastService.showInfo(I18n.tr("Installing: %1", "installation progress").arg(pluginName));
-        DMSService.install(pluginName, response => {
+        HYPEService.install(pluginName, response => {
             setPluginInstalling(pluginName, false);
             if (response.error) {
                 ToastService.showError(I18n.tr("Install failed: %1", "installation error").arg(response.error));
@@ -123,9 +123,9 @@ FloatingWindow {
 
     function refreshPlugins() {
         isLoading = true;
-        DMSService.listPlugins();
-        if (DMSService.apiVersion >= 8)
-            DMSService.listInstalled();
+        HYPEService.listPlugins();
+        if (HYPEService.apiVersion >= 8)
+            HYPEService.listInstalled();
     }
 
     function checkPendingInstall() {
@@ -190,7 +190,7 @@ FloatingWindow {
     }
 
     Connections {
-        target: DMSService
+        target: HYPEService
 
         function onPluginsListReceived(plugins) {
             root.isLoading = false;
@@ -263,7 +263,7 @@ FloatingWindow {
                     onDoubleClicked: windowControls.tryToggleMaximize()
                 }
 
-                DankIcon {
+                HypeIcon {
                     id: headerIcon
                     name: "store"
                     size: Theme.iconSize
@@ -288,7 +288,7 @@ FloatingWindow {
                     anchors.verticalCenter: parent.verticalCenter
                     spacing: Theme.spacingXS
 
-                    DankButton {
+                    HypeButton {
                         id: thirdPartyButton
                         text: SessionData.showThirdPartyPlugins ? I18n.tr("Hide 3rd Party") : I18n.tr("Show 3rd Party")
                         iconName: SessionData.showThirdPartyPlugins ? "visibility_off" : "visibility"
@@ -305,7 +305,7 @@ FloatingWindow {
                         }
                     }
 
-                    DankActionButton {
+                    HypeActionButton {
                         id: refreshButton
                         iconName: "refresh"
                         iconSize: 18
@@ -314,7 +314,7 @@ FloatingWindow {
                         onClicked: root.refreshPlugins()
                     }
 
-                    DankActionButton {
+                    HypeActionButton {
                         visible: windowControls.canMaximize
                         iconName: root.maximized ? "fullscreen_exit" : "fullscreen"
                         iconSize: Theme.iconSize - 2
@@ -322,7 +322,7 @@ FloatingWindow {
                         onClicked: windowControls.tryToggleMaximize()
                     }
 
-                    DankActionButton {
+                    HypeActionButton {
                         id: closeButton
                         iconName: "close"
                         iconSize: Theme.iconSize - 2
@@ -344,7 +344,7 @@ FloatingWindow {
                 wrapMode: Text.WordWrap
             }
 
-            DankTextField {
+            HypeTextField {
                 id: browserSearchField
                 anchors.left: parent.left
                 anchors.right: parent.right
@@ -390,7 +390,7 @@ FloatingWindow {
                         anchors.centerIn: parent
                         spacing: Theme.spacingM
 
-                        DankIcon {
+                        HypeIcon {
                             name: "sync"
                             size: 48
                             color: Theme.primary
@@ -415,7 +415,7 @@ FloatingWindow {
                     }
                 }
 
-                DankListView {
+                HypeListView {
                     id: pluginBrowserList
 
                     anchors.fill: parent
@@ -432,7 +432,7 @@ FloatingWindow {
                     add: null
                     displaced: null
 
-                    ScrollBar.vertical: DankScrollbar {
+                    ScrollBar.vertical: HypeScrollbar {
                         id: browserScrollbar
                     }
 
@@ -445,7 +445,7 @@ FloatingWindow {
                         property bool isInstalling: root.isPluginInstalling(modelData.name)
                         property bool isFirstParty: modelData.firstParty || false
                         property bool isFeatured: modelData.featured || false
-                        property bool isCompatible: PluginService.checkPluginCompatibility(modelData.requires_dms)
+                        property bool isCompatible: PluginService.checkPluginCompatibility(modelData.requires_hype)
                         color: isSelected ? Theme.primarySelected : Theme.withAlpha(Theme.surfaceVariant, 0.3)
                         border.color: isSelected ? Theme.primary : Theme.withAlpha(Theme.outline, 0.2)
                         border.width: isSelected ? 2 : 1
@@ -460,7 +460,7 @@ FloatingWindow {
                                 width: parent.width
                                 spacing: Theme.spacingM
 
-                                DankIcon {
+                                HypeIcon {
                                     name: modelData.icon || "extension"
                                     size: Theme.iconSize
                                     color: Theme.primary
@@ -498,7 +498,7 @@ FloatingWindow {
                                                 anchors.centerIn: parent
                                                 spacing: 2
 
-                                                DankIcon {
+                                                HypeIcon {
                                                     name: "star"
                                                     size: 10
                                                     color: Theme.secondary
@@ -625,7 +625,7 @@ FloatingWindow {
                                         anchors.centerIn: parent
                                         spacing: Theme.spacingXS
 
-                                        DankIcon {
+                                        HypeIcon {
                                             id: pluginInstallButtonIcon
                                             name: {
                                                 switch (installButton.buttonState) {
@@ -671,7 +671,7 @@ FloatingWindow {
                                                 case "installed":
                                                     return I18n.tr("Installed", "installed status");
                                                 case "incompatible":
-                                                    return I18n.tr("Requires %1", "version requirement").arg(modelData.requires_dms);
+                                                    return I18n.tr("Requires %1", "version requirement").arg(modelData.requires_hype);
                                                 default:
                                                     return I18n.tr("Install", "install action button");
                                                 }
@@ -832,7 +832,7 @@ FloatingWindow {
                         width: parent.width
                         spacing: Theme.spacingM
 
-                        DankIcon {
+                        HypeIcon {
                             name: "warning"
                             size: Theme.iconSize
                             color: Theme.warning
@@ -852,7 +852,7 @@ FloatingWindow {
                             height: 1
                         }
 
-                        DankActionButton {
+                        HypeActionButton {
                             id: closeConfirmBtn
                             iconName: "close"
                             iconSize: Theme.iconSize - 2
@@ -902,13 +902,13 @@ FloatingWindow {
                         anchors.right: parent.right
                         spacing: Theme.spacingM
 
-                        DankButton {
+                        HypeButton {
                             text: I18n.tr("Cancel")
                             iconName: "close"
                             onClicked: thirdPartyConfirmModal.hide()
                         }
 
-                        DankButton {
+                        HypeButton {
                             text: I18n.tr("I Understand")
                             iconName: "check"
                             onClicked: {

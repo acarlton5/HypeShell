@@ -1,11 +1,11 @@
-import QtQuick
+﻿import QtQuick
 import QtQuick.Effects
 import qs.Common
 import qs.Services
 import qs.Widgets
 import Quickshell.Services.Mpris
 
-DankOSD {
+HypeOSD {
     id: root
 
     readonly property bool useVertical: isVerticalLayout
@@ -234,7 +234,7 @@ DankOSD {
                 x: parent.gap
                 anchors.verticalCenter: parent.verticalCenter
 
-                DankIcon {
+                HypeIcon {
                     anchors.centerIn: parent
                     name: root._displayIcon
                     size: Theme.iconSize
@@ -304,7 +304,7 @@ DankOSD {
                 anchors.centerIn: parent
                 y: gap
 
-                DankIcon {
+                HypeIcon {
                     anchors.centerIn: parent
                     name: root._displayIcon
                     size: Theme.iconSize

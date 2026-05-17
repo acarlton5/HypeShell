@@ -1,4 +1,4 @@
-package greeter
+﻿package greeter
 
 import (
 	"bufio"
@@ -29,16 +29,16 @@ const appArmorProfileDest = "/etc/apparmor.d/usr.bin.hype-greeter"
 
 const GreeterCacheDir = "/var/cache/hype-greeter"
 
-func DetectDMSPath() (string, error) {
-	return config.LocateDMSConfig()
+func DetectHYPEPath() (string, error) {
+	return config.LocateHYPEConfig()
 }
 
-func findGreeterWrapper(dmsPath string) (string, error) {
+func findGreeterWrapper(hypePath string) (string, error) {
 	candidates := []string{}
-	if dmsPath != "" {
+	if hypePath != "" {
 		candidates = append(candidates,
-			filepath.Join(dmsPath, "Modules", "Greetd", "assets", "hype-greeter"),
-			filepath.Join(dmsPath, "quickshell", "Modules", "Greetd", "assets", "hype-greeter"),
+			filepath.Join(hypePath, "Modules", "Greetd", "assets", "hype-greeter"),
+			filepath.Join(hypePath, "quickshell", "Modules", "Greetd", "assets", "hype-greeter"),
 		)
 	}
 	candidates = append(candidates,
@@ -52,10 +52,10 @@ func findGreeterWrapper(dmsPath string) (string, error) {
 			return candidate, nil
 		}
 	}
-	if dmsPath == "" {
+	if hypePath == "" {
 		return "", fmt.Errorf("hype-greeter wrapper not found")
 	}
-	return "", fmt.Errorf("hype-greeter wrapper not found near %s", dmsPath)
+	return "", fmt.Errorf("hype-greeter wrapper not found near %s", hypePath)
 }
 
 // IsNixOS returns true when running on NixOS, which manages PAM configs through
@@ -390,7 +390,7 @@ func IsGreeterPackaged() bool {
 
 // HasLegacyLocalGreeterWrapper returns true when a manually installed wrapper exists.
 func HasLegacyLocalGreeterWrapper() bool {
-	for _, path := range []string{"/usr/local/bin/dms-greeter", "/usr/bin/dms-greeter"} {
+	for _, path := range []string{"/usr/local/bin/hype-greeter", "/usr/bin/hype-greeter"} {
 		info, err := os.Stat(path)
 		if err == nil && !info.IsDir() {
 			return true
@@ -406,15 +406,15 @@ func TryInstallGreeterPackage(logFunc func(string), sudoPassword string) bool {
 }
 
 // CopyGreeterFiles installs the hype-greeter wrapper and sets up cache directory
-func CopyGreeterFiles(dmsPath, compositor string, logFunc func(string), sudoPassword string) error {
+func CopyGreeterFiles(hypePath, compositor string, logFunc func(string), sudoPassword string) error {
 	if IsGreeterPackaged() {
 		logFunc("ÃƒÂ¢Ã…â€œÃ¢â‚¬Å“ hype-greeter package already installed")
 	} else {
-		if dmsPath == "" {
+		if hypePath == "" {
 			return fmt.Errorf("HypeShell path is required for manual hype-greeter wrapper installs")
 		}
 
-		wrapperSrc, err := findGreeterWrapper(dmsPath)
+		wrapperSrc, err := findGreeterWrapper(hypePath)
 		if err != nil {
 			return err
 		}
@@ -442,7 +442,7 @@ func CopyGreeterFiles(dmsPath, compositor string, logFunc func(string), sudoPass
 		}
 		logFunc(fmt.Sprintf("Installed hype-greeter wrapper at %s", compatWrapperDst))
 
-		_ = privesc.Run(context.Background(), sudoPassword, "rm", "-f", "/usr/local/bin/dms-greeter", "/usr/bin/dms-greeter")
+		_ = privesc.Run(context.Background(), sudoPassword, "rm", "-f", "/usr/local/bin/hype-greeter", "/usr/bin/hype-greeter")
 		osInfo, err := distros.GetOSInfo()
 		if err == nil {
 			if config, exists := distros.Registry[osInfo.Distribution.ID]; exists && (config.Family == distros.FamilyFedora || config.Family == distros.FamilySUSE) {
@@ -591,7 +591,7 @@ func InstallAppArmorProfile(logFunc func(string), sudoPassword string) error {
 		return fmt.Errorf("failed to create /etc/apparmor.d: %w", err)
 	}
 
-	tmp, err := os.CreateTemp("", "dms-apparmor-*")
+	tmp, err := os.CreateTemp("", "hype-apparmor-*")
 	if err != nil {
 		return fmt.Errorf("failed to create temp file for AppArmor profile: %w", err)
 	}
@@ -818,7 +818,7 @@ func RemediateStaleAppArmor(logFunc func(string), sudoPassword string) {
 	_ = UninstallAppArmorProfile(logFunc, sudoPassword)
 }
 
-func SetupDMSGroup(logFunc func(string), sudoPassword string) error {
+func SetupHYPEGroup(logFunc func(string), sudoPassword string) error {
 	homeDir, err := os.UserHomeDir()
 	if err != nil {
 		return fmt.Errorf("failed to get user home directory: %w", err)
@@ -941,7 +941,7 @@ type greeterThemeSyncState struct {
 }
 
 func defaultGreeterColorsSource(homeDir string) string {
-	return filepath.Join(homeDir, ".cache", "HypeShell", "dms-colors.json")
+	return filepath.Join(homeDir, ".cache", "HypeShell", "hype-colors.json")
 }
 
 func greeterOverrideColorsStateDir(homeDir string) string {
@@ -949,7 +949,7 @@ func greeterOverrideColorsStateDir(homeDir string) string {
 }
 
 func greeterOverrideColorsSource(homeDir string) string {
-	return filepath.Join(greeterOverrideColorsStateDir(homeDir), "dms-colors.json")
+	return filepath.Join(greeterOverrideColorsStateDir(homeDir), "hype-colors.json")
 }
 
 func readOptionalJSONFile(path string, dst any) error {
@@ -1055,7 +1055,7 @@ func ensureGreeterSyncSourceFile(path string) error {
 	return nil
 }
 
-func syncGreeterDynamicOverrideColors(dmsPath, homeDir string, state greeterThemeSyncState, logFunc func(string)) error {
+func syncGreeterDynamicOverrideColors(hypePath, homeDir string, state greeterThemeSyncState, logFunc func(string)) error {
 	if !state.UsesDynamicWallpaperOverride {
 		return nil
 	}
@@ -1075,7 +1075,7 @@ func syncGreeterDynamicOverrideColors(dmsPath, homeDir string, state greeterThem
 
 	opts := matugen.Options{
 		StateDir:         greeterOverrideColorsStateDir(homeDir),
-		ShellDir:         dmsPath,
+		ShellDir:         hypePath,
 		ConfigDir:        filepath.Join(homeDir, ".config"),
 		Kind:             "image",
 		Value:            state.ResolvedGreeterWallpaperPath,
@@ -1124,7 +1124,7 @@ func syncGreeterColorSource(homeDir, cacheDir string, state greeterThemeSyncStat
 	return nil
 }
 
-func SyncDMSConfigs(dmsPath, compositor string, logFunc func(string), sudoPassword string) error {
+func SyncHYPEConfigs(hypePath, compositor string, logFunc func(string), sudoPassword string) error {
 	homeDir, err := os.UserHomeDir()
 	if err != nil {
 		return fmt.Errorf("failed to get user home directory: %w", err)
@@ -1177,7 +1177,7 @@ func SyncDMSConfigs(dmsPath, compositor string, logFunc func(string), sudoPasswo
 		return fmt.Errorf("failed to resolve greeter color source: %w", err)
 	}
 
-	if err := syncGreeterDynamicOverrideColors(dmsPath, homeDir, state, logFunc); err != nil {
+	if err := syncGreeterDynamicOverrideColors(hypePath, homeDir, state, logFunc); err != nil {
 		return err
 	}
 
@@ -1299,29 +1299,29 @@ func syncNiriGreeterConfig(logFunc func(string), sudoPassword string) error {
 		return fmt.Errorf("failed to set greetd niri directory permissions: %w", err)
 	}
 
-	dmsTemp, err := os.CreateTemp("", "hype-greeter-niri-hype-*.kdl")
+	hypeTemp, err := os.CreateTemp("", "hype-greeter-niri-hype-*.kdl")
 	if err != nil {
 		return fmt.Errorf("failed to create temp file: %w", err)
 	}
-	defer os.Remove(dmsTemp.Name())
+	defer os.Remove(hypeTemp.Name())
 
-	if _, err := dmsTemp.WriteString(content); err != nil {
-		_ = dmsTemp.Close()
+	if _, err := hypeTemp.WriteString(content); err != nil {
+		_ = hypeTemp.Close()
 		return fmt.Errorf("failed to write temp niri config: %w", err)
 	}
-	if err := dmsTemp.Close(); err != nil {
+	if err := hypeTemp.Close(); err != nil {
 		return fmt.Errorf("failed to close temp niri config: %w", err)
 	}
 
-	dmsPath := filepath.Join(greeterDir, "dms.kdl")
-	if err := backupFileIfExists(sudoPassword, dmsPath, ".backup"); err != nil {
-		return fmt.Errorf("failed to backup %s: %w", dmsPath, err)
+	hypePath := filepath.Join(greeterDir, "hype.kdl")
+	if err := backupFileIfExists(sudoPassword, hypePath, ".backup"); err != nil {
+		return fmt.Errorf("failed to backup %s: %w", hypePath, err)
 	}
-	if err := privesc.Run(context.Background(), sudoPassword, "install", "-o", "root", "-g", greeterGroup, "-m", "0644", dmsTemp.Name(), dmsPath); err != nil {
-		return fmt.Errorf("failed to install greetd niri dms config: %w", err)
+	if err := privesc.Run(context.Background(), sudoPassword, "install", "-o", "root", "-g", greeterGroup, "-m", "0644", hypeTemp.Name(), hypePath); err != nil {
+		return fmt.Errorf("failed to install greetd niri hype config: %w", err)
 	}
 
-	mainContent := fmt.Sprintf("%s\ninclude \"%s\"\n", config.NiriGreeterConfig, dmsPath)
+	mainContent := fmt.Sprintf("%s\ninclude \"%s\"\n", config.NiriGreeterConfig, hypePath)
 	mainTemp, err := os.CreateTemp("", "hype-greeter-niri-main-*.kdl")
 	if err != nil {
 		return fmt.Errorf("failed to create temp file: %w", err)
@@ -1348,7 +1348,7 @@ func syncNiriGreeterConfig(logFunc func(string), sudoPassword string) error {
 		logFunc(fmt.Sprintf("ÃƒÂ¢Ã…Â¡Ã‚Â  Warning: Failed to update greetd config for niri: %v", err))
 	}
 
-	logFunc(fmt.Sprintf("ÃƒÂ¢Ã…â€œÃ¢â‚¬Å“ Synced niri greeter config (%d input, %d output, %d cursor, %d debug) to %s", extractor.inputCount, extractor.outputCount, extractor.cursorCount, extractor.debugCount, dmsPath))
+	logFunc(fmt.Sprintf("ÃƒÂ¢Ã…â€œÃ¢â‚¬Å“ Synced niri greeter config (%d input, %d output, %d cursor, %d debug) to %s", extractor.inputCount, extractor.outputCount, extractor.cursorCount, extractor.debugCount, hypePath))
 	return nil
 }
 
@@ -1620,7 +1620,7 @@ func (s *niriGreeterSync) render() string {
 	return builder.String()
 }
 
-func ConfigureGreetd(dmsPath, compositor string, logFunc func(string), sudoPassword string) error {
+func ConfigureGreetd(hypePath, compositor string, logFunc func(string), sudoPassword string) error {
 	configPath := "/etc/greetd/config.toml"
 
 	backupPath := fmt.Sprintf("%s.backup-%s", configPath, time.Now().Format("20060102-150405"))
@@ -1650,8 +1650,8 @@ vt = 1
 
 	compositorLower := strings.ToLower(compositor)
 	commandValue := fmt.Sprintf("%s --command %s --cache-dir %s", wrapperCmd, compositorLower, GreeterCacheDir)
-	if dmsPath != "" {
-		commandValue = fmt.Sprintf("%s -p %s", commandValue, dmsPath)
+	if hypePath != "" {
+		commandValue = fmt.Sprintf("%s -p %s", commandValue, hypePath)
 	}
 
 	commandLine := fmt.Sprintf(`command = "%s"`, commandValue)
@@ -1819,39 +1819,39 @@ func AutoSetupGreeter(compositor, sudoPassword string, logFunc func(string)) err
 		return fmt.Errorf("greetd install failed: %w", err)
 	}
 
-	dmsPath := ""
+	hypePath := ""
 	if !IsGreeterPackaged() {
-		detected, err := DetectDMSPath()
+		detected, err := DetectHYPEPath()
 		if err != nil {
 			return fmt.Errorf("HypeShell installation not found: %w", err)
 		}
-		dmsPath = detected
-		logFunc(fmt.Sprintf("ÃƒÂ¢Ã…â€œÃ¢â‚¬Å“ Found HypeShell at: %s", dmsPath))
+		hypePath = detected
+		logFunc(fmt.Sprintf("ÃƒÂ¢Ã…â€œÃ¢â‚¬Å“ Found HypeShell at: %s", hypePath))
 	} else {
 		logFunc("ÃƒÂ¢Ã…â€œÃ¢â‚¬Å“ Using packaged hype-greeter")
 	}
 
 	logFunc("Setting up HypeShell greeter group and permissions...")
-	if err := SetupDMSGroup(logFunc, sudoPassword); err != nil {
+	if err := SetupHYPEGroup(logFunc, sudoPassword); err != nil {
 		logFunc(fmt.Sprintf("ÃƒÂ¢Ã…Â¡Ã‚Â  Warning: group/permissions setup error: %v", err))
 	}
 
 	logFunc("Copying greeter files...")
-	if err := CopyGreeterFiles(dmsPath, compositor, logFunc, sudoPassword); err != nil {
+	if err := CopyGreeterFiles(hypePath, compositor, logFunc, sudoPassword); err != nil {
 		return fmt.Errorf("failed to copy greeter files: %w", err)
 	}
 
 	logFunc("Configuring greetd...")
 	greeterPathForConfig := ""
 	if !IsGreeterPackaged() {
-		greeterPathForConfig = dmsPath
+		greeterPathForConfig = hypePath
 	}
 	if err := ConfigureGreetd(greeterPathForConfig, compositor, logFunc, sudoPassword); err != nil {
 		return fmt.Errorf("failed to configure greetd: %w", err)
 	}
 
 	logFunc("Synchronizing HypeShell configurations...")
-	if err := SyncDMSConfigs(dmsPath, compositor, logFunc, sudoPassword); err != nil {
+	if err := SyncHYPEConfigs(hypePath, compositor, logFunc, sudoPassword); err != nil {
 		logFunc(fmt.Sprintf("ÃƒÂ¢Ã…Â¡Ã‚Â  Warning: config sync error: %v", err))
 	}
 

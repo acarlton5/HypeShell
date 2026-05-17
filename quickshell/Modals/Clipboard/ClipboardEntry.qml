@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import qs.Common
 import qs.Services
 import qs.Widgets
@@ -30,7 +30,7 @@ Rectangle {
         return mouseArea.containsMouse ? Theme.primaryHoverLight : Theme.withAlpha(Theme.surfaceContainerHigh, Theme.popupTransparency);
     }
 
-    DankRipple {
+    HypeRipple {
         id: rippleLayer
         rippleColor: Theme.surfaceText
         cornerRadius: root.radius
@@ -62,7 +62,7 @@ Rectangle {
         anchors.verticalCenter: parent.verticalCenter
         spacing: Theme.spacingXS
 
-        DankActionButton {
+        HypeActionButton {
             iconName: "push_pin"
             iconSize: Theme.iconSize - 6
             iconColor: (entry.pinned || hasPinnedDuplicate) ? Theme.primary : Theme.surfaceText
@@ -70,7 +70,7 @@ Rectangle {
             onClicked: entry.pinned ? unpinRequested() : pinRequested()
         }
 
-        DankActionButton {
+        HypeActionButton {
             iconName: "close"
             iconSize: Theme.iconSize - 6
             iconColor: Theme.surfaceText

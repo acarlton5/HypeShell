@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import QtQuick.Effects
 import Quickshell
 import Quickshell.Widgets
@@ -86,7 +86,7 @@ Item {
         }
     }
 
-    readonly property bool useExtWorkspace: DMSService.forceExtWorkspace || (!CompositorService.isNiri && !CompositorService.isHyprland && !CompositorService.isDwl && !CompositorService.isSway && !CompositorService.isScroll && !CompositorService.isMiracle && ExtWorkspaceService.extWorkspaceAvailable)
+    readonly property bool useExtWorkspace: HYPEService.forceExtWorkspace || (!CompositorService.isNiri && !CompositorService.isHyprland && !CompositorService.isDwl && !CompositorService.isSway && !CompositorService.isScroll && !CompositorService.isMiracle && ExtWorkspaceService.extWorkspaceAvailable)
 
     Connections {
         target: DesktopEntries
@@ -327,7 +327,7 @@ Item {
             const key = isActiveWs || !SettingsData.groupWorkspaceApps ? `${moddedId}_${i}` : moddedId;
 
             if (!byApp[key]) {
-                const isQuickshell = keyBase === "org.quickshell" || keyBase === "com.danklinux.dms";
+                const isQuickshell = keyBase === "org.quickshell" || keyBase === "com.hypelinux.hype";
                 const isSteamApp = Paths.isSteamApp(moddedId);
                 const desktopEntry = DesktopEntries.heuristicLookup(moddedId);
                 const icon = Paths.getAppIcon(moddedId, desktopEntry);
@@ -1538,7 +1538,7 @@ Item {
                                         width: wsIcon.width
                                         height: root.appIconSize
 
-                                        DankIcon {
+                                        HypeIcon {
                                             id: wsIcon
                                             anchors.verticalCenter: parent.verticalCenter
                                             name: loadedIconData?.value ?? ""
@@ -1625,7 +1625,7 @@ Item {
                                                 border.color: appBorderColor
                                                 opacity: appOpacity
 
-                                                DankIcon {
+                                                HypeIcon {
                                                     anchors.centerIn: parent
                                                     size: parent.width * 0.7
                                                     name: "sports_esports"
@@ -1654,7 +1654,7 @@ Item {
                                                 visible: modelData.isSteamApp && modelData.icon
                                             }
 
-                                            DankIcon {
+                                            HypeIcon {
                                                 anchors.centerIn: parent
                                                 size: root.appIconSize
                                                 name: "sports_esports"
@@ -1720,7 +1720,7 @@ Item {
                                     spacing: 4
                                     visible: loadedIcons.length > 0 || SettingsData.showWorkspaceIndex || SettingsData.showWorkspaceName || loadedHasIcon
 
-                                    DankIcon {
+                                    HypeIcon {
                                         visible: loadedHasIcon && loadedIconData?.type === "icon"
                                         anchors.horizontalCenter: parent.horizontalCenter
                                         name: loadedIconData?.value ?? ""
@@ -1794,7 +1794,7 @@ Item {
                                                 border.color: appBorderColor
                                                 opacity: appOpacity
 
-                                                DankIcon {
+                                                HypeIcon {
                                                     anchors.centerIn: parent
                                                     size: parent.width * 0.7
                                                     name: "sports_esports"
@@ -1823,7 +1823,7 @@ Item {
                                                 visible: modelData.isSteamApp && modelData.icon
                                             }
 
-                                            DankIcon {
+                                            HypeIcon {
                                                 anchors.centerIn: parent
                                                 size: root.appIconSize
                                                 name: "sports_esports"
@@ -1952,8 +1952,8 @@ Item {
     }
 
     Component.onCompleted: {
-        if (useExtWorkspace && !DMSService.activeSubscriptions.includes("extworkspace")) {
-            DMSService.addSubscription("extworkspace");
+        if (useExtWorkspace && !HYPEService.activeSubscriptions.includes("extworkspace")) {
+            HYPEService.addSubscription("extworkspace");
         }
         _updateBlurRegistration();
     }

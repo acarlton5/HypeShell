@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import qs.Common
 import qs.Modules.Plugins
 import qs.Services
@@ -7,12 +7,12 @@ import qs.Widgets
 BasePill {
     id: root
 
-    opacity: DMSService.capsLockState ? 1 : 0
+    opacity: HYPEService.capsLockState ? 1 : 0
 
     states: [
         State {
             name: "hidden_horizontal"
-            when: !DMSService.capsLockState && !isVerticalOrientation
+            when: !HYPEService.capsLockState && !isVerticalOrientation
             PropertyChanges {
                 target: root
                 width: 0
@@ -20,7 +20,7 @@ BasePill {
         },
         State {
             name: "hidden_vertical"
-            when: !DMSService.capsLockState && isVerticalOrientation
+            when: !HYPEService.capsLockState && isVerticalOrientation
             PropertyChanges {
                 target: root
                 height: 0
@@ -50,7 +50,7 @@ BasePill {
             implicitWidth: icon.width
             implicitHeight: root.widgetThickness - root.horizontalPadding * 2
 
-            DankIcon {
+            HypeIcon {
                 id: icon
                 anchors.centerIn: parent
                 name: "shift_lock"

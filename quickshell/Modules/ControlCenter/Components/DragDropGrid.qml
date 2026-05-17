@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import qs.Common
 import qs.Services
 import qs.Modules.ControlCenter.Widgets
@@ -284,7 +284,7 @@ Column {
             width: parent.width
             height: 60
             primaryMessage: {
-                if (!DMSService.dmsAvailable) {
+                if (!HYPEService.hypeAvailable) {
                     return I18n.tr("HypeShell socket not available");
                 }
                 return I18n.tr("NM not supported");

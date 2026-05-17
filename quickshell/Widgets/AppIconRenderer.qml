@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import Quickshell
 import Quickshell.Widgets
 import qs.Common
@@ -54,7 +54,7 @@ Item {
 
     visible: iconValue !== undefined && iconValue !== ""
 
-    DankIcon {
+    HypeIcon {
         anchors.centerIn: parent
         name: root.materialName
         size: root.iconSize - root.materialIconSizeAdjustment
@@ -70,7 +70,7 @@ Item {
         visible: root.isUnicode
     }
 
-    DankSVGIcon {
+    HypeSVGIcon {
         anchors.centerIn: parent
         source: root.svgSource
         size: root.iconSize

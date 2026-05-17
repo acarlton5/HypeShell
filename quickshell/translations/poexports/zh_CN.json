@@ -1,4 +1,4 @@
-{
+﻿{
   "%1 Animation Speed": {
     "%1 Animation Speed": "%1动画速度"
   },
@@ -1152,7 +1152,7 @@
     "Choose the border accent color": "选择边框强调色"
   },
   "Choose the logo displayed on the launcher button in Hype Bar": {
-    "Choose the logo displayed on the launcher button in Hype Bar": "选择在 DankBar 启动器按钮上显示的 Logo"
+    "Choose the logo displayed on the launcher button in Hype Bar": "选择在 HypeBar 启动器按钮上显示的 Logo"
   },
   "Choose where notification popups appear on screen": {
     "Choose where notification popups appear on screen": "设置通知弹窗的出现位置"
@@ -1757,8 +1757,8 @@
   "HypeShell Shortcuts": {
     "HypeShell Shortcuts": "HypeShell快捷键"
   },
-  "HypeShell Greeter needs: greetd, dms-greeter. Fingerprint: fprintd, pam_fprintd. Security keys: pam_u2f. Add your user to the greeter group. Authentication changes apply automatically and may open a terminal when sudo authentication is required.": {
-    "HypeShell Greeter needs: greetd, dms-greeter. Fingerprint: fprintd, pam_fprintd. Security keys: pam_u2f. Add your user to the greeter group. Authentication changes apply automatically and may open a terminal when sudo authentication is required.": "HypeShell欢迎界面需要：greetd、dms-greeter。指纹：fprintd、pam_fprintd。安全钥匙：pam_u2f。把你的用户添加到greeter组。认证变更会自动应用，当需要sudo认证时，可能会打开终端。"
+  "HypeShell Greeter needs: greetd, hype-greeter. Fingerprint: fprintd, pam_fprintd. Security keys: pam_u2f. Add your user to the greeter group. Authentication changes apply automatically and may open a terminal when sudo authentication is required.": {
+    "HypeShell Greeter needs: greetd, hype-greeter. Fingerprint: fprintd, pam_fprintd. Security keys: pam_u2f. Add your user to the greeter group. Authentication changes apply automatically and may open a terminal when sudo authentication is required.": "HypeShell欢迎界面需要：greetd、hype-greeter。指纹：fprintd、pam_fprintd。安全钥匙：pam_u2f。把你的用户添加到greeter组。认证变更会自动应用，当需要sudo认证时，可能会打开终端。"
   },
   "HypeShell out of date": {
     "HypeShell out of date": "HypeShell 不是最新版本"
@@ -1769,8 +1769,8 @@
   "HypeShell shell actions (launcher, clipboard, etc.)": {
     "HypeShell shell actions (launcher, clipboard, etc.)": "HypeShell shell 操作（启动器、剪贴板等）"
   },
-  "DMS_SOCKET not available": {
-    "DMS_SOCKET not available": "DMS_SOCKET 不可用"
+  "HYPE_SOCKET not available": {
+    "HYPE_SOCKET not available": "HYPE_SOCKET 不可用"
   },
   "DWL service not available": {
     "DWL service not available": "DWL 服务不可用"
@@ -1794,7 +1794,7 @@
     "HypeShell is ready to use": "HypeShell现已可用"
   },
   "HypeShell & System Icons (requires restart)": {
-    "HypeShell & System Icons (requires restart)": "DankShell 和系统图标 (需要重启)"
+    "HypeShell & System Icons (requires restart)": "HypeShell 和系统图标 (需要重启)"
   },
   "Dark Mode": {
     "Dark Mode": "暗色模式"
@@ -2252,8 +2252,8 @@
   "Enable a custom override below to set per-bar shadow intensity, opacity, and color.": {
     "Enable a custom override below to set per-bar shadow intensity, opacity, and color.": "在下方启用自定义覆盖，以设置每条状态栏的阴影强度、透明度和颜色。"
   },
-  "Enable compositor-targetable blur layer (namespace: dms:blurwallpaper). Requires manual niri configuration.": {
-    "Enable compositor-targetable blur layer (namespace: dms:blurwallpaper). Requires manual niri configuration.": "启用合成器可定位的模糊层（命名空间：dms:blurwallpaper），需要手动配置 niri。"
+  "Enable compositor-targetable blur layer (namespace: hype:blurwallpaper). Requires manual niri configuration.": {
+    "Enable compositor-targetable blur layer (namespace: hype:blurwallpaper). Requires manual niri configuration.": "启用合成器可定位的模糊层（命名空间：hype:blurwallpaper），需要手动配置 niri。"
   },
   "Enable fingerprint at login": {
     "Enable fingerprint at login": "登录时启用指纹识别"
@@ -2600,8 +2600,8 @@
   "Failed to ring device": {
     "Failed to ring device": "响铃设备失败"
   },
-  "Failed to run 'dms greeter status'. Ensure HypeShell is installed and dms is in PATH.": {
-    "Failed to run 'dms greeter status'. Ensure HypeShell is installed and dms is in PATH.": "未能运行 'dms greeter status'。确保 HypeShell 已安装，且 dms 已在 PATH 中。"
+  "Failed to run 'hype greeter status'. Ensure HypeShell is installed and hype is in PATH.": {
+    "Failed to run 'hype greeter status'. Ensure HypeShell is installed and hype is in PATH.": "未能运行 'hype greeter status'。确保 HypeShell 已安装，且 hype 已在 PATH 中。"
   },
   "Failed to save audio config": {
     "Failed to save audio config": "音频配置保存失败"
@@ -5610,10 +5610,10 @@
     "Scale": "缩放"
   },
   "Scale Hype Bar font sizes independently": {
-    "Scale Hype Bar font sizes independently": "独立调整 DankBar 字体缩放"
+    "Scale Hype Bar font sizes independently": "独立调整 HypeBar 字体缩放"
   },
   "Scale Hype Bar icon sizes independently": {
-    "Scale Hype Bar icon sizes independently": "独立缩放DankBar图标大小"
+    "Scale Hype Bar icon sizes independently": "独立缩放HypeBar图标大小"
   },
   "Scale all font sizes throughout the shell": {
     "Scale all font sizes throughout the shell": "缩放整个 shell 中的所有字体大小"
@@ -6539,8 +6539,8 @@
   "Terminal custom additional parameters": {
     "Terminal custom additional parameters": "终端自定义附加参数"
   },
-  "Terminal fallback failed. Install a supported terminal emulator or run 'dms auth sync' manually.": {
-    "Terminal fallback failed. Install a supported terminal emulator or run 'dms auth sync' manually.": "终端回滚失败。请安装支持的终端模拟器，或者手动运行dms auth sync。"
+  "Terminal fallback failed. Install a supported terminal emulator or run 'hype auth sync' manually.": {
+    "Terminal fallback failed. Install a supported terminal emulator or run 'hype auth sync' manually.": "终端回滚失败。请安装支持的终端模拟器，或者手动运行hype auth sync。"
   },
   "Terminal fallback failed. Install one of the supported terminal emulators or run 'HypeShell Greeter sync' manually.": {
     "Terminal fallback failed. Install one of the supported terminal emulators or run 'HypeShell Greeter sync' manually.": "终端回退失败。请安装受支持的终端模拟器之一，或手动运行“HypeShell Greeter sync”。"
@@ -6587,8 +6587,8 @@
   "The 'dgop' tool is required for system monitoring.\nPlease install dgop to use this feature.": {
     "The 'dgop' tool is required for system monitoring.\nPlease install dgop to use this feature.": "系统监视器功能需要dgop。\n请安装dgop以使用此功能。"
   },
-  "The DMS_SOCKET environment variable is not set or the socket is unavailable. Automated plugin management requires the DMS_SOCKET.": {
-    "The DMS_SOCKET environment variable is not set or the socket is unavailable. Automated plugin management requires the DMS_SOCKET.": "未设置 DMS_SOCKET 环境变量或套接字不可用，无法使用自动插件管理。"
+  "The HYPE_SOCKET environment variable is not set or the socket is unavailable. Automated plugin management requires the HYPE_SOCKET.": {
+    "The HYPE_SOCKET environment variable is not set or the socket is unavailable. Automated plugin management requires the HYPE_SOCKET.": "未设置 HYPE_SOCKET 环境变量或套接字不可用，无法使用自动插件管理。"
   },
   "The below settings will modify your GTK and Qt settings. If you wish to preserve your current configurations, please back them up (qt5ct.conf|qt6ct.conf and ~/.config/gtk-3.0|gtk-4.0).": {
     "The below settings will modify your GTK and Qt settings. If you wish to preserve your current configurations, please back them up (qt5ct.conf|qt6ct.conf and ~/.config/gtk-3.0|gtk-4.0).": "以下设置将修改您的 GTK 和 Qt 配置。如需保留当前配置，请先备份 (qt5ct.conf|qt6ct.conf 和 ~/.config/gtk-3.0|gtk-4.0)。"
@@ -7490,11 +7490,11 @@
   "HypeShell is a highly customizable, modern desktop shell with a <a href=\"https://m3.material.io/\" style=\"text-decoration:none; color:%1;\">material 3 inspired</a> design.<br /><br/>It is built with <a href=\"https://quickshell.org\" style=\"text-decoration:none; color:%1;\">Quickshell</a>, a QT6 framework for building desktop shells, and <a href=\"https://go.dev\" style=\"text-decoration:none; color:%1;\">Go</a>, a statically typed, compiled programming language.": {
     "HypeShell is a highly customizable, modern desktop shell with a <a href=\"https://m3.material.io/\" style=\"text-decoration:none; color:%1;\">material 3 inspired</a> design.<br /><br/>It is built with <a href=\"https://quickshell.org\" style=\"text-decoration:none; color:%1;\">Quickshell</a>, a QT6 framework for building desktop shells, and <a href=\"https://go.dev\" style=\"text-decoration:none; color:%1;\">Go</a>, a statically typed, compiled programming language.": "HypeShell是一款高度可自定义的现代桌面shell，深受<a href=\"https://m3.material.io/\" style=\"text-decoration:none; color:%1;\">material 3</a>的启发而设计。<br /><br/>HypeShell基于<a href=\"https://quickshell.org\" style=\"text-decoration:none; color:%1;\">Quickshell</a>——一个专为创建桌面shell的QT6框架，并通过<a href=\"https://go.dev\" style=\"text-decoration:none; color:%1;\">Go语言</a>——一种静态类型化、编译的编程语言开发。"
   },
-  "dms/cursor config exists but is not included. Cursor settings won't apply.": {
-    "dms/cursor config exists but is not included. Cursor settings won't apply.": "已找到dms/cursor的配置文件，但并未导入。光标设置将不会生效。"
+  "hype/cursor config exists but is not included. Cursor settings won't apply.": {
+    "hype/cursor config exists but is not included. Cursor settings won't apply.": "已找到hype/cursor的配置文件，但并未导入。光标设置将不会生效。"
   },
-  "dms/outputs config exists but is not included in your compositor config. Display changes won't persist.": {
-    "dms/outputs config exists but is not included in your compositor config. Display changes won't persist.": "dms/输出配置存在，但不包含在你的合成器配置里。显示更改不会保留。"
+  "hype/outputs config exists but is not included in your compositor config. Display changes won't persist.": {
+    "hype/outputs config exists but is not included in your compositor config. Display changes won't persist.": "hype/输出配置存在，但不包含在你的合成器配置里。显示更改不会保留。"
   },
   "e.g., firefox, kitty --title foo": {
     "e.g., firefox, kitty --title foo": "例如：firefox, kitty --title foo"
@@ -7553,8 +7553,8 @@
   "niri shortcuts config": {
     "niri shortcuts config": "Niri快捷键设置"
   },
-  "niri/dms Discord": {
-    "niri/dms Discord": "niri/dms Discord"
+  "niri/hype Discord": {
+    "niri/hype Discord": "niri/hype Discord"
   },
   "now": {
     "now": "现在"

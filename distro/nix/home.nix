@@ -1,11 +1,11 @@
-{
+﻿{
   config,
   pkgs,
   lib,
   ...
 }@args:
 let
-  cfg = config.programs.dank-material-shell;
+  cfg = config.programs.hype-material-shell;
   jsonFormat = pkgs.formats.json { };
   common = import ./common.nix {
     inherit
@@ -26,44 +26,44 @@ in
     (import ./options.nix args)
     (lib.mkRemovedOptionModule [
       "programs"
-      "dank-material-shell"
+      "hype-material-shell"
       "enableNightMode"
     ] "Night mode is now always available")
     (lib.mkRemovedOptionModule [
       "programs"
-      "dank-material-shell"
+      "hype-material-shell"
       "default"
       "settings"
-    ] "Default settings have been removed and been replaced with programs.dank-material-shell.settings")
+    ] "Default settings have been removed and been replaced with programs.hype-material-shell.settings")
     (lib.mkRemovedOptionModule [
       "programs"
-      "dank-material-shell"
+      "hype-material-shell"
       "default"
       "session"
-    ] "Default session has been removed and been replaced with programs.dank-material-shell.session")
+    ] "Default session has been removed and been replaced with programs.hype-material-shell.session")
     (lib.mkRenamedOptionModule
-      [ "programs" "dank-material-shell" "enableSystemd" ]
-      [ "programs" "dank-material-shell" "systemd" "enable" ]
+      [ "programs" "hype-material-shell" "enableSystemd" ]
+      [ "programs" "hype-material-shell" "systemd" "enable" ]
     )
   ];
 
-  options.programs.dank-material-shell = {
+  options.programs.hype-material-shell = {
     settings = lib.mkOption {
       type = jsonFormat.type;
       default = { };
-      description = "DankMaterialShell configuration settings as an attribute set, to be written to ~/.config/DankMaterialShell/settings.json.";
+      description = "HypeMaterialShell configuration settings as an attribute set, to be written to ~/.config/HypeMaterialShell/settings.json.";
     };
 
     clipboardSettings = lib.mkOption {
       type = jsonFormat.type;
       default = { };
-      description = "DankMaterialShell clipboard settings as an attribute set, to be written to ~/.config/DankMaterialShell/clsettings.json.";
+      description = "HypeMaterialShell clipboard settings as an attribute set, to be written to ~/.config/HypeMaterialShell/clsettings.json.";
     };
 
     session = lib.mkOption {
       type = jsonFormat.type;
       default = { };
-      description = "DankMaterialShell session settings as an attribute set, to be written to ~/.local/state/DankMaterialShell/session.json.";
+      description = "HypeMaterialShell session settings as an attribute set, to be written to ~/.local/state/HypeMaterialShell/session.json.";
     };
 
     managePluginSettings = lib.mkOption {
@@ -86,9 +86,9 @@ in
       inherit (cfg.quickshell) package;
     };
 
-    systemd.user.services.dms = lib.mkIf cfg.systemd.enable {
+    systemd.user.services.hype = lib.mkIf cfg.systemd.enable {
       Unit = {
-        Description = "DankMaterialShell";
+        Description = "HypeMaterialShell";
         PartOf = [ cfg.systemd.target ];
         After = [ cfg.systemd.target ];
       };
@@ -101,23 +101,23 @@ in
       Install.WantedBy = [ cfg.systemd.target ];
     };
 
-    xdg.stateFile."DankMaterialShell/session.json" = lib.mkIf (cfg.session != { }) {
+    xdg.stateFile."HypeMaterialShell/session.json" = lib.mkIf (cfg.session != { }) {
       source = jsonFormat.generate "session.json" cfg.session;
     };
 
     xdg.configFile = {
-      "DankMaterialShell/settings.json" = lib.mkIf (cfg.settings != { }) {
+      "HypeMaterialShell/settings.json" = lib.mkIf (cfg.settings != { }) {
         source = jsonFormat.generate "settings.json" cfg.settings;
       };
-      "DankMaterialShell/clsettings.json" = lib.mkIf (cfg.clipboardSettings != { }) {
+      "HypeMaterialShell/clsettings.json" = lib.mkIf (cfg.clipboardSettings != { }) {
         source = jsonFormat.generate "clsettings.json" cfg.clipboardSettings;
       };
-      "DankMaterialShell/plugin_settings.json" = lib.mkIf cfg.managePluginSettings {
+      "HypeMaterialShell/plugin_settings.json" = lib.mkIf cfg.managePluginSettings {
         source = jsonFormat.generate "plugin_settings.json" pluginSettings;
       };
     }
     // (lib.mapAttrs' (name: value: {
-      name = "DankMaterialShell/plugins/${name}";
+      name = "HypeMaterialShell/plugins/${name}";
       inherit value;
     }) common.plugins);
     warnings =

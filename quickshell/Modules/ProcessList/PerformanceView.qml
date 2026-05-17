@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import QtQuick.Layouts
 import Quickshell
 import qs.Common
@@ -253,7 +253,7 @@ Item {
                 Layout.fillWidth: true
                 spacing: Theme.spacingS
 
-                DankIcon {
+                HypeIcon {
                     name: card.icon
                     size: Theme.iconSize
                     color: card.accentColor

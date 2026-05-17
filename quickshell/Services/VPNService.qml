@@ -1,4 +1,4 @@
-pragma Singleton
+﻿pragma Singleton
 pragma ComponentBehavior: Bound
 
 import QtQuick
@@ -10,7 +10,7 @@ Singleton {
     id: root
     readonly property var log: Log.scoped("VPNService")
 
-    readonly property bool available: DMSNetworkService.vpnAvailable
+    readonly property bool available: HYPENetworkService.vpnAvailable
 
     property var plugins: []
     property var allExtensions: []
@@ -34,9 +34,9 @@ Singleton {
     }
 
     Connections {
-        target: DMSNetworkService
+        target: HYPENetworkService
         function onVpnAvailableChanged() {
-            if (DMSNetworkService.vpnAvailable && plugins.length === 0) {
+            if (HYPENetworkService.vpnAvailable && plugins.length === 0) {
                 fetchPlugins();
             }
         }
@@ -47,7 +47,7 @@ Singleton {
             return;
         pluginsLoading = true;
 
-        DMSService.sendRequest("network.vpn.plugins", null, response => {
+        HYPEService.sendRequest("network.vpn.plugins", null, response => {
             pluginsLoading = false;
             if (response.error) {
                 log.warn("Failed to fetch plugins:", response.error);
@@ -78,7 +78,7 @@ Singleton {
         if (name)
             params.name = name;
 
-        DMSService.sendRequest("network.vpn.import", params, response => {
+        HYPEService.sendRequest("network.vpn.import", params, response => {
             importing = false;
 
             if (response.error) {
@@ -91,7 +91,7 @@ Singleton {
                 return;
             if (response.result.success) {
                 ToastService.showInfo(I18n.tr("VPN imported: %1").arg(response.result.name || ""));
-                DMSNetworkService.refreshVpnProfiles();
+                HYPENetworkService.refreshVpnProfiles();
                 importComplete(response.result.uuid || "", response.result.name || "");
                 return;
             }
@@ -107,7 +107,7 @@ Singleton {
         configLoading = true;
         editConfig = null;
 
-        DMSService.sendRequest("network.vpn.getConfig", {
+        HYPEService.sendRequest("network.vpn.getConfig", {
             uuid: uuidOrName
         }, response => {
             configLoading = false;
@@ -137,13 +137,13 @@ Singleton {
         if (updates.data !== undefined)
             params.data = updates.data;
 
-        DMSService.sendRequest("network.vpn.updateConfig", params, response => {
+        HYPEService.sendRequest("network.vpn.updateConfig", params, response => {
             if (response.error) {
                 ToastService.showError(I18n.tr("Failed to update VPN"), response.error);
                 return;
             }
             ToastService.showInfo(I18n.tr("VPN configuration updated"));
-            DMSNetworkService.refreshVpnProfiles();
+            HYPENetworkService.refreshVpnProfiles();
             getConfig(uuid);
             configUpdated();
         });
@@ -152,7 +152,7 @@ Singleton {
     function deleteVpn(uuidOrName) {
         if (!available)
             return;
-        DMSService.sendRequest("network.vpn.delete", {
+        HYPEService.sendRequest("network.vpn.delete", {
             uuid: uuidOrName
         }, response => {
             if (response.error) {
@@ -160,7 +160,7 @@ Singleton {
                 return;
             }
             ToastService.showInfo(I18n.tr("VPN deleted"));
-            DMSNetworkService.refreshVpnProfiles();
+            HYPENetworkService.refreshVpnProfiles();
             vpnDeleted(uuidOrName);
         });
     }

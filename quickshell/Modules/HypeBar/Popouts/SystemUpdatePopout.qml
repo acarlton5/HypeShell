@@ -5,7 +5,7 @@ import qs.Modals
 import qs.Services
 import qs.Widgets
 
-DankPopout {
+HypePopout {
     id: systemUpdatePopout
 
     layerNamespace: "hype:system-update"
@@ -20,14 +20,22 @@ DankPopout {
     property bool _reopenAfterUpgrade: false
 
     readonly property bool polkitModalOpen: polkitAuthSurfaceModal.shouldBeVisible
-    readonly property bool anyModalOpen: polkitModalOpen
+    readonly property bool inlineAuthActive: PolkitService.agent?.isActive ?? false
+    readonly property bool anyModalOpen: polkitModalOpen || inlineAuthActive
 
     Connections {
         target: PolkitService.agent
         enabled: PolkitService.polkitAvailable && systemUpdatePopout.shouldBeVisible
 
         function onAuthenticationRequestStarted() {
-            polkitAuthSurfaceModal.open();
+            Qt.callLater(() => {
+                const item = systemUpdatePopout.contentLoader.item;
+                if (item && item.inlineAuthContent) {
+                    item.inlineAuthContent.reset();
+                    item.inlineAuthContent.forceActiveFocus();
+                    item.inlineAuthContent.focusPasswordField();
+                }
+            });
         }
     }
 
@@ -41,7 +49,7 @@ DankPopout {
     customKeyboardFocus: {
         if (!shouldBeVisible)
             return WlrKeyboardFocus.None;
-        if (anyModalOpen)
+        if (polkitModalOpen)
             return WlrKeyboardFocus.None;
         if (CompositorService.useHyprlandFocusGrab)
             return WlrKeyboardFocus.OnDemand;
@@ -88,6 +96,8 @@ DankPopout {
 
             focus: true
 
+            readonly property alias inlineAuthContent: inlineAuthContent
+
             readonly property var hypeShellUpdate: (SystemUpdateService.availableUpdates || []).find(pkg => pkg.backend === "hypeshell" || pkg.repo === "hypeshell" || pkg.name === "HypeShell") || null
             readonly property bool hasHypeShellUpdate: hypeShellUpdate !== null
             readonly property int hypeShellUpdateCount: hasHypeShellUpdate ? 1 : 0
@@ -109,7 +119,7 @@ DankPopout {
                 };
                 if (hasHypeShellUpdate) {
                     opts.targets = [hypeShellUpdate];
-                    DMSService.sysupdateUpgrade(opts, response => {
+                    HYPEService.sysupdateUpgrade(opts, response => {
                         if (response?.error) {
                             ToastService.showError(I18n.tr("Update failed to start"), response.error);
                             return;
@@ -210,7 +220,7 @@ DankPopout {
                         anchors.rightMargin: Theme.spacingM
                         spacing: Theme.spacingM
 
-                        DankIcon {
+                        HypeIcon {
                             anchors.verticalCenter: parent.verticalCenter
                             name: "terminal"
                             size: 24
@@ -265,7 +275,7 @@ DankPopout {
                         }
                     }
 
-                    DankActionButton {
+                    HypeActionButton {
                         id: refreshButton
                         anchors.right: parent.right
                         anchors.rightMargin: Theme.spacingM
@@ -345,7 +355,7 @@ DankPopout {
                         }
                     }
 
-                    DankFlickable {
+                    HypeFlickable {
                         id: terminalScroll
                         anchors.left: parent.left
                         anchors.right: parent.right
@@ -443,7 +453,7 @@ DankPopout {
                         wrapMode: Text.WordWrap
                     }
 
-                    DankListView {
+                    HypeListView {
                         id: packagesList
                         anchors.left: parent.left
                         anchors.right: parent.right
@@ -553,7 +563,7 @@ DankPopout {
                             anchors.centerIn: parent
                             spacing: Theme.spacingS
 
-                            DankIcon {
+                            HypeIcon {
                                 anchors.verticalCenter: parent.verticalCenter
                                 name: SystemUpdateService.isUpgrading ? "close" : "system_update_alt"
                                 size: 18
@@ -618,6 +628,31 @@ DankPopout {
                                 easing.type: Theme.standardEasing
                             }
                         }
+                    }
+                }
+
+                Rectangle {
+                    id: inlineAuthContainer
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    anchors.top: commandShade.bottom
+                    anchors.bottom: parent.bottom
+                    anchors.leftMargin: Theme.spacingL
+                    anchors.rightMargin: Theme.spacingL
+                    anchors.topMargin: Theme.spacingM
+                    anchors.bottomMargin: Theme.spacingL
+                    radius: Theme.cornerRadius
+                    color: Theme.withAlpha(Theme.surfaceContainerHigh, 0.96)
+                    border.color: Theme.withAlpha(Theme.primary, 0.35)
+                    border.width: 1
+                    visible: systemUpdatePopout.inlineAuthActive
+                    clip: true
+
+                    PolkitAuthContent {
+                        id: inlineAuthContent
+                        anchors.fill: parent
+                        anchors.margins: Theme.spacingL
+                        focus: inlineAuthContainer.visible
                     }
                 }
             }

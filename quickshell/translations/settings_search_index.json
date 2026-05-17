@@ -1,4 +1,4 @@
-[
+﻿[
   {
     "section": "wallpaperCyclingEnabled",
     "label": "Automatic Cycling",
@@ -58,7 +58,7 @@
       "targetable",
       "wallpaper"
     ],
-    "description": "Enable compositor-targetable blur layer (namespace: dms:blurwallpaper). Requires manual niri configuration.",
+    "description": "Enable compositor-targetable blur layer (namespace: hype:blurwallpaper). Requires manual niri configuration.",
     "conditionKey": "isNiri"
   },
   {
@@ -146,7 +146,7 @@
       "targetable",
       "wallpaper"
     ],
-    "description": "Enable compositor-targetable blur layer (namespace: dms:blurwallpaper). Requires manual niri configuration."
+    "description": "Enable compositor-targetable blur layer (namespace: hype:blurwallpaper). Requires manual niri configuration."
   },
   {
     "section": "disableWallpaper",
@@ -718,7 +718,7 @@
       "config",
       "configurations",
       "configure",
-      "dank",
+      "hype",
       "panel",
       "setup",
       "statusbar",
@@ -736,7 +736,7 @@
       "background",
       "bar",
       "corners",
-      "dank",
+      "hype",
       "panel",
       "radius",
       "round",
@@ -753,7 +753,7 @@
     "category": "Hype Bar",
     "keywords": [
       "bar",
-      "dank",
+      "hype",
       "panel",
       "statusbar",
       "taskbar",
@@ -769,7 +769,7 @@
     "keywords": [
       "bar",
       "choose",
-      "dank",
+      "hype",
       "direction",
       "panel",
       "resolves",
@@ -789,7 +789,7 @@
     "keywords": [
       "assignment",
       "bar",
-      "dank",
+      "hype",
       "display",
       "monitor",
       "output",
@@ -807,7 +807,7 @@
     "category": "Hype Bar",
     "keywords": [
       "bar",
-      "dank",
+      "hype",
       "direction",
       "fixed",
       "manual",
@@ -826,7 +826,7 @@
     "category": "Hype Bar",
     "keywords": [
       "bar",
-      "dank",
+      "hype",
       "panel",
       "position",
       "statusbar",
@@ -841,7 +841,7 @@
     "category": "Hype Bar",
     "keywords": [
       "bar",
-      "dank",
+      "hype",
       "global",
       "override",
       "panel",
@@ -861,7 +861,7 @@
     "category": "Hype Bar",
     "keywords": [
       "bar",
-      "dank",
+      "hype",
       "gap",
       "gaps",
       "margin",
@@ -886,7 +886,7 @@
       "color",
       "colour",
       "controls",
-      "dank",
+      "hype",
       "hue",
       "icon",
       "much",
@@ -910,7 +910,7 @@
     "keywords": [
       "alpha",
       "bar",
-      "dank",
+      "hype",
       "opacity",
       "panel",
       "statusbar",
@@ -930,7 +930,7 @@
       "auto-hide",
       "autohide",
       "bar",
-      "dank",
+      "hype",
       "hidden",
       "hide",
       "panel",
@@ -1905,7 +1905,7 @@
       "wireless"
     ],
     "icon": "wifi",
-    "conditionKey": "dmsConnected"
+    "conditionKey": "hypeConnected"
   },
   {
     "section": "_tab_8",
@@ -1940,7 +1940,7 @@
     "icon": "edit"
   },
   {
-    "section": "dankLauncherV2Appearance",
+    "section": "hypeLauncherV2Appearance",
     "label": "Appearance",
     "tabIndex": 9,
     "category": "Launcher",
@@ -1963,7 +1963,7 @@
     "description": "Show mode tabs and keyboard hints at the bottom."
   },
   {
-    "section": "dankLauncherV2BorderEnabled",
+    "section": "hypeLauncherV2BorderEnabled",
     "label": "Border",
     "tabIndex": 9,
     "category": "Launcher",
@@ -2015,7 +2015,7 @@
     "tabIndex": 9,
     "category": "Launcher",
     "keywords": [
-      "dms",
+      "hype",
       "drawer",
       "launcher",
       "menu",
@@ -2084,7 +2084,7 @@
     "icon": "visibility_off"
   },
   {
-    "section": "dankLauncherV2IncludeFilesInAll",
+    "section": "hypeLauncherV2IncludeFilesInAll",
     "label": "Include Files in All Tab",
     "tabIndex": 9,
     "category": "Launcher",
@@ -2106,7 +2106,7 @@
     "description": "Merge indexed file results into the All tab (requires dsearch)."
   },
   {
-    "section": "dankLauncherV2IncludeFoldersInAll",
+    "section": "hypeLauncherV2IncludeFoldersInAll",
     "label": "Include Folders in All Tab",
     "tabIndex": 9,
     "category": "Launcher",
@@ -2320,7 +2320,7 @@
     "description": "Include desktop actions (shortcuts) in search results."
   },
   {
-    "section": "dankLauncherV2ShowFooter",
+    "section": "hypeLauncherV2ShowFooter",
     "label": "Show Footer",
     "tabIndex": 9,
     "category": "Launcher",
@@ -2404,7 +2404,7 @@
     "description": "When enabled, apps are sorted alphabetically. When disabled, apps are sorted by usage frequency."
   },
   {
-    "section": "dankLauncherV2BorderThickness",
+    "section": "hypeLauncherV2BorderThickness",
     "label": "Thickness",
     "tabIndex": 9,
     "category": "Launcher",
@@ -2418,7 +2418,7 @@
     ]
   },
   {
-    "section": "dankLauncherV2UnloadOnClose",
+    "section": "hypeLauncherV2UnloadOnClose",
     "label": "Unload on Close",
     "tabIndex": 9,
     "category": "Launcher",
@@ -2948,7 +2948,7 @@
       "color",
       "colors",
       "colour",
-      "dms",
+      "hype",
       "follow",
       "hue",
       "look",
@@ -3126,7 +3126,7 @@
       "appearance",
       "colors",
       "colour",
-      "dankshell",
+      "hypeshell",
       "icon",
       "icons",
       "look",
@@ -3707,7 +3707,7 @@
     "keywords": [
       "appearance",
       "colors",
-      "dms",
+      "hype",
       "look",
       "matugen",
       "run",
@@ -7055,7 +7055,7 @@
     "keywords": [
       "bar",
       "components",
-      "dank",
+      "hype",
       "modules",
       "panel",
       "statusbar",
@@ -7144,7 +7144,7 @@
       "system"
     ],
     "icon": "content_paste",
-    "conditionKey": "dmsConnected"
+    "conditionKey": "hypeConnected"
   },
   {
     "section": "clipboardEnterToPaste",

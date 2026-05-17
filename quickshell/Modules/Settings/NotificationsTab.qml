@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import qs.Common
 import qs.Widgets
 import qs.Modules.Settings.Widgets
@@ -187,7 +187,7 @@ Item {
         return fallback;
     }
 
-    DankFlickable {
+    HypeFlickable {
         anchors.fill: parent
         clip: true
         contentHeight: mainColumn.height + Theme.spacingXL
@@ -328,7 +328,7 @@ Item {
                             width: parent.width
                         }
 
-                        DankButtonGroup {
+                        HypeButtonGroup {
                             id: notificationSpeedGroup
                             anchors.horizontalCenter: parent.horizontalCenter
                             buttonPadding: parent.width < 480 ? Theme.spacingS : Theme.spacingM
@@ -407,7 +407,7 @@ Item {
                 expanded: false
 
                 headerActions: [
-                    DankActionButton {
+                    HypeActionButton {
                         buttonSize: 36
                         iconName: "restart_alt"
                         iconSize: 20
@@ -416,7 +416,7 @@ Item {
                         iconColor: Theme.surfaceVariantText
                         onClicked: SettingsData.resetNotificationRules()
                     },
-                    DankActionButton {
+                    HypeActionButton {
                         buttonSize: 36
                         iconName: "add"
                         iconSize: 20
@@ -476,7 +476,7 @@ Item {
                                         height: 1
                                     }
 
-                                    DankToggle {
+                                    HypeToggle {
                                         id: enableToggle
                                         width: 40
                                         height: 24
@@ -497,7 +497,7 @@ Item {
                                             color: deleteArea.containsMouse ? Theme.withAlpha(Theme.error, 0.2) : "transparent"
                                         }
 
-                                        DankIcon {
+                                        HypeIcon {
                                             anchors.centerIn: parent
                                             name: "delete"
                                             size: 18
@@ -524,7 +524,7 @@ Item {
                                         color: Theme.surfaceVariantText
                                     }
 
-                                    DankTextField {
+                                    HypeTextField {
                                         width: parent.width
                                         text: modelData.pattern || ""
                                         font.pixelSize: Theme.fontSizeSmall
@@ -547,7 +547,7 @@ Item {
                                             color: Theme.surfaceVariantText
                                         }
 
-                                        DankDropdown {
+                                        HypeDropdown {
                                             width: parent.width
                                             compactMode: true
                                             dropdownWidth: parent.width
@@ -568,7 +568,7 @@ Item {
                                             color: Theme.surfaceVariantText
                                         }
 
-                                        DankDropdown {
+                                        HypeDropdown {
                                             width: parent.width
                                             compactMode: true
                                             dropdownWidth: parent.width
@@ -588,7 +588,7 @@ Item {
                                             color: Theme.surfaceVariantText
                                         }
 
-                                        DankDropdown {
+                                        HypeDropdown {
                                             width: parent.width
                                             compactMode: true
                                             dropdownWidth: parent.width
@@ -609,7 +609,7 @@ Item {
                                             color: Theme.surfaceVariantText
                                         }
 
-                                        DankDropdown {
+                                        HypeDropdown {
                                             width: parent.width
                                             compactMode: true
                                             dropdownWidth: parent.width
@@ -674,7 +674,7 @@ Item {
                                     height: 1
                                 }
 
-                                DankButton {
+                                HypeButton {
                                     id: unmuteBtn
                                     text: I18n.tr("Unmute")
                                     backgroundColor: Theme.surfaceContainer
@@ -694,7 +694,7 @@ Item {
                                         color: deleteArea.containsMouse ? Theme.withAlpha(Theme.error, 0.2) : "transparent"
                                     }
 
-                                    DankIcon {
+                                    HypeIcon {
                                         anchors.centerIn: parent
                                         name: "delete"
                                         size: 18

@@ -1,4 +1,4 @@
-package plugins
+﻿package plugins
 
 import (
 	"fmt"
@@ -66,7 +66,7 @@ func HandleSearch(conn net.Conn, req models.Request) {
 			Dependencies: p.Dependencies,
 			Installed:    installed,
 			FirstParty:   strings.HasPrefix(p.Repo, "https://github.com/acarlton5/"),
-			RequiresDMS:  p.RequiresDMS,
+			RequiresHYPE:  p.RequiresHYPE,
 		}
 	}
 

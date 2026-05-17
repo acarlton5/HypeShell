@@ -1,14 +1,14 @@
-import QtQuick
+﻿import QtQuick
 import Quickshell
 import Quickshell.Services.UPower
 import qs.Common
 import qs.Services
 import qs.Widgets
 
-DankPopout {
+HypePopout {
     id: root
 
-    layerNamespace: "dms:battery"
+    layerNamespace: "hype:battery"
 
     property var triggerScreen: null
 
@@ -87,7 +87,7 @@ DankPopout {
                     height: 48
                     spacing: Theme.spacingM
 
-                    DankIcon {
+                    HypeIcon {
                         name: {
                             if (!BatteryService.batteryAvailable)
                                 return "power";
@@ -259,7 +259,7 @@ DankPopout {
                         color: closeBatteryArea.containsMouse ? Theme.errorHover : "transparent"
                         anchors.top: parent.top
 
-                        DankIcon {
+                        HypeIcon {
                             anchors.centerIn: parent
                             name: "close"
                             size: Theme.iconSize - 4
@@ -424,7 +424,7 @@ DankPopout {
                                         anchors.verticalCenter: parent.verticalCenter
                                     }
 
-                                    DankIcon {
+                                    HypeIcon {
                                         id: chargingIcon
                                         name: modelData.state === UPowerDeviceState.Charging ? "bolt" : ""
                                         size: Theme.iconSizeSmall
@@ -552,7 +552,7 @@ DankPopout {
                     width: parent.width
                     height: profileButtonGroup.height * profileButtonGroup.scale
 
-                    DankButtonGroup {
+                    HypeButtonGroup {
                         id: profileButtonGroup
 
                         property var profileModel: (typeof PowerProfiles !== "undefined") ? [PowerProfile.PowerSaver, PowerProfile.Balanced].concat(PowerProfiles.hasPerformanceProfile ? [PowerProfile.Performance] : []) : [PowerProfile.PowerSaver, PowerProfile.Balanced, PowerProfile.Performance]
@@ -597,7 +597,7 @@ DankPopout {
                             width: parent.width
                             spacing: Theme.spacingM
 
-                            DankIcon {
+                            HypeIcon {
                                 name: "warning"
                                 size: Theme.iconSize
                                 color: Theme.error

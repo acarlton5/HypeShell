@@ -1,11 +1,11 @@
-pragma ComponentBehavior: Bound
+﻿pragma ComponentBehavior: Bound
 
 import QtQuick
 import qs.Common
 import qs.Services
 import qs.Widgets
 
-DankToggle {
+HypeToggle {
     id: root
 
     LayoutMirroring.enabled: I18n.isRtl

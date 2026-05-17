@@ -1,4 +1,4 @@
-package providers
+﻿package providers
 
 import (
 	"os"
@@ -29,18 +29,18 @@ type MangoWCParser struct {
 	readingLine        int
 	configDir          string
 	currentSource      string
-	dmsBindsExists     bool
-	dmsBindsIncluded   bool
+	hypeBindsExists     bool
+	hypeBindsIncluded   bool
 	includeCount       int
-	dmsIncludePos      int
-	bindsAfterDMS      int
-	dmsBindKeys        map[string]bool
+	hypeIncludePos      int
+	bindsAfterHYPE      int
+	hypeBindKeys        map[string]bool
 	configBindKeys     map[string]bool
 	conflictingConfigs map[string]*MangoWCKeyBinding
 	bindMap            map[string]*MangoWCKeyBinding
 	bindOrder          []string
 	processedFiles     map[string]bool
-	dmsProcessed       bool
+	hypeProcessed       bool
 }
 
 func NewMangoWCParser(configDir string) *MangoWCParser {
@@ -48,8 +48,8 @@ func NewMangoWCParser(configDir string) *MangoWCParser {
 		contentLines:       []string{},
 		readingLine:        0,
 		configDir:          configDir,
-		dmsIncludePos:      -1,
-		dmsBindKeys:        make(map[string]bool),
+		hypeIncludePos:      -1,
+		hypeBindKeys:        make(map[string]bool),
 		configBindKeys:     make(map[string]bool),
 		conflictingConfigs: make(map[string]*MangoWCKeyBinding),
 		bindMap:            make(map[string]*MangoWCKeyBinding),
@@ -326,45 +326,45 @@ func ParseMangoWCKeys(path string) ([]MangoWCKeyBinding, error) {
 
 type MangoWCParseResult struct {
 	Keybinds           []MangoWCKeyBinding
-	DMSBindsIncluded   bool
-	DMSStatus          *MangoWCDMSStatus
+	HYPEBindsIncluded   bool
+	HYPEStatus          *MangoWCHYPEStatus
 	ConflictingConfigs map[string]*MangoWCKeyBinding
 }
 
-type MangoWCDMSStatus struct {
+type MangoWCHYPEStatus struct {
 	Exists          bool
 	Included        bool
 	IncludePosition int
 	TotalIncludes   int
-	BindsAfterDMS   int
+	BindsAfterHYPE   int
 	Effective       bool
 	OverriddenBy    int
 	StatusMessage   string
 }
 
-func (p *MangoWCParser) buildDMSStatus() *MangoWCDMSStatus {
-	status := &MangoWCDMSStatus{
-		Exists:          p.dmsBindsExists,
-		Included:        p.dmsBindsIncluded,
-		IncludePosition: p.dmsIncludePos,
+func (p *MangoWCParser) buildHYPEStatus() *MangoWCHYPEStatus {
+	status := &MangoWCHYPEStatus{
+		Exists:          p.hypeBindsExists,
+		Included:        p.hypeBindsIncluded,
+		IncludePosition: p.hypeIncludePos,
 		TotalIncludes:   p.includeCount,
-		BindsAfterDMS:   p.bindsAfterDMS,
+		BindsAfterHYPE:   p.bindsAfterHYPE,
 	}
 
 	switch {
-	case !p.dmsBindsExists:
+	case !p.hypeBindsExists:
 		status.Effective = false
-		status.StatusMessage = "dms/binds.conf does not exist"
-	case !p.dmsBindsIncluded:
+		status.StatusMessage = "hype/binds.conf does not exist"
+	case !p.hypeBindsIncluded:
 		status.Effective = false
-		status.StatusMessage = "dms/binds.conf is not sourced in config"
-	case p.bindsAfterDMS > 0:
+		status.StatusMessage = "hype/binds.conf is not sourced in config"
+	case p.bindsAfterHYPE > 0:
 		status.Effective = true
-		status.OverriddenBy = p.bindsAfterDMS
-		status.StatusMessage = "Some DMS binds may be overridden by config binds"
+		status.OverriddenBy = p.bindsAfterHYPE
+		status.StatusMessage = "Some HYPE binds may be overridden by config binds"
 	default:
 		status.Effective = true
-		status.StatusMessage = "DMS binds are active"
+		status.StatusMessage = "HYPE binds are active"
 	}
 
 	return status
@@ -384,12 +384,12 @@ func (p *MangoWCParser) normalizeKey(key string) string {
 func (p *MangoWCParser) addBind(kb *MangoWCKeyBinding) {
 	key := p.formatBindKey(kb)
 	normalizedKey := p.normalizeKey(key)
-	isDMSBind := strings.Contains(kb.Source, "dms/binds.conf") || strings.Contains(kb.Source, "dms"+string(os.PathSeparator)+"binds.conf")
+	isHYPEBind := strings.Contains(kb.Source, "hype/binds.conf") || strings.Contains(kb.Source, "hype"+string(os.PathSeparator)+"binds.conf")
 
-	if isDMSBind {
-		p.dmsBindKeys[normalizedKey] = true
-	} else if p.dmsBindKeys[normalizedKey] {
-		p.bindsAfterDMS++
+	if isHYPEBind {
+		p.hypeBindKeys[normalizedKey] = true
+	} else if p.hypeBindKeys[normalizedKey] {
+		p.bindsAfterHYPE++
 		p.conflictingConfigs[normalizedKey] = kb
 		p.configBindKeys[normalizedKey] = true
 		return
@@ -403,15 +403,15 @@ func (p *MangoWCParser) addBind(kb *MangoWCKeyBinding) {
 	p.bindMap[normalizedKey] = kb
 }
 
-func (p *MangoWCParser) ParseWithDMS() ([]MangoWCKeyBinding, error) {
+func (p *MangoWCParser) ParseWithHYPE() ([]MangoWCKeyBinding, error) {
 	expandedDir, err := utils.ExpandPath(p.configDir)
 	if err != nil {
 		return nil, err
 	}
 
-	dmsBindsPath := filepath.Join(expandedDir, "dms", "binds.conf")
-	if _, err := os.Stat(dmsBindsPath); err == nil {
-		p.dmsBindsExists = true
+	hypeBindsPath := filepath.Join(expandedDir, "hype", "binds.conf")
+	if _, err := os.Stat(hypeBindsPath); err == nil {
+		p.hypeBindsExists = true
 	}
 
 	mainConfig := filepath.Join(expandedDir, "config.conf")
@@ -424,8 +424,8 @@ func (p *MangoWCParser) ParseWithDMS() ([]MangoWCKeyBinding, error) {
 		return nil, err
 	}
 
-	if p.dmsBindsExists && !p.dmsProcessed {
-		p.parseDMSBindsDirectly(dmsBindsPath)
+	if p.hypeBindsExists && !p.hypeProcessed {
+		p.parseHYPEBindsDirectly(hypeBindsPath)
 	}
 
 	var keybinds []MangoWCKeyBinding
@@ -493,13 +493,13 @@ func (p *MangoWCParser) handleSource(line, baseDir string, keybinds *[]MangoWCKe
 	}
 
 	sourcePath := strings.TrimSpace(parts[1])
-	isDMSSource := sourcePath == "dms/binds.conf" || sourcePath == "./dms/binds.conf" || strings.HasSuffix(sourcePath, "/dms/binds.conf")
+	isHYPESource := sourcePath == "hype/binds.conf" || sourcePath == "./hype/binds.conf" || strings.HasSuffix(sourcePath, "/hype/binds.conf")
 
 	p.includeCount++
-	if isDMSSource {
-		p.dmsBindsIncluded = true
-		p.dmsIncludePos = p.includeCount
-		p.dmsProcessed = true
+	if isHYPESource {
+		p.hypeBindsIncluded = true
+		p.hypeIncludePos = p.includeCount
+		p.hypeProcessed = true
 	}
 
 	expanded, err := utils.ExpandPath(sourcePath)
@@ -520,12 +520,12 @@ func (p *MangoWCParser) handleSource(line, baseDir string, keybinds *[]MangoWCKe
 	*keybinds = append(*keybinds, includedBinds...)
 }
 
-func (p *MangoWCParser) parseDMSBindsDirectly(dmsBindsPath string) []MangoWCKeyBinding {
-	keybinds, err := p.parseFileWithSource(dmsBindsPath)
+func (p *MangoWCParser) parseHYPEBindsDirectly(hypeBindsPath string) []MangoWCKeyBinding {
+	keybinds, err := p.parseFileWithSource(hypeBindsPath)
 	if err != nil {
 		return nil
 	}
-	p.dmsProcessed = true
+	p.hypeProcessed = true
 	return keybinds
 }
 
@@ -597,17 +597,17 @@ func (p *MangoWCParser) getKeybindAtLineContent(line string, _ int) *MangoWCKeyB
 	}
 }
 
-func ParseMangoWCKeysWithDMS(path string) (*MangoWCParseResult, error) {
+func ParseMangoWCKeysWithHYPE(path string) (*MangoWCParseResult, error) {
 	parser := NewMangoWCParser(path)
-	keybinds, err := parser.ParseWithDMS()
+	keybinds, err := parser.ParseWithHYPE()
 	if err != nil {
 		return nil, err
 	}
 
 	return &MangoWCParseResult{
 		Keybinds:           keybinds,
-		DMSBindsIncluded:   parser.dmsBindsIncluded,
-		DMSStatus:          parser.buildDMSStatus(),
+		HYPEBindsIncluded:   parser.hypeBindsIncluded,
+		HYPEStatus:          parser.buildHYPEStatus(),
 		ConflictingConfigs: parser.conflictingConfigs,
 	}, nil
 }

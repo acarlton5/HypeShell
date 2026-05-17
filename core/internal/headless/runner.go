@@ -1,4 +1,4 @@
-package headless
+﻿package headless
 
 import (
 	"context"
@@ -214,13 +214,13 @@ func (r *Runner) Run() error {
 		return fmt.Errorf("package installation failed: %w", err)
 	}
 
-	// 9. Greeter setup (if dms-greeter was included)
-	if !disabledItems["dms-greeter"] && r.depExists(dependencies, "dms-greeter") {
+	// 9. Greeter setup (if hype-greeter was included)
+	if !disabledItems["hype-greeter"] && r.depExists(dependencies, "hype-greeter") {
 		compositorName := "niri"
 		if wm == deps.WindowManagerHyprland {
 			compositorName = "Hyprland"
 		}
-		fmt.Fprintln(os.Stdout, "Configuring DMS greeter...")
+		fmt.Fprintln(os.Stdout, "Configuring HYPE greeter...")
 		logFunc := func(line string) {
 			r.log(line)
 			fmt.Fprintf(os.Stdout, "  greeter: %s\n", line)
@@ -268,14 +268,14 @@ func (r *Runner) Run() error {
 
 // buildDisabledItems computes the set of dependencies that should be skipped
 // during installation, applying the --include-deps and --exclude-deps filters.
-// dms-greeter is disabled by default (opt-in), matching TUI behavior.
+// hype-greeter is disabled by default (opt-in), matching TUI behavior.
 func (r *Runner) buildDisabledItems(dependencies []deps.Dependency) (map[string]bool, error) {
 	disabledItems := make(map[string]bool)
 
-	// dms-greeter is opt-in (disabled by default), matching TUI behavior
+	// hype-greeter is opt-in (disabled by default), matching TUI behavior
 	for i := range dependencies {
-		if dependencies[i].Name == "dms-greeter" {
-			disabledItems["dms-greeter"] = true
+		if dependencies[i].Name == "hype-greeter" {
+			disabledItems["hype-greeter"] = true
 			break
 		}
 	}
@@ -301,8 +301,8 @@ func (r *Runner) buildDisabledItems(dependencies []deps.Dependency) (map[string]
 		if !r.depExists(dependencies, name) {
 			return nil, fmt.Errorf("--exclude-deps: unknown dependency %q", name)
 		}
-		// Don't allow excluding DMS itself
-		if name == "dms (DankMaterialShell)" {
+		// Don't allow excluding HYPE itself
+		if name == "hype (HypeMaterialShell)" {
 			return nil, fmt.Errorf("--exclude-deps: cannot exclude required package %q", name)
 		}
 		disabledItems[name] = true
@@ -399,14 +399,14 @@ func (r *Runner) resolveSudoPassword() (string, error) {
 		return "", fmt.Errorf(
 			"sudo authentication required but no cached credentials found\n" +
 				"Options:\n" +
-				"  1. Run 'sudo -v' before dankinstall to cache credentials\n" +
+				"  1. Run 'sudo -v' before hypeinstall to cache credentials\n" +
 				"  2. Configure passwordless sudo for your user",
 		)
 	case privesc.ToolDoas:
 		return "", fmt.Errorf(
 			"doas authentication required but no cached credentials found\n" +
 				"Options:\n" +
-				"  1. Run 'doas true' before dankinstall to cache credentials (requires 'persist' in /etc/doas.conf)\n" +
+				"  1. Run 'doas true' before hypeinstall to cache credentials (requires 'persist' in /etc/doas.conf)\n" +
 				"  2. Configure a 'nopass' rule in /etc/doas.conf for your user",
 		)
 	case privesc.ToolRun0:

@@ -1,4 +1,4 @@
-pragma Singleton
+﻿pragma Singleton
 pragma ComponentBehavior: Bound
 
 import QtQuick
@@ -34,12 +34,12 @@ Singleton {
     readonly property bool helperAvailable: sysupdateAvailable && backends.length > 0
 
     Connections {
-        target: DMSService
+        target: HYPEService
         function onCapabilitiesReceived() {
             root.checkCapabilities();
         }
         function onConnectionStateChanged() {
-            if (DMSService.isConnected) {
+            if (HYPEService.isConnected) {
                 root.checkCapabilities();
             } else {
                 root.sysupdateAvailable = false;
@@ -51,17 +51,17 @@ Singleton {
     }
 
     Component.onCompleted: {
-        if (DMSService.dmsAvailable) {
+        if (HYPEService.hypeAvailable) {
             checkCapabilities();
         }
     }
 
     function checkCapabilities() {
-        if (!DMSService.capabilities || !Array.isArray(DMSService.capabilities)) {
+        if (!HYPEService.capabilities || !Array.isArray(HYPEService.capabilities)) {
             sysupdateAvailable = false;
             return;
         }
-        const has = DMSService.capabilities.includes("sysupdate");
+        const has = HYPEService.capabilities.includes("sysupdate");
         if (has && !sysupdateAvailable) {
             sysupdateAvailable = true;
             requestState();
@@ -71,10 +71,10 @@ Singleton {
     }
 
     function requestState() {
-        if (!DMSService.isConnected || !sysupdateAvailable) {
+        if (!HYPEService.isConnected || !sysupdateAvailable) {
             return;
         }
-        DMSService.sysupdateGetState(resp => {
+        HYPEService.sysupdateGetState(resp => {
             if (resp && resp.result) {
                 _applyState(resp.result);
             }
@@ -129,7 +129,7 @@ Singleton {
     }
 
     function checkForUpdates() {
-        DMSService.sysupdateRefresh(false, null);
+        HYPEService.sysupdateRefresh(false, null);
     }
 
     function runUpdates(opts) {
@@ -138,15 +138,15 @@ Singleton {
             _runCustomTerminalCommand();
             return;
         }
-        DMSService.sysupdateUpgrade(params, null);
+        HYPEService.sysupdateUpgrade(params, null);
     }
 
     function cancelUpdates() {
-        DMSService.sysupdateCancel(null);
+        HYPEService.sysupdateCancel(null);
     }
 
     function setInterval(seconds) {
-        DMSService.sysupdateSetInterval(seconds, null);
+        HYPEService.sysupdateSetInterval(seconds, null);
     }
 
     function _runCustomTerminalCommand() {
@@ -186,10 +186,10 @@ Singleton {
         }
         _acquired = want;
         if (want) {
-            DMSService.sysupdateAcquire(null);
+            HYPEService.sysupdateAcquire(null);
             return;
         }
-        DMSService.sysupdateRelease(null);
+        HYPEService.sysupdateRelease(null);
     }
 
 }

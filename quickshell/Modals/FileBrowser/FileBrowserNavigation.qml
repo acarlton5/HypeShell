@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import qs.Common
 import qs.Widgets
 
@@ -30,7 +30,7 @@ Row {
         opacity: currentPath !== homeDir ? 1 : 0
         anchors.verticalCenter: parent.verticalCenter
 
-        DankIcon {
+        HypeIcon {
             anchors.centerIn: parent
             name: "arrow_back"
             size: Theme.iconSizeSmall
@@ -87,7 +87,7 @@ Row {
             }
         }
 
-        DankTextField {
+        HypeTextField {
             id: pathInput
             anchors.fill: parent
             visible: pathEditMode
@@ -120,7 +120,7 @@ Row {
         visible: !showSidebar
         anchors.verticalCenter: parent.verticalCenter
 
-        DankActionButton {
+        HypeActionButton {
             circular: false
             iconName: "sort"
             iconSize: Theme.iconSize - 6

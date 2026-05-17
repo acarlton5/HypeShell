@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import qs.Common
 import qs.Services
 import qs.Modules.ControlCenter.BuiltinPlugins
@@ -219,8 +219,8 @@ QtObject {
             "description": I18n.tr("VPN connections"),
             "icon": "vpn_key",
             "type": "builtin_plugin",
-            "enabled": DMSNetworkService.available,
-            "warning": !DMSNetworkService.available ? I18n.tr("VPN not available") : undefined,
+            "enabled": HYPENetworkService.available,
+            "warning": !HYPENetworkService.available ? I18n.tr("VPN not available") : undefined,
             "isBuiltinPlugin": true
         },
         {

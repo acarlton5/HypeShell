@@ -1,4 +1,4 @@
-pragma Singleton
+﻿pragma Singleton
 pragma ComponentBehavior: Bound
 
 import QtQuick
@@ -15,7 +15,7 @@ Singleton {
     readonly property bool enabled: (adapter && adapter.enabled) ?? false
     readonly property bool discovering: (adapter && adapter.discovering) ?? false
     readonly property var devices: adapter ? adapter.devices : null
-    readonly property bool enhancedPairingAvailable: DMSService.dmsAvailable && DMSService.apiVersion >= 9 && DMSService.capabilities.includes("bluetooth")
+    readonly property bool enhancedPairingAvailable: HYPEService.hypeAvailable && HYPEService.apiVersion >= 9 && HYPEService.capabilities.includes("bluetooth")
     readonly property bool connected: {
         if (!adapter || !adapter.devices) {
             return false;
@@ -191,7 +191,7 @@ Singleton {
         // The HypeShell backend actually implements a bluez agent, so we can pair anything
         if (enhancedPairingAvailable) {
             const devicePath = getDevicePath(device);
-            DMSService.bluetoothPair(devicePath, callback);
+            HYPEService.bluetoothPair(devicePath, callback);
             return;
         }
 

@@ -1,4 +1,4 @@
-pragma ComponentBehavior: Bound
+﻿pragma ComponentBehavior: Bound
 
 import QtCore
 import QtQuick
@@ -48,9 +48,9 @@ Item {
         case "niri":
             return {
                 "configFile": configDir + "/niri/config.kdl",
-                "rulesFile": configDir + "/niri/dms/windowrules.kdl",
-                "grepPattern": 'include.*"dms/windowrules.kdl"',
-                "includeLine": 'include "dms/windowrules.kdl"'
+                "rulesFile": configDir + "/niri/hype/windowrules.kdl",
+                "grepPattern": 'include.*"hype/windowrules.kdl"',
+                "includeLine": 'include "hype/windowrules.kdl"'
             };
         case "hyprland":
             return {
@@ -79,11 +79,11 @@ Item {
             try {
                 const result = JSON.parse(output.trim());
                 const allRules = result.rules || [];
-                windowRules = allRules.filter(r => (r.source || "").includes("hype/windowrules") || (r.source || "").includes("dms/windowrules"));
-                if (result.dmsStatus) {
+                windowRules = allRules.filter(r => (r.source || "").includes("hype/windowrules") || (r.source || "").includes("hype/windowrules"));
+                if (result.hypeStatus) {
                     windowRulesIncludeStatus = {
-                        "exists": result.dmsStatus.exists,
-                        "included": result.dmsStatus.included
+                        "exists": result.hypeStatus.exists,
+                        "included": result.hypeStatus.included
                     };
                 }
             } catch (e) {
@@ -201,7 +201,7 @@ Item {
         }
     }
 
-    DankFlickable {
+    HypeFlickable {
         id: flickable
         anchors.fill: parent
         clip: true
@@ -232,7 +232,7 @@ Item {
                         width: parent.width
                         spacing: Theme.spacingM
 
-                        DankIcon {
+                        HypeIcon {
                             name: "select_window"
                             size: Theme.iconSize
                             color: Theme.primary
@@ -252,7 +252,7 @@ Item {
                             }
 
                             StyledText {
-                                text: I18n.tr("Define rules for window behavior. Saves to %1").arg(CompositorService.isNiri ? "dms/windowrules.kdl" : "hype/windowrules.conf")
+                                text: I18n.tr("Define rules for window behavior. Saves to %1").arg(CompositorService.isNiri ? "hype/windowrules.kdl" : "hype/windowrules.conf")
                                 font.pixelSize: Theme.fontSizeSmall
                                 color: Theme.surfaceVariantText
                                 wrapMode: Text.WordWrap
@@ -260,7 +260,7 @@ Item {
                             }
                         }
 
-                        DankActionButton {
+                        HypeActionButton {
                             Layout.preferredWidth: 40
                             Layout.preferredHeight: 40
                             circular: false
@@ -283,7 +283,7 @@ Item {
                             Layout.alignment: Qt.AlignVCenter
                         }
 
-                        DankDropdown {
+                        HypeDropdown {
                             id: windowSelector
                             Layout.fillWidth: true
                             dropdownWidth: 400
@@ -329,7 +329,7 @@ Item {
                     anchors.margins: Theme.spacingL
                     spacing: Theme.spacingM
 
-                    DankIcon {
+                    HypeIcon {
                         name: "warning"
                         size: Theme.iconSize
                         color: Theme.warning
@@ -351,7 +351,7 @@ Item {
                         }
 
                         StyledText {
-                            readonly property string rulesFile: CompositorService.isNiri ? "dms/windowrules.kdl" : "hype/windowrules.conf"
+                            readonly property string rulesFile: CompositorService.isNiri ? "hype/windowrules.kdl" : "hype/windowrules.conf"
                             text: warningBox.showSetup ? I18n.tr("Click 'Setup' to create %1 and add include to your compositor config.").arg(rulesFile) : I18n.tr("%1 exists but is not included. Window rules won't apply.").arg(rulesFile)
                             font.pixelSize: Theme.fontSizeSmall
                             color: Theme.surfaceVariantText
@@ -361,7 +361,7 @@ Item {
                         }
                     }
 
-                    DankButton {
+                    HypeButton {
                         id: fixButton
                         visible: warningBox.showError || warningBox.showSetup
                         text: root.fixingInclude ? I18n.tr("Fixing...") : (warningBox.showSetup ? I18n.tr("Setup") : I18n.tr("Fix Now"))
@@ -391,7 +391,7 @@ Item {
                         width: parent.width
                         spacing: Theme.spacingM
 
-                        DankIcon {
+                        HypeIcon {
                             name: "list"
                             size: Theme.iconSize
                             color: Theme.primary
@@ -417,7 +417,7 @@ Item {
                             height: Theme.spacingM
                         }
 
-                        DankIcon {
+                        HypeIcon {
                             name: "select_window"
                             size: 40
                             color: Theme.surfaceVariantText
@@ -598,7 +598,7 @@ Item {
                                             Layout.alignment: Qt.AlignVCenter
                                             spacing: 2
 
-                                            DankActionButton {
+                                            HypeActionButton {
                                                 buttonSize: 28
                                                 iconName: "edit"
                                                 iconSize: 16
@@ -607,7 +607,7 @@ Item {
                                                 onClicked: root.editRule(ruleDelegateItem.liveRuleData)
                                             }
 
-                                            DankActionButton {
+                                            HypeActionButton {
                                                 id: deleteBtn
                                                 buttonSize: 28
                                                 iconName: "delete"
@@ -659,7 +659,7 @@ Item {
                                     }
                                 }
 
-                                DankIcon {
+                                HypeIcon {
                                     x: Theme.spacingM - 2
                                     y: (ruleCard.height / 2) - (size / 2)
                                     name: "drag_indicator"

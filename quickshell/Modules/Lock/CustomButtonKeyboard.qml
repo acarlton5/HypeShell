@@ -1,11 +1,11 @@
-pragma ComponentBehavior: Bound
+﻿pragma ComponentBehavior: Bound
 
 import QtQuick
 import qs.Common
 import qs.Services
 import qs.Widgets
 
-DankActionButton {
+HypeActionButton {
     id: customButtonKeyboard
     circular: false
     property string text: ""
@@ -16,7 +16,7 @@ DankActionButton {
 
     property bool isIcon: text === "keyboard_hide" || text === "Backspace" || text === "Enter"
 
-    DankIcon {
+    HypeIcon {
         anchors.centerIn: parent
         name: {
             if (parent.text === "keyboard_hide") return "keyboard_hide"

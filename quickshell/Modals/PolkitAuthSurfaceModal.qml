@@ -1,15 +1,15 @@
-import QtQuick
+﻿import QtQuick
 import Quickshell.Wayland
 import qs.Common
 import qs.Modals.Common
 import qs.Services
 
-DankModal {
+HypeModal {
     id: root
 
     property var parentPopout: null
 
-    layerNamespace: "dms:polkit-auth-surface"
+    layerNamespace: "hype:polkit-auth-surface"
     modalWidth: 460
     modalHeight: 220
     backgroundColor: Theme.withAlpha(Theme.surfaceContainer, Theme.popupTransparency)

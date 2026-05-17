@@ -1,12 +1,12 @@
-import QtQuick
+﻿import QtQuick
 import qs.Common
 import qs.Modals.Common
 import qs.Widgets
 
-DankModal {
+HypeModal {
     id: root
 
-    layerNamespace: "dms:confirm-modal"
+    layerNamespace: "hype:confirm-modal"
     keepPopoutsOpen: true
 
     property string confirmTitle: ""

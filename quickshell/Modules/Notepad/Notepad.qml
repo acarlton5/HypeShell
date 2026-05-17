@@ -1,4 +1,4 @@
-pragma ComponentBehavior: Bound
+﻿pragma ComponentBehavior: Bound
 import QtQuick
 import Quickshell
 import Quickshell.Io
@@ -369,7 +369,7 @@ Item {
         id: confirmationDialogLoader
         active: false
 
-        DankModal {
+        HypeModal {
             id: confirmationDialog
 
             modalWidth: 400
@@ -511,7 +511,7 @@ Item {
                         }
                     }
 
-                    DankActionButton {
+                    HypeActionButton {
                         anchors.top: parent.top
                         anchors.right: parent.right
                         anchors.topMargin: Theme.spacingM

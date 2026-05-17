@@ -1,22 +1,22 @@
-{
+﻿{
   self,
   pkgs,
   ...
 }:
 pkgs.testers.runNixOSTest {
-  name = "dms-nixos-module";
+  name = "hype-nixos-module";
 
   nodes.machine = {
     imports = [
-      self.nixosModules.dank-material-shell
+      self.nixosModules.hype-material-shell
     ];
 
-    users.users.danklinux = {
+    users.users.hypelinux = {
       isNormalUser = true;
       extraGroups = [ "wheel" ];
     };
 
-    programs.dank-material-shell = {
+    programs.hype-material-shell = {
       enable = true;
       systemd.enable = true;
       plugins = {
@@ -34,13 +34,13 @@ pkgs.testers.runNixOSTest {
 
     machine.wait_for_unit("multi-user.target")
 
-    machine.succeed("command -v dms")
+    machine.succeed("command -v hype")
     machine.succeed("command -v quickshell")
-    machine.succeed("su -- danklinux -c 'dms --help >/dev/null'")
-    machine.succeed("test -d /etc/xdg/quickshell/dms-plugins")
-    machine.succeed("test -f /run/current-system/sw/lib/systemd/user/dms.service")
+    machine.succeed("su -- hypelinux -c 'hype --help >/dev/null'")
+    machine.succeed("test -d /etc/xdg/quickshell/hype-plugins")
+    machine.succeed("test -f /run/current-system/sw/lib/systemd/user/hype.service")
 
-    payload = json.loads(machine.succeed("su -- danklinux -c 'dms doctor --json'"))
+    payload = json.loads(machine.succeed("su -- hypelinux -c 'hype doctor --json'"))
     t.assertIn("summary", payload)
     t.assertIsInstance(payload.get("results"), list)
   '';

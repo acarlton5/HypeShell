@@ -1,4 +1,4 @@
-pragma ComponentBehavior: Bound
+﻿pragma ComponentBehavior: Bound
 
 import QtQuick
 import qs.Common
@@ -131,7 +131,7 @@ Column {
             anchors.verticalCenter: parent.verticalCenter
             spacing: Theme.spacingM
 
-            DankButton {
+            HypeButton {
                 text: I18n.tr("Reset Position")
                 backgroundColor: Theme.surfaceHover
                 textColor: Theme.surfaceText
@@ -145,7 +145,7 @@ Column {
                 }
             }
 
-            DankButton {
+            HypeButton {
                 text: I18n.tr("Reset Size")
                 backgroundColor: Theme.surfaceHover
                 textColor: Theme.surfaceText

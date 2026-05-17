@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import Quickshell.Hyprland
 import Quickshell.I3
 import Quickshell.Services.SystemTray
@@ -888,7 +888,7 @@ Item {
             barThickness: barWindow.effectiveBarThickness
             widgetThickness: barWindow.widgetThickness
             section: topBarContent.getWidgetSection(parent) || "center"
-            popoutTarget: dankDashPopoutLoader.item ?? null
+            popoutTarget: hypeDashPopoutLoader.item ?? null
             parentScreen: barWindow.screen
 
             Component.onCompleted: {
@@ -902,14 +902,14 @@ Item {
             }
 
             onClockClicked: {
-                dankDashPopoutLoader.active = true;
-                if (dankDashPopoutLoader.item) {
+                hypeDashPopoutLoader.active = true;
+                if (hypeDashPopoutLoader.item) {
                     const effectiveBarConfig = topBarContent.barConfig;
                     const barPosition = barWindow.axis?.edge === "left" ? 2 : (barWindow.axis?.edge === "right" ? 3 : (barWindow.axis?.edge === "top" ? 0 : 1));
-                    if (dankDashPopoutLoader.item.setBarContext) {
-                        dankDashPopoutLoader.item.setBarContext(barPosition, effectiveBarConfig?.bottomGap ?? 0);
+                    if (hypeDashPopoutLoader.item.setBarContext) {
+                        hypeDashPopoutLoader.item.setBarContext(barPosition, effectiveBarConfig?.bottomGap ?? 0);
                     }
-                    if (dankDashPopoutLoader.item.setTriggerPosition) {
+                    if (hypeDashPopoutLoader.item.setTriggerPosition) {
                         let triggerPos, triggerWidth;
                         if (section === "center") {
                             const centerSection = barWindow.isVertical ? (barWindow.axis?.edge === "left" ? vCenterSection : vCenterSection) : hCenterSection;
@@ -933,11 +933,11 @@ Item {
                             triggerWidth = visualWidth;
                         }
                         const pos = SettingsData.getPopupTriggerPosition(triggerPos, barWindow.screen, barWindow.effectiveBarThickness, triggerWidth, effectiveBarConfig?.spacing ?? 4, barPosition, effectiveBarConfig);
-                        dankDashPopoutLoader.item.setTriggerPosition(pos.x, pos.y, pos.width, section, barWindow.screen, barPosition, barWindow.effectiveBarThickness, effectiveBarConfig?.spacing ?? 4, effectiveBarConfig);
+                        hypeDashPopoutLoader.item.setTriggerPosition(pos.x, pos.y, pos.width, section, barWindow.screen, barPosition, barWindow.effectiveBarThickness, effectiveBarConfig?.spacing ?? 4, effectiveBarConfig);
                     } else {
-                        dankDashPopoutLoader.item.triggerScreen = barWindow.screen;
+                        hypeDashPopoutLoader.item.triggerScreen = barWindow.screen;
                     }
-                    PopoutManager.requestPopout(dankDashPopoutLoader.item, 0, (effectiveBarConfig?.id ?? "default") + "-" + section + "-0");
+                    PopoutManager.requestPopout(hypeDashPopoutLoader.item, 0, (effectiveBarConfig?.id ?? "default") + "-" + section + "-0");
                 }
             }
         }
@@ -952,17 +952,17 @@ Item {
             barThickness: barWindow.effectiveBarThickness
             widgetThickness: barWindow.widgetThickness
             section: topBarContent.getWidgetSection(parent) || "center"
-            popoutTarget: dankDashPopoutLoader.item ?? null
+            popoutTarget: hypeDashPopoutLoader.item ?? null
             parentScreen: barWindow.screen
             onClicked: {
-                dankDashPopoutLoader.active = true;
-                if (dankDashPopoutLoader.item) {
+                hypeDashPopoutLoader.active = true;
+                if (hypeDashPopoutLoader.item) {
                     const effectiveBarConfig = topBarContent.barConfig;
                     const barPosition = barWindow.axis?.edge === "left" ? 2 : (barWindow.axis?.edge === "right" ? 3 : (barWindow.axis?.edge === "top" ? 0 : 1));
-                    if (dankDashPopoutLoader.item.setBarContext) {
-                        dankDashPopoutLoader.item.setBarContext(barPosition, effectiveBarConfig?.bottomGap ?? 0);
+                    if (hypeDashPopoutLoader.item.setBarContext) {
+                        hypeDashPopoutLoader.item.setBarContext(barPosition, effectiveBarConfig?.bottomGap ?? 0);
                     }
-                    if (dankDashPopoutLoader.item.setTriggerPosition) {
+                    if (hypeDashPopoutLoader.item.setTriggerPosition) {
                         let triggerPos, triggerWidth;
                         if (section === "center") {
                             const centerSection = barWindow.isVertical ? (barWindow.axis?.edge === "left" ? vCenterSection : vCenterSection) : hCenterSection;
@@ -986,11 +986,11 @@ Item {
                             triggerWidth = visualWidth;
                         }
                         const pos = SettingsData.getPopupTriggerPosition(triggerPos, barWindow.screen, barWindow.effectiveBarThickness, triggerWidth, effectiveBarConfig?.spacing ?? 4, barPosition, effectiveBarConfig);
-                        dankDashPopoutLoader.item.setTriggerPosition(pos.x, pos.y, pos.width, section, barWindow.screen, barPosition, barWindow.effectiveBarThickness, effectiveBarConfig?.spacing ?? 4, effectiveBarConfig);
+                        hypeDashPopoutLoader.item.setTriggerPosition(pos.x, pos.y, pos.width, section, barWindow.screen, barPosition, barWindow.effectiveBarThickness, effectiveBarConfig?.spacing ?? 4, effectiveBarConfig);
                     } else {
-                        dankDashPopoutLoader.item.triggerScreen = barWindow.screen;
+                        hypeDashPopoutLoader.item.triggerScreen = barWindow.screen;
                     }
-                    PopoutManager.requestPopout(dankDashPopoutLoader.item, 1, (effectiveBarConfig?.id ?? "default") + "-" + section + "-1");
+                    PopoutManager.requestPopout(hypeDashPopoutLoader.item, 1, (effectiveBarConfig?.id ?? "default") + "-" + section + "-1");
                 }
             }
         }
@@ -1004,19 +1004,19 @@ Item {
             barThickness: barWindow.effectiveBarThickness
             widgetThickness: barWindow.widgetThickness
             section: topBarContent.getWidgetSection(parent) || "center"
-            popoutTarget: dankDashPopoutLoader.item ?? null
+            popoutTarget: hypeDashPopoutLoader.item ?? null
             parentScreen: barWindow.screen
             onClicked: {
-                dankDashPopoutLoader.active = true;
-                if (dankDashPopoutLoader.item) {
+                hypeDashPopoutLoader.active = true;
+                if (hypeDashPopoutLoader.item) {
                     const effectiveBarConfig = topBarContent.barConfig;
                     // Calculate barPosition from axis.edge
                     const barPosition = barWindow.axis?.edge === "left" ? 2 : (barWindow.axis?.edge === "right" ? 3 : (barWindow.axis?.edge === "top" ? 0 : 1));
-                    if (dankDashPopoutLoader.item.setBarContext) {
-                        dankDashPopoutLoader.item.setBarContext(barPosition, effectiveBarConfig?.bottomGap ?? 0);
+                    if (hypeDashPopoutLoader.item.setBarContext) {
+                        hypeDashPopoutLoader.item.setBarContext(barPosition, effectiveBarConfig?.bottomGap ?? 0);
                     }
-                    if (dankDashPopoutLoader.item.setTriggerPosition) {
-                        // For center section widgets, use center section bounds for DankDash centering
+                    if (hypeDashPopoutLoader.item.setTriggerPosition) {
+                        // For center section widgets, use center section bounds for HypeDash centering
                         let triggerPos, triggerWidth;
                         if (section === "center") {
                             const centerSection = barWindow.isVertical ? (barWindow.axis?.edge === "left" ? vCenterSection : vCenterSection) : hCenterSection;
@@ -1028,7 +1028,7 @@ Item {
                                     triggerPos = centerGlobalPos;
                                     triggerWidth = centerSection.height;
                                 } else {
-                                    // For horizontal bars, use left edge (DankPopout will center it)
+                                    // For horizontal bars, use left edge (HypePopout will center it)
                                     const centerGlobalPos = centerSection.mapToItem(null, 0, 0);
                                     triggerPos = centerGlobalPos;
                                     triggerWidth = centerSection.width;
@@ -1042,11 +1042,11 @@ Item {
                             triggerWidth = visualWidth;
                         }
                         const pos = SettingsData.getPopupTriggerPosition(triggerPos, barWindow.screen, barWindow.effectiveBarThickness, triggerWidth, effectiveBarConfig?.spacing ?? 4, barPosition, effectiveBarConfig);
-                        dankDashPopoutLoader.item.setTriggerPosition(pos.x, pos.y, pos.width, section, barWindow.screen, barPosition, barWindow.effectiveBarThickness, effectiveBarConfig?.spacing ?? 4, effectiveBarConfig);
+                        hypeDashPopoutLoader.item.setTriggerPosition(pos.x, pos.y, pos.width, section, barWindow.screen, barPosition, barWindow.effectiveBarThickness, effectiveBarConfig?.spacing ?? 4, effectiveBarConfig);
                     } else {
-                        dankDashPopoutLoader.item.triggerScreen = barWindow.screen;
+                        hypeDashPopoutLoader.item.triggerScreen = barWindow.screen;
                     }
-                    PopoutManager.requestPopout(dankDashPopoutLoader.item, 3, (effectiveBarConfig?.id ?? "default") + "-" + section + "-3");
+                    PopoutManager.requestPopout(hypeDashPopoutLoader.item, 3, (effectiveBarConfig?.id ?? "default") + "-" + section + "-3");
                 }
             }
         }

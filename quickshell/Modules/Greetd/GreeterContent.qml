@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import QtQuick.Effects
 import QtQuick.Layouts
 import Qt.labs.folderlistmodel
@@ -673,7 +673,7 @@ Item {
         }
     }
 
-    DankBackdrop {
+    HypeBackdrop {
         anchors.fill: parent
         screenName: root.screenName
         visible: {
@@ -883,7 +883,7 @@ Item {
                     spacing: Theme.spacingL
                     Layout.fillWidth: true
 
-                    DankCircularImage {
+                    HypeCircularImage {
                         Layout.preferredWidth: 60
                         Layout.preferredHeight: 60
                         imageSource: {
@@ -907,7 +907,7 @@ Item {
                         border.color: inputField.activeFocus ? Theme.primary : Qt.rgba(1, 1, 1, 0.3)
                         border.width: inputField.activeFocus ? 2 : 1
 
-                        DankIcon {
+                        HypeIcon {
                             id: lockIcon
 
                             anchors.left: parent.left
@@ -1056,7 +1056,7 @@ Item {
                             }
                         }
 
-                        DankActionButton {
+                        HypeActionButton {
                             id: revealButton
 
                             anchors.right: externalAuthButton.visible ? externalAuthButton.left : (virtualKeyboardButton.visible ? virtualKeyboardButton.left : (enterButton.visible ? enterButton.left : parent.right))
@@ -1068,7 +1068,7 @@ Item {
                             enabled: visible
                             onClicked: parent.showPassword = !parent.showPassword
                         }
-                        DankActionButton {
+                        HypeActionButton {
                             id: externalAuthButton
 
                             anchors.right: virtualKeyboardButton.visible ? virtualKeyboardButton.left : (enterButton.visible ? enterButton.left : parent.right)
@@ -1080,7 +1080,7 @@ Item {
                             enabled: visible
                             onClicked: root.startAuthSession(false)
                         }
-                        DankActionButton {
+                        HypeActionButton {
                             id: virtualKeyboardButton
 
                             anchors.right: enterButton.visible ? enterButton.left : parent.right
@@ -1099,7 +1099,7 @@ Item {
                             }
                         }
 
-                        DankActionButton {
+                        HypeActionButton {
                             id: enterButton
 
                             anchors.right: parent.right
@@ -1180,7 +1180,7 @@ Item {
                         anchors.centerIn: parent
                         spacing: Theme.spacingS
 
-                        DankIcon {
+                        HypeIcon {
                             name: "people"
                             size: Theme.iconSize - 4
                             color: Theme.surfaceText
@@ -1237,7 +1237,7 @@ Item {
                         width: Theme.iconSize
                         height: Theme.iconSize
 
-                        DankIcon {
+                        HypeIcon {
                             name: "keyboard"
                             size: Theme.iconSize
                             color: "white"
@@ -1305,7 +1305,7 @@ Item {
                 visible: GreetdSettings.weatherEnabled && WeatherService.weather.available
                 anchors.verticalCenter: parent.verticalCenter
 
-                DankIcon {
+                HypeIcon {
                     name: WeatherService.getWeatherIcon(WeatherService.weather.wCode)
                     size: Theme.iconSize
                     color: "white"
@@ -1334,7 +1334,7 @@ Item {
                 anchors.verticalCenter: parent.verticalCenter
                 visible: NetworkService.networkStatus !== "disconnected" || (BluetoothService.available && BluetoothService.enabled) || (AudioService.sink && AudioService.sink.audio)
 
-                DankIcon {
+                HypeIcon {
                     name: NetworkService.networkStatus === "ethernet" ? "lan" : NetworkService.wifiSignalIcon
                     size: Theme.iconSize - 2
                     color: NetworkService.networkStatus !== "disconnected" ? "white" : Qt.rgba(255, 255, 255, 0.5)
@@ -1342,7 +1342,7 @@ Item {
                     visible: NetworkService.networkStatus !== "disconnected"
                 }
 
-                DankIcon {
+                HypeIcon {
                     name: "bluetooth"
                     size: Theme.iconSize - 2
                     color: "white"
@@ -1350,7 +1350,7 @@ Item {
                     visible: BluetoothService.available && BluetoothService.enabled
                 }
 
-                DankIcon {
+                HypeIcon {
                     name: {
                         if (!AudioService.sink?.audio) {
                             return "volume_up";
@@ -1384,7 +1384,7 @@ Item {
                 visible: BatteryService.batteryAvailable
                 anchors.verticalCenter: parent.verticalCenter
 
-                DankIcon {
+                HypeIcon {
                     name: {
                         if (BatteryService.isCharging) {
                             if (BatteryService.batteryLevel >= 90) {
@@ -1491,7 +1491,7 @@ Item {
             }
         }
 
-        DankActionButton {
+        HypeActionButton {
             anchors.bottom: parent.bottom
             anchors.left: parent.left
             anchors.margins: Theme.spacingXL
@@ -1533,7 +1533,7 @@ Item {
                 }
             }
 
-            DankDropdown {
+            HypeDropdown {
                 id: sessionDropdown
                 anchors.fill: parent
                 text: ""

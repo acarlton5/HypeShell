@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import QtQuick.Effects
 import Quickshell
 import Quickshell.Wayland
@@ -193,7 +193,7 @@ BasePill {
                 smooth: true
                 mipmap: true
                 asynchronous: true
-                layer.enabled: activeWindow && (activeWindow.appId === "org.quickshell" || activeWindow.appId === "com.danklinux.dms")
+                layer.enabled: activeWindow && (activeWindow.appId === "org.quickshell" || activeWindow.appId === "com.hypelinux.hype")
                 layer.smooth: true
                 layer.mipmap: true
                 layer.effect: MultiEffect {
@@ -203,7 +203,7 @@ BasePill {
                 }
             }
 
-            DankIcon {
+            HypeIcon {
                 anchors.centerIn: parent
                 size: 18
                 name: "sports_esports"
@@ -326,6 +326,6 @@ BasePill {
     Loader {
         id: tooltipLoader
         active: false
-        sourceComponent: DankTooltip {}
+        sourceComponent: HypeTooltip {}
     }
 }

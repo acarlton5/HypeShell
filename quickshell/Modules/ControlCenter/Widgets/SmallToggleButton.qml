@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import qs.Common
 import qs.Widgets
 
@@ -56,7 +56,7 @@ Rectangle {
         }
     }
 
-    DankIcon {
+    HypeIcon {
         anchors.centerIn: parent
         name: iconName
         size: Theme.iconSize
@@ -65,7 +65,7 @@ Rectangle {
         onRotationCompleted: root.iconRotationCompleted()
     }
 
-    DankRipple {
+    HypeRipple {
         id: ripple
         cornerRadius: root.radius
     }

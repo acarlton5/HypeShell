@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import qs.Common
 import qs.Services
 import qs.Widgets
@@ -12,7 +12,7 @@ Item {
         "zellij"
     ]
 
-    DankFlickable {
+    HypeFlickable {
         anchors.fill: parent
         clip: true
         contentHeight: mainColumn.height + Theme.spacingXL
@@ -72,7 +72,7 @@ Item {
                         wrapMode: Text.WordWrap
                     }
 
-                    DankTextField {
+                    HypeTextField {
                         width: parent.width
                         text: SettingsData.muxCustomCommand
                         placeholderText: I18n.tr("Enter command or script path")
@@ -99,7 +99,7 @@ Item {
                         wrapMode: Text.WordWrap
                     }
 
-                    DankTextField {
+                    HypeTextField {
                         width: parent.width
                         text: SettingsData.muxSessionFilter
                         placeholderText: I18n.tr("e.g., scratch, /^tmp_.*/, build")

@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import QtQuick.Effects
 import qs.Common
 import qs.Services
@@ -45,7 +45,7 @@ Item {
         }
 
         function loadImage() {
-            DMSService.sendRequest("clipboard.getEntry", {
+            HYPEService.sendRequest("clipboard.getEntry", {
                 "id": entry.id
             }, function (response) {
                 thumbnailImage.loadQueued = false;
@@ -160,7 +160,7 @@ Item {
         }
     }
 
-    DankIcon {
+    HypeIcon {
         visible: !(entryType === "image" && thumbnailImage.status === Image.Ready && thumbnailImage.source != "")
         name: {
             switch (entryType) {

@@ -1,4 +1,4 @@
-package colorpicker
+﻿package colorpicker
 
 import (
 	"fmt"
@@ -341,7 +341,7 @@ func (p *Picker) createLayerSurface(output *Output) (*LayerSurface, error) {
 		surface,
 		output.wlOutput,
 		uint32(wlr_layer_shell.ZwlrLayerShellV1LayerOverlay),
-		"dms-colorpicker",
+		"hype-colorpicker",
 	)
 	if err != nil {
 		return nil, fmt.Errorf("get layer surface: %w", err)

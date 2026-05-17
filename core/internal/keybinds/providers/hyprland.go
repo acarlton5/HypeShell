@@ -1,4 +1,4 @@
-package providers
+﻿package providers
 
 import (
 	"fmt"
@@ -13,7 +13,7 @@ import (
 
 type HyprlandProvider struct {
 	configPath       string
-	dmsBindsIncluded bool
+	hypeBindsIncluded bool
 	parsed           bool
 }
 
@@ -39,12 +39,12 @@ func (h *HyprlandProvider) Name() string {
 }
 
 func (h *HyprlandProvider) GetCheatSheet() (*keybinds.CheatSheet, error) {
-	result, err := ParseHyprlandKeysWithDMS(h.configPath)
+	result, err := ParseHyprlandKeysWithHYPE(h.configPath)
 	if err != nil {
 		return nil, fmt.Errorf("failed to parse hyprland config: %w", err)
 	}
 
-	h.dmsBindsIncluded = result.DMSBindsIncluded
+	h.hypeBindsIncluded = result.HYPEBindsIncluded
 	h.parsed = true
 
 	categorizedBinds := make(map[string][]keybinds.Keybind)
@@ -54,38 +54,38 @@ func (h *HyprlandProvider) GetCheatSheet() (*keybinds.CheatSheet, error) {
 		Title:            "Hyprland Keybinds",
 		Provider:         h.Name(),
 		Binds:            categorizedBinds,
-		DMSBindsIncluded: result.DMSBindsIncluded,
+		HYPEBindsIncluded: result.HYPEBindsIncluded,
 	}
 
-	if result.DMSStatus != nil {
-		sheet.DMSStatus = &keybinds.DMSBindsStatus{
-			Exists:          result.DMSStatus.Exists,
-			Included:        result.DMSStatus.Included,
-			IncludePosition: result.DMSStatus.IncludePosition,
-			TotalIncludes:   result.DMSStatus.TotalIncludes,
-			BindsAfterDMS:   result.DMSStatus.BindsAfterDMS,
-			Effective:       result.DMSStatus.Effective,
-			OverriddenBy:    result.DMSStatus.OverriddenBy,
-			StatusMessage:   result.DMSStatus.StatusMessage,
+	if result.HYPEStatus != nil {
+		sheet.HYPEStatus = &keybinds.HYPEBindsStatus{
+			Exists:          result.HYPEStatus.Exists,
+			Included:        result.HYPEStatus.Included,
+			IncludePosition: result.HYPEStatus.IncludePosition,
+			TotalIncludes:   result.HYPEStatus.TotalIncludes,
+			BindsAfterHYPE:   result.HYPEStatus.BindsAfterHYPE,
+			Effective:       result.HYPEStatus.Effective,
+			OverriddenBy:    result.HYPEStatus.OverriddenBy,
+			StatusMessage:   result.HYPEStatus.StatusMessage,
 		}
 	}
 
 	return sheet, nil
 }
 
-func (h *HyprlandProvider) HasDMSBindsIncluded() bool {
+func (h *HyprlandProvider) HasHYPEBindsIncluded() bool {
 	if h.parsed {
-		return h.dmsBindsIncluded
+		return h.hypeBindsIncluded
 	}
 
-	result, err := ParseHyprlandKeysWithDMS(h.configPath)
+	result, err := ParseHyprlandKeysWithHYPE(h.configPath)
 	if err != nil {
 		return false
 	}
 
-	h.dmsBindsIncluded = result.DMSBindsIncluded
+	h.hypeBindsIncluded = result.HYPEBindsIncluded
 	h.parsed = true
-	return h.dmsBindsIncluded
+	return h.hypeBindsIncluded
 }
 
 func (h *HyprlandProvider) convertSection(section *HyprlandSection, subcategory string, categorizedBinds map[string][]keybinds.Keybind, conflicts map[string]*HyprlandKeyBinding) {
@@ -144,7 +144,7 @@ func (h *HyprlandProvider) convertKeybind(kb *HyprlandKeyBinding, subcategory st
 
 	source := "config"
 	if isHyprlandShellBindsPath(kb.Source) {
-		source = "dms"
+		source = "hype"
 	}
 
 	bind := keybinds.Keybind{
@@ -156,7 +156,7 @@ func (h *HyprlandProvider) convertKeybind(kb *HyprlandKeyBinding, subcategory st
 		Flags:       kb.Flags,
 	}
 
-	if source == "dms" && conflicts != nil {
+	if source == "hype" && conflicts != nil {
 		normalizedKey := strings.ToLower(keyStr)
 		if conflictKb, ok := conflicts[normalizedKey]; ok {
 			bind.Conflict = &keybinds.Keybind{
@@ -376,7 +376,7 @@ func (h *HyprlandProvider) buildKeyString(mods, key string) string {
 
 func (h *HyprlandProvider) getBindSortPriority(action string) int {
 	switch {
-	case strings.HasPrefix(action, "exec") && (strings.Contains(action, "hype") || strings.Contains(action, "dms")):
+	case strings.HasPrefix(action, "exec") && (strings.Contains(action, "hype") || strings.Contains(action, "hype")):
 		return 0
 	case strings.Contains(action, "workspace"):
 		return 1

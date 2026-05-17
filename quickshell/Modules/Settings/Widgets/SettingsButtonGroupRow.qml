@@ -1,4 +1,4 @@
-pragma ComponentBehavior: Bound
+﻿pragma ComponentBehavior: Bound
 
 import QtQuick
 import qs.Common
@@ -112,7 +112,7 @@ Item {
             }
         }
 
-        DankButtonGroup {
+        HypeButtonGroup {
             id: buttonGroup
             anchors.verticalCenter: parent.verticalCenter
             selectionMode: "single"

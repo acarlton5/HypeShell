@@ -1,4 +1,4 @@
-package tui
+﻿package tui
 
 import (
 	"fmt"
@@ -120,15 +120,15 @@ func (m Model) viewInstallingPackages() string {
 	return b.String()
 }
 
-func dmsPackageName(distroID string, dependencies []deps.Dependency) string {
+func hypePackageName(distroID string, dependencies []deps.Dependency) string {
 	config, ok := distros.Registry[distroID]
 	if !ok {
-		return "dms"
+		return "hype"
 	}
 
 	var isGit bool
 	for _, dep := range dependencies {
-		if dep.Name == "dms (DankMaterialShell)" {
+		if dep.Name == "hype (HypeMaterialShell)" {
 			isGit = dep.Variant == deps.VariantGit
 			break
 		}
@@ -137,16 +137,16 @@ func dmsPackageName(distroID string, dependencies []deps.Dependency) string {
 	switch config.Family {
 	case distros.FamilyArch:
 		if isGit {
-			return "dms-shell-git"
+			return "hype-shell-git"
 		}
-		return "dms-shell"
+		return "hype-shell"
 	case distros.FamilyFedora, distros.FamilyUbuntu, distros.FamilyDebian, distros.FamilySUSE:
 		if isGit {
-			return "dms-git"
+			return "hype-git"
 		}
-		return "dms"
+		return "hype"
 	default:
-		return "dms"
+		return "hype"
 	}
 }
 
@@ -156,9 +156,9 @@ func uninstallCommand(distroID string, dependencies []deps.Dependency) string {
 		return ""
 	}
 	if config.Family == distros.FamilyGentoo {
-		return "rm -rf ~/.config/quickshell/dms && sudo rm /usr/local/bin/dms"
+		return "rm -rf ~/.config/quickshell/hype && sudo rm /usr/local/bin/hype"
 	}
-	pkg := dmsPackageName(distroID, dependencies)
+	pkg := hypePackageName(distroID, dependencies)
 	switch config.Family {
 	case distros.FamilyArch:
 		return "sudo pacman -Rs " + pkg
@@ -191,7 +191,7 @@ func (m Model) viewInstallComplete() string {
 		"• Window manager and dependencies installed",
 		"• Terminal and development tools configured",
 		"• Configuration files deployed with backups",
-		"• System optimized for DankMaterialShell",
+		"• System optimized for HypeMaterialShell",
 	}
 
 	for _, item := range accomplishments {
@@ -209,8 +209,8 @@ func (m Model) viewInstallComplete() string {
 	labelStyle := lipgloss.NewStyle().Foreground(lipgloss.Color(theme.Subtle))
 
 	b.WriteString(labelStyle.Render("Troubleshooting:") + "\n")
-	b.WriteString(labelStyle.Render("  Disable autostart: ") + cmdStyle.Render("systemctl --user disable dms") + "\n")
-	b.WriteString(labelStyle.Render("  View logs:         ") + cmdStyle.Render("journalctl --user -u dms") + "\n")
+	b.WriteString(labelStyle.Render("  Disable autostart: ") + cmdStyle.Render("systemctl --user disable hype") + "\n")
+	b.WriteString(labelStyle.Render("  View logs:         ") + cmdStyle.Render("journalctl --user -u hype") + "\n")
 
 	if m.osInfo != nil {
 		if cmd := uninstallCommand(m.osInfo.Distribution.ID, m.dependencies); cmd != "" {

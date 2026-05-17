@@ -1,11 +1,11 @@
-{
+﻿{
   config,
   lib,
   pkgs,
   ...
 }:
 let
-  cfg = config.programs.dank-material-shell;
+  cfg = config.programs.hype-material-shell;
 in
 {
   packages = [

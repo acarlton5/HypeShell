@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import qs.Common
 import qs.Services
 import qs.Widgets
@@ -7,7 +7,7 @@ import qs.Modules.Settings.Widgets
 Item {
     id: root
 
-    DankFlickable {
+    HypeFlickable {
         anchors.fill: parent
         clip: true
         contentHeight: mainColumn.height + Theme.spacingXL
@@ -83,7 +83,7 @@ Item {
                             horizontalAlignment: Text.AlignLeft
                         }
 
-                        DankTextField {
+                        HypeTextField {
                             width: 100
                             height: 28
                             placeholderText: "3"
@@ -456,7 +456,7 @@ Item {
                                 elide: Text.ElideRight
                             }
 
-                            DankIconPicker {
+                            HypeIconPicker {
                                 id: iconPicker
                                 anchors.verticalCenter: parent.verticalCenter
 
@@ -496,7 +496,7 @@ Item {
                                 border.width: 0
                                 anchors.verticalCenter: parent.verticalCenter
 
-                                DankIcon {
+                                HypeIcon {
                                     name: "close"
                                     size: 16
                                     color: clearMouseArea.containsMouse ? Theme.error : Theme.outline

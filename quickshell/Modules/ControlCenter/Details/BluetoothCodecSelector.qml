@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import qs.Common
 import qs.Services
 import qs.Widgets
@@ -188,7 +188,7 @@ Item {
                 width: parent.width
                 spacing: Theme.spacingM
 
-                DankIcon {
+                HypeIcon {
                     name: device ? BluetoothService.getDeviceIcon(device) : "headset"
                     size: Theme.iconSize + 4
                     color: Theme.primary
@@ -283,7 +283,7 @@ Item {
                             }
                         }
 
-                        DankIcon {
+                        HypeIcon {
                             name: "check"
                             size: Theme.iconSize - 4
                             color: Theme.primary
@@ -293,7 +293,7 @@ Item {
                             visible: modelData.name === currentCodec
                         }
 
-                        DankRipple {
+                        HypeRipple {
                             id: codecRipple
                             cornerRadius: parent.radius
                         }

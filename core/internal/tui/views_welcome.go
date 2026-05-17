@@ -1,4 +1,4 @@
-package tui
+﻿package tui
 
 import (
 	"fmt"
@@ -30,17 +30,17 @@ func (m Model) viewWelcome() string {
 	titleText := lipgloss.NewStyle().
 		Foreground(lipgloss.Color(theme.Primary)).
 		Bold(true).
-		Render("dankinstall")
+		Render("hypeinstall")
 
 	versionTag := lipgloss.NewStyle().
 		Foreground(lipgloss.Color(theme.Accent)).
 		Italic(true).
-		Render(" // Dank Linux Installer")
+		Render(" // Hype Linux Installer")
 
 	subtitle := lipgloss.NewStyle().
 		Foreground(lipgloss.Color(theme.Subtle)).
 		Italic(true).
-		Render("Quickstart for a Dank Desktop")
+		Render("Quickstart for a Hype Desktop")
 
 	b.WriteString(decorator)
 	b.WriteString("\n")
@@ -69,9 +69,9 @@ func (m Model) viewWelcome() string {
 			case "debian":
 				errorMsg = fmt.Sprintf("Debian %s is not supported.\n\nOnly Debian 13+ (Trixie) is supported.\n\nPlease upgrade to Debian 13 or later.", m.osInfo.VersionID)
 			case "nixos":
-				errorMsg = "See the NixOS documentation for installation instructions: https://danklinux.com/docs/dankmaterialshell/nixos."
+				errorMsg = "See the NixOS documentation for installation instructions: https://hypelinux.com/docs/hypematerialshell/nixos."
 			default:
-				errorMsg = fmt.Sprintf("%s is not supported.\nFeel free to request on https://github.com/AvengeMedia/DankMaterialShell", m.osInfo.PrettyName)
+				errorMsg = fmt.Sprintf("%s is not supported.\nFeel free to request on https://github.com/AvengeMedia/HypeMaterialShell", m.osInfo.PrettyName)
 			}
 
 			errorMsgStyled := lipgloss.NewStyle().
@@ -110,7 +110,7 @@ func (m Model) viewWelcome() string {
 			b.WriteString(featTitle + "\n\n")
 
 			features := []string{
-				"[shell]   dms (DankMaterialShell)",
+				"[shell]   hype (HypeMaterialShell)",
 				"[wm]      niri or Hyprland",
 				"[term]    Ghostty, kitty, or Alacritty",
 				"[style]   All the themes, automatically.",

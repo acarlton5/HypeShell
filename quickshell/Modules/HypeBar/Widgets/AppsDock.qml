@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import QtQuick.Effects
 import Quickshell
 import Quickshell.Widgets
@@ -249,7 +249,7 @@ BasePill {
             let appId = Paths.moddedAppId(rawAppId);
 
             let coreAppData = null;
-            if (rawAppId === "org.quickshell" || rawAppId === "com.danklinux.dms") {
+            if (rawAppId === "org.quickshell" || rawAppId === "com.hypelinux.hype") {
                 coreAppData = getCoreAppDataByTitle(toplevel.title);
                 if (coreAppData) {
                     appId = coreAppData.builtInPluginId;
@@ -451,7 +451,7 @@ BasePill {
     Loader {
         id: tooltipLoader
         active: false
-        sourceComponent: DankTooltip {}
+        sourceComponent: HypeTooltip {}
     }
 
     Component {
@@ -653,7 +653,7 @@ BasePill {
                             if (!modelData || !modelData.isCoreApp || !modelData.coreAppData)
                                 return "";
                             const appId = modelData.coreAppData.id || modelData.coreAppData.builtInPluginId;
-                            if ((appId === "dms_settings" || appId === "dms_notepad" || appId === "dms_sysmon") && modelData.coreAppData.cornerIcon) {
+                            if ((appId === "hype_settings" || appId === "hype_notepad" || appId === "hype_sysmon") && modelData.coreAppData.cornerIcon) {
                                 return "material:" + modelData.coreAppData.cornerIcon;
                             }
                             return modelData.coreAppData.icon || "";
@@ -698,7 +698,7 @@ BasePill {
                         mipmap: true
                         asynchronous: true
                         visible: status === Image.Ready && !coreIcon.visible
-                        layer.enabled: appItem.appId === "org.quickshell" || appItem.appId === "com.danklinux.dms"
+                        layer.enabled: appItem.appId === "org.quickshell" || appItem.appId === "com.hypelinux.hype"
                         layer.smooth: true
                         layer.mipmap: true
                         layer.effect: MultiEffect {
@@ -718,7 +718,7 @@ BasePill {
                         }
                     }
 
-                    DankIcon {
+                    HypeIcon {
                         readonly property bool isCompact: (widgetData?.runningAppsCompactMode !== undefined ? widgetData.runningAppsCompactMode : SettingsData.runningAppsCompactMode)
                         anchors.left: (root.isVerticalOrientation || isCompact) ? undefined : parent.left
                         anchors.leftMargin: (root.isVerticalOrientation || isCompact) ? 0 : Theme.spacingXS
@@ -991,7 +991,7 @@ BasePill {
                                     break;
                                 }
 
-                                const shouldHidePin = modelData.appId === "org.quickshell" || modelData.appId === "com.danklinux.dms";
+                                const shouldHidePin = modelData.appId === "org.quickshell" || modelData.appId === "com.hypelinux.hype";
                                 const moddedId = Paths.moddedAppId(modelData.appId);
                                 const desktopEntry = moddedId ? DesktopEntries.heuristicLookup(moddedId) : null;
 

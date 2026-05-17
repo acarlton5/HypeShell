@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import qs.Common
 import qs.Widgets
 
@@ -70,7 +70,7 @@ Rectangle {
         }
     }
 
-    DankRipple {
+    HypeRipple {
         id: bodyRipple
         cornerRadius: root.radius
     }
@@ -108,14 +108,14 @@ Rectangle {
                 }
             }
 
-            DankIcon {
+            HypeIcon {
                 anchors.centerIn: parent
                 name: iconName
                 size: Theme.iconSize
                 color: isActive ? _tileIconActive : _tileIconInactive
             }
 
-            DankRipple {
+            HypeRipple {
                 id: tileRipple
                 cornerRadius: _tileRadius
             }

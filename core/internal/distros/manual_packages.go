@@ -1,4 +1,4 @@
-package distros
+﻿package distros
 
 import (
 	"context"
@@ -55,9 +55,9 @@ func (m *ManualPackageInstaller) InstallManualPackages(ctx context.Context, pack
 	for _, pkg := range packages {
 		variant := variantMap[pkg]
 		switch pkg {
-		case "dms (DankMaterialShell)", "dms":
-			if err := m.installDankMaterialShell(ctx, variant, sudoPassword, progressChan); err != nil {
-				return fmt.Errorf("failed to install DankMaterialShell: %w", err)
+		case "hype (HypeMaterialShell)", "hype":
+			if err := m.installHypeMaterialShell(ctx, variant, sudoPassword, progressChan); err != nil {
+				return fmt.Errorf("failed to install HypeMaterialShell: %w", err)
 			}
 		case "dgop":
 			if err := m.installDgop(ctx, sudoPassword, progressChan); err != nil {
@@ -103,7 +103,7 @@ func (m *ManualPackageInstaller) installDgop(ctx context.Context, sudoPassword s
 		return fmt.Errorf("HOME environment variable not set")
 	}
 
-	cacheDir := filepath.Join(homeDir, ".cache", "dankinstall")
+	cacheDir := filepath.Join(homeDir, ".cache", "hypeinstall")
 	if err := os.MkdirAll(cacheDir, 0o755); err != nil {
 		return fmt.Errorf("failed to create cache directory: %w", err)
 	}
@@ -159,8 +159,8 @@ func (m *ManualPackageInstaller) installNiri(ctx context.Context, sudoPassword s
 	m.log("Installing niri from source...")
 
 	homeDir, _ := os.UserHomeDir()
-	buildDir := filepath.Join(homeDir, ".cache", "dankinstall", "niri-build")
-	tmpDir := filepath.Join(homeDir, ".cache", "dankinstall", "tmp")
+	buildDir := filepath.Join(homeDir, ".cache", "hypeinstall", "niri-build")
+	tmpDir := filepath.Join(homeDir, ".cache", "hypeinstall", "tmp")
 	if err := os.MkdirAll(buildDir, 0o755); err != nil {
 		return fmt.Errorf("failed to create build directory: %w", err)
 	}
@@ -237,7 +237,7 @@ func (m *ManualPackageInstaller) installQuickshell(ctx context.Context, variant 
 		return fmt.Errorf("HOME environment variable not set")
 	}
 
-	cacheDir := filepath.Join(homeDir, ".cache", "dankinstall")
+	cacheDir := filepath.Join(homeDir, ".cache", "hypeinstall")
 	if err := os.MkdirAll(cacheDir, 0o755); err != nil {
 		return fmt.Errorf("failed to create cache directory: %w", err)
 	}
@@ -343,7 +343,7 @@ func (m *ManualPackageInstaller) installHyprland(ctx context.Context, sudoPasswo
 		return fmt.Errorf("HOME environment variable not set")
 	}
 
-	cacheDir := filepath.Join(homeDir, ".cache", "dankinstall")
+	cacheDir := filepath.Join(homeDir, ".cache", "hypeinstall")
 	if err := os.MkdirAll(cacheDir, 0o755); err != nil {
 		return fmt.Errorf("failed to create cache directory: %w", err)
 	}
@@ -406,7 +406,7 @@ func (m *ManualPackageInstaller) installGhostty(ctx context.Context, sudoPasswor
 		return fmt.Errorf("HOME environment variable not set")
 	}
 
-	cacheDir := filepath.Join(homeDir, ".cache", "dankinstall")
+	cacheDir := filepath.Join(homeDir, ".cache", "hypeinstall")
 	if err := os.MkdirAll(cacheDir, 0o755); err != nil {
 		return fmt.Errorf("failed to create cache directory: %w", err)
 	}
@@ -505,41 +505,41 @@ func (m *ManualPackageInstaller) installMatugen(ctx context.Context, sudoPasswor
 	return nil
 }
 
-func (m *ManualPackageInstaller) installDankMaterialShell(ctx context.Context, variant deps.PackageVariant, sudoPassword string, progressChan chan<- InstallProgressMsg) error {
-	m.log("Installing DankMaterialShell (DMS)...")
+func (m *ManualPackageInstaller) installHypeMaterialShell(ctx context.Context, variant deps.PackageVariant, sudoPassword string, progressChan chan<- InstallProgressMsg) error {
+	m.log("Installing HypeMaterialShell (HYPE)...")
 
-	if err := m.installDMSBinary(ctx, sudoPassword, progressChan); err != nil {
-		m.logError("Failed to install DMS binary", err)
+	if err := m.installHYPEBinary(ctx, sudoPassword, progressChan); err != nil {
+		m.logError("Failed to install HYPE binary", err)
 	}
 
-	dmsPath := filepath.Join(os.Getenv("HOME"), ".config/quickshell/dms")
+	hypePath := filepath.Join(os.Getenv("HOME"), ".config/quickshell/hype")
 
-	if _, err := os.Stat(dmsPath); os.IsNotExist(err) {
+	if _, err := os.Stat(hypePath); os.IsNotExist(err) {
 		progressChan <- InstallProgressMsg{
 			Phase:       PhaseSystemPackages,
 			Progress:    0.90,
-			Step:        "Cloning DankMaterialShell...",
+			Step:        "Cloning HypeMaterialShell...",
 			IsComplete:  false,
-			CommandInfo: "git clone https://github.com/AvengeMedia/DankMaterialShell.git",
+			CommandInfo: "git clone https://github.com/AvengeMedia/HypeMaterialShell.git",
 		}
 
-		configDir := filepath.Dir(dmsPath)
+		configDir := filepath.Dir(hypePath)
 		if err := os.MkdirAll(configDir, 0o755); err != nil {
 			return fmt.Errorf("failed to create quickshell config directory: %w", err)
 		}
 
 		cloneCmd := exec.CommandContext(ctx, "git", "clone",
-			"https://github.com/AvengeMedia/DankMaterialShell.git", dmsPath)
+			"https://github.com/AvengeMedia/HypeMaterialShell.git", hypePath)
 		if err := cloneCmd.Run(); err != nil {
-			return fmt.Errorf("failed to clone DankMaterialShell: %w", err)
+			return fmt.Errorf("failed to clone HypeMaterialShell: %w", err)
 		}
 
-		if forceDMSGit || variant == deps.VariantGit {
+		if forceHYPEGit || variant == deps.VariantGit {
 			m.log("Using git variant (master branch)")
 			return nil
 		}
 
-		tagCmd := exec.CommandContext(ctx, "git", "-C", dmsPath, "describe", "--tags", "--abbrev=0", "origin/master")
+		tagCmd := exec.CommandContext(ctx, "git", "-C", hypePath, "describe", "--tags", "--abbrev=0", "origin/master")
 		tagOutput, err := tagCmd.Output()
 		if err != nil {
 			m.log("Using default branch (no tags found)")
@@ -547,33 +547,33 @@ func (m *ManualPackageInstaller) installDankMaterialShell(ctx context.Context, v
 		}
 
 		latestTag := strings.TrimSpace(string(tagOutput))
-		checkoutCmd := exec.CommandContext(ctx, "git", "-C", dmsPath, "checkout", latestTag)
+		checkoutCmd := exec.CommandContext(ctx, "git", "-C", hypePath, "checkout", latestTag)
 		if err := checkoutCmd.Run(); err != nil {
 			m.logError(fmt.Sprintf("Failed to checkout tag %s", latestTag), err)
 			return nil
 		}
 
 		m.log(fmt.Sprintf("Checked out latest tag: %s", latestTag))
-		m.log("DankMaterialShell cloned successfully")
+		m.log("HypeMaterialShell cloned successfully")
 		return nil
 	}
 
 	progressChan <- InstallProgressMsg{
 		Phase:       PhaseSystemPackages,
 		Progress:    0.90,
-		Step:        "Updating DankMaterialShell...",
+		Step:        "Updating HypeMaterialShell...",
 		IsComplete:  false,
-		CommandInfo: "Updating ~/.config/quickshell/dms",
+		CommandInfo: "Updating ~/.config/quickshell/hype",
 	}
 
-	fetchCmd := exec.CommandContext(ctx, "git", "-C", dmsPath, "fetch", "origin", "--tags", "--force")
+	fetchCmd := exec.CommandContext(ctx, "git", "-C", hypePath, "fetch", "origin", "--tags", "--force")
 	if err := fetchCmd.Run(); err != nil {
 		m.logError("Failed to fetch updates", err)
 		return nil
 	}
 
-	if forceDMSGit || variant == deps.VariantGit {
-		branchCmd := exec.CommandContext(ctx, "git", "-C", dmsPath, "rev-parse", "--abbrev-ref", "HEAD")
+	if forceHYPEGit || variant == deps.VariantGit {
+		branchCmd := exec.CommandContext(ctx, "git", "-C", hypePath, "rev-parse", "--abbrev-ref", "HEAD")
 		branchOutput, err := branchCmd.Output()
 		if err != nil {
 			m.logError("Failed to get current branch", err)
@@ -585,17 +585,17 @@ func (m *ManualPackageInstaller) installDankMaterialShell(ctx context.Context, v
 			branch = "master"
 		}
 
-		pullCmd := exec.CommandContext(ctx, "git", "-C", dmsPath, "pull", "origin", branch)
+		pullCmd := exec.CommandContext(ctx, "git", "-C", hypePath, "pull", "origin", branch)
 		if err := pullCmd.Run(); err != nil {
 			m.logError("Failed to pull updates", err)
 			return nil
 		}
 
-		m.log("DankMaterialShell updated successfully (git variant)")
+		m.log("HypeMaterialShell updated successfully (git variant)")
 		return nil
 	}
 
-	latestTagCmd := exec.CommandContext(ctx, "git", "-C", dmsPath, "describe", "--tags", "--abbrev=0", "origin/master")
+	latestTagCmd := exec.CommandContext(ctx, "git", "-C", hypePath, "describe", "--tags", "--abbrev=0", "origin/master")
 	tagOutput, err := latestTagCmd.Output()
 	if err != nil {
 		m.logError("Failed to get latest tag", err)
@@ -603,7 +603,7 @@ func (m *ManualPackageInstaller) installDankMaterialShell(ctx context.Context, v
 	}
 
 	latestTag := strings.TrimSpace(string(tagOutput))
-	checkoutCmd := exec.CommandContext(ctx, "git", "-C", dmsPath, "checkout", latestTag)
+	checkoutCmd := exec.CommandContext(ctx, "git", "-C", hypePath, "checkout", latestTag)
 	if err := checkoutCmd.Run(); err != nil {
 		m.logError(fmt.Sprintf("Failed to checkout tag %s", latestTag), err)
 		return nil

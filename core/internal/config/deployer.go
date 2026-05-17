@@ -1,4 +1,4 @@
-package config
+﻿package config
 
 import (
 	"context"
@@ -150,9 +150,9 @@ func (cd *ConfigDeployer) deployNiriConfig(terminal deps.Terminal, useSystemd bo
 		return result, result.Error
 	}
 
-	dmsDir := filepath.Join(configDir, "dms")
-	if err := os.MkdirAll(dmsDir, 0o755); err != nil {
-		result.Error = fmt.Errorf("failed to create dms directory: %w", err)
+	hypeDir := filepath.Join(configDir, "hype")
+	if err := os.MkdirAll(hypeDir, 0o755); err != nil {
+		result.Error = fmt.Errorf("failed to create hype directory: %w", err)
 		return result, result.Error
 	}
 
@@ -195,7 +195,7 @@ func (cd *ConfigDeployer) deployNiriConfig(terminal deps.Terminal, useSystemd bo
 	}
 
 	if existingConfig != "" {
-		mergedConfig, err := cd.mergeNiriOutputSections(newConfig, existingConfig, dmsDir)
+		mergedConfig, err := cd.mergeNiriOutputSections(newConfig, existingConfig, hypeDir)
 		if err != nil {
 			cd.log(fmt.Sprintf("Warning: Failed to merge output sections: %v", err))
 		} else {
@@ -209,8 +209,8 @@ func (cd *ConfigDeployer) deployNiriConfig(terminal deps.Terminal, useSystemd bo
 		return result, result.Error
 	}
 
-	if err := cd.deployNiriDmsConfigs(dmsDir, terminalCommand); err != nil {
-		result.Error = fmt.Errorf("failed to deploy dms configs: %w", err)
+	if err := cd.deployNiriDmsConfigs(hypeDir, terminalCommand); err != nil {
+		result.Error = fmt.Errorf("failed to deploy hype configs: %w", err)
 		return result, result.Error
 	}
 
@@ -219,7 +219,7 @@ func (cd *ConfigDeployer) deployNiriConfig(terminal deps.Terminal, useSystemd bo
 	return result, nil
 }
 
-func (cd *ConfigDeployer) deployNiriDmsConfigs(dmsDir, terminalCommand string) error {
+func (cd *ConfigDeployer) deployNiriDmsConfigs(hypeDir, terminalCommand string) error {
 	configs := []struct {
 		name    string
 		content string
@@ -234,7 +234,7 @@ func (cd *ConfigDeployer) deployNiriDmsConfigs(dmsDir, terminalCommand string) e
 	}
 
 	for _, cfg := range configs {
-		path := filepath.Join(dmsDir, cfg.name)
+		path := filepath.Join(hypeDir, cfg.name)
 		// Skip if file already exists and is not empty to preserve user modifications
 		if info, err := os.Stat(path); err == nil && info.Size() > 0 {
 			cd.log(fmt.Sprintf("Skipping %s (already exists)", cfg.name))
@@ -292,7 +292,7 @@ func (cd *ConfigDeployer) deployGhosttyConfig() ([]DeploymentResult, error) {
 
 	colorResult := DeploymentResult{
 		ConfigType: "Ghostty Colors",
-		Path:       filepath.Join(os.Getenv("HOME"), ".config", "ghostty", "themes", "dankcolors"),
+		Path:       filepath.Join(os.Getenv("HOME"), ".config", "ghostty", "themes", "hypecolors"),
 	}
 
 	themesDir := filepath.Dir(colorResult.Path)
@@ -356,7 +356,7 @@ func (cd *ConfigDeployer) deployKittyConfig() ([]DeploymentResult, error) {
 
 	themeResult := DeploymentResult{
 		ConfigType: "Kitty Theme",
-		Path:       filepath.Join(os.Getenv("HOME"), ".config", "kitty", "dank-theme.conf"),
+		Path:       filepath.Join(os.Getenv("HOME"), ".config", "kitty", "hype-theme.conf"),
 	}
 
 	if err := os.WriteFile(themeResult.Path, []byte(KittyThemeConfig), 0o644); err != nil {
@@ -370,7 +370,7 @@ func (cd *ConfigDeployer) deployKittyConfig() ([]DeploymentResult, error) {
 
 	tabsResult := DeploymentResult{
 		ConfigType: "Kitty Tabs",
-		Path:       filepath.Join(os.Getenv("HOME"), ".config", "kitty", "dank-tabs.conf"),
+		Path:       filepath.Join(os.Getenv("HOME"), ".config", "kitty", "hype-tabs.conf"),
 	}
 
 	if err := os.WriteFile(tabsResult.Path, []byte(KittyTabsConfig), 0o644); err != nil {
@@ -428,7 +428,7 @@ func (cd *ConfigDeployer) deployAlacrittyConfig() ([]DeploymentResult, error) {
 
 	themeResult := DeploymentResult{
 		ConfigType: "Alacritty Theme",
-		Path:       filepath.Join(os.Getenv("HOME"), ".config", "alacritty", "dank-theme.toml"),
+		Path:       filepath.Join(os.Getenv("HOME"), ".config", "alacritty", "hype-theme.toml"),
 	}
 
 	if err := os.WriteFile(themeResult.Path, []byte(AlacrittyThemeConfig), 0o644); err != nil {
@@ -443,7 +443,7 @@ func (cd *ConfigDeployer) deployAlacrittyConfig() ([]DeploymentResult, error) {
 	return results, nil
 }
 
-func (cd *ConfigDeployer) mergeNiriOutputSections(newConfig, existingConfig, dmsDir string) (string, error) {
+func (cd *ConfigDeployer) mergeNiriOutputSections(newConfig, existingConfig, hypeDir string) (string, error) {
 	outputRegex := regexp.MustCompile(`(?m)^(/-)?\s*output\s+"[^"]+"\s*\{[^{}]*(?:\{[^{}]*\}[^{}]*)*\}`)
 	existingOutputs := outputRegex.FindAllString(existingConfig, -1)
 
@@ -451,7 +451,7 @@ func (cd *ConfigDeployer) mergeNiriOutputSections(newConfig, existingConfig, dms
 		return newConfig, nil
 	}
 
-	outputsPath := filepath.Join(dmsDir, "outputs.kdl")
+	outputsPath := filepath.Join(hypeDir, "outputs.kdl")
 	if _, err := os.Stat(outputsPath); err != nil {
 		var outputsContent strings.Builder
 		for _, output := range existingOutputs {
@@ -461,7 +461,7 @@ func (cd *ConfigDeployer) mergeNiriOutputSections(newConfig, existingConfig, dms
 		if err := os.WriteFile(outputsPath, []byte(outputsContent.String()), 0o644); err != nil {
 			cd.log(fmt.Sprintf("Warning: Failed to migrate outputs to %s: %v", outputsPath, err))
 		} else {
-			cd.log("Migrated output sections to dms/outputs.kdl")
+			cd.log("Migrated output sections to hype/outputs.kdl")
 		}
 	}
 
@@ -705,9 +705,9 @@ func (cd *ConfigDeployer) transformNiriConfigForNonSystemd(config, terminalComma
 
 	config = regexp.MustCompile(`environment \{[^}]*\}`).ReplaceAllString(config, envVars)
 
-	spawnDms := `spawn-at-startup "dms" "run"`
+	spawnDms := `spawn-at-startup "hype" "run"`
 	if !strings.Contains(config, spawnDms) {
-		// Insert spawn-at-startup for dms after the environment block
+		// Insert spawn-at-startup for hype after the environment block
 		envBlockEnd := regexp.MustCompile(`environment \{[^}]*\}`)
 		if loc := envBlockEnd.FindStringIndex(config); loc != nil {
 			config = config[:loc[1]] + "\n" + spawnDms + config[loc[1]:]

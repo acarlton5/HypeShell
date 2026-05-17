@@ -1,4 +1,4 @@
-pragma ComponentBehavior: Bound
+﻿pragma ComponentBehavior: Bound
 
 import QtQuick
 import Quickshell.Hyprland
@@ -7,10 +7,10 @@ import qs.Modals.Clipboard
 import qs.Modals.Common
 import qs.Services
 
-DankModal {
+HypeModal {
     id: clipboardHistoryModal
 
-    layerNamespace: "dms:clipboard"
+    layerNamespace: "hype:clipboard"
 
     HyprlandFocusGrab {
         windows: [clipboardHistoryModal.contentWindow]

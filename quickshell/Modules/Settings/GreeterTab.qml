@@ -1,4 +1,4 @@
-pragma ComponentBehavior: Bound
+﻿pragma ComponentBehavior: Bound
 
 import QtQuick
 import QtQuick.Layouts
@@ -428,7 +428,7 @@ Item {
     ]
     readonly property var _wallpaperFillModes: ["Stretch", "Fit", "Fill", "Tile", "TileVertically", "TileHorizontally", "Pad"]
 
-    DankFlickable {
+    HypeFlickable {
         anchors.fill: parent
         clip: true
         contentHeight: mainColumn.height + Theme.spacingXL
@@ -488,7 +488,7 @@ Item {
                     width: parent.width
                     spacing: Theme.spacingS
 
-                    DankButton {
+                    HypeButton {
                         text: root.greeterActionLabel
                         iconName: root.greeterActionIcon
                         horizontalPadding: Theme.spacingL
@@ -500,7 +500,7 @@ Item {
                         Layout.fillWidth: true
                     }
 
-                    DankButton {
+                    HypeButton {
                         text: I18n.tr("Refresh")
                         iconName: "refresh"
                         horizontalPadding: Theme.spacingL
@@ -508,7 +508,7 @@ Item {
                         enabled: !root.greeterStatusRunning
                     }
 
-                    DankButton {
+                    HypeButton {
                         text: I18n.tr("Sync")
                         iconName: "sync"
                         horizontalPadding: Theme.spacingL
@@ -666,7 +666,7 @@ Item {
                     width: parent.width
                     spacing: Theme.spacingS
 
-                    DankTextField {
+                    HypeTextField {
                         id: greeterWallpaperPathField
                         width: parent.width - browseGreeterWallpaperButton.width - Theme.spacingS
                         placeholderText: I18n.tr("Use desktop wallpaper")
@@ -678,7 +678,7 @@ Item {
                         }
                     }
 
-                    DankButton {
+                    HypeButton {
                         id: browseGreeterWallpaperButton
                         text: I18n.tr("Browse")
                         horizontalPadding: Theme.spacingL

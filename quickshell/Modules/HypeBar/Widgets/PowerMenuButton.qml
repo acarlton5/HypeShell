@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import qs.Common
 import qs.Modules.Plugins
 import qs.Widgets
@@ -13,7 +13,7 @@ BasePill {
             implicitWidth: icon.width
             implicitHeight: root.widgetThickness - root.horizontalPadding * 2
 
-            DankIcon {
+            HypeIcon {
                 id: icon
                 anchors.centerIn: parent
                 name: "power_settings_new"

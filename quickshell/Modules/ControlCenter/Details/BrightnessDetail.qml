@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import Quickshell
 import qs.Common
 import qs.Services
@@ -110,7 +110,7 @@ Rectangle {
     border.color: Theme.outlineMedium
     border.width: Theme.layerOutlineWidth
 
-    DankFlickable {
+    HypeFlickable {
         id: brightnessContent
         anchors.top: parent.top
         anchors.left: parent.left
@@ -135,7 +135,7 @@ Rectangle {
                     anchors.centerIn: parent
                     spacing: Theme.spacingM
 
-                    DankIcon {
+                    HypeIcon {
                         anchors.horizontalCenter: parent.horizontalCenter
                         name: DisplayService.brightnessAvailable ? "brightness_6" : "error"
                         size: 32
@@ -168,7 +168,7 @@ Rectangle {
                         anchors.verticalCenter: parent.verticalCenter
                         spacing: Theme.spacingM
 
-                        DankIcon {
+                        HypeIcon {
                             name: "monitor"
                             size: Theme.iconSize
                             color: Theme.surfaceText
@@ -196,7 +196,7 @@ Rectangle {
                             anchors.centerIn: parent
                             spacing: 4
 
-                            DankIcon {
+                            HypeIcon {
                                 name: isPinnedToScreen ? "push_pin" : "push_pin"
                                 size: 16
                                 color: isPinnedToScreen ? Theme.primary : Theme.surfaceText
@@ -211,7 +211,7 @@ Rectangle {
                             }
                         }
 
-                        DankRipple {
+                        HypeRipple {
                             id: pinRipple
                             cornerRadius: parent.radius
                         }
@@ -263,7 +263,7 @@ Rectangle {
                                     anchors.verticalCenter: parent.verticalCenter
                                     spacing: 2
 
-                                    DankIcon {
+                                    HypeIcon {
                                         name: {
                                             const deviceClass = modelData.class || "";
                                             const deviceName = modelData.name || "";
@@ -361,7 +361,7 @@ Rectangle {
                                     color: Theme.withAlpha(Theme.surfaceContainerHighest, Theme.popupTransparency)
                                     opacity: SessionData.getBrightnessExponent(modelData.name) > 1.0 ? 1.0 : 0.4
 
-                                    DankIcon {
+                                    HypeIcon {
                                         anchors.centerIn: parent
                                         name: "remove"
                                         size: 14
@@ -403,7 +403,7 @@ Rectangle {
                                     color: Theme.withAlpha(Theme.surfaceContainerHighest, Theme.popupTransparency)
                                     opacity: SessionData.getBrightnessExponent(modelData.name) < 2.5 ? 1.0 : 0.4
 
-                                    DankIcon {
+                                    HypeIcon {
                                         anchors.centerIn: parent
                                         name: "add"
                                         size: 14
@@ -434,7 +434,7 @@ Rectangle {
                                 anchors.centerIn: parent
                                 spacing: 4
 
-                                DankIcon {
+                                HypeIcon {
                                     name: "show_chart"
                                     size: 14
                                     color: SessionData.getBrightnessExponential(modelData.name) ? Theme.primary : Theme.surfaceText
@@ -449,7 +449,7 @@ Rectangle {
                                 }
                             }
 
-                            DankRipple {
+                            HypeRipple {
                                 id: expToggleRipple
                                 cornerRadius: parent.radius
                             }
@@ -466,7 +466,7 @@ Rectangle {
                         }
                     }
 
-                    DankRipple {
+                    HypeRipple {
                         id: deviceRipple
                         cornerRadius: parent.radius
                     }

@@ -1,4 +1,4 @@
-package providers
+﻿package providers
 
 import (
 	"fmt"
@@ -87,7 +87,7 @@ func (m *MiracleProvider) categorizeAction(action string) string {
 		return "Execute"
 	case strings.HasPrefix(action, "magnifier_"):
 		return "Accessibility"
-	case strings.HasPrefix(action, "dms ") || strings.Contains(action, "dms ipc"):
+	case strings.HasPrefix(action, "hype ") || strings.Contains(action, "hype ipc"):
 		return "Execute"
 	default:
 		return "Execute"

@@ -1,4 +1,4 @@
-pragma ComponentBehavior: Bound
+﻿pragma ComponentBehavior: Bound
 
 import QtQuick
 import QtQuick.Layouts
@@ -371,7 +371,7 @@ Item {
                             visible: root.hasOverride && !root.hasConfigConflict
                         }
 
-                        DankIcon {
+                        HypeIcon {
                             name: "warning"
                             size: Theme.iconSizeSmall
                             color: Theme.primary
@@ -391,7 +391,7 @@ Item {
                     }
                 }
 
-                DankIcon {
+                HypeIcon {
                     name: root.isExpanded ? "expand_less" : "expand_more"
                     size: Theme.iconSize - 4
                     color: Theme.surfaceVariantText
@@ -459,7 +459,7 @@ Item {
                             width: parent.width
                             spacing: Theme.spacingS
 
-                            DankIcon {
+                            HypeIcon {
                                 name: "warning"
                                 size: Theme.iconSizeSmall
                                 color: Theme.primary
@@ -563,7 +563,7 @@ Item {
                                 color: addKeyArea.pressed ? Theme.surfaceTextHover : (addKeyArea.containsMouse && !root.addingNewKey ? Theme.surfaceTextHover : "transparent")
                             }
 
-                            DankIcon {
+                            HypeIcon {
                                 name: "add"
                                 size: Theme.iconSizeSmall
                                 color: root.addingNewKey ? Theme.primaryText : Theme.surfaceVariantText
@@ -636,7 +636,7 @@ Item {
                                     elide: Text.ElideRight
                                 }
 
-                                DankActionButton {
+                                HypeActionButton {
                                     id: recordBtn
                                     width: root._chipHeight
                                     height: root._chipHeight
@@ -755,7 +755,7 @@ Item {
                             color: singleAddKeyArea.pressed ? Theme.surfaceTextHover : (singleAddKeyArea.containsMouse && !root.addingNewKey ? Theme.surfaceTextHover : "transparent")
                         }
 
-                        DankIcon {
+                        HypeIcon {
                             name: "add"
                             size: Theme.iconSizeSmall + 2
                             color: root.addingNewKey ? Theme.primaryText : Theme.surfaceVariantText
@@ -778,7 +778,7 @@ Item {
                     visible: root.hasConflict
                     Layout.leftMargin: root._labelWidth + Theme.spacingM
 
-                    DankIcon {
+                    HypeIcon {
                         name: "warning"
                         size: Theme.iconSizeSmall
                         color: Theme.primary
@@ -836,7 +836,7 @@ Item {
                                     anchors.centerIn: parent
                                     spacing: Theme.spacingXS
 
-                                    DankIcon {
+                                    HypeIcon {
                                         name: typeDelegate.modelData.icon
                                         size: Theme.iconSizeSmall
                                         color: root._actionType === typeDelegate.modelData.id ? Theme.surfaceText : Theme.surfaceVariantText
@@ -859,8 +859,8 @@ Item {
                                         switch (typeDelegate.modelData.id) {
                                         case "hype":
                                             root.updateEdit({
-                                                "action": KeybindsService.dmsActions[0].id,
-                                                "desc": KeybindsService.dmsActions[0].label
+                                                "action": KeybindsService.hypeActions[0].id,
+                                                "desc": KeybindsService.hypeActions[0].label
                                             });
                                             break;
                                         case "compositor":
@@ -895,7 +895,7 @@ Item {
                         }
                     }
 
-                    DankTooltipV2 {
+                    HypeTooltipV2 {
                         id: typeTooltip
                     }
                 }
@@ -913,7 +913,7 @@ Item {
                         Layout.preferredWidth: root._labelWidth
                     }
 
-                    DankDropdown {
+                    HypeDropdown {
                         Layout.fillWidth: true
                         compactMode: true
                         currentValue: KeybindsService.getActionLabel(root.editAction) || I18n.tr("Select...")
@@ -936,16 +936,16 @@ Item {
                 }
 
                 RowLayout {
-                    id: dmsArgsRow
+                    id: hypeArgsRow
                     Layout.fillWidth: true
                     spacing: Theme.spacingM
 
                     readonly property var argConfig: Actions.getActionArgConfig(KeybindsService.currentProvider, root.editAction)
                     readonly property var parsedArgs: argConfig?.type === "hype" ? Actions.parseDmsActionArgs(root.editAction) : null
-                    readonly property var dmsActionArgs: Actions.getDmsActionArgs()
-                    readonly property bool hasAmountArg: parsedArgs?.base ? (dmsActionArgs[parsedArgs.base]?.args?.some(a => a.name === "amount") ?? false) : false
-                    readonly property bool hasDeviceArg: parsedArgs?.base ? (dmsActionArgs[parsedArgs.base]?.args?.some(a => a.name === "device") ?? false) : false
-                    readonly property bool hasTabArg: parsedArgs?.base ? (dmsActionArgs[parsedArgs.base]?.args?.some(a => a.name === "tab") ?? false) : false
+                    readonly property var hypeActionArgs: Actions.getDmsActionArgs()
+                    readonly property bool hasAmountArg: parsedArgs?.base ? (hypeActionArgs[parsedArgs.base]?.args?.some(a => a.name === "amount") ?? false) : false
+                    readonly property bool hasDeviceArg: parsedArgs?.base ? (hypeActionArgs[parsedArgs.base]?.args?.some(a => a.name === "device") ?? false) : false
+                    readonly property bool hasTabArg: parsedArgs?.base ? (hypeActionArgs[parsedArgs.base]?.args?.some(a => a.name === "tab") ?? false) : false
 
                     visible: root._actionType === "hype" && argConfig?.type === "hype"
 
@@ -955,36 +955,36 @@ Item {
                         font.weight: Font.Medium
                         color: Theme.surfaceVariantText
                         Layout.preferredWidth: root._labelWidth
-                        visible: dmsArgsRow.hasAmountArg
+                        visible: hypeArgsRow.hasAmountArg
                     }
 
-                    DankTextField {
-                        id: dmsAmountField
+                    HypeTextField {
+                        id: hypeAmountField
                         Layout.preferredWidth: Math.round(Theme.fontSizeMedium * 5.5)
                         Layout.preferredHeight: root._inputHeight
                         placeholderText: "5"
-                        visible: dmsArgsRow.hasAmountArg
+                        visible: hypeArgsRow.hasAmountArg
 
                         Connections {
-                            target: dmsArgsRow
+                            target: hypeArgsRow
                             function onParsedArgsChanged() {
-                                const newText = dmsArgsRow.parsedArgs?.args?.amount || "";
-                                if (dmsAmountField.text !== newText)
-                                    dmsAmountField.text = newText;
+                                const newText = hypeArgsRow.parsedArgs?.args?.amount || "";
+                                if (hypeAmountField.text !== newText)
+                                    hypeAmountField.text = newText;
                             }
                         }
 
                         Component.onCompleted: {
-                            text = dmsArgsRow.parsedArgs?.args?.amount || "";
+                            text = hypeArgsRow.parsedArgs?.args?.amount || "";
                         }
 
                         onEditingFinished: {
-                            if (!dmsArgsRow.parsedArgs)
+                            if (!hypeArgsRow.parsedArgs)
                                 return;
-                            const newArgs = Object.assign({}, dmsArgsRow.parsedArgs.args);
+                            const newArgs = Object.assign({}, hypeArgsRow.parsedArgs.args);
                             newArgs.amount = text || "5";
                             root.updateEdit({
-                                "action": Actions.buildDmsAction(dmsArgsRow.parsedArgs.base, newArgs)
+                                "action": Actions.buildDmsAction(hypeArgsRow.parsedArgs.base, newArgs)
                             });
                         }
                     }
@@ -993,7 +993,7 @@ Item {
                         text: "%"
                         font.pixelSize: Theme.fontSizeSmall
                         color: Theme.surfaceVariantText
-                        visible: dmsArgsRow.hasAmountArg
+                        visible: hypeArgsRow.hasAmountArg
                     }
 
                     StyledText {
@@ -1001,45 +1001,45 @@ Item {
                         font.pixelSize: Theme.fontSizeSmall
                         font.weight: Font.Medium
                         color: Theme.surfaceVariantText
-                        Layout.leftMargin: dmsArgsRow.hasAmountArg ? Theme.spacingM : 0
-                        Layout.preferredWidth: dmsArgsRow.hasAmountArg ? -1 : root._labelWidth
-                        visible: dmsArgsRow.hasDeviceArg
+                        Layout.leftMargin: hypeArgsRow.hasAmountArg ? Theme.spacingM : 0
+                        Layout.preferredWidth: hypeArgsRow.hasAmountArg ? -1 : root._labelWidth
+                        visible: hypeArgsRow.hasDeviceArg
                     }
 
-                    DankTextField {
-                        id: dmsDeviceField
+                    HypeTextField {
+                        id: hypeDeviceField
                         Layout.fillWidth: true
                         Layout.preferredHeight: root._inputHeight
                         placeholderText: I18n.tr("leave empty for default")
-                        visible: dmsArgsRow.hasDeviceArg
+                        visible: hypeArgsRow.hasDeviceArg
 
                         Connections {
-                            target: dmsArgsRow
+                            target: hypeArgsRow
                             function onParsedArgsChanged() {
-                                const newText = dmsArgsRow.parsedArgs?.args?.device || "";
-                                if (dmsDeviceField.text !== newText)
-                                    dmsDeviceField.text = newText;
+                                const newText = hypeArgsRow.parsedArgs?.args?.device || "";
+                                if (hypeDeviceField.text !== newText)
+                                    hypeDeviceField.text = newText;
                             }
                         }
 
                         Component.onCompleted: {
-                            text = dmsArgsRow.parsedArgs?.args?.device || "";
+                            text = hypeArgsRow.parsedArgs?.args?.device || "";
                         }
 
                         onEditingFinished: {
-                            if (!dmsArgsRow.parsedArgs)
+                            if (!hypeArgsRow.parsedArgs)
                                 return;
-                            const newArgs = Object.assign({}, dmsArgsRow.parsedArgs.args);
+                            const newArgs = Object.assign({}, hypeArgsRow.parsedArgs.args);
                             newArgs.device = text;
                             root.updateEdit({
-                                "action": Actions.buildDmsAction(dmsArgsRow.parsedArgs.base, newArgs)
+                                "action": Actions.buildDmsAction(hypeArgsRow.parsedArgs.base, newArgs)
                             });
                         }
                     }
 
                     Item {
                         Layout.fillWidth: true
-                        visible: !dmsArgsRow.hasDeviceArg && !dmsArgsRow.hasTabArg
+                        visible: !hypeArgsRow.hasDeviceArg && !hypeArgsRow.hasTabArg
                     }
 
                     StyledText {
@@ -1048,16 +1048,16 @@ Item {
                         font.weight: Font.Medium
                         color: Theme.surfaceVariantText
                         Layout.preferredWidth: root._labelWidth
-                        visible: dmsArgsRow.hasTabArg
+                        visible: hypeArgsRow.hasTabArg
                     }
 
-                    DankDropdown {
-                        id: dmsTabDropdown
+                    HypeDropdown {
+                        id: hypeTabDropdown
                         Layout.fillWidth: true
                         compactMode: true
-                        visible: dmsArgsRow.hasTabArg
+                        visible: hypeArgsRow.hasTabArg
                         currentValue: {
-                            const tab = dmsArgsRow.parsedArgs?.args?.tab || "";
+                            const tab = hypeArgsRow.parsedArgs?.args?.tab || "";
                             switch (tab) {
                             case "media":
                                 return I18n.tr("Media");
@@ -1071,9 +1071,9 @@ Item {
                         }
                         options: [I18n.tr("Overview"), I18n.tr("Media"), I18n.tr("Wallpaper"), I18n.tr("Weather")]
                         onValueChanged: value => {
-                            if (!dmsArgsRow.parsedArgs)
+                            if (!hypeArgsRow.parsedArgs)
                                 return;
-                            const newArgs = Object.assign({}, dmsArgsRow.parsedArgs.args);
+                            const newArgs = Object.assign({}, hypeArgsRow.parsedArgs.args);
                             switch (value) {
                             case I18n.tr("Media"):
                                 newArgs.tab = "media";
@@ -1089,7 +1089,7 @@ Item {
                                 break;
                             }
                             root.updateEdit({
-                                "action": Actions.buildDmsAction(dmsArgsRow.parsedArgs.base, newArgs)
+                                "action": Actions.buildDmsAction(hypeArgsRow.parsedArgs.base, newArgs)
                             });
                         }
                     }
@@ -1108,7 +1108,7 @@ Item {
                         Layout.preferredWidth: root._labelWidth
                     }
 
-                    DankDropdown {
+                    HypeDropdown {
                         id: compositorCatDropdown
                         Layout.preferredWidth: Math.round(Theme.fontSizeMedium * 8.5)
                         compactMode: true
@@ -1127,7 +1127,7 @@ Item {
                         options: KeybindsService.getCompositorCategories()
                     }
 
-                    DankDropdown {
+                    HypeDropdown {
                         Layout.fillWidth: true
                         compactMode: true
                         currentValue: KeybindsService.getActionLabel(root.editAction) || I18n.tr("Select...")
@@ -1160,7 +1160,7 @@ Item {
                             color: customToggleArea.pressed ? Theme.surfaceTextHover : (customToggleArea.containsMouse ? Theme.surfaceTextHover : "transparent")
                         }
 
-                        DankIcon {
+                        HypeIcon {
                             name: "edit"
                             size: Theme.iconSizeSmall + 2
                             color: Theme.surfaceVariantText
@@ -1198,7 +1198,7 @@ Item {
                         Layout.fillWidth: true
                         spacing: Theme.spacingS
 
-                        DankTextField {
+                        HypeTextField {
                             id: argValueField
                             Layout.fillWidth: true
                             Layout.preferredHeight: root._inputHeight
@@ -1256,7 +1256,7 @@ Item {
                             }
                             spacing: Theme.spacingXS
 
-                            DankToggle {
+                            HypeToggle {
                                 id: focusToggle
                                 checked: optionsRow.parsedArgs?.args?.focus !== false
                                 onToggled: newChecked => {
@@ -1290,7 +1290,7 @@ Item {
                                 visible: optionsRow.argConfig?.base !== "screenshot-window"
                                 spacing: Theme.spacingXS
 
-                                DankToggle {
+                                HypeToggle {
                                     id: showPointerToggle
                                     checked: optionsRow.parsedArgs?.args["show-pointer"] === true
                                     onToggled: newChecked => {
@@ -1315,7 +1315,7 @@ Item {
                                 visible: optionsRow.argConfig?.base !== "screenshot"
                                 spacing: Theme.spacingXS
 
-                                DankToggle {
+                                HypeToggle {
                                     id: writeToDiskToggle
                                     checked: optionsRow.parsedArgs?.args["write-to-disk"] === true
                                     onToggled: newChecked => {
@@ -1341,7 +1341,7 @@ Item {
                             visible: optionsRow.argConfig?.base === "quit"
                             spacing: Theme.spacingXS
 
-                            DankToggle {
+                            HypeToggle {
                                 checked: optionsRow.parsedArgs?.args["skip-confirmation"] === true
                                 onToggled: newChecked => {
                                     const args = newChecked ? {
@@ -1375,7 +1375,7 @@ Item {
                         Layout.preferredWidth: root._labelWidth
                     }
 
-                    DankTextField {
+                    HypeTextField {
                         id: customCompositorField
                         Layout.fillWidth: true
                         Layout.preferredHeight: root._inputHeight
@@ -1402,7 +1402,7 @@ Item {
                             color: presetToggleArea.pressed ? Theme.surfaceTextHover : (presetToggleArea.containsMouse ? Theme.surfaceTextHover : "transparent")
                         }
 
-                        DankIcon {
+                        HypeIcon {
                             name: "list"
                             size: Theme.iconSizeSmall + 2
                             color: Theme.surfaceVariantText
@@ -1438,7 +1438,7 @@ Item {
                         Layout.preferredWidth: root._labelWidth
                     }
 
-                    DankTextField {
+                    HypeTextField {
                         id: spawnTextField
                         Layout.fillWidth: true
                         Layout.preferredHeight: root._inputHeight
@@ -1470,7 +1470,7 @@ Item {
                         Layout.preferredWidth: root._labelWidth
                     }
 
-                    DankTextField {
+                    HypeTextField {
                         id: shellTextField
                         Layout.fillWidth: true
                         Layout.preferredHeight: root._inputHeight
@@ -1499,7 +1499,7 @@ Item {
                         Layout.preferredWidth: root._labelWidth
                     }
 
-                    DankTextField {
+                    HypeTextField {
                         id: titleField
                         Layout.fillWidth: true
                         Layout.preferredHeight: root._inputHeight
@@ -1531,7 +1531,7 @@ Item {
                         RowLayout {
                             spacing: Theme.spacingXS
 
-                            DankToggle {
+                            HypeToggle {
                                 checked: root.editFlags.indexOf("e") !== -1
                                 onToggled: newChecked => {
                                     let flags = root.editFlags.split("").filter(f => f !== "e");
@@ -1553,7 +1553,7 @@ Item {
                         RowLayout {
                             spacing: Theme.spacingXS
 
-                            DankToggle {
+                            HypeToggle {
                                 checked: root.editFlags.indexOf("l") !== -1
                                 onToggled: newChecked => {
                                     let flags = root.editFlags.split("").filter(f => f !== "l");
@@ -1575,7 +1575,7 @@ Item {
                         RowLayout {
                             spacing: Theme.spacingXS
 
-                            DankToggle {
+                            HypeToggle {
                                 checked: root.editFlags.indexOf("r") !== -1
                                 onToggled: newChecked => {
                                     let flags = root.editFlags.split("").filter(f => f !== "r");
@@ -1597,7 +1597,7 @@ Item {
                         RowLayout {
                             spacing: Theme.spacingXS
 
-                            DankToggle {
+                            HypeToggle {
                                 checked: root.editFlags.indexOf("o") !== -1
                                 onToggled: newChecked => {
                                     let flags = root.editFlags.split("").filter(f => f !== "o");
@@ -1631,7 +1631,7 @@ Item {
                         Layout.preferredWidth: root._labelWidth
                     }
 
-                    DankTextField {
+                    HypeTextField {
                         id: cooldownField
                         Layout.preferredWidth: Math.round(Theme.fontSizeMedium * 7)
                         Layout.preferredHeight: root._inputHeight
@@ -1690,7 +1690,7 @@ Item {
                         RowLayout {
                             spacing: Theme.spacingXS
 
-                            DankToggle {
+                            HypeToggle {
                                 checked: root.editRepeat !== false
                                 onToggled: newChecked => {
                                     root.updateEdit({
@@ -1709,7 +1709,7 @@ Item {
                         RowLayout {
                             spacing: Theme.spacingXS
 
-                            DankToggle {
+                            HypeToggle {
                                 checked: root.editAllowWhenLocked
                                 onToggled: newChecked => {
                                     root.updateEdit({
@@ -1728,7 +1728,7 @@ Item {
                         RowLayout {
                             spacing: Theme.spacingXS
 
-                            DankToggle {
+                            HypeToggle {
                                 checked: root.editAllowInhibiting !== false
                                 onToggled: newChecked => {
                                     root.updateEdit({
@@ -1756,7 +1756,7 @@ Item {
                     Layout.fillWidth: true
                     spacing: Theme.spacingM
 
-                    DankActionButton {
+                    HypeActionButton {
                         Layout.preferredWidth: root._buttonHeight
                         Layout.preferredHeight: root._buttonHeight
                         circular: false
@@ -1778,7 +1778,7 @@ Item {
                         visible: !root.isNew
                     }
 
-                    DankButton {
+                    HypeButton {
                         text: I18n.tr("Cancel")
                         buttonHeight: root._buttonHeight
                         backgroundColor: Theme.surfaceContainer
@@ -1794,7 +1794,7 @@ Item {
                         }
                     }
 
-                    DankButton {
+                    HypeButton {
                         text: root.isNew ? I18n.tr("Add") : I18n.tr("Save")
                         buttonHeight: root._buttonHeight
                         enabled: root.canSave()

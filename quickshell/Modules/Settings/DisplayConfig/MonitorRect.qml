@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import qs.Common
 import qs.Services
 import qs.Widgets
@@ -71,7 +71,7 @@ Rectangle {
         anchors.centerIn: parent
         spacing: 2
 
-        DankIcon {
+        HypeIcon {
             name: root.isConnected ? "desktop_windows" : "desktop_access_disabled"
             size: Math.min(24, Math.min(root.width * 0.3, root.height * 0.25))
             color: root.isConnected ? (root.isValidPosition ? Theme.primary : Theme.error) : Theme.surfaceVariantText

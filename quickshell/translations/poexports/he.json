@@ -1,4 +1,4 @@
-{
+﻿{
   "%1 Animation Speed": {
     "%1 Animation Speed": "מהירות האנימציה ב%1"
   },
@@ -1757,8 +1757,8 @@
   "HypeShell Shortcuts": {
     "HypeShell Shortcuts": "קיצורי HypeShell"
   },
-  "HypeShell Greeter needs: greetd, dms-greeter. Fingerprint: fprintd, pam_fprintd. Security keys: pam_u2f. Add your user to the greeter group. Authentication changes apply automatically and may open a terminal when sudo authentication is required.": {
-    "HypeShell Greeter needs: greetd, dms-greeter. Fingerprint: fprintd, pam_fprintd. Security keys: pam_u2f. Add your user to the greeter group. Authentication changes apply automatically and may open a terminal when sudo authentication is required.": "מסך ההתחברות של HypeShell דורש את החבילות הבאות: greetd ו-dms-greeter (חובה), fprintd ו-pam_fprintd (להזדהות עם טביעת אצבע) ו-pam_u2f (להזדהות עם מפתחות אבטחה). הוסף/הוסיפי את המשתמש שלך לקבוצת greeter. שינויי אימות מוחלים באופן אוטומטי ועשויים לפתוח מסוף כאשר נדרש אימות עם sudo."
+  "HypeShell Greeter needs: greetd, hype-greeter. Fingerprint: fprintd, pam_fprintd. Security keys: pam_u2f. Add your user to the greeter group. Authentication changes apply automatically and may open a terminal when sudo authentication is required.": {
+    "HypeShell Greeter needs: greetd, hype-greeter. Fingerprint: fprintd, pam_fprintd. Security keys: pam_u2f. Add your user to the greeter group. Authentication changes apply automatically and may open a terminal when sudo authentication is required.": "מסך ההתחברות של HypeShell דורש את החבילות הבאות: greetd ו-hype-greeter (חובה), fprintd ו-pam_fprintd (להזדהות עם טביעת אצבע) ו-pam_u2f (להזדהות עם מפתחות אבטחה). הוסף/הוסיפי את המשתמש שלך לקבוצת greeter. שינויי אימות מוחלים באופן אוטומטי ועשויים לפתוח מסוף כאשר נדרש אימות עם sudo."
   },
   "HypeShell out of date": {
     "HypeShell out of date": "הHypeShell לא מעודכן"
@@ -1769,8 +1769,8 @@
   "HypeShell shell actions (launcher, clipboard, etc.)": {
     "HypeShell shell actions (launcher, clipboard, etc.)": "פעולות מעטפת של HypeShell (משגר, לוח העתקה וכו')"
   },
-  "DMS_SOCKET not available": {
-    "DMS_SOCKET not available": "DMS_SOCKET אינו זמין"
+  "HYPE_SOCKET not available": {
+    "HYPE_SOCKET not available": "HYPE_SOCKET אינו זמין"
   },
   "DWL service not available": {
     "DWL service not available": "שירות DWL אינו זמין"
@@ -1794,7 +1794,7 @@
     "HypeShell is ready to use": "HypeShell מוכן לשימוש"
   },
   "HypeShell & System Icons (requires restart)": {
-    "HypeShell & System Icons (requires restart)": "סמלי DankShell ומערכת (דורש הפעלה מחדש)"
+    "HypeShell & System Icons (requires restart)": "סמלי HypeShell ומערכת (דורש הפעלה מחדש)"
   },
   "Dark Mode": {
     "Dark Mode": "מצב כהה"
@@ -2252,8 +2252,8 @@
   "Enable a custom override below to set per-bar shadow intensity, opacity, and color.": {
     "Enable a custom override below to set per-bar shadow intensity, opacity, and color.": "הפעל/י דריסה מותאמת אישית למטה כדי להגדיר עוצמת צל, שקיפות וצבע עבור כל סרגל בנפרד."
   },
-  "Enable compositor-targetable blur layer (namespace: dms:blurwallpaper). Requires manual niri configuration.": {
-    "Enable compositor-targetable blur layer (namespace: dms:blurwallpaper). Requires manual niri configuration.": "הפעל/י שכבת טשטוש הניתנת לזיהוי על ידי הקומפוזיטור (namespace: dms:blurwallpaper). דורש הגדרה ידנית של Niri."
+  "Enable compositor-targetable blur layer (namespace: hype:blurwallpaper). Requires manual niri configuration.": {
+    "Enable compositor-targetable blur layer (namespace: hype:blurwallpaper). Requires manual niri configuration.": "הפעל/י שכבת טשטוש הניתנת לזיהוי על ידי הקומפוזיטור (namespace: hype:blurwallpaper). דורש הגדרה ידנית של Niri."
   },
   "Enable fingerprint at login": {
     "Enable fingerprint at login": "הפעלת הזדהות עם טביעת אצבע"
@@ -2600,8 +2600,8 @@
   "Failed to ring device": {
     "Failed to ring device": "שליחת הצלצול להתקן נכשלה"
   },
-  "Failed to run 'dms greeter status'. Ensure HypeShell is installed and dms is in PATH.": {
-    "Failed to run 'dms greeter status'. Ensure HypeShell is installed and dms is in PATH.": "הרצת הפקודה 'dms greeter status' נכשלה. ודא/י שHypeShell מותקן ו-dms נמצא בPATH."
+  "Failed to run 'hype greeter status'. Ensure HypeShell is installed and hype is in PATH.": {
+    "Failed to run 'hype greeter status'. Ensure HypeShell is installed and hype is in PATH.": "הרצת הפקודה 'hype greeter status' נכשלה. ודא/י שHypeShell מותקן ו-hype נמצא בPATH."
   },
   "Failed to save audio config": {
     "Failed to save audio config": "שמירת הגדרות שמע נכשלה"
@@ -5610,10 +5610,10 @@
     "Scale": "קנה מידה"
   },
   "Scale Hype Bar font sizes independently": {
-    "Scale Hype Bar font sizes independently": "שנה/י את גודל הגופנים של DankBar באופן עצמאי"
+    "Scale Hype Bar font sizes independently": "שנה/י את גודל הגופנים של HypeBar באופן עצמאי"
   },
   "Scale Hype Bar icon sizes independently": {
-    "Scale Hype Bar icon sizes independently": "התאם/י את גודל הסמלים בDankBar באופן עצמאי"
+    "Scale Hype Bar icon sizes independently": "התאם/י את גודל הסמלים בHypeBar באופן עצמאי"
   },
   "Scale all font sizes throughout the shell": {
     "Scale all font sizes throughout the shell": "שנה/י קנה מידה של כל גדלי הגופנים בכל המעטפת"
@@ -6539,8 +6539,8 @@
   "Terminal custom additional parameters": {
     "Terminal custom additional parameters": "פרמטרים נוספים מותאמים אישית למסוף"
   },
-  "Terminal fallback failed. Install a supported terminal emulator or run 'dms auth sync' manually.": {
-    "Terminal fallback failed. Install a supported terminal emulator or run 'dms auth sync' manually.": "המעבר למסוף כגיבוי נכשל. התקן/י יישום מסוף נתמך או הרץ/י את הפקודה 'dms auth sync' באופן ידני."
+  "Terminal fallback failed. Install a supported terminal emulator or run 'hype auth sync' manually.": {
+    "Terminal fallback failed. Install a supported terminal emulator or run 'hype auth sync' manually.": "המעבר למסוף כגיבוי נכשל. התקן/י יישום מסוף נתמך או הרץ/י את הפקודה 'hype auth sync' באופן ידני."
   },
   "Terminal fallback failed. Install one of the supported terminal emulators or run 'HypeShell Greeter sync' manually.": {
     "Terminal fallback failed. Install one of the supported terminal emulators or run 'HypeShell Greeter sync' manually.": "המעבר למסוף כגיבוי נכשל. התקן/י את אחד מיישומי המסוף הנתמכים או הרץ/י את הפקודה 'HypeShell Greeter sync' באופן ידני."
@@ -6587,8 +6587,8 @@
   "The 'dgop' tool is required for system monitoring.\nPlease install dgop to use this feature.": {
     "The 'dgop' tool is required for system monitoring.\nPlease install dgop to use this feature.": "כלי 'dgop' נדרש לניטור מערכת.\nאנא התקן/י dgop כדי להשתמש בתכונה זו."
   },
-  "The DMS_SOCKET environment variable is not set or the socket is unavailable. Automated plugin management requires the DMS_SOCKET.": {
-    "The DMS_SOCKET environment variable is not set or the socket is unavailable. Automated plugin management requires the DMS_SOCKET.": "משתנה הסביבה DMS_SOCKET אינו מוגדר או שהsocket אינו זמין. ניהול תוספים אוטומטי דורש את DMS_SOCKET."
+  "The HYPE_SOCKET environment variable is not set or the socket is unavailable. Automated plugin management requires the HYPE_SOCKET.": {
+    "The HYPE_SOCKET environment variable is not set or the socket is unavailable. Automated plugin management requires the HYPE_SOCKET.": "משתנה הסביבה HYPE_SOCKET אינו מוגדר או שהsocket אינו זמין. ניהול תוספים אוטומטי דורש את HYPE_SOCKET."
   },
   "The below settings will modify your GTK and Qt settings. If you wish to preserve your current configurations, please back them up (qt5ct.conf|qt6ct.conf and ~/.config/gtk-3.0|gtk-4.0).": {
     "The below settings will modify your GTK and Qt settings. If you wish to preserve your current configurations, please back them up (qt5ct.conf|qt6ct.conf and ~/.config/gtk-3.0|gtk-4.0).": "ההגדרות הבאות ישנו את הגדרות ה GTK וQt שלך. אם ברצונך לשמור על התצורות הנוכחיות, נא לגבות אותן (qt5ct.conf|qt6ct.conf וconfig/gtk-3.0|gtk-4.0./~)."
@@ -7490,11 +7490,11 @@
   "HypeShell is a highly customizable, modern desktop shell with a <a href=\"https://m3.material.io/\" style=\"text-decoration:none; color:%1;\">material 3 inspired</a> design.<br /><br/>It is built with <a href=\"https://quickshell.org\" style=\"text-decoration:none; color:%1;\">Quickshell</a>, a QT6 framework for building desktop shells, and <a href=\"https://go.dev\" style=\"text-decoration:none; color:%1;\">Go</a>, a statically typed, compiled programming language.": {
     "HypeShell is a highly customizable, modern desktop shell with a <a href=\"https://m3.material.io/\" style=\"text-decoration:none; color:%1;\">material 3 inspired</a> design.<br /><br/>It is built with <a href=\"https://quickshell.org\" style=\"text-decoration:none; color:%1;\">Quickshell</a>, a QT6 framework for building desktop shells, and <a href=\"https://go.dev\" style=\"text-decoration:none; color:%1;\">Go</a>, a statically typed, compiled programming language.": "הפרויקט HypeShell הוא מעטפת שולחן עבודה מודרנית וניתנת להתאמה אישית עם עיצוב בהשראת <a href=\"https://m3.material.io/\" style=\"text-decoration:none; color:%1;\">Material Design 3</a> של גוגל.<br /><br/>היא נבנתה עם שפת התכנות <a href=\"https://go.dev\" style=\"text-decoration:none; color:%1;\">Go</a> ו<a href=\"https://quickshell.org\" style=\"text-decoration:none; color:%1;\">Quickshell</a>, ספריית QT6 לבניית מעטפות לשולחן העבודה."
   },
-  "dms/cursor config exists but is not included. Cursor settings won't apply.": {
-    "dms/cursor config exists but is not included. Cursor settings won't apply.": "קובץ ההגדרה dms/cursor קיים אך אינו כלול. הגדרות סמן העכבר לא יחולו."
+  "hype/cursor config exists but is not included. Cursor settings won't apply.": {
+    "hype/cursor config exists but is not included. Cursor settings won't apply.": "קובץ ההגדרה hype/cursor קיים אך אינו כלול. הגדרות סמן העכבר לא יחולו."
   },
-  "dms/outputs config exists but is not included in your compositor config. Display changes won't persist.": {
-    "dms/outputs config exists but is not included in your compositor config. Display changes won't persist.": "קובץ ההגדרה dms/outputs קיים אך אינו כלול בהגדרות הקומפוזיטור שלך. שינויי תצוגה לא יישמרו."
+  "hype/outputs config exists but is not included in your compositor config. Display changes won't persist.": {
+    "hype/outputs config exists but is not included in your compositor config. Display changes won't persist.": "קובץ ההגדרה hype/outputs קיים אך אינו כלול בהגדרות הקומפוזיטור שלך. שינויי תצוגה לא יישמרו."
   },
   "e.g., firefox, kitty --title foo": {
     "e.g., firefox, kitty --title foo": "לדוגמא: firefox, kitty --title foo"
@@ -7553,8 +7553,8 @@
   "niri shortcuts config": {
     "niri shortcuts config": "הגדרת קיצורים של Niri"
   },
-  "niri/dms Discord": {
-    "niri/dms Discord": "שרת הDiscord של niri/dms"
+  "niri/hype Discord": {
+    "niri/hype Discord": "שרת הDiscord של niri/hype"
   },
   "now": {
     "now": "עכשיו"

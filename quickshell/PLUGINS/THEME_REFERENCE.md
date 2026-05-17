@@ -1,4 +1,4 @@
-# Theme Property Reference for Plugins
+﻿# Theme Property Reference for Plugins
 
 Quick reference for commonly used Theme properties in plugin development.
 
@@ -77,7 +77,7 @@ Theme.popupBackground()  // Popup background with opacity
 
 ### Icon with Text
 ```qml
-DankIcon {
+HypeIcon {
     name: "icon_name"
     color: Theme.onSurface
     font.pixelSize: Theme.iconSize

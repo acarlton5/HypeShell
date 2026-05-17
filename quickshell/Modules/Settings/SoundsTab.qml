@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import qs.Common
 import qs.Services
 import qs.Widgets
@@ -7,7 +7,7 @@ import qs.Modules.Settings.Widgets
 Item {
     id: root
 
-    DankFlickable {
+    HypeFlickable {
         anchors.fill: parent
         clip: true
         contentHeight: mainColumn.height + Theme.spacingXL
@@ -146,7 +146,7 @@ Item {
                     anchors.margins: Theme.spacingM
                     spacing: Theme.spacingM
 
-                    DankIcon {
+                    HypeIcon {
                         name: "info"
                         size: Theme.iconSizeSmall
                         color: Theme.warning

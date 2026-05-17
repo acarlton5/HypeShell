@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import qs.Common
 import qs.Services
 import qs.Widgets
@@ -31,7 +31,7 @@ Rectangle {
         anchors.verticalCenter: parent.verticalCenter
         spacing: Theme.spacingXS
 
-        DankIcon {
+        HypeIcon {
             anchors.verticalCenter: parent.verticalCenter
             name: root.iconName
             size: 14
@@ -50,7 +50,7 @@ Rectangle {
         }
     }
 
-    DankRipple {
+    HypeRipple {
         id: ripple
         rippleColor: root.isDestructive ? Theme.error : Theme.surfaceText
         cornerRadius: Theme.cornerRadius

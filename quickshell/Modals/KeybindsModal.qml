@@ -1,4 +1,4 @@
-import QtQml
+﻿import QtQml
 import QtQuick
 import QtQuick.Layouts
 import Quickshell.Hyprland
@@ -7,10 +7,10 @@ import qs.Modals.Common
 import qs.Services
 import qs.Widgets
 
-DankModal {
+HypeModal {
     id: root
 
-    layerNamespace: "dms:keybinds"
+    layerNamespace: "hype:keybinds"
     useOverlayLayer: true
     property real scrollStep: 60
     property var activeFlickable: null
@@ -87,7 +87,7 @@ DankModal {
                         color: Theme.primary
                     }
 
-                    DankTextField {
+                    HypeTextField {
                         id: searchField
                         Layout.alignment: Qt.AlignRight
                         leftIconName: "search"
@@ -109,7 +109,7 @@ DankModal {
                     }
                 }
 
-                DankFlickable {
+                HypeFlickable {
                     id: mainFlickable
                     width: parent.width
                     height: parent.height - parent.spacing - 40

@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import Quickshell
 import Quickshell.Wayland
 import Quickshell.Widgets
@@ -18,14 +18,14 @@ PanelWindow {
         blurRadius: Theme.cornerRadius
     }
 
-    WlrLayershell.namespace: "dms:dock-context-menu"
+    WlrLayershell.namespace: "hype:dock-context-menu"
 
     property var appData: null
     property var anchorItem: null
     property int margin: 10
     property bool hidePin: false
     property var desktopEntry: null
-    property bool isDmsWindow: appData?.appId === "org.quickshell" || appData?.appId === "com.danklinux.dms"
+    property bool isDmsWindow: appData?.appId === "org.quickshell" || appData?.appId === "com.hypelinux.hype"
 
     property bool isVertical: false
     property string edge: "top"
@@ -200,7 +200,7 @@ PanelWindow {
                         radius: 10
                         color: closeMouseArea.containsMouse ? Qt.rgba(Theme.error.r, Theme.error.g, Theme.error.b, 0.2) : "transparent"
 
-                        DankIcon {
+                        HypeIcon {
                             anchors.centerIn: parent
                             name: "close"
                             size: 12
@@ -221,7 +221,7 @@ PanelWindow {
                         }
                     }
 
-                    DankRipple {
+                    HypeRipple {
                         id: windowRipple
                         rippleColor: Theme.surfaceText
                         cornerRadius: Theme.cornerRadius
@@ -300,7 +300,7 @@ PanelWindow {
                         }
                     }
 
-                    DankRipple {
+                    HypeRipple {
                         id: actionRipple
                         rippleColor: Theme.surfaceText
                         cornerRadius: Theme.cornerRadius
@@ -355,7 +355,7 @@ PanelWindow {
                     wrapMode: Text.NoWrap
                 }
 
-                DankRipple {
+                HypeRipple {
                     id: pinRipple
                     rippleColor: Theme.surfaceText
                     cornerRadius: Theme.cornerRadius
@@ -415,7 +415,7 @@ PanelWindow {
                     wrapMode: Text.NoWrap
                 }
 
-                DankRipple {
+                HypeRipple {
                     id: nvidiaRipple
                     rippleColor: Theme.surfaceText
                     cornerRadius: Theme.cornerRadius
@@ -462,7 +462,7 @@ PanelWindow {
                     wrapMode: Text.NoWrap
                 }
 
-                DankRipple {
+                HypeRipple {
                     id: closeRipple
                     rippleColor: Theme.error
                     cornerRadius: Theme.cornerRadius

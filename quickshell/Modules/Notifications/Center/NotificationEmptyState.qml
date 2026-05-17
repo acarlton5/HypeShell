@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import qs.Common
 import qs.Services
 import qs.Widgets
@@ -15,7 +15,7 @@ Item {
         spacing: Theme.spacingXS
         width: parent.width * 0.8
 
-        DankIcon {
+        HypeIcon {
             anchors.horizontalCenter: parent.horizontalCenter
             name: "notifications_none"
             size: Theme.iconSizeLarge + 16

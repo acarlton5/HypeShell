@@ -1,4 +1,4 @@
-pragma ComponentBehavior: Bound
+﻿pragma ComponentBehavior: Bound
 import QtQuick
 import QtQuick.Shapes
 import Quickshell
@@ -28,7 +28,7 @@ Variants {
             blurRadius: Theme.isConnectedEffect ? Theme.connectedCornerRadius : dock.surfaceRadius
         }
 
-        WlrLayershell.namespace: "dms:dock"
+        WlrLayershell.namespace: "hype:dock"
         WlrLayershell.layer: SettingsData.frameEnabled && !dock.hasFullscreenToplevel ? WlrLayer.Overlay : WlrLayer.Top
 
         readonly property bool isVertical: SettingsData.dockPosition === SettingsData.Position.Left || SettingsData.dockPosition === SettingsData.Position.Right
@@ -499,7 +499,7 @@ Variants {
             implicitHeight: dock.isVertical ? 1 : dock.dockReserveZone
             exclusiveZone: visible ? dock.dockReserveZone : -1
 
-            WlrLayershell.namespace: "dms:dock-exclusion"
+            WlrLayershell.namespace: "hype:dock-exclusion"
             WlrLayershell.layer: WlrLayer.Top
 
             anchors {
@@ -536,7 +536,7 @@ Variants {
             return null;
         }
 
-        DankTooltip {
+        HypeTooltip {
             id: dockTooltip
             targetScreen: dock.screen
         }

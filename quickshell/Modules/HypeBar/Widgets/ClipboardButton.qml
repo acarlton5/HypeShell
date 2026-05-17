@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import Quickshell
 import Quickshell.Wayland
 import qs.Common
@@ -81,7 +81,7 @@ BasePill {
             implicitWidth: icon.width
             implicitHeight: root.widgetThickness - root.horizontalPadding * 2
 
-            DankIcon {
+            HypeIcon {
                 id: icon
                 anchors.centerIn: parent
                 name: "content_paste"
@@ -103,7 +103,7 @@ BasePill {
             blurRadius: Theme.cornerRadius
         }
 
-        WlrLayershell.namespace: "dms:clipboard-context-menu"
+        WlrLayershell.namespace: "hype:clipboard-context-menu"
 
         property bool isVertical: false
         property string edge: "top"
@@ -242,7 +242,7 @@ BasePill {
                         anchors.rightMargin: Theme.spacingS
                         spacing: Theme.spacingS
 
-                        DankIcon {
+                        HypeIcon {
                             anchors.verticalCenter: parent.verticalCenter
                             name: "delete_sweep"
                             size: 16
@@ -282,7 +282,7 @@ BasePill {
                         anchors.rightMargin: Theme.spacingS
                         spacing: Theme.spacingS
 
-                        DankIcon {
+                        HypeIcon {
                             anchors.verticalCenter: parent.verticalCenter
                             name: "push_pin"
                             size: 16

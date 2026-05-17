@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import qs.Common
 import qs.Widgets
 
@@ -64,7 +64,7 @@ Column {
         visible: root.description !== ""
     }
 
-    DankSlider {
+    HypeSlider {
         width: parent.width
         value: root.value
         minimum: root.minimum

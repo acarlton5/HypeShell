@@ -1,4 +1,4 @@
-import QtQuick
+﻿import QtQuick
 import QtQuick.Controls
 import Quickshell
 import Quickshell.Services.Notifications
@@ -47,7 +47,7 @@ Rectangle {
     readonly property real targetHeight: expanded ? (expandedContent.height + cardPadding * 2) : (baseCardHeight + collapsedContent.extraHeight)
     radius: connectedFrameMode ? Theme.connectedSurfaceRadius : Theme.cornerRadius
     scale: (cardHoverHandler.hovered ? 1.004 : 1.0) * listLevelAdjacentScaleInfluence
-    readonly property bool shadowsAllowed: Theme.elevationEnabled && Quickshell.env("DMS_DISABLE_LAYER") !== "true" && Quickshell.env("DMS_DISABLE_LAYER") !== "1" && !BlurService.enabled
+    readonly property bool shadowsAllowed: Theme.elevationEnabled && Quickshell.env("HYPE_DISABLE_LAYER") !== "true" && Quickshell.env("HYPE_DISABLE_LAYER") !== "1" && !BlurService.enabled
     readonly property var shadowElevation: Theme.elevationLevel1
     readonly property real baseShadowBlurPx: (shadowElevation && shadowElevation.blurPx !== undefined) ? shadowElevation.blurPx : 4
     readonly property real hoverShadowBlurBoost: cardHoverHandler.hovered ? Math.min(2, baseShadowBlurPx * 0.25) : 0
@@ -251,7 +251,7 @@ Rectangle {
         visible: renderCollapsedContent
         opacity: root.collapsedContentOpacity
 
-        DankCircularImage {
+        HypeCircularImage {
             id: iconContainer
             readonly property string rawImage: notificationGroup?.latestNotification?.image || ""
             readonly property string iconFromImage: {
@@ -592,7 +592,7 @@ Rectangle {
                             anchors.margins: compactMode ? Theme.spacingS : Theme.spacingM
                             anchors.bottomMargin: contentSpacing
 
-                            DankCircularImage {
+                            HypeCircularImage {
                                 id: messageIcon
 
                                 readonly property string rawImage: modelData?.image || ""
@@ -1006,7 +1006,7 @@ Rectangle {
         width: compactMode ? 52 : 60
         height: compactMode ? 24 : 28
 
-        DankActionButton {
+        HypeActionButton {
             anchors.left: parent.left
             anchors.top: parent.top
             visible: (notificationGroup?.count || 0) > 1
@@ -1020,7 +1020,7 @@ Rectangle {
             }
         }
 
-        DankActionButton {
+        HypeActionButton {
             anchors.right: parent.right
             anchors.top: parent.top
             iconName: "close"
