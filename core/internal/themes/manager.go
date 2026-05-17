@@ -244,8 +244,7 @@ func joinThemeAssetURL(baseURL, asset string) (string, error) {
 	}
 
 	parts := strings.Split(filepath.ToSlash(filepath.Clean(asset)), "/")
-	args := append([]string{baseURL}, parts...)
-	return url.JoinPath(args...)
+	return url.JoinPath(baseURL, parts...)
 }
 
 func (m *Manager) InstallFromRegistry(registry *Registry, themeID string) error {
