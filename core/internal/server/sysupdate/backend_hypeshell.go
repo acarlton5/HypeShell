@@ -84,7 +84,12 @@ func hypeShellUpdateArgv(shellCmd string) []string {
 }
 
 func hypeShellSelfUpdateScript() string {
+	userPath := os.Getenv("PATH")
+	if userPath == "" {
+		userPath = "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+	}
 	return fmt.Sprintf(`set -euo pipefail
+export PATH=%s:"$PATH"
 tmp="$(mktemp -d "${TMPDIR:-/tmp}/hypeshell-self-update-XXXXXX")"
 trap 'rm -rf "$tmp"' EXIT
 
@@ -131,7 +136,7 @@ else
     fi
 fi
 echo "HypeShell self-update complete."
-`, shellQuote(hypeShellRepoURL), shellQuote(hypeShellRepoURL))
+`, shellQuote(userPath), shellQuote(hypeShellRepoURL), shellQuote(hypeShellRepoURL))
 }
 
 func shellQuote(value string) string {
