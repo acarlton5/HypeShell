@@ -20,7 +20,7 @@ HypePopout {
     property bool _reopenAfterUpgrade: false
 
     readonly property bool polkitModalOpen: polkitAuthSurfaceModal.shouldBeVisible
-    readonly property bool inlineAuthActive: PolkitService.agent?.isActive ?? false
+    readonly property bool inlineAuthActive: (PolkitService.agent?.isActive ?? false) && PolkitService.agent?.flow !== null
     readonly property bool anyModalOpen: polkitModalOpen || inlineAuthActive
 
     Connections {
@@ -59,6 +59,10 @@ HypePopout {
     Connections {
         target: SystemUpdateService
         function onIsUpgradingChanged() {
+            const item = systemUpdatePopout.contentLoader.item;
+            if (item) {
+                item.upgradeStarting = false;
+            }
             if (SystemUpdateService.isUpgrading)
                 return;
             if (!systemUpdatePopout._reopenAfterUpgrade)
@@ -96,6 +100,8 @@ HypePopout {
 
             focus: true
 
+            property bool upgradeStarting: false
+
             readonly property alias inlineAuthContent: inlineAuthLoader.item
 
             readonly property var hypeShellUpdate: (SystemUpdateService.availableUpdates || []).find(pkg => pkg.backend === "hypeshell" || pkg.repo === "hypeshell" || pkg.name === "HypeShell") || null
@@ -107,19 +113,23 @@ HypePopout {
             readonly property color statusColor: SystemUpdateService.hasError ? Theme.error : (SystemUpdateService.isUpgrading ? Theme.primary : Theme.surfaceVariantText)
 
             function runUpdate() {
+                if (upgradeStarting)
+                    return;
                 if (SystemUpdateService.isUpgrading) {
                     SystemUpdateService.cancelUpdates();
                     return;
                 }
-
+ 
                 const opts = {
                     includeFlatpak: SettingsData.updaterIncludeFlatpak,
                     includeAUR: SettingsData.updaterAllowAUR,
                     terminal: SessionData.terminalOverride
                 };
                 if (hasHypeShellUpdate) {
+                    upgradeStarting = true;
                     opts.targets = [hypeShellUpdate];
                     HYPEService.sysupdateUpgrade(opts, response => {
+                        upgradeStarting = false;
                         if (response?.error) {
                             ToastService.showError(I18n.tr("Update failed to start"), response.error);
                             return;
@@ -134,6 +144,7 @@ HypePopout {
                     systemUpdatePopout.close();
                     return;
                 }
+                upgradeStarting = true;
                 SystemUpdateService.runUpdates(opts);
             }
 
@@ -588,7 +599,7 @@ HypePopout {
                             anchors.fill: parent
                             hoverEnabled: true
                             cursorShape: Qt.PointingHandCursor
-                            enabled: SystemUpdateService.isUpgrading || updaterPanel.hasHypeShellUpdate
+                            enabled: (SystemUpdateService.isUpgrading || updaterPanel.hasHypeShellUpdate) && !updaterPanel.upgradeStarting
                             onClicked: updaterPanel.runUpdate()
                         }
 
