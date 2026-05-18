@@ -667,9 +667,6 @@ HypePopout {
                         focus: true
                         sourceComponent: PolkitAuthContent {
                             focus: true
-                            onCloseRequested: {
-                                PolkitService.agent?.flow?.cancelAuthenticationRequest();
-                            }
                         }
                     }
                 }

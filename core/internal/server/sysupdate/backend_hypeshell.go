@@ -63,23 +63,7 @@ func (hypeShellBackend) Upgrade(ctx context.Context, opts UpgradeOptions, onLine
 }
 
 func hypeShellUpdateArgv(shellCmd string) []string {
-	argv := []string{"pkexec", "bash", "-lc", shellCmd}
-	if commandExists("systemd-run") {
-		return []string{
-			"systemd-run",
-			"--user",
-			"--scope",
-			"--collect",
-			"--unit",
-			fmt.Sprintf("hypeshell-self-update-%d", os.Getpid()),
-			"--",
-			"pkexec",
-			"bash",
-			"-lc",
-			shellCmd,
-		}
-	}
-	return argv
+	return []string{"pkexec", "bash", "-lc", shellCmd}
 }
 
 func hypeShellSelfUpdateScript() string {
