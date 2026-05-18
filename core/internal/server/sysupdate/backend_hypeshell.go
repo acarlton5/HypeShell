@@ -103,6 +103,19 @@ else
     update_home="${HOME:-}"
 fi
 
+# Pre-locate and resolve invoking user's Go compiler path if not in default elevated PATH
+user_go=""
+if [ -n "$invoking_uid" ]; then
+    user_go="$(runuser -u "$update_user" -- env HOME="$update_home" bash -lc "command -v go" 2>/dev/null || true)"
+fi
+if [ -z "$user_go" ]; then
+    user_go="$(command -v go 2>/dev/null || true)"
+fi
+if [ -n "$user_go" ]; then
+    go_dir="$(dirname "$user_go")"
+    export PATH="$go_dir:$PATH"
+fi
+
 echo "Cloning HypeShell main..."
 git clone --depth 1 --branch main %s "$tmp/source"
 commit="$(git -C "$tmp/source" rev-parse HEAD)"
