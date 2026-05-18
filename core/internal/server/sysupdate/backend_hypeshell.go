@@ -57,7 +57,12 @@ func (hypeShellBackend) CheckUpdates(ctx context.Context) ([]Package, error) {
 }
 
 func (b hypeShellBackend) Upgrade(ctx context.Context, opts UpgradeOptions, onLine func(string)) error {
-	cmd := hypeShellSelfUpdateScript()
+	realUID := fmt.Sprintf("%d", os.Getuid())
+	realUser := os.Getenv("USER")
+	realHome := os.Getenv("HOME")
+	realXdg := os.Getenv("XDG_RUNTIME_DIR")
+	realDbus := os.Getenv("DBUS_SESSION_BUS_ADDRESS")
+	cmd := hypeShellSelfUpdateScript(realUID, realUser, realHome, realXdg, realDbus)
 	if onLine != nil {
 		onLine("$ hype update --self")
 		onLine("Updating HypeShell from GitHub main")
@@ -84,7 +89,7 @@ func (b hypeShellBackend) Upgrade(ctx context.Context, opts UpgradeOptions, onLi
 	return Run(ctx, []string{"pkexec", "bash", "-c", cmd}, RunOptions{OnLine: onLine})
 }
 
-func hypeShellSelfUpdateScript() string {
+func hypeShellSelfUpdateScript(realUID, realUser, realHome, realXdg, realDbus string) string {
 	userPath := os.Getenv("PATH")
 	if userPath == "" {
 		userPath = "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
@@ -94,13 +99,24 @@ export PATH=%s:"$PATH"
 tmp="$(mktemp -d "${TMPDIR:-/tmp}/hypeshell-self-update-XXXXXX")"
 trap 'rm -rf "$tmp"' EXIT
 
-invoking_uid="${SUDO_UID:-${PKEXEC_UID:-}}"
-if [ -n "$invoking_uid" ]; then
+invoking_uid="${SUDO_UID:-${PKEXEC_UID:-%s}}"
+if [ -n "$invoking_uid" ] && [ "$invoking_uid" != "0" ]; then
     update_user=$(id -un "$invoking_uid")
     update_home=$(getent passwd "$invoking_uid" | cut -d: -f6)
 else
-    update_user="${USER:-$(id -un)}"
-    update_home="${HOME:-}"
+    update_user="%s"
+    update_home="%s"
+    invoking_uid="%s"
+fi
+
+# Fallback values for XDG and DBus runtime if they need to be populated in the reload block
+xdg_runtime="%s"
+dbus_bus="%s"
+if [ -z "$xdg_runtime" ]; then
+    xdg_runtime="/run/user/$invoking_uid"
+fi
+if [ -z "$dbus_bus" ]; then
+    dbus_bus="unix:path=/run/user/$invoking_uid/bus"
 fi
 
 # Pre-locate and resolve invoking user's Go compiler path if not in default elevated PATH
@@ -139,10 +155,10 @@ echo "HypeShell self-update complete. Reloading service in 2 seconds..."
 if [ -n "$invoking_uid" ]; then
     (
         sleep 2
-        runuser -u "$update_user" -- env HOME="$update_home" XDG_RUNTIME_DIR="/run/user/$invoking_uid" DBUS_SESSION_BUS_ADDRESS="unix:path=/run/user/$invoking_uid/bus" systemctl --user daemon-reload || true
-        runuser -u "$update_user" -- env HOME="$update_home" XDG_RUNTIME_DIR="/run/user/$invoking_uid" DBUS_SESSION_BUS_ADDRESS="unix:path=/run/user/$invoking_uid/bus" systemctl --user import-environment WAYLAND_DISPLAY DISPLAY XDG_CURRENT_DESKTOP XDG_SESSION_DESKTOP XDG_SESSION_TYPE HYPRLAND_INSTANCE_SIGNATURE XDG_RUNTIME_DIR DBUS_SESSION_BUS_ADDRESS || true
-        if ! runuser -u "$update_user" -- env HOME="$update_home" XDG_RUNTIME_DIR="/run/user/$invoking_uid" DBUS_SESSION_BUS_ADDRESS="unix:path=/run/user/$invoking_uid/bus" systemctl --user restart hype.service && ! runuser -u "$update_user" -- env HOME="$update_home" XDG_RUNTIME_DIR="/run/user/$invoking_uid" DBUS_SESSION_BUS_ADDRESS="unix:path=/run/user/$invoking_uid/bus" systemctl --user start hype.service; then
-            runuser -u "$update_user" -- env HOME="$update_home" XDG_RUNTIME_DIR="/run/user/$invoking_uid" DBUS_SESSION_BUS_ADDRESS="unix:path=/run/user/$invoking_uid/bus" nohup /usr/local/bin/hype run --session >/tmp/hypeshell-update-restart.log 2>&1 &
+        runuser -u "$update_user" -- env HOME="$update_home" XDG_RUNTIME_DIR="$xdg_runtime" DBUS_SESSION_BUS_ADDRESS="$dbus_bus" systemctl --user daemon-reload || true
+        runuser -u "$update_user" -- env HOME="$update_home" XDG_RUNTIME_DIR="$xdg_runtime" DBUS_SESSION_BUS_ADDRESS="$dbus_bus" systemctl --user import-environment WAYLAND_DISPLAY DISPLAY XDG_CURRENT_DESKTOP XDG_SESSION_DESKTOP XDG_SESSION_TYPE HYPRLAND_INSTANCE_SIGNATURE XDG_RUNTIME_DIR DBUS_SESSION_BUS_ADDRESS || true
+        if ! runuser -u "$update_user" -- env HOME="$update_home" XDG_RUNTIME_DIR="$xdg_runtime" DBUS_SESSION_BUS_ADDRESS="$dbus_bus" systemctl --user restart hype.service && ! runuser -u "$update_user" -- env HOME="$update_home" XDG_RUNTIME_DIR="$xdg_runtime" DBUS_SESSION_BUS_ADDRESS="$dbus_bus" systemctl --user start hype.service; then
+            runuser -u "$update_user" -- env HOME="$update_home" XDG_RUNTIME_DIR="$xdg_runtime" DBUS_SESSION_BUS_ADDRESS="$dbus_bus" nohup /usr/local/bin/hype run --session >/tmp/hypeshell-update-restart.log 2>&1 &
         fi
     ) >/dev/null 2>&1 &
 else
@@ -155,7 +171,17 @@ else
         fi
     ) >/dev/null 2>&1 &
 fi
-`, shellQuote(userPath), shellQuote(hypeShellRepoURL), shellQuote(hypeShellRepoURL))
+`,
+		shellQuote(userPath),
+		shellQuote(realUID),
+		shellQuote(realUser),
+		shellQuote(realHome),
+		shellQuote(realUID),
+		shellQuote(realXdg),
+		shellQuote(realDbus),
+		shellQuote(hypeShellRepoURL),
+		shellQuote(hypeShellRepoURL),
+	)
 }
 
 func shellQuote(value string) string {
