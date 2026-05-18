@@ -99,8 +99,6 @@ export PATH=%s:"$PATH"
 export GOGC=30
 export GOMAXPROCS=1
 export GOMEMLIMIT=768MiB
-tmp="$(mktemp -d "/var/tmp/hypeshell-self-update-XXXXXX")"
-trap 'rm -rf "$tmp"' EXIT
 
 invoking_uid="${SUDO_UID:-${PKEXEC_UID:-%s}}"
 if [ -n "$invoking_uid" ] && [ "$invoking_uid" != "0" ]; then
@@ -111,6 +109,11 @@ else
     update_home="%s"
     invoking_uid="%s"
 fi
+
+cache_dir="$update_home/.cache/hypeshell-update"
+mkdir -p "$cache_dir"
+tmp="$(mktemp -d "$cache_dir/hypeshell-self-update-XXXXXX")"
+trap 'rm -rf "$tmp"' EXIT
 
 # Fallback values for XDG and DBus runtime if they need to be populated in the reload block
 xdg_runtime="%s"
