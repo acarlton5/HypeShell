@@ -75,8 +75,6 @@ func hypeShellUpdateArgv(shellCmd string) []string {
 		"--user",
 		"--scope",
 		"--collect",
-		"--unit",
-		fmt.Sprintf("hypeshell-self-update-%d-%d", os.Getpid(), time.Now().Unix()),
 		"--",
 		"pkexec",
 		"bash",
