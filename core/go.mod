@@ -1,6 +1,6 @@
 module github.com/acarlton5/HypeShell/core
 
-go 1.23
+go 1.26.1
 
 require (
 	github.com/Wifx/gonetworkmanager/v2 v2.2.0
