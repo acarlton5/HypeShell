@@ -12,6 +12,7 @@ This file  is more of a quick reference so I know what to account for before nex
 - 2026-05-18: Hardened background compiler safety: shifted clone/compilation workspace from RAM-disk (/tmp) to physical storage (/var/tmp) and added a strict GOMEMLIMIT=768MiB cap to eradicate OOM terminations.
 - 2026-05-18: Successfully completed and verified the finalized self-update integration with zero-RAM physical disk builds.
 - 2026-05-18: Upgraded self-updater compilation to use dynamic user home cache directory to guarantee complete immunity against noexec system security partitions.
+- 2026-05-18: Verified dynamic home-cache compilation workspace. Ready for the live background upgrade test.
 
 # 1.5.0
 - Overhauled shadows
