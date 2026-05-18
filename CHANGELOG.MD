@@ -10,6 +10,7 @@ This file  is more of a quick reference so I know what to account for before nex
 - 2026-05-18: Hardened self-update compilation, adding GOGC=50 and GOMAXPROCS=2 thread and memory limits to prevent compilation OOM kills, and automated go mod tidying before make.
 - 2026-05-18: Verified and certified the fully automated HypeShell background self-update loop, operating perfectly inside the graphical QML shade.
 - 2026-05-18: Hardened background compiler safety: shifted clone/compilation workspace from RAM-disk (/tmp) to physical storage (/var/tmp) and added a strict GOMEMLIMIT=768MiB cap to eradicate OOM terminations.
+- 2026-05-18: Successfully completed and verified the finalized self-update integration with zero-RAM physical disk builds.
 
 # 1.5.0
 - Overhauled shadows
