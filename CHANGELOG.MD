@@ -1,7 +1,7 @@
 This file  is more of a quick reference so I know what to account for before next releases. 
  
 # Updater smoke tests 
-- 2026-05-18: Added premium inline sudo password authentication & real-time log scrolling directly inside the update shade console.
+- 2026-05-18: Added beautiful, borderless kitty and ghostty overlay terminal and kept the popout shade open during execution.
 
 # 1.5.0
 - Overhauled shadows
