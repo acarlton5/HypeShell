@@ -61,7 +61,7 @@ func (b archHelperBackend) ID() string      { return b.id }
 func (b archHelperBackend) Repo() RepoKind  { return RepoSystem }
 func (b archHelperBackend) NeedsAuth() bool { return true }
 func (b archHelperBackend) RunsInTerminal() bool {
-	return false
+	return true
 }
 func (b archHelperBackend) IsAvailable(_ context.Context) bool { return commandExists(b.id) }
 
