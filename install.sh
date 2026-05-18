@@ -847,6 +847,7 @@ install_hyprland_session() {
 
     defaults_dir="$PREFIX/share/hypeshell/hyprland"
     sudo_run install -D -m 755 "$SOURCE_DIR/assets/sessions/hypeshell-hyprland-session" "$PREFIX/bin/hypeshell-hyprland-session"
+    sudo_run sed -i 's/\r$//' "$PREFIX/bin/hypeshell-hyprland-session" || true
     sudo_run install -D -m 644 "$SOURCE_DIR/assets/sessions/hypeshell-hyprland.desktop" "$PREFIX/share/wayland-sessions/hypeshell-hyprland.desktop"
     sudo_run install -D -m 644 "$SOURCE_DIR/core/internal/config/embedded/hyprland.conf" "$defaults_dir/hyprland.conf"
     sudo_run install -D -m 644 "$SOURCE_DIR/core/internal/config/embedded/hypr-colors.conf" "$defaults_dir/hype/colors.conf"
@@ -1093,6 +1094,7 @@ install_greeter_wrapper_from_source() {
 
     sudo_run install -D -m 755 "$wrapper_src" /usr/local/bin/hype-greeter
     sudo_run install -D -m 755 "$wrapper_src" /usr/bin/hype-greeter
+    sudo_run sed -i 's/\r$//' /usr/local/bin/hype-greeter /usr/bin/hype-greeter || true
     sudo_run rm -f /usr/local/bin/dank-greeter /usr/bin/dank-greeter /usr/local/bin/dms-greeter /usr/bin/dms-greeter
 }
 
