@@ -23,7 +23,7 @@ func (hypeShellBackend) DisplayName() string    { return "HypeShell" }
 func (hypeShellBackend) Repo() RepoKind         { return RepoHypeShell }
 func (hypeShellBackend) NeedsAuth() bool        { return true }
 func (hypeShellBackend) RunsInTerminal() bool {
-	return os.Getenv("HYPE_FORCE_PKEXEC") != "1"
+	return false
 }
 func (hypeShellBackend) IsAvailable(ctx context.Context) bool {
 	return commandExists("git") && (commandExists("hype") || installedHypeShellCommit() != "")
@@ -46,12 +46,13 @@ func (hypeShellBackend) CheckUpdates(ctx context.Context) ([]Package, error) {
 	}
 
 	return []Package{{
-		Name:        "HypeShell",
-		Repo:        RepoHypeShell,
-		Backend:     "hypeshell",
-		FromVersion: from,
-		ToVersion:   shortCommit(latest),
-		Ref:         "main",
+		Name:         "HypeShell",
+		Repo:         RepoHypeShell,
+		Backend:      "hypeshell",
+		FromVersion:  from,
+		ToVersion:    shortCommit(latest),
+		Ref:          "main",
+		ChangelogURL: "https://github.com/acarlton5/HypeShell/commits/main",
 	}}, nil
 }
 

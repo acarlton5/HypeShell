@@ -108,9 +108,112 @@ HypePopout {
             readonly property bool hasHypeShellUpdate: hypeShellUpdate !== null
             readonly property int hypeShellUpdateCount: hasHypeShellUpdate ? 1 : 0
             readonly property var hypeShellUpdates: hasHypeShellUpdate ? [hypeShellUpdate] : []
+            readonly property var generalUpdates: (SystemUpdateService.availableUpdates || []).filter(pkg => pkg.backend !== "hypeshell" && pkg.repo !== "hypeshell" && pkg.name !== "HypeShell")
+            readonly property int generalUpdateCount: generalUpdates.length
+            readonly property int pacmanUpdatesCount: generalUpdates.filter(pkg => pkg.backend === "pacman").length
+            readonly property int paruUpdatesCount: generalUpdates.filter(pkg => pkg.backend === "paru" || pkg.backend === "yay" || pkg.repo === "aur").length
+            readonly property int flatpakUpdatesCount: generalUpdates.filter(pkg => pkg.backend === "flatpak" || pkg.repo === "flatpak").length
             readonly property bool hasTerminalBackend: (SystemUpdateService.backends || []).some(b => b.runsInTerminal === true)
             readonly property bool isTerminalOperation: hasTerminalBackend || (SystemUpdateService.recentLog || []).some(line => String(line).indexOf("Running in terminal:") >= 0)
             readonly property color statusColor: SystemUpdateService.hasError ? Theme.error : (SystemUpdateService.isUpgrading ? Theme.primary : Theme.surfaceVariantText)
+
+            function runHypeShellUpdate() {
+                if (upgradeStarting || SystemUpdateService.isUpgrading)
+                    return;
+                upgradeStarting = true;
+                const opts = {
+                    includeFlatpak: false,
+                    includeAUR: false,
+                    targets: [hypeShellUpdate]
+                };
+                HYPEService.sysupdateUpgrade(opts, response => {
+                    upgradeStarting = false;
+                    if (response?.error) {
+                        ToastService.showError(I18n.tr("Update failed to start"), response.error);
+                        return;
+                    }
+                    SystemUpdateService.requestState();
+                });
+            }
+
+            function runPacmanUpdate() {
+                if (upgradeStarting || SystemUpdateService.isUpgrading)
+                    return;
+                upgradeStarting = true;
+                const targets = generalUpdates.filter(pkg => pkg.backend === "pacman");
+                const opts = {
+                    includeFlatpak: false,
+                    includeAUR: false,
+                    targets: targets
+                };
+                HYPEService.sysupdateUpgrade(opts, response => {
+                    upgradeStarting = false;
+                    if (response?.error) {
+                        ToastService.showError(I18n.tr("Update failed to start"), response.error);
+                        return;
+                    }
+                    SystemUpdateService.requestState();
+                });
+            }
+
+            function runParuUpdate() {
+                if (upgradeStarting || SystemUpdateService.isUpgrading)
+                    return;
+                upgradeStarting = true;
+                const targets = generalUpdates.filter(pkg => pkg.backend === "paru" || pkg.backend === "yay" || pkg.repo === "aur");
+                const opts = {
+                    includeFlatpak: false,
+                    includeAUR: true,
+                    targets: targets
+                };
+                HYPEService.sysupdateUpgrade(opts, response => {
+                    upgradeStarting = false;
+                    if (response?.error) {
+                        ToastService.showError(I18n.tr("Update failed to start"), response.error);
+                        return;
+                    }
+                    SystemUpdateService.requestState();
+                });
+            }
+
+            function runFlatpakUpdate() {
+                if (upgradeStarting || SystemUpdateService.isUpgrading)
+                    return;
+                upgradeStarting = true;
+                const targets = generalUpdates.filter(pkg => pkg.backend === "flatpak" || pkg.repo === "flatpak");
+                const opts = {
+                    includeFlatpak: true,
+                    includeAUR: false,
+                    targets: targets
+                };
+                HYPEService.sysupdateUpgrade(opts, response => {
+                    upgradeStarting = false;
+                    if (response?.error) {
+                        ToastService.showError(I18n.tr("Update failed to start"), response.error);
+                        return;
+                    }
+                    SystemUpdateService.requestState();
+                });
+            }
+
+            function runSystemUpdate() {
+                if (upgradeStarting || SystemUpdateService.isUpgrading)
+                    return;
+                upgradeStarting = true;
+                const opts = {
+                    includeFlatpak: SettingsData.updaterIncludeFlatpak,
+                    includeAUR: SettingsData.updaterAllowAUR,
+                    targets: generalUpdates
+                };
+                HYPEService.sysupdateUpgrade(opts, response => {
+                    upgradeStarting = false;
+                    if (response?.error) {
+                        ToastService.showError(I18n.tr("Update failed to start"), response.error);
+                        return;
+                    }
+                    SystemUpdateService.requestState();
+                });
+            }
 
             function runUpdate() {
                 if (upgradeStarting)
@@ -119,33 +222,11 @@ HypePopout {
                     SystemUpdateService.cancelUpdates();
                     return;
                 }
- 
-                const opts = {
-                    includeFlatpak: SettingsData.updaterIncludeFlatpak,
-                    includeAUR: SettingsData.updaterAllowAUR,
-                    terminal: SessionData.terminalOverride
-                };
                 if (hasHypeShellUpdate) {
-                    upgradeStarting = true;
-                    opts.targets = [hypeShellUpdate];
-                    HYPEService.sysupdateUpgrade(opts, response => {
-                        upgradeStarting = false;
-                        if (response?.error) {
-                            ToastService.showError(I18n.tr("Update failed to start"), response.error);
-                            return;
-                        }
-                        SystemUpdateService.requestState();
-                    });
-                    return;
+                    runHypeShellUpdate();
+                } else if (generalUpdateCount > 0) {
+                    runSystemUpdate();
                 }
-                if (updaterPanel.hasTerminalBackend) {
-                    systemUpdatePopout._reopenAfterUpgrade = true;
-                    SystemUpdateService.runUpdates(opts);
-                    systemUpdatePopout.close();
-                    return;
-                }
-                upgradeStarting = true;
-                SystemUpdateService.runUpdates(opts);
             }
 
             function statusText() {
@@ -156,12 +237,11 @@ HypePopout {
                     return I18n.tr("Checking");
                 case SystemUpdateService.hasError:
                     return I18n.tr("Error");
-                case hypeShellUpdateCount === 0:
-                    return I18n.tr("Current");
-                case hypeShellUpdateCount === 1:
-                    return I18n.tr("HypeShell update");
                 default:
-                    return I18n.tr("%1 updates").arg(hypeShellUpdateCount);
+                    const total = hypeShellUpdateCount + generalUpdateCount;
+                    if (total === 0)
+                        return I18n.tr("Current");
+                    return I18n.tr("%1 updates").arg(total);
                 }
             }
 
@@ -359,7 +439,7 @@ HypePopout {
 
                         StyledText {
                             anchors.centerIn: parent
-                            text: "hypeshell self-update"
+                            text: SystemUpdateService.isUpgrading ? I18n.tr("update log") : I18n.tr("updates dashboard")
                             font.family: Theme.monoFontFamily || "monospace"
                             font.pixelSize: Theme.fontSizeSmall
                             color: Theme.withAlpha(Theme.surfaceText, 0.7)
@@ -376,6 +456,7 @@ HypePopout {
                         contentWidth: width
                         contentHeight: Math.max(height, terminalLog.implicitHeight)
                         clip: true
+                        visible: SystemUpdateService.isUpgrading
 
                         onContentHeightChanged: {
                             if (contentHeight > height)
@@ -391,6 +472,419 @@ HypePopout {
                             lineHeight: 1.18
                             color: SystemUpdateService.hasError ? Theme.error : "#d6e4ff"
                             wrapMode: Text.WrapAnywhere
+                        }
+                    }
+
+                    HypeFlickable {
+                        id: dashboardScroll
+                        anchors.left: parent.left
+                        anchors.right: parent.right
+                        anchors.top: terminalHeader.bottom
+                        anchors.bottom: parent.bottom
+                        anchors.margins: Theme.spacingM
+                        contentWidth: width
+                        contentHeight: dashboardColumn.implicitHeight
+                        clip: true
+                        visible: !SystemUpdateService.isUpgrading
+
+                        Column {
+                            id: dashboardColumn
+                            width: parent.width
+                            spacing: Theme.spacingM
+
+                            // HypeShell Card
+                            Rectangle {
+                                width: parent.width
+                                height: 130
+                                radius: Theme.cornerRadius
+                                color: Theme.withAlpha(Theme.primary, 0.04)
+                                border.color: Theme.withAlpha(Theme.primary, 0.28)
+                                border.width: 1
+                                visible: updaterPanel.hasHypeShellUpdate
+
+                                Rectangle {
+                                    anchors.fill: parent
+                                    radius: parent.radius
+                                    color: "transparent"
+                                    border.color: Theme.primary
+                                    border.width: 1
+                                    opacity: 0.15
+                                }
+
+                                Row {
+                                    anchors.fill: parent
+                                    anchors.margins: Theme.spacingM
+                                    spacing: Theme.spacingM
+
+                                    Rectangle {
+                                        width: 36
+                                        height: 36
+                                        radius: 18
+                                        color: Theme.withAlpha(Theme.primary, 0.12)
+                                        anchors.verticalCenter: parent.verticalCenter
+
+                                        HypeIcon {
+                                            anchors.centerIn: parent
+                                            name: "system_update_alt"
+                                            size: 20
+                                            color: Theme.primary
+                                        }
+                                    }
+
+                                    Column {
+                                        width: parent.width - 36 - Theme.spacingM - 120
+                                        spacing: 4
+                                        anchors.verticalCenter: parent.verticalCenter
+
+                                        StyledText {
+                                            text: I18n.tr("HypeShell Self-Update Available")
+                                            font.pixelSize: Theme.fontSizeMedium
+                                            font.weight: Font.SemiBold
+                                            color: Theme.primary
+                                        }
+
+                                        StyledText {
+                                            text: updaterPanel.hasHypeShellUpdate ? `${updaterPanel.hypeShellUpdate.fromVersion}  ➔  ${updaterPanel.hypeShellUpdate.toVersion}` : ""
+                                            font.family: Theme.monoFontFamily || "monospace"
+                                            font.pixelSize: Theme.fontSizeSmall
+                                            font.weight: Font.Medium
+                                            color: Theme.surfaceText
+                                        }
+
+                                        Row {
+                                            spacing: Theme.spacingM
+
+                                            Rectangle {
+                                                width: 100
+                                                height: 28
+                                                radius: 14
+                                                color: changelogMouse.containsMouse ? Theme.secondaryHover : Theme.withAlpha(Theme.surfaceVariantText, 0.1)
+
+                                                StyledText {
+                                                    anchors.centerIn: parent
+                                                    text: I18n.tr("Changelog")
+                                                    font.pixelSize: Theme.fontSizeSmall
+                                                    font.weight: Font.Medium
+                                                    color: Theme.surfaceText
+                                                }
+
+                                                MouseArea {
+                                                    id: changelogMouse
+                                                    anchors.fill: parent
+                                                    hoverEnabled: true
+                                                    cursorShape: Qt.PointingHandCursor
+                                                    onClicked: {
+                                                        const url = (updaterPanel.hasHypeShellUpdate && updaterPanel.hypeShellUpdate.changelogUrl) || "https://github.com/acarlton5/HypeShell/commits/main";
+                                                        Qt.openUrlExternally(url);
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+
+                                    Rectangle {
+                                        width: 110
+                                        height: 28
+                                        radius: 14
+                                        anchors.verticalCenter: parent.verticalCenter
+                                        color: updateNowMouse.containsMouse ? Theme.primaryHover : Theme.primary
+
+                                        StyledText {
+                                            anchors.centerIn: parent
+                                            text: I18n.tr("Update Now")
+                                            font.pixelSize: Theme.fontSizeSmall
+                                            font.weight: Font.Medium
+                                            color: Theme.surface
+                                        }
+
+                                        MouseArea {
+                                            id: updateNowMouse
+                                            anchors.fill: parent
+                                            hoverEnabled: true
+                                            cursorShape: Qt.PointingHandCursor
+                                            onClicked: updaterPanel.runHypeShellUpdate()
+                                        }
+                                    }
+                                }
+                            }
+
+                            // Pacman Updates Card
+                            Rectangle {
+                                width: parent.width
+                                height: 86
+                                radius: Theme.cornerRadius
+                                color: Theme.withAlpha(Theme.surfaceVariantText, 0.04)
+                                border.color: Theme.withAlpha(Theme.outline, 0.14)
+                                border.width: 1
+                                visible: updaterPanel.pacmanUpdatesCount > 0
+
+                                Row {
+                                    anchors.fill: parent
+                                    anchors.margins: Theme.spacingM
+                                    spacing: Theme.spacingM
+
+                                    Rectangle {
+                                        width: 36
+                                        height: 36
+                                        radius: 18
+                                        color: Theme.withAlpha(Theme.surfaceVariantText, 0.1)
+                                        anchors.verticalCenter: parent.verticalCenter
+
+                                        HypeIcon {
+                                            anchors.centerIn: parent
+                                            name: "apps"
+                                            size: 20
+                                            color: Theme.surfaceVariantText
+                                        }
+                                    }
+
+                                    Column {
+                                        width: parent.width - 36 - Theme.spacingM - 120
+                                        spacing: 2
+                                        anchors.verticalCenter: parent.verticalCenter
+
+                                        StyledText {
+                                            text: I18n.tr("Pacman Updates")
+                                            font.pixelSize: Theme.fontSizeMedium
+                                            font.weight: Font.SemiBold
+                                            color: Theme.surfaceText
+                                        }
+
+                                        StyledText {
+                                            text: I18n.tr("%1 updates available").arg(updaterPanel.pacmanUpdatesCount)
+                                            font.pixelSize: Theme.fontSizeSmall
+                                            color: Theme.surfaceVariantText
+                                        }
+                                    }
+
+                                    Rectangle {
+                                        width: 110
+                                        height: 28
+                                        radius: 14
+                                        anchors.verticalCenter: parent.verticalCenter
+                                        color: updatePacmanBtnMouse.containsMouse ? Theme.primaryHover : Theme.withAlpha(Theme.primary, 0.14)
+
+                                        StyledText {
+                                            anchors.centerIn: parent
+                                            text: I18n.tr("Update")
+                                            font.pixelSize: Theme.fontSizeSmall
+                                            font.weight: Font.Medium
+                                            color: Theme.primary
+                                        }
+
+                                        MouseArea {
+                                            id: updatePacmanBtnMouse
+                                            anchors.fill: parent
+                                            hoverEnabled: true
+                                            cursorShape: Qt.PointingHandCursor
+                                            onClicked: updaterPanel.runPacmanUpdate()
+                                        }
+                                    }
+                                }
+                            }
+
+                            // Paru (AUR) Updates Card
+                            Rectangle {
+                                width: parent.width
+                                height: 86
+                                radius: Theme.cornerRadius
+                                color: Theme.withAlpha(Theme.surfaceVariantText, 0.04)
+                                border.color: Theme.withAlpha(Theme.outline, 0.14)
+                                border.width: 1
+                                visible: updaterPanel.paruUpdatesCount > 0
+
+                                Row {
+                                    anchors.fill: parent
+                                    anchors.margins: Theme.spacingM
+                                    spacing: Theme.spacingM
+
+                                    Rectangle {
+                                        width: 36
+                                        height: 36
+                                        radius: 18
+                                        color: Theme.withAlpha(Theme.surfaceVariantText, 0.1)
+                                        anchors.verticalCenter: parent.verticalCenter
+
+                                        HypeIcon {
+                                            anchors.centerIn: parent
+                                            name: "extension"
+                                            size: 20
+                                            color: Theme.surfaceVariantText
+                                        }
+                                    }
+
+                                    Column {
+                                        width: parent.width - 36 - Theme.spacingM - 120
+                                        spacing: 2
+                                        anchors.verticalCenter: parent.verticalCenter
+
+                                        StyledText {
+                                            text: I18n.tr("Paru Updates (AUR)")
+                                            font.pixelSize: Theme.fontSizeMedium
+                                            font.weight: Font.SemiBold
+                                            color: Theme.surfaceText
+                                        }
+
+                                        StyledText {
+                                            text: I18n.tr("%1 updates available").arg(updaterPanel.paruUpdatesCount)
+                                            font.pixelSize: Theme.fontSizeSmall
+                                            color: Theme.surfaceVariantText
+                                        }
+                                    }
+
+                                    Rectangle {
+                                        width: 110
+                                        height: 28
+                                        radius: 14
+                                        anchors.verticalCenter: parent.verticalCenter
+                                        color: updateParuBtnMouse.containsMouse ? Theme.primaryHover : Theme.withAlpha(Theme.primary, 0.14)
+
+                                        StyledText {
+                                            anchors.centerIn: parent
+                                            text: I18n.tr("Update")
+                                            font.pixelSize: Theme.fontSizeSmall
+                                            font.weight: Font.Medium
+                                            color: Theme.primary
+                                        }
+
+                                        MouseArea {
+                                            id: updateParuBtnMouse
+                                            anchors.fill: parent
+                                            hoverEnabled: true
+                                            cursorShape: Qt.PointingHandCursor
+                                            onClicked: updaterPanel.runParuUpdate()
+                                        }
+                                    }
+                                }
+                            }
+
+                            // Flatpak Updates Card
+                            Rectangle {
+                                width: parent.width
+                                height: 86
+                                radius: Theme.cornerRadius
+                                color: Theme.withAlpha(Theme.surfaceVariantText, 0.04)
+                                border.color: Theme.withAlpha(Theme.outline, 0.14)
+                                border.width: 1
+                                visible: updaterPanel.flatpakUpdatesCount > 0
+
+                                Row {
+                                    anchors.fill: parent
+                                    anchors.margins: Theme.spacingM
+                                    spacing: Theme.spacingM
+
+                                    Rectangle {
+                                        width: 36
+                                        height: 36
+                                        radius: 18
+                                        color: Theme.withAlpha(Theme.surfaceVariantText, 0.1)
+                                        anchors.verticalCenter: parent.verticalCenter
+
+                                        HypeIcon {
+                                            anchors.centerIn: parent
+                                            name: "cloud_download"
+                                            size: 20
+                                            color: Theme.surfaceVariantText
+                                        }
+                                    }
+
+                                    Column {
+                                        width: parent.width - 36 - Theme.spacingM - 120
+                                        spacing: 2
+                                        anchors.verticalCenter: parent.verticalCenter
+
+                                        StyledText {
+                                            text: I18n.tr("Flatpak Updates")
+                                            font.pixelSize: Theme.fontSizeMedium
+                                            font.weight: Font.SemiBold
+                                            color: Theme.surfaceText
+                                        }
+
+                                        StyledText {
+                                            text: I18n.tr("%1 updates available").arg(updaterPanel.flatpakUpdatesCount)
+                                            font.pixelSize: Theme.fontSizeSmall
+                                            color: Theme.surfaceVariantText
+                                        }
+                                    }
+
+                                    Rectangle {
+                                        width: 110
+                                        height: 28
+                                        radius: 14
+                                        anchors.verticalCenter: parent.verticalCenter
+                                        color: updateFlatpakBtnMouse.containsMouse ? Theme.primaryHover : Theme.withAlpha(Theme.primary, 0.14)
+
+                                        StyledText {
+                                            anchors.centerIn: parent
+                                            text: I18n.tr("Update")
+                                            font.pixelSize: Theme.fontSizeSmall
+                                            font.weight: Font.Medium
+                                            color: Theme.primary
+                                        }
+
+                                        MouseArea {
+                                            id: updateFlatpakBtnMouse
+                                            anchors.fill: parent
+                                            hoverEnabled: true
+                                            cursorShape: Qt.PointingHandCursor
+                                            onClicked: updaterPanel.runFlatpakUpdate()
+                                        }
+                                    }
+                                }
+                            }
+
+                            // Welcome / Success Card
+                            Rectangle {
+                                width: parent.width
+                                height: 120
+                                radius: Theme.cornerRadius
+                                color: Theme.withAlpha(Theme.success, 0.04)
+                                border.color: Theme.withAlpha(Theme.success, 0.2)
+                                border.width: 1
+                                visible: !updaterPanel.hasHypeShellUpdate && updaterPanel.generalUpdateCount === 0
+
+                                Row {
+                                    anchors.fill: parent
+                                    anchors.margins: Theme.spacingM
+                                    spacing: Theme.spacingM
+
+                                    Rectangle {
+                                        width: 48
+                                        height: 48
+                                        radius: 24
+                                        color: Theme.withAlpha(Theme.success, 0.12)
+                                        anchors.verticalCenter: parent.verticalCenter
+
+                                        HypeIcon {
+                                            anchors.centerIn: parent
+                                            name: "check"
+                                            size: 24
+                                            color: Theme.success
+                                        }
+                                    }
+
+                                    Column {
+                                        width: parent.width - 48 - Theme.spacingM
+                                        spacing: 4
+                                        anchors.verticalCenter: parent.verticalCenter
+
+                                        StyledText {
+                                            text: I18n.tr("System Up To Date")
+                                            font.pixelSize: Theme.fontSizeLarge
+                                            font.weight: Font.SemiBold
+                                            color: Theme.success
+                                        }
+
+                                        StyledText {
+                                            text: I18n.tr("Everything is clean. No updates are currently pending.")
+                                            font.pixelSize: Theme.fontSizeSmall
+                                            color: Theme.surfaceVariantText
+                                            wrapMode: Text.WordWrap
+                                            width: parent.width
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
 
@@ -446,7 +940,7 @@ HypePopout {
                         anchors.margins: Theme.spacingM
                         horizontalAlignment: Text.AlignHCenter
                         verticalAlignment: Text.AlignVCenter
-                        visible: !SystemUpdateService.isUpgrading && (updaterPanel.hypeShellUpdateCount === 0 || SystemUpdateService.hasError || SystemUpdateService.isChecking)
+                        visible: !SystemUpdateService.isUpgrading && (updaterPanel.generalUpdateCount === 0 || SystemUpdateService.hasError || SystemUpdateService.isChecking)
                         text: {
                             switch (true) {
                             case SystemUpdateService.hasError:
@@ -456,7 +950,7 @@ HypePopout {
                             case SystemUpdateService.isChecking:
                                 return I18n.tr("Checking...");
                             default:
-                                return I18n.tr("HypeShell current");
+                                return I18n.tr("Packages current");
                             }
                         }
                         font.pixelSize: Theme.fontSizeSmall
@@ -471,10 +965,10 @@ HypePopout {
                         anchors.top: listTitle.bottom
                         anchors.bottom: parent.bottom
                         anchors.margins: Theme.spacingS
-                        visible: updaterPanel.hypeShellUpdateCount > 0 && !SystemUpdateService.hasError && !SystemUpdateService.isChecking
+                        visible: updaterPanel.generalUpdateCount > 0 && !SystemUpdateService.hasError && !SystemUpdateService.isChecking
                         clip: true
                         spacing: Theme.spacingXS
-                        model: updaterPanel.hypeShellUpdates
+                        model: updaterPanel.generalUpdates
 
                         delegate: Rectangle {
                             width: ListView.view.width
@@ -580,13 +1074,12 @@ HypePopout {
                                 size: 18
                                 color: Theme.primary
                             }
-
                             StyledText {
                                 anchors.verticalCenter: parent.verticalCenter
                                 text: {
                                     if (SystemUpdateService.isUpgrading)
                                         return I18n.tr("Cancel");
-                                    return I18n.tr("Update HypeShell");
+                                    return I18n.tr("Update All");
                                 }
                                 font.pixelSize: Theme.fontSizeMedium
                                 font.weight: Font.Medium
@@ -599,7 +1092,7 @@ HypePopout {
                             anchors.fill: parent
                             hoverEnabled: true
                             cursorShape: Qt.PointingHandCursor
-                            enabled: (SystemUpdateService.isUpgrading || updaterPanel.hasHypeShellUpdate) && !updaterPanel.upgradeStarting
+                            enabled: (SystemUpdateService.isUpgrading || updaterPanel.hypeShellUpdateCount > 0 || updaterPanel.generalUpdateCount > 0) && !updaterPanel.upgradeStarting
                             onClicked: updaterPanel.runUpdate()
                         }
 

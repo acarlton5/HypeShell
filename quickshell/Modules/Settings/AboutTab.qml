@@ -1,4 +1,4 @@
-﻿import QtQuick
+import QtQuick
 import QtQuick.Effects
 import Quickshell
 import qs.Common
@@ -10,6 +10,19 @@ Item {
 
     LayoutMirroring.enabled: I18n.isRtl
     LayoutMirroring.childrenInherit: true
+
+    readonly property var availableUpdates: SystemUpdateService.availableUpdates || []
+    readonly property var hypeShellUpdate: availableUpdates.find(pkg => pkg.backend === "hypeshell" || pkg.repo === "hypeshell" || pkg.name === "HypeShell") || null
+    readonly property bool hasHypeShellUpdate: hypeShellUpdate !== null
+    readonly property int pacmanUpdatesCount: availableUpdates.filter(pkg => pkg.backend === "pacman").length
+    readonly property int paruUpdatesCount: availableUpdates.filter(pkg => pkg.backend === "paru" || pkg.backend === "yay" || pkg.repo === "aur").length
+    readonly property int flatpakUpdatesCount: availableUpdates.filter(pkg => pkg.backend === "flatpak" || pkg.repo === "flatpak").length
+    readonly property int totalSystemUpdates: pacmanUpdatesCount + paruUpdatesCount + flatpakUpdatesCount
+
+    function triggerCheck() {
+        SystemUpdateService.checkForUpdates();
+        ShellVersionService.checkForUpdates();
+    }
 
     property bool isHyprland: CompositorService.isHyprland
     property bool isNiri: CompositorService.isNiri
@@ -688,7 +701,7 @@ Item {
                     }
 
                     StyledText {
-                        text: aboutTab.updateStatusText()
+                        text: (ShellVersionService.updateStatus === "checking" || SystemUpdateService.isChecking) ? I18n.tr("Checking for updates...") : aboutTab.updateStatusText()
                         font.pixelSize: Theme.fontSizeMedium
                         color: aboutTab.updateStatusColor()
                         width: parent.width
@@ -738,26 +751,197 @@ Item {
                         }
                     }
 
+                    // Sectioned Update Cards
+                    Column {
+                        width: parent.width
+                        spacing: Theme.spacingS
+
+                        // HypeShell Card
+                        StyledRect {
+                            width: parent.width
+                            height: 60
+                            radius: Theme.cornerRadius - 2
+                            color: Theme.withAlpha(Theme.surfaceVariantText, 0.04)
+                            border.color: Qt.rgba(Theme.outline.r, Theme.outline.g, Theme.outline.b, 0.1)
+                            border.width: 1
+
+                            Row {
+                                anchors.fill: parent
+                                anchors.margins: Theme.spacingM
+                                spacing: Theme.spacingM
+
+                                HypeIcon {
+                                    name: "system_update_alt"
+                                    size: 18
+                                    color: aboutTab.hasHypeShellUpdate ? Theme.primary : Theme.success
+                                    anchors.verticalCenter: parent.verticalCenter
+                                }
+
+                                Column {
+                                    anchors.verticalCenter: parent.verticalCenter
+                                    spacing: 2
+
+                                    StyledText {
+                                        text: I18n.tr("HypeShell")
+                                        font.pixelSize: Theme.fontSizeMedium
+                                        font.weight: Font.Medium
+                                        color: Theme.surfaceText
+                                    }
+
+                                    StyledText {
+                                        text: aboutTab.hasHypeShellUpdate ? `${aboutTab.hypeShellUpdate.fromVersion}  ➔  ${aboutTab.hypeShellUpdate.toVersion}` : I18n.tr("Up to date")
+                                        font.family: aboutTab.hasHypeShellUpdate ? (Theme.monoFontFamily || "monospace") : undefined
+                                        font.pixelSize: Theme.fontSizeSmall
+                                        color: aboutTab.hasHypeShellUpdate ? Theme.primary : Theme.success
+                                    }
+                                }
+                            }
+                        }
+
+                        // Pacman Card
+                        StyledRect {
+                            width: parent.width
+                            height: 60
+                            radius: Theme.cornerRadius - 2
+                            color: Theme.withAlpha(Theme.surfaceVariantText, 0.04)
+                            border.color: Qt.rgba(Theme.outline.r, Theme.outline.g, Theme.outline.b, 0.1)
+                            border.width: 1
+
+                            Row {
+                                anchors.fill: parent
+                                anchors.margins: Theme.spacingM
+                                spacing: Theme.spacingM
+
+                                HypeIcon {
+                                    name: "apps"
+                                    size: 18
+                                    color: aboutTab.pacmanUpdatesCount > 0 ? Theme.primary : Theme.surfaceVariantText
+                                    anchors.verticalCenter: parent.verticalCenter
+                                }
+
+                                Column {
+                                    anchors.verticalCenter: parent.verticalCenter
+                                    spacing: 2
+
+                                    StyledText {
+                                        text: I18n.tr("Pacman Updates")
+                                        font.pixelSize: Theme.fontSizeMedium
+                                        font.weight: Font.Medium
+                                        color: Theme.surfaceText
+                                    }
+
+                                    StyledText {
+                                        text: aboutTab.pacmanUpdatesCount === 0 ? I18n.tr("Up to date") : I18n.tr("%1 updates available").arg(aboutTab.pacmanUpdatesCount)
+                                        font.pixelSize: Theme.fontSizeSmall
+                                        color: aboutTab.pacmanUpdatesCount > 0 ? Theme.primary : Theme.success
+                                    }
+                                }
+                            }
+                        }
+
+                        // Paru Card
+                        StyledRect {
+                            width: parent.width
+                            height: 60
+                            radius: Theme.cornerRadius - 2
+                            color: Theme.withAlpha(Theme.surfaceVariantText, 0.04)
+                            border.color: Qt.rgba(Theme.outline.r, Theme.outline.g, Theme.outline.b, 0.1)
+                            border.width: 1
+
+                            Row {
+                                anchors.fill: parent
+                                anchors.margins: Theme.spacingM
+                                spacing: Theme.spacingM
+
+                                HypeIcon {
+                                    name: "extension"
+                                    size: 18
+                                    color: aboutTab.paruUpdatesCount > 0 ? Theme.primary : Theme.surfaceVariantText
+                                    anchors.verticalCenter: parent.verticalCenter
+                                }
+
+                                Column {
+                                    anchors.verticalCenter: parent.verticalCenter
+                                    spacing: 2
+
+                                    StyledText {
+                                        text: I18n.tr("Paru Updates (AUR)")
+                                        font.pixelSize: Theme.fontSizeMedium
+                                        font.weight: Font.Medium
+                                        color: Theme.surfaceText
+                                    }
+
+                                    StyledText {
+                                        text: aboutTab.paruUpdatesCount === 0 ? I18n.tr("Up to date") : I18n.tr("%1 updates available").arg(aboutTab.paruUpdatesCount)
+                                        font.pixelSize: Theme.fontSizeSmall
+                                        color: aboutTab.paruUpdatesCount > 0 ? Theme.primary : Theme.success
+                                    }
+                                }
+                            }
+                        }
+
+                        // Flatpak Card
+                        StyledRect {
+                            width: parent.width
+                            height: 60
+                            radius: Theme.cornerRadius - 2
+                            color: Theme.withAlpha(Theme.surfaceVariantText, 0.04)
+                            border.color: Qt.rgba(Theme.outline.r, Theme.outline.g, Theme.outline.b, 0.1)
+                            border.width: 1
+
+                            Row {
+                                anchors.fill: parent
+                                anchors.margins: Theme.spacingM
+                                spacing: Theme.spacingM
+
+                                HypeIcon {
+                                    name: "cloud_download"
+                                    size: 18
+                                    color: aboutTab.flatpakUpdatesCount > 0 ? Theme.primary : Theme.surfaceVariantText
+                                    anchors.verticalCenter: parent.verticalCenter
+                                }
+
+                                Column {
+                                    anchors.verticalCenter: parent.verticalCenter
+                                    spacing: 2
+
+                                    StyledText {
+                                        text: I18n.tr("Flatpak Updates")
+                                        font.pixelSize: Theme.fontSizeMedium
+                                        font.weight: Font.Medium
+                                        color: Theme.surfaceText
+                                    }
+
+                                    StyledText {
+                                        text: aboutTab.flatpakUpdatesCount === 0 ? I18n.tr("Up to date") : I18n.tr("%1 updates available").arg(aboutTab.flatpakUpdatesCount)
+                                        font.pixelSize: Theme.fontSizeSmall
+                                        color: aboutTab.flatpakUpdatesCount > 0 ? Theme.primary : Theme.success
+                                    }
+                                }
+                            }
+                        }
+                    }
+
                     Row {
                         anchors.horizontalCenter: parent.horizontalCenter
                         spacing: Theme.spacingS
 
                         HypeButton {
-                            text: ShellVersionService.updateStatus === "checking" ? I18n.tr("Checking") : I18n.tr("Check for Updates")
+                            text: (ShellVersionService.updateStatus === "checking" || SystemUpdateService.isChecking) ? I18n.tr("Checking") : I18n.tr("Check for Updates")
                             iconName: "refresh"
-                            enabled: ShellVersionService.updateStatus !== "checking"
+                            enabled: ShellVersionService.updateStatus !== "checking" && !SystemUpdateService.isChecking
                             backgroundColor: Theme.primary
                             textColor: Theme.primaryText
-                            onClicked: ShellVersionService.checkForUpdates()
+                            onClicked: aboutTab.triggerCheck()
                         }
 
                         HypeButton {
                             text: I18n.tr("Update Now")
                             iconName: "system_update"
-                            visible: ShellVersionService.updateStatus === "available"
+                            visible: aboutTab.hasHypeShellUpdate || aboutTab.totalSystemUpdates > 0
                             backgroundColor: Qt.rgba(Theme.surfaceText.r, Theme.surfaceText.g, Theme.surfaceText.b, 0.08)
                             textColor: Theme.surfaceText
-                            onClicked: aboutTab.runHypeUpdate()
+                            onClicked: PopoutService.openSystemUpdate()
                         }
                     }
                 }
