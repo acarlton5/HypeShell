@@ -7,6 +7,7 @@ import (
 	"io"
 	"os"
 	"os/exec"
+	"strings"
 	"sync"
 	"syscall"
 
@@ -25,8 +26,9 @@ func Run(ctx context.Context, argv []string, opts RunOptions) error {
 	}
 
 	cmd := exec.CommandContext(ctx, argv[0], argv[1:]...)
+	cmd.Env = graphicalEnviron()
 	if len(opts.Env) > 0 {
-		cmd.Env = append(cmd.Environ(), opts.Env...)
+		cmd.Env = append(cmd.Env, opts.Env...)
 	}
 	if opts.AttachStdio {
 		cmd.Cancel = func() error {
@@ -144,9 +146,9 @@ func wrapInTerminal(term, title, shellCmd string) []string {
 	case "xterm":
 		argv = []string{term, "-class", appID, "-T", title, "-e", "sh", "-c", full}
 	case "konsole":
-		argv = []string{term, "-p", "tabtitle=" + title, "-e", "sh", "-c", full}
+		argv = []string{term, "--nofork", "-p", "tabtitle=" + title, "-e", "sh", "-c", full}
 	case "gnome-terminal":
-		argv = []string{term, "--title=" + title, "--", "sh", "-c", full}
+		argv = []string{term, "--wait", "--title=" + title, "--", "sh", "-c", full}
 	default:
 		argv = []string{term, "-e", "sh", "-c", full}
 	}
@@ -164,4 +166,35 @@ func wrapInTerminal(term, title, shellCmd string) []string {
 		return append(scoped, argv...)
 	}
 	return argv
+}
+
+func graphicalEnviron() []string {
+	env := os.Environ()
+	hasDisplay := false
+	hasWayland := false
+	for _, e := range env {
+		if strings.HasPrefix(e, "DISPLAY=") {
+			hasDisplay = true
+		}
+		if strings.HasPrefix(e, "WAYLAND_DISPLAY=") {
+			hasWayland = true
+		}
+	}
+	if hasDisplay && hasWayland {
+		return env
+	}
+
+	// Try to get them from systemd user environment
+	cmd := exec.Command("systemctl", "--user", "show-environment")
+	out, err := cmd.Output()
+	if err == nil {
+		lines := strings.Split(string(out), "\n")
+		for _, line := range lines {
+			line = strings.TrimSpace(line)
+			if strings.HasPrefix(line, "DISPLAY=") || strings.HasPrefix(line, "WAYLAND_DISPLAY=") || strings.HasPrefix(line, "XAUTHORITY=") || strings.HasPrefix(line, "XDG_RUNTIME_DIR=") || strings.HasPrefix(line, "DBUS_SESSION_BUS_ADDRESS=") {
+				env = append(env, line)
+			}
+		}
+	}
+	return env
 }
