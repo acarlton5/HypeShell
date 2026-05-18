@@ -63,8 +63,8 @@ func ostreeBooted(ctx context.Context) bool {
 func (rpmOstreeBackend) CheckUpdates(ctx context.Context) ([]Package, error) {
 	cmd := exec.CommandContext(ctx, "rpm-ostree", "upgrade", "--check")
 	if err := cmd.Run(); err != nil {
-		exitErr, ok := errors.AsType[*exec.ExitError](err)
-		if !ok || exitErr.ExitCode() != ostreeExitUpdateAvailable {
+		var exitErr *exec.ExitError
+		if !errors.As(err, &exitErr) || exitErr.ExitCode() != ostreeExitUpdateAvailable {
 			return nil, err
 		}
 	}

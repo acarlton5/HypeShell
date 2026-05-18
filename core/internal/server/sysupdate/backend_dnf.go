@@ -62,7 +62,8 @@ func dnfListUpgrades(ctx context.Context, bin string) (string, error) {
 	if err == nil {
 		return string(out), nil
 	}
-	if exitErr, ok := errors.AsType[*exec.ExitError](err); ok && exitErr.ExitCode() == 100 {
+	var exitErr *exec.ExitError
+	if errors.As(err, &exitErr) && exitErr.ExitCode() == 100 {
 		return string(out), nil
 	}
 	return "", err

@@ -26,7 +26,8 @@ func (flatpakBackend) CheckUpdates(ctx context.Context) ([]Package, error) {
 	cmd.Stdin = strings.NewReader("n\nn\n") // decline up to 2 installation prompts
 	out, err := cmd.Output()
 	if err != nil {
-		if exitErr, ok := errors.AsType[*exec.ExitError](err); ok && exitErr.ExitCode() == 1 && len(out) > 0 {
+		var exitErr *exec.ExitError
+		if errors.As(err, &exitErr) && exitErr.ExitCode() == 1 && len(out) > 0 {
 		} else if len(out) == 0 {
 			return nil, err
 		}

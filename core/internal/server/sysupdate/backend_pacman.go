@@ -214,7 +214,8 @@ func capturePermissive(ctx context.Context, argv ...string) (string, error) {
 	if err == nil {
 		return string(out), nil
 	}
-	if exitErr, ok := errors.AsType[*exec.ExitError](err); ok {
+	var exitErr *exec.ExitError
+	if errors.As(err, &exitErr) {
 		switch exitErr.ExitCode() {
 		case 1, 2:
 			return string(out), nil
