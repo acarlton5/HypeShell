@@ -5,6 +5,7 @@ import (
 	"context"
 	"fmt"
 	"os"
+	"os/exec"
 	"strings"
 )
 
@@ -86,7 +87,11 @@ func (b hypeShellBackend) Upgrade(ctx context.Context, opts UpgradeOptions, onLi
 		return Run(ctx, wrapInTerminal(term, title, sudoCmd), RunOptions{OnLine: onLine})
 	}
 
-	return Run(ctx, []string{"pkexec", "bash", "-c", cmd}, RunOptions{OnLine: onLine})
+	bashPath, err := exec.LookPath("bash")
+	if err != nil {
+		bashPath = "/usr/bin/bash"
+	}
+	return Run(ctx, []string{"pkexec", bashPath, "-c", cmd}, RunOptions{OnLine: onLine})
 }
 
 func hypeShellSelfUpdateScript(realUID, realUser, realHome, realXdg, realDbus string) string {

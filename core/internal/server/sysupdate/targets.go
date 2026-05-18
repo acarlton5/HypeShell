@@ -1,5 +1,7 @@
 package sysupdate
 
+import "os/exec"
+
 func BackendHasTargets(b Backend, targets []Package, includeAUR, includeFlatpak bool) bool {
 	if b == nil || len(targets) == 0 {
 		return false
@@ -55,6 +57,13 @@ func privilegedArgv(opts UpgradeOptions, argv ...string) []string {
 	privesc := privescBin(opts.UseSudo)
 	out := make([]string, 0, len(argv)+1)
 	out = append(out, privesc)
+
+	if len(argv) > 0 && privesc == "pkexec" {
+		if path, err := exec.LookPath(argv[0]); err == nil {
+			argv[0] = path
+		}
+	}
+
 	out = append(out, argv...)
 	return out
 }

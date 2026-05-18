@@ -99,7 +99,12 @@ func (b archHelperBackend) Upgrade(ctx context.Context, opts UpgradeOptions, onL
 		return nil
 	}
 	if !b.RunsInTerminal() {
-		argv := append([]string{"pkexec"}, archHelperUpgradeArgv(b.id, opts.IncludeAUR)...)
+		cmdPath, err := exec.LookPath(b.id)
+		if err != nil {
+			cmdPath = b.id
+		}
+		argv := []string{"pkexec", cmdPath}
+		argv = append(argv, archHelperUpgradeArgv(b.id, opts.IncludeAUR)[1:]...)
 		return Run(ctx, argv, RunOptions{OnLine: onLine, AttachStdio: opts.AttachStdio})
 	}
 	term := findTerminal(opts.Terminal)
