@@ -19,7 +19,7 @@ func (aptBackend) ID() string           { return "apt" }
 func (aptBackend) DisplayName() string  { return "APT" }
 func (aptBackend) Repo() RepoKind       { return RepoSystem }
 func (aptBackend) NeedsAuth() bool      { return true }
-func (aptBackend) RunsInTerminal() bool { return true }
+func (aptBackend) RunsInTerminal() bool { return false }
 func (aptBackend) IsAvailable(_ context.Context) bool {
 	return commandExists("apt") || commandExists("apt-get")
 }

@@ -28,7 +28,7 @@ func (pacmanBackend) ID() string                         { return "pacman" }
 func (pacmanBackend) DisplayName() string                { return "Pacman" }
 func (pacmanBackend) Repo() RepoKind                     { return RepoSystem }
 func (pacmanBackend) NeedsAuth() bool                    { return true }
-func (pacmanBackend) RunsInTerminal() bool               { return true }
+func (pacmanBackend) RunsInTerminal() bool               { return false }
 func (pacmanBackend) IsAvailable(_ context.Context) bool { return commandExists("pacman") }
 
 func (b pacmanBackend) CheckUpdates(ctx context.Context) ([]Package, error) {
@@ -61,7 +61,7 @@ func (b archHelperBackend) ID() string      { return b.id }
 func (b archHelperBackend) Repo() RepoKind  { return RepoSystem }
 func (b archHelperBackend) NeedsAuth() bool { return true }
 func (b archHelperBackend) RunsInTerminal() bool {
-	return true
+	return false
 }
 func (b archHelperBackend) IsAvailable(_ context.Context) bool { return commandExists(b.id) }
 
