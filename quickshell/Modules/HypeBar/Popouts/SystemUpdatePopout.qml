@@ -96,7 +96,7 @@ HypePopout {
 
             focus: true
 
-            readonly property alias inlineAuthContent: inlineAuthContent
+            readonly property alias inlineAuthContent: inlineAuthLoader.item
 
             readonly property var hypeShellUpdate: (SystemUpdateService.availableUpdates || []).find(pkg => pkg.backend === "hypeshell" || pkg.repo === "hypeshell" || pkg.name === "HypeShell") || null
             readonly property bool hasHypeShellUpdate: hypeShellUpdate !== null
@@ -648,11 +648,18 @@ HypePopout {
                     visible: systemUpdatePopout.inlineAuthActive
                     clip: true
 
-                    PolkitAuthContent {
-                        id: inlineAuthContent
+                    Loader {
+                        id: inlineAuthLoader
                         anchors.fill: parent
                         anchors.margins: Theme.spacingL
-                        focus: inlineAuthContainer.visible
+                        active: inlineAuthContainer.visible
+                        focus: true
+                        sourceComponent: PolkitAuthContent {
+                            focus: true
+                            onCloseRequested: {
+                                PolkitService.agent?.flow?.cancelAuthenticationRequest();
+                            }
+                        }
                     }
                 }
             }
