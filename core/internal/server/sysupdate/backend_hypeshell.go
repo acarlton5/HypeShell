@@ -64,7 +64,7 @@ func (b hypeShellBackend) Upgrade(ctx context.Context, opts UpgradeOptions, onLi
 	}
 
 	if opts.Password != "" {
-		sudoArgv := []string{"sudo", "-S", "bash", "-lc", cmd}
+		sudoArgv := []string{"sudo", "-S", "bash", "-c", cmd}
 		return Run(ctx, sudoArgv, RunOptions{
 			OnLine: onLine,
 			Stdin:  opts.Password + "\n",
@@ -81,7 +81,7 @@ func (b hypeShellBackend) Upgrade(ctx context.Context, opts UpgradeOptions, onLi
 		return Run(ctx, wrapInTerminal(term, title, sudoCmd), RunOptions{OnLine: onLine})
 	}
 
-	return Run(ctx, []string{"pkexec", "bash", "-lc", cmd}, RunOptions{OnLine: onLine})
+	return Run(ctx, []string{"pkexec", "bash", "-c", cmd}, RunOptions{OnLine: onLine})
 }
 
 func hypeShellSelfUpdateScript() string {
@@ -106,7 +106,7 @@ fi
 # Pre-locate and resolve invoking user's Go compiler path if not in default elevated PATH
 user_go=""
 if [ -n "$invoking_uid" ]; then
-    user_go="$(runuser -u "$update_user" -- env HOME="$update_home" bash -lc "command -v go" 2>/dev/null || true)"
+    user_go="$(runuser -u "$update_user" -- env HOME="$update_home" bash -lc "command -v go" 2>/dev/null | grep -E '^/' | tail -n1 || true)"
 fi
 if [ -z "$user_go" ]; then
     user_go="$(command -v go 2>/dev/null || true)"
