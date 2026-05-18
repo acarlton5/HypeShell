@@ -96,6 +96,8 @@ func hypeShellSelfUpdateScript(realUID, realUser, realHome, realXdg, realDbus st
 	}
 	return fmt.Sprintf(`set -euo pipefail
 export PATH=%s:"$PATH"
+export GOGC=50
+export GOMAXPROCS=2
 tmp="$(mktemp -d "${TMPDIR:-/tmp}/hypeshell-self-update-XXXXXX")"
 trap 'rm -rf "$tmp"' EXIT
 
@@ -135,6 +137,10 @@ fi
 echo "Cloning HypeShell main..."
 git clone --depth 1 --branch main %s "$tmp/source"
 commit="$(git -C "$tmp/source" rev-parse HEAD)"
+
+echo "Tidying Go modules..."
+(cd "$tmp/source/core" && go mod tidy || true)
+
 echo "Building HypeShell ${commit:0:12}..."
 make -C "$tmp/source" build
 
