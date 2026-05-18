@@ -67,16 +67,18 @@ func hypeShellUpdateArgv(shellCmd string) []string {
 	if !commandExists("systemd-run") {
 		return []string{"pkexec", "bash", "-lc", shellCmd}
 	}
-	// Run pkexec first outside the transient scope to guarantee active session authentication.
-	// We append a timestamp to the unit name to avoid conflicts if the daemon hasn't restarted.
+	// Run systemd-run --user first to create a transient scope in the user's slice.
+	// This isolates the update process and its children (like pkexec) from the hype.service cgroup.
+	// When hype.service is restarted, this scope remains alive and runs to completion.
 	return []string{
-		"pkexec",
 		"systemd-run",
+		"--user",
 		"--scope",
 		"--collect",
 		"--unit",
 		fmt.Sprintf("hypeshell-self-update-%d-%d", os.Getpid(), time.Now().Unix()),
 		"--",
+		"pkexec",
 		"bash",
 		"-lc",
 		shellCmd,
