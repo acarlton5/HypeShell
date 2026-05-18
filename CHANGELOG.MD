@@ -1,7 +1,7 @@
 This file  is more of a quick reference so I know what to account for before next releases. 
  
 # Updater smoke tests 
-- 2026-05-17: no-behavior commit for validating the HypeShell updater shade.
+- 2026-05-18: Added premium inline sudo password authentication & real-time log scrolling directly inside the update shade console.
 
 # 1.5.0
 - Overhauled shadows
