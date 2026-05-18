@@ -13,6 +13,7 @@ This file  is more of a quick reference so I know what to account for before nex
 - 2026-05-18: Successfully completed and verified the finalized self-update integration with zero-RAM physical disk builds.
 - 2026-05-18: Upgraded self-updater compilation to use dynamic user home cache directory to guarantee complete immunity against noexec system security partitions.
 - 2026-05-18: Verified dynamic home-cache compilation workspace. Ready for the live background upgrade test.
+- 2026-05-18: Hardened pkexec execution. Enforced strict absolute executable path resolution to guarantee full compatibility across all Polkit configurations.
 
 # 1.5.0
 - Overhauled shadows
