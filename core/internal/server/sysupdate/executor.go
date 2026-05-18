@@ -146,16 +146,41 @@ func wrapInTerminal(term, title, shellCmd string) []string {
 	export := `export SUDO_PROMPT="[HypeShell] sudo password for %u: "; `
 	full := export + banner + "; " + shellCmd + "; " + closer
 
-	var argv []string
 	switch term {
 	case "kitty":
-		argv = []string{term, "--class", appID, "-T", title, "-e", "sh", "-c", full}
+		argv = []string{
+			term,
+			"--class", appID,
+			"-T", title,
+			"-o", "hide_window_decorations=yes",
+			"-o", "remember_window_size=no",
+			"-o", "initial_width=680",
+			"-o", "initial_height=420",
+			"-o", "font_size=11",
+			"-o", "background=#0c0f14",
+			"-o", "foreground=#cdd6f4",
+			"-o", "window_padding_width=15",
+			"-e", "sh", "-c", full,
+		}
 	case "alacritty":
 		argv = []string{term, "--class", appID, "-T", title, "-e", "sh", "-c", full}
 	case "foot":
 		argv = []string{term, "--app-id=" + appID, "--title=" + title, "-e", "sh", "-c", full}
 	case "ghostty":
-		argv = []string{term, "--class=" + appID, "--title=" + title, "-e", "sh", "-c", full}
+		argv = []string{
+			term,
+			"--class=" + appID,
+			"--title=" + title,
+			"--window-decoration=false",
+			"--initial-width=680",
+			"--initial-height=420",
+			"--font-size=11",
+			"--background=#0c0f14",
+			"--foreground=#cdd6f4",
+			"--window-padding-x=15",
+			"--window-padding-y=15",
+			"-e", "sh", "-c", full,
+		}
 	case "wezterm":
 		argv = []string{term, "--class", appID, "-T", title, "-e", "sh", "-c", full}
 	case "xterm":
