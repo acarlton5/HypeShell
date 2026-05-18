@@ -17,7 +17,7 @@ func (zypperBackend) ID() string                         { return "zypper" }
 func (zypperBackend) DisplayName() string                { return "Zypper" }
 func (zypperBackend) Repo() RepoKind                     { return RepoSystem }
 func (zypperBackend) NeedsAuth() bool                    { return true }
-func (zypperBackend) RunsInTerminal() bool               { return false }
+func (zypperBackend) RunsInTerminal() bool               { return true }
 func (zypperBackend) IsAvailable(_ context.Context) bool { return commandExists("zypper") }
 
 type zypperUpdateList struct {

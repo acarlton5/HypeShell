@@ -20,7 +20,7 @@ func (b dnfBackend) ID() string           { return b.bin }
 func (b dnfBackend) DisplayName() string  { return strings.ToUpper(b.bin) }
 func (b dnfBackend) Repo() RepoKind       { return RepoSystem }
 func (b dnfBackend) NeedsAuth() bool      { return true }
-func (b dnfBackend) RunsInTerminal() bool { return false }
+func (b dnfBackend) RunsInTerminal() bool { return true }
 
 func (b dnfBackend) IsAvailable(ctx context.Context) bool {
 	if !commandExists(b.bin) {

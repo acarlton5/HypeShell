@@ -24,7 +24,7 @@ func (hypeShellBackend) DisplayName() string    { return "HypeShell" }
 func (hypeShellBackend) Repo() RepoKind         { return RepoHypeShell }
 func (hypeShellBackend) NeedsAuth() bool        { return true }
 func (hypeShellBackend) RunsInTerminal() bool {
-	return false
+	return true
 }
 func (hypeShellBackend) IsAvailable(ctx context.Context) bool {
 	return commandExists("git") && (commandExists("hype") || installedHypeShellCommit() != "")
