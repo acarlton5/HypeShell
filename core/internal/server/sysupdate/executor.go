@@ -153,18 +153,6 @@ func wrapInTerminal(term, title, shellCmd string) []string {
 		argv = []string{term, "-e", "sh", "-c", full}
 	}
 
-	if commandExists("systemd-run") {
-		scoped := []string{
-			"systemd-run",
-			"--user",
-			"--scope",
-			"--collect",
-			"--unit",
-			fmt.Sprintf("hypeshell-update-%d", os.Getpid()),
-			"--",
-		}
-		return append(scoped, argv...)
-	}
 	return argv
 }
 
