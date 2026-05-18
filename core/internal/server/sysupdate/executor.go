@@ -9,7 +9,6 @@ import (
 	"os/exec"
 	"strings"
 	"sync"
-	"syscall"
 
 	"github.com/acarlton5/HypeShell/core/internal/privesc"
 )
@@ -46,12 +45,11 @@ func Run(ctx context.Context, argv []string, opts RunOptions) error {
 		return cmd.Run()
 	}
 
-	cmd.SysProcAttr = &syscall.SysProcAttr{Setpgid: true}
 	cmd.Cancel = func() error {
 		if cmd.Process == nil {
 			return nil
 		}
-		return syscall.Kill(-cmd.Process.Pid, syscall.SIGKILL)
+		return cmd.Process.Kill()
 	}
 
 	stdout, err := cmd.StdoutPipe()
