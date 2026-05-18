@@ -146,6 +146,7 @@ func wrapInTerminal(term, title, shellCmd string) []string {
 	export := `export SUDO_PROMPT="[HypeShell] sudo password for %u: "; `
 	full := export + banner + "; " + shellCmd + "; " + closer
 
+	var argv []string
 	switch term {
 	case "kitty":
 		argv = []string{
