@@ -22,7 +22,9 @@ func (hypeShellBackend) ID() string             { return "hypeshell" }
 func (hypeShellBackend) DisplayName() string    { return "HypeShell" }
 func (hypeShellBackend) Repo() RepoKind         { return RepoHypeShell }
 func (hypeShellBackend) NeedsAuth() bool        { return true }
-func (hypeShellBackend) RunsInTerminal() bool   { return false }
+func (hypeShellBackend) RunsInTerminal() bool {
+	return os.Getenv("HYPE_FORCE_PKEXEC") != "1"
+}
 func (hypeShellBackend) IsAvailable(ctx context.Context) bool {
 	return commandExists("git") && (commandExists("hype") || installedHypeShellCommit() != "")
 }
@@ -53,17 +55,24 @@ func (hypeShellBackend) CheckUpdates(ctx context.Context) ([]Package, error) {
 	}}, nil
 }
 
-func (hypeShellBackend) Upgrade(ctx context.Context, opts UpgradeOptions, onLine func(string)) error {
+func (b hypeShellBackend) Upgrade(ctx context.Context, opts UpgradeOptions, onLine func(string)) error {
 	cmd := hypeShellSelfUpdateScript()
 	if onLine != nil {
 		onLine("$ hype update --self")
 		onLine("Updating HypeShell from GitHub main")
 	}
-	return Run(ctx, hypeShellUpdateArgv(cmd), RunOptions{OnLine: onLine})
-}
 
-func hypeShellUpdateArgv(shellCmd string) []string {
-	return []string{"pkexec", "bash", "-lc", shellCmd}
+	if b.RunsInTerminal() {
+		term := findTerminal(opts.Terminal)
+		if term == "" {
+			return fmt.Errorf("no terminal found (pick one in HypeShell settings, set $TERMINAL, or install kitty/ghostty/foot/alacritty)")
+		}
+		sudoCmd := "sudo bash -c " + shellQuote(cmd)
+		title := "HypeShell Self-Update"
+		return Run(ctx, wrapInTerminal(term, title, sudoCmd), RunOptions{OnLine: onLine})
+	}
+
+	return Run(ctx, []string{"pkexec", "bash", "-lc", cmd}, RunOptions{OnLine: onLine})
 }
 
 func hypeShellSelfUpdateScript() string {
@@ -76,7 +85,7 @@ export PATH=%s:"$PATH"
 tmp="$(mktemp -d "${TMPDIR:-/tmp}/hypeshell-self-update-XXXXXX")"
 trap 'rm -rf "$tmp"' EXIT
 
-invoking_uid="${PKEXEC_UID:-}"
+invoking_uid="${SUDO_UID:-${PKEXEC_UID:-}}"
 if [ -n "$invoking_uid" ]; then
     update_user=$(id -un "$invoking_uid")
     update_home=$(getent passwd "$invoking_uid" | cut -d: -f6)

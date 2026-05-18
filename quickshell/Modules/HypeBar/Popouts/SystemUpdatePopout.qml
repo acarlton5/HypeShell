@@ -108,7 +108,7 @@ HypePopout {
             readonly property bool hasHypeShellUpdate: hypeShellUpdate !== null
             readonly property int hypeShellUpdateCount: hasHypeShellUpdate ? 1 : 0
             readonly property var hypeShellUpdates: hasHypeShellUpdate ? [hypeShellUpdate] : []
-            readonly property bool hasTerminalBackend: !hasHypeShellUpdate && (SystemUpdateService.backends || []).some(b => b.runsInTerminal === true)
+            readonly property bool hasTerminalBackend: (SystemUpdateService.backends || []).some(b => b.runsInTerminal === true)
             readonly property bool isTerminalOperation: hasTerminalBackend || (SystemUpdateService.recentLog || []).some(line => String(line).indexOf("Running in terminal:") >= 0)
             readonly property color statusColor: SystemUpdateService.hasError ? Theme.error : (SystemUpdateService.isUpgrading ? Theme.primary : Theme.surfaceVariantText)
 
@@ -128,6 +128,10 @@ HypePopout {
                 if (hasHypeShellUpdate) {
                     upgradeStarting = true;
                     opts.targets = [hypeShellUpdate];
+                    const runInTerm = (SystemUpdateService.backends || []).some(b => b.id === "hypeshell" && b.runsInTerminal === true);
+                    if (runInTerm) {
+                        systemUpdatePopout._reopenAfterUpgrade = true;
+                    }
                     HYPEService.sysupdateUpgrade(opts, response => {
                         upgradeStarting = false;
                         if (response?.error) {
@@ -135,6 +139,9 @@ HypePopout {
                             return;
                         }
                         SystemUpdateService.requestState();
+                        if (runInTerm) {
+                            systemUpdatePopout.close();
+                        }
                     });
                     return;
                 }
