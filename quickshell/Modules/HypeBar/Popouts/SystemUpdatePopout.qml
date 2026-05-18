@@ -532,7 +532,7 @@ HypePopout {
                                     }
 
                                     Column {
-                                        width: parent.width - 36 - Theme.spacingM - 120
+                                        width: parent.width - 36 - Theme.spacingM
                                         spacing: 4
                                         anchors.verticalCenter: parent.verticalCenter
 
@@ -581,30 +581,6 @@ HypePopout {
                                             }
                                         }
                                     }
-
-                                    Rectangle {
-                                        width: 110
-                                        height: 28
-                                        radius: 14
-                                        anchors.verticalCenter: parent.verticalCenter
-                                        color: updateNowMouse.containsMouse ? Theme.primaryHover : Theme.primary
-
-                                        StyledText {
-                                            anchors.centerIn: parent
-                                            text: I18n.tr("Update Now")
-                                            font.pixelSize: Theme.fontSizeSmall
-                                            font.weight: Font.Medium
-                                            color: Theme.surface
-                                        }
-
-                                        MouseArea {
-                                            id: updateNowMouse
-                                            anchors.fill: parent
-                                            hoverEnabled: true
-                                            cursorShape: Qt.PointingHandCursor
-                                            onClicked: updaterPanel.runHypeShellUpdate()
-                                        }
-                                    }
                                 }
                             }
 
@@ -639,7 +615,7 @@ HypePopout {
                                     }
 
                                     Column {
-                                        width: parent.width - 36 - Theme.spacingM - 120
+                                        width: parent.width - 36 - Theme.spacingM
                                         spacing: 2
                                         anchors.verticalCenter: parent.verticalCenter
 
@@ -654,30 +630,6 @@ HypePopout {
                                             text: I18n.tr("%1 updates available").arg(updaterPanel.pacmanUpdatesCount)
                                             font.pixelSize: Theme.fontSizeSmall
                                             color: Theme.surfaceVariantText
-                                        }
-                                    }
-
-                                    Rectangle {
-                                        width: 110
-                                        height: 28
-                                        radius: 14
-                                        anchors.verticalCenter: parent.verticalCenter
-                                        color: updatePacmanBtnMouse.containsMouse ? Theme.primaryHover : Theme.withAlpha(Theme.primary, 0.14)
-
-                                        StyledText {
-                                            anchors.centerIn: parent
-                                            text: I18n.tr("Update")
-                                            font.pixelSize: Theme.fontSizeSmall
-                                            font.weight: Font.Medium
-                                            color: Theme.primary
-                                        }
-
-                                        MouseArea {
-                                            id: updatePacmanBtnMouse
-                                            anchors.fill: parent
-                                            hoverEnabled: true
-                                            cursorShape: Qt.PointingHandCursor
-                                            onClicked: updaterPanel.runPacmanUpdate()
                                         }
                                     }
                                 }
@@ -714,7 +666,7 @@ HypePopout {
                                     }
 
                                     Column {
-                                        width: parent.width - 36 - Theme.spacingM - 120
+                                        width: parent.width - 36 - Theme.spacingM
                                         spacing: 2
                                         anchors.verticalCenter: parent.verticalCenter
 
@@ -729,30 +681,6 @@ HypePopout {
                                             text: I18n.tr("%1 updates available").arg(updaterPanel.paruUpdatesCount)
                                             font.pixelSize: Theme.fontSizeSmall
                                             color: Theme.surfaceVariantText
-                                        }
-                                    }
-
-                                    Rectangle {
-                                        width: 110
-                                        height: 28
-                                        radius: 14
-                                        anchors.verticalCenter: parent.verticalCenter
-                                        color: updateParuBtnMouse.containsMouse ? Theme.primaryHover : Theme.withAlpha(Theme.primary, 0.14)
-
-                                        StyledText {
-                                            anchors.centerIn: parent
-                                            text: I18n.tr("Update")
-                                            font.pixelSize: Theme.fontSizeSmall
-                                            font.weight: Font.Medium
-                                            color: Theme.primary
-                                        }
-
-                                        MouseArea {
-                                            id: updateParuBtnMouse
-                                            anchors.fill: parent
-                                            hoverEnabled: true
-                                            cursorShape: Qt.PointingHandCursor
-                                            onClicked: updaterPanel.runParuUpdate()
                                         }
                                     }
                                 }
@@ -789,7 +717,7 @@ HypePopout {
                                     }
 
                                     Column {
-                                        width: parent.width - 36 - Theme.spacingM - 120
+                                        width: parent.width - 36 - Theme.spacingM
                                         spacing: 2
                                         anchors.verticalCenter: parent.verticalCenter
 
@@ -804,30 +732,6 @@ HypePopout {
                                             text: I18n.tr("%1 updates available").arg(updaterPanel.flatpakUpdatesCount)
                                             font.pixelSize: Theme.fontSizeSmall
                                             color: Theme.surfaceVariantText
-                                        }
-                                    }
-
-                                    Rectangle {
-                                        width: 110
-                                        height: 28
-                                        radius: 14
-                                        anchors.verticalCenter: parent.verticalCenter
-                                        color: updateFlatpakBtnMouse.containsMouse ? Theme.primaryHover : Theme.withAlpha(Theme.primary, 0.14)
-
-                                        StyledText {
-                                            anchors.centerIn: parent
-                                            text: I18n.tr("Update")
-                                            font.pixelSize: Theme.fontSizeSmall
-                                            font.weight: Font.Medium
-                                            color: Theme.primary
-                                        }
-
-                                        MouseArea {
-                                            id: updateFlatpakBtnMouse
-                                            anchors.fill: parent
-                                            hoverEnabled: true
-                                            cursorShape: Qt.PointingHandCursor
-                                            onClicked: updaterPanel.runFlatpakUpdate()
                                         }
                                     }
                                 }
