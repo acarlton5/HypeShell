@@ -1,4 +1,4 @@
-﻿package greeter
+package greeter
 
 import (
 	"bufio"
@@ -442,7 +442,7 @@ func CopyGreeterFiles(hypePath, compositor string, logFunc func(string), sudoPas
 		}
 		logFunc(fmt.Sprintf("Installed hype-greeter wrapper at %s", compatWrapperDst))
 
-		_ = privesc.Run(context.Background(), sudoPassword, "rm", "-f", "/usr/local/bin/hype-greeter", "/usr/bin/hype-greeter")
+		_ = privesc.Run(context.Background(), sudoPassword, "rm", "-f", "/usr/local/bin/dank-greeter", "/usr/bin/dank-greeter", "/usr/local/bin/dms-greeter", "/usr/bin/dms-greeter")
 		osInfo, err := distros.GetOSInfo()
 		if err == nil {
 			if config, exists := distros.Registry[osInfo.Distribution.ID]; exists && (config.Family == distros.FamilyFedora || config.Family == distros.FamilySUSE) {

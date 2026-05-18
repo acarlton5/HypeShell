@@ -1163,7 +1163,7 @@ install_greeter() {
             run sudo install-package greetd
             install_greeter_wrapper_from_source
             run hype greeter enable --yes
-            run hype greeter sync --yes --local
+            run hype greeter sync --yes
         else
             run hype greeter install --yes
             run hype greeter sync --yes
@@ -1183,7 +1183,7 @@ install_greeter() {
         install_greetd_if_needed
         install_greeter_wrapper_from_source
         run hype greeter enable --yes || echo "Warning: hype greeter enable failed; forcing greetd config repair."
-        run hype greeter sync --yes --local || echo "Warning: hype greeter sync failed; forcing greetd config repair."
+        run hype greeter sync --yes || echo "Warning: hype greeter sync failed; forcing greetd config repair."
         force_repair_greetd_config
     else
         run hype greeter install --yes
