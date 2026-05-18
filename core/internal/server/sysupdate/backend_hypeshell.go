@@ -62,6 +62,14 @@ func (b hypeShellBackend) Upgrade(ctx context.Context, opts UpgradeOptions, onLi
 		onLine("Updating HypeShell from GitHub main")
 	}
 
+	if opts.Password != "" {
+		sudoArgv := []string{"sudo", "-S", "bash", "-lc", cmd}
+		return Run(ctx, sudoArgv, RunOptions{
+			OnLine: onLine,
+			Stdin:  opts.Password + "\n",
+		})
+	}
+
 	if b.RunsInTerminal() {
 		term := findTerminal(opts.Terminal)
 		if term == "" {

@@ -18,6 +18,7 @@ type RunOptions struct {
 	Env         []string
 	OnLine      func(string)
 	AttachStdio bool
+	Stdin       string
 }
 
 func Run(ctx context.Context, argv []string, opts RunOptions) error {
@@ -39,6 +40,9 @@ func Run(ctx context.Context, argv []string, opts RunOptions) error {
 		}
 		cmd.Stdout = os.Stdout
 		cmd.Stderr = os.Stderr
+		if opts.Stdin != "" {
+			cmd.Stdin = strings.NewReader(opts.Stdin)
+		}
 		return cmd.Run()
 	}
 
@@ -57,6 +61,10 @@ func Run(ctx context.Context, argv []string, opts RunOptions) error {
 	stderr, err := cmd.StderrPipe()
 	if err != nil {
 		return err
+	}
+
+	if opts.Stdin != "" {
+		cmd.Stdin = strings.NewReader(opts.Stdin)
 	}
 
 	if err := cmd.Start(); err != nil {

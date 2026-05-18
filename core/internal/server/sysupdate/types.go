@@ -83,6 +83,7 @@ type UpgradeOptions struct {
 	CustomTitle    string
 	Terminal       string
 	Targets        []Package
+	Password       string
 }
 
 type RefreshOptions struct {

@@ -21,7 +21,20 @@ HypePopout {
 
     readonly property bool polkitModalOpen: polkitAuthSurfaceModal.shouldBeVisible
     readonly property bool inlineAuthActive: (PolkitService.agent?.isActive ?? false) && PolkitService.agent?.flow !== null
-    readonly property bool anyModalOpen: polkitModalOpen || inlineAuthActive
+    property bool localAuthActive: false
+    property string localPassword: ""
+    readonly property bool anyModalOpen: polkitModalOpen || inlineAuthActive || localAuthActive
+
+    onLocalAuthActiveChanged: {
+        if (localAuthActive) {
+            Qt.callLater(() => {
+                const item = systemUpdatePopout.contentLoader.item;
+                if (item) {
+                    item.focusLocalPassword();
+                }
+            });
+        }
+    }
 
     Connections {
         target: PolkitService.agent
@@ -112,6 +125,29 @@ HypePopout {
             readonly property bool isTerminalOperation: hasTerminalBackend || (SystemUpdateService.recentLog || []).some(line => String(line).indexOf("Running in terminal:") >= 0)
             readonly property color statusColor: SystemUpdateService.hasError ? Theme.error : (SystemUpdateService.isUpgrading ? Theme.primary : Theme.surfaceVariantText)
 
+            function focusLocalPassword() {
+                passwordInput.forceActiveFocus();
+            }
+
+            function submitLocalAuth() {
+                systemUpdatePopout.localAuthActive = false;
+                upgradeStarting = true;
+                const opts = {
+                    includeFlatpak: SettingsData.updaterIncludeFlatpak,
+                    includeAUR: SettingsData.updaterAllowAUR,
+                    targets: [hypeShellUpdate],
+                    password: systemUpdatePopout.localPassword
+                };
+                HYPEService.sysupdateUpgrade(opts, response => {
+                    upgradeStarting = false;
+                    if (response?.error) {
+                        ToastService.showError(I18n.tr("Update failed to start"), response.error);
+                        return;
+                    }
+                    SystemUpdateService.requestState();
+                });
+            }
+
             function runUpdate() {
                 if (upgradeStarting)
                     return;
@@ -126,23 +162,8 @@ HypePopout {
                     terminal: SessionData.terminalOverride
                 };
                 if (hasHypeShellUpdate) {
-                    upgradeStarting = true;
-                    opts.targets = [hypeShellUpdate];
-                    const runInTerm = (SystemUpdateService.backends || []).some(b => b.id === "hypeshell" && b.runsInTerminal === true);
-                    if (runInTerm) {
-                        systemUpdatePopout._reopenAfterUpgrade = true;
-                    }
-                    HYPEService.sysupdateUpgrade(opts, response => {
-                        upgradeStarting = false;
-                        if (response?.error) {
-                            ToastService.showError(I18n.tr("Update failed to start"), response.error);
-                            return;
-                        }
-                        SystemUpdateService.requestState();
-                        if (runInTerm) {
-                            systemUpdatePopout.close();
-                        }
-                    });
+                    systemUpdatePopout.localPassword = "";
+                    systemUpdatePopout.localAuthActive = true;
                     return;
                 }
                 if (updaterPanel.hasTerminalBackend) {
@@ -674,6 +695,121 @@ HypePopout {
                         focus: true
                         sourceComponent: PolkitAuthContent {
                             focus: true
+                        }
+                    }
+                }
+
+                Rectangle {
+                    id: localAuthContainer
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    anchors.top: commandShade.bottom
+                    anchors.bottom: parent.bottom
+                    anchors.leftMargin: Theme.spacingL
+                    anchors.rightMargin: Theme.spacingL
+                    anchors.topMargin: Theme.spacingM
+                    anchors.bottomMargin: Theme.spacingL
+                    radius: Theme.cornerRadius
+                    color: Theme.withAlpha(Theme.surfaceContainerHigh, 0.96)
+                    border.color: Theme.withAlpha(Theme.primary, 0.35)
+                    border.width: 1
+                    visible: systemUpdatePopout.localAuthActive
+                    clip: true
+
+                    Column {
+                        anchors.centerIn: parent
+                        width: 320
+                        spacing: Theme.spacingL
+
+                        StyledText {
+                            width: parent.width
+                            text: I18n.tr("Authentication Required")
+                            font.pixelSize: Theme.fontSizeLarge
+                            font.weight: Font.SemiBold
+                            color: Theme.surfaceText
+                            horizontalAlignment: Text.AlignHCenter
+                        }
+
+                        StyledText {
+                            width: parent.width
+                            text: I18n.tr("HypeShell requires your sudo password to run updates.")
+                            font.pixelSize: Theme.fontSizeMedium
+                            color: Theme.surfaceVariantText
+                            horizontalAlignment: Text.AlignHCenter
+                            wrapMode: Text.WordWrap
+                        }
+
+                        HypeTextField {
+                            id: passwordInput
+                            width: parent.width
+                            height: 38
+                            placeholderText: I18n.tr("Password...")
+                            echoMode: TextInput.Password
+                            focus: localAuthContainer.visible
+                            text: systemUpdatePopout.localPassword
+                            onTextChanged: systemUpdatePopout.localPassword = text
+
+                            Keys.onReturnPressed: {
+                                if (text.length > 0) {
+                                    updaterPanel.submitLocalAuth();
+                                }
+                            }
+                            
+                            Keys.onEscapePressed: {
+                                systemUpdatePopout.localAuthActive = false;
+                            }
+                        }
+
+                        Row {
+                            width: parent.width
+                            spacing: Theme.spacingM
+
+                            Rectangle {
+                                width: (parent.width - Theme.spacingM) / 2
+                                height: 36
+                                radius: Theme.cornerRadius
+                                color: confirmMouseArea.containsMouse ? Theme.primaryHover : Theme.withAlpha(Theme.primary, 0.14)
+
+                                StyledText {
+                                    anchors.centerIn: parent
+                                    text: I18n.tr("Confirm")
+                                    font.weight: Font.Medium
+                                    color: Theme.primary
+                                }
+
+                                MouseArea {
+                                    id: confirmMouseArea
+                                    anchors.fill: parent
+                                    hoverEnabled: true
+                                    cursorShape: Qt.PointingHandCursor
+                                    enabled: passwordInput.text.length > 0
+                                    onClicked: updaterPanel.submitLocalAuth()
+                                }
+                            }
+
+                            Rectangle {
+                                width: (parent.width - Theme.spacingM) / 2
+                                height: 36
+                                radius: Theme.cornerRadius
+                                color: cancelMouseArea.containsMouse ? Theme.secondaryPressed : Theme.secondaryHover
+
+                                StyledText {
+                                    anchors.centerIn: parent
+                                    text: I18n.tr("Cancel")
+                                    font.weight: Font.Medium
+                                    color: Theme.surfaceText
+                                }
+
+                                MouseArea {
+                                    id: cancelMouseArea
+                                    anchors.fill: parent
+                                    hoverEnabled: true
+                                    cursorShape: Qt.PointingHandCursor
+                                    onClicked: {
+                                        systemUpdatePopout.localAuthActive = false;
+                                    }
+                                }
+                            }
                         }
                     }
                 }

@@ -48,6 +48,7 @@ func handleUpgrade(conn net.Conn, req models.Request, m *Manager) {
 		CustomTitle:    params.StringOpt(req.Params, "customTitle", ""),
 		Terminal:       params.StringOpt(req.Params, "terminal", ""),
 		Targets:        parseUpgradeTargets(req.Params),
+		Password:       params.StringOpt(req.Params, "password", ""),
 	}
 	if err := m.Upgrade(opts); err != nil {
 		models.RespondError(conn, req.ID, err.Error())
