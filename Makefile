@@ -24,6 +24,16 @@ APPLICATIONS_DIR=$(DATA_DIR)/applications
 all: build
 
 build:
+	@if ! command -v go >/dev/null 2>&1; then \
+		echo ""; \
+		echo "=================================================================="; \
+		echo "❌ BUILD ERROR: 'go' compiler not found in PATH!"; \
+		echo "Please install Go (1.22+) or ensure it is in your system PATH."; \
+		echo "Current PATH: $$PATH"; \
+		echo "=================================================================="; \
+		echo ""; \
+		exit 1; \
+	fi
 	@echo "Building $(BINARY_NAME)..."
 	@$(MAKE) -C $(CORE_DIR) build
 	@echo "Build complete"
@@ -37,7 +47,7 @@ lint-qml:
 	@./quickshell/scripts/qmllint-entrypoints.sh
 
 # Installation targets
-install-bin:
+install-bin: build
 	@echo "Installing $(BINARY_NAME) to $(INSTALL_DIR)..."
 	@install -D -m 755 $(BUILD_DIR)/$(BINARY_NAME) $(INSTALL_DIR)/$(BINARY_NAME)
 	@rm -f $(INSTALL_DIR)/dms
@@ -50,7 +60,7 @@ install-shell:
 	@rm -rf $(SHELL_INSTALL_DIR)/.git* $(SHELL_INSTALL_DIR)/.github
 	@echo "Shell files installed"
 
-install-completions:
+install-completions: build
 	@echo "Installing shell completions..."
 	@mkdir -p $(DATA_DIR)/bash-completion/completions
 	@mkdir -p $(DATA_DIR)/zsh/site-functions
@@ -85,7 +95,7 @@ install-desktop:
 	@update-desktop-database -q $(APPLICATIONS_DIR) 2>/dev/null || true
 	@echo "Desktop entry installed"
 
-install: install-bin install-shell install-completions install-systemd install-icon install-desktop
+install: build install-bin install-shell install-completions install-systemd install-icon install-desktop
 	@echo ""
 	@echo "Installation complete!"
 	@echo ""
