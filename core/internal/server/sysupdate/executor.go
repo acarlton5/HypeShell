@@ -123,9 +123,16 @@ func findTerminal(override string) string {
 
 func wrapInTerminal(term, title, shellCmd string) []string {
 	const appID = "hypeshell-update"
+
+	displayCmd := shellCmd
+	if len(displayCmd) > 80 || strings.Contains(displayCmd, "\n") {
+		displayCmd = "hype update --self"
+	}
+
 	banner := fmt.Sprintf(
-		`printf '\033[1;36m=== %s ===\033[0m\n'; printf '\033[2m$ %s\033[0m\n'; printf '\033[33mYou may be prompted for your sudo password to apply system updates.\033[0m\n\n'`,
-		title, shellCmd,
+		`printf '\033[1;36m=== %%s ===\033[0m\n' %s; printf '\033[2m$ %%s\033[0m\n' %s; printf '\033[33mYou may be prompted for your sudo password to apply system updates.\033[0m\n\n'`,
+		shellQuote(title),
+		shellQuote(displayCmd),
 	)
 	closer := `printf '\n\033[1;32m=== Done. Press Enter to close. ===\033[0m\n'; read`
 	export := `export SUDO_PROMPT="[HypeShell] sudo password for %u: "; `
