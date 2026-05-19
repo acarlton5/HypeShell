@@ -21,7 +21,7 @@ const (
 	recentLogCapacity        = 200
 	checkTimeout             = 5 * time.Minute
 	upgradeTimeout           = 30 * time.Minute
-	postUpgradeCompleteDelay = 3 * time.Second
+	postUpgradeCompleteDelay = 500 * time.Millisecond
 )
 
 type Manager struct {
@@ -429,12 +429,20 @@ func upgradeBackends(sel Selection, opts UpgradeOptions) []Backend {
 	if sel.System != nil {
 		out = appendUpgradeBackend(out, sel.System, opts)
 	}
+	var hypeShellBackend Backend
 	for _, b := range sel.Overlay {
+		if b.ID() == "hypeshell" {
+			hypeShellBackend = b
+			continue
+		}
 		switch {
 		case b.Repo() == RepoFlatpak && !opts.IncludeFlatpak:
 			continue
 		}
 		out = appendUpgradeBackend(out, b, opts)
+	}
+	if hypeShellBackend != nil {
+		out = appendUpgradeBackend(out, hypeShellBackend, opts)
 	}
 	return out
 }
