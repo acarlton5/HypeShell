@@ -1,0 +1,13 @@
+{
+    "id": "hypeAgLauncher",
+    "name": "Antigravity Launcher",
+    "description": "Launch Google Pro and Codex workspace profiles.",
+    "version": "1.1.0",
+    "author": "HypeShell",
+    "type": "widget",
+    "capabilities": ["hypebar-widget"],
+    "component": "./plugin.qml",
+    "icon": "bolt",
+    "settings": "./AccountSettings.qml",
+    "permissions": ["settings_read", "settings_write"]
+}

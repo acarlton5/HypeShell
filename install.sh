@@ -4,7 +4,7 @@ set -euo pipefail
 
 SCRIPT_NAME="$(basename "$0")"
 DEFAULT_REPO_URL="https://github.com/acarlton5/HypeShell.git"
-INSTALLER_BUILD_ID="hype-shade-update-v1"
+INSTALLER_BUILD_ID="hype-hardware-profiles-v2"
 
 YES=1
 PURGE_USER_DATA=0
@@ -14,6 +14,7 @@ REMOVE_HYPE_PACKAGES=0
 UPDATE_EXISTING=0
 INSTALL_GREETER=1
 INSTALL_HYPRLAND_SESSION=1
+HARDWARE_PROFILE="auto"
 INSTALL_METHOD="source"
 CLEAN_DISPLAY_MANAGER=1
 ALLOW_UPSTREAM_PACKAGES=0
@@ -58,6 +59,8 @@ Options:
   --skip-hyprland-session
                         Do not install the HypeShell-owned Hyprland session files.
                         This is only for recovery/debugging; HypeShell targets Hyprland.
+  --hardware-profile PROFILE
+                        Hardware configuration: auto (default), apple-silicon, or generic.
   --clean               Remove old upstream packages and remove the sddm package
                         after greeter setup succeeds.
   --reboot-if-needed    Prompt to reboot at the end if the install changed boot/login
@@ -121,6 +124,10 @@ while [ "$#" -gt 0 ]; do
         --skip-hyprland-session)
             INSTALL_HYPRLAND_SESSION=0
             ;;
+        --hardware-profile)
+            HARDWARE_PROFILE="${2:-}"
+            shift
+            ;;
         --clean)
             CLEAN_DISPLAY_MANAGER=1
             REMOVE_HYPE_PACKAGES=1
@@ -177,6 +184,14 @@ if [ "$(uname -s)" != "Linux" ]; then
     exit 1
 fi
 
+case "$HARDWARE_PROFILE" in
+    auto|apple-silicon|generic) ;;
+    *)
+        echo "Error: --hardware-profile must be auto, apple-silicon, or generic." >&2
+        exit 2
+        ;;
+esac
+
 SCRIPT_PATH="${BASH_SOURCE[0]:-$0}"
 SCRIPT_DIR="$(cd -- "$(dirname -- "$SCRIPT_PATH")" >/dev/null 2>&1 && pwd -P || true)"
 if [ -z "$SOURCE_DIR" ] && [ -n "$SCRIPT_DIR" ] && [ -f "$SCRIPT_DIR/quickshell/shell.qml" ] && [ -f "$SCRIPT_DIR/core/Makefile" ]; then
@@ -200,6 +215,21 @@ run() {
 
 have() {
     command -v "$1" >/dev/null 2>&1
+}
+
+detect_hardware_profile() {
+    if [ "$HARDWARE_PROFILE" != "auto" ]; then
+        printf '%s\n' "$HARDWARE_PROFILE"
+        return
+    fi
+    arch="$(uname -m)"
+    if [ "$arch" = "aarch64" ] || [ "$arch" = "arm64" ]; then
+        if { [ -r /proc/device-tree/compatible ] && tr '\0' '\n' </proc/device-tree/compatible 2>/dev/null | grep -qi '^apple,'; } || { [ -r /proc/device-tree/model ] && grep -aqi 'Apple' /proc/device-tree/model; }; then
+            printf '%s\n' apple-silicon
+            return
+        fi
+    fi
+    printf '%s\n' generic
 }
 
 sudo_run() {
@@ -799,6 +829,10 @@ verify_hypeshell_source_payload() {
         "$SOURCE_DIR/core/internal/config/embedded/hypr-binds.conf" \
         "$SOURCE_DIR/quickshell/Modules/Greetd/assets/hype-greeter" \
         "$SOURCE_DIR/assets/sessions/hypeshell-hyprland.desktop" \
+        "$SOURCE_DIR/assets/hardware/apple-silicon/hypr-hardware.conf" \
+        "$SOURCE_DIR/quickshell/PLUGINS/hypeAgLauncher/plugin.json" \
+        "$SOURCE_DIR/quickshell/PLUGINS/hypeAgLauncher/plugin.qml" \
+        "$SOURCE_DIR/quickshell/PLUGINS/hypeAgLauncher/AccountSettings.qml" \
         "$SOURCE_DIR/assets/sessions/hypeshell-hyprland-session"; do
         if [ ! -f "$required" ]; then
             echo "Missing required HypeShell payload: $required" >&2
@@ -846,6 +880,8 @@ install_hyprland_session() {
     install_hyprland_if_needed
 
     defaults_dir="$PREFIX/share/hypeshell/hyprland"
+    detected_hardware_profile="$(detect_hardware_profile)"
+    echo "HypeShell hardware profile: $detected_hardware_profile"
     sudo_run install -D -m 755 "$SOURCE_DIR/assets/sessions/hypeshell-hyprland-session" "$PREFIX/bin/hypeshell-hyprland-session"
     sudo_run sed -i 's/\r$//' "$PREFIX/bin/hypeshell-hyprland-session" || true
     sudo_run install -D -m 644 "$SOURCE_DIR/assets/sessions/hypeshell-hyprland.desktop" "$PREFIX/share/wayland-sessions/hypeshell-hyprland.desktop"
@@ -853,6 +889,11 @@ install_hyprland_session() {
     sudo_run install -D -m 644 "$SOURCE_DIR/core/internal/config/embedded/hypr-colors.conf" "$defaults_dir/hype/colors.conf"
     sudo_run install -D -m 644 "$SOURCE_DIR/core/internal/config/embedded/hypr-layout.conf" "$defaults_dir/hype/layout.conf"
     sudo_run install -D -m 644 "$SOURCE_DIR/core/internal/config/embedded/hypr-binds.conf" "$defaults_dir/hype/binds.conf"
+    if [ "$detected_hardware_profile" = "apple-silicon" ]; then
+        sudo_run install -D -m 644 "$SOURCE_DIR/assets/hardware/apple-silicon/hypr-hardware.conf" "$defaults_dir/hype/hardware.conf"
+    else
+        sudo_run install -D -m 644 /dev/null "$defaults_dir/hype/hardware.conf"
+    fi
 
     sudo_run install -D -m 644 /dev/null "$defaults_dir/hype/outputs.conf"
     sudo_run install -D -m 644 /dev/null "$defaults_dir/hype/cursor.conf"
@@ -867,6 +908,7 @@ ensure_hyprland_shell_startup() {
     hype_config_dir="$config_dir/hype"
     legacy_config_dir="$config_dir/hype"
     startup_line="exec-once = systemctl --user start hype.service || hype run"
+    detected_hardware_profile="$(detect_hardware_profile)"
 
     if [ "$YES" -eq 0 ]; then
         run mkdir -p "$config_dir"
@@ -876,6 +918,14 @@ ensure_hyprland_shell_startup() {
 
     mkdir -p "$config_dir"
     mkdir -p "$hype_config_dir"
+    if [ -f "$hype_config_dir/binds.conf" ]; then
+        sed -i -e '/switch:on:Apple SMC power\/lid events/d' -e '/switch:off:Apple SMC power\/lid events/d' "$hype_config_dir/binds.conf"
+    fi
+    if [ "$detected_hardware_profile" = "apple-silicon" ]; then
+        cp "$SOURCE_DIR/assets/hardware/apple-silicon/hypr-hardware.conf" "$hype_config_dir/hardware.conf"
+    else
+        : > "$hype_config_dir/hardware.conf"
+    fi
     if [ -d "$legacy_config_dir" ]; then
         for config_name in colors.conf outputs.conf layout.conf cursor.conf binds.conf windowrules.conf; do
             if [ -e "$legacy_config_dir/$config_name" ] && [ ! -e "$hype_config_dir/$config_name" ]; then
@@ -921,6 +971,9 @@ ensure_hyprland_shell_startup() {
             printf '\n# HypeShell startup\n'
             printf '%s\n' "$startup_line"
         } >> "$config_file"
+    fi
+    if [ -f "$config_file" ] && ! grep -Fq 'source = ./hype/hardware.conf' "$config_file"; then
+        printf '\nsource = ./hype/hardware.conf\n' >> "$config_file"
     fi
 }
 
