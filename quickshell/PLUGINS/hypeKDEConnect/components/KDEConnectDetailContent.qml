@@ -534,7 +534,9 @@ Item {
                 visible: root.showDevicePlaceholder
                 Layout.preferredWidth: {
                     const type = root.activeDevice?.type;
-                    if (type === "desktop" || type === "computer" || type === "laptop") {
+                    if (/galaxy.*(z )?fold|sm-f9/i.test(root.activeDevice?.name || "")) {
+                        return 225;
+                    } else if (type === "desktop" || type === "computer" || type === "laptop") {
                         return 240;
                     } else if (type === "tv") {
                         return 260;

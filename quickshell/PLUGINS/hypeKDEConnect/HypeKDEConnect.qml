@@ -97,7 +97,8 @@ PluginComponent {
     // Animated/active state for smooth device switching transitions (non-reactive initial to prevent instant snapping)
     property string activeDeviceId: ""
     readonly property var activeDevice: activeDeviceId ? (PhoneConnectService.devices[activeDeviceId] ?? null) : null
-    readonly property string activeCustomPhoneImage: deviceImageMap[activeDeviceId] || ""
+    readonly property bool activeDeviceIsGalaxyFold: /galaxy.*(z )?fold|sm-f9/i.test(activeDevice?.name || "")
+    readonly property string activeCustomPhoneImage: deviceImageMap[activeDeviceId] || (activeDeviceIsGalaxyFold ? Qt.resolvedUrl("assets/galaxy-z-fold6.png") : "")
 
     readonly property MprisPlayer phoneMprisPlayer: {
         if (!root.activeDevice || !root.activeDevice.name || typeof MprisController === "undefined") {
@@ -138,7 +139,7 @@ PluginComponent {
         return false;
     }
 
-    readonly property real container1Width: (root.activeDevice?.type === "desktop" || root.activeDevice?.type === "computer" || root.activeDevice?.type === "laptop") ? 240 : (root.activeDevice?.type === "tv") ? 260 : (root.activeDevice?.type === "tablet") ? 185 : 135
+    readonly property real container1Width: root.activeDeviceIsGalaxyFold ? 225 : (root.activeDevice?.type === "desktop" || root.activeDevice?.type === "computer" || root.activeDevice?.type === "laptop") ? 240 : (root.activeDevice?.type === "tv") ? 260 : (root.activeDevice?.type === "tablet") ? 185 : 135
 
     onActiveDeviceIdChanged: {
         // Clear images immediately and stop any ongoing scan.
@@ -364,7 +365,9 @@ PluginComponent {
     }
 
     function getDeviceImage(deviceId) {
-        return deviceImageMap[deviceId] || "";
+        const device = PhoneConnectService.devices[deviceId];
+        const isFold = /galaxy.*(z )?fold|sm-f9/i.test(device?.name || "");
+        return deviceImageMap[deviceId] || (isFold ? Qt.resolvedUrl("assets/galaxy-z-fold6.png") : "");
     }
 
     function setDeviceImage(deviceId, path) {
