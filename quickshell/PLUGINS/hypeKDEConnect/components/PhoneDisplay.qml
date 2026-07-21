@@ -9,7 +9,8 @@ Item {
     property bool isReachable: true
     property string deviceType: "phone"
     property string deviceName: ""
-    readonly property string backgroundImageSource: resolveBackgroundImage(backgroundImage)
+    readonly property bool isGalaxyFold: /galaxy.*(z )?fold|sm-f9/i.test(deviceName || "")
+    readonly property string backgroundImageSource: resolveBackgroundImage(backgroundImage) || (isGalaxyFold ? Qt.resolvedUrl("../assets/galaxy-z-fold6.png") : "")
     readonly property bool hasBackgroundImage: backgroundImageSource !== ""
     readonly property string phoneStyle: phoneStyleFor(deviceName)
 
@@ -66,6 +67,8 @@ Item {
 
     height: 235
     width: {
+        if (isGalaxyFold)
+            return 205;
         if (hasBackgroundImage)
             return 115;
         switch (deviceType) {
@@ -127,7 +130,7 @@ Item {
             id: bgImage
             anchors.fill: parent
             source: root.backgroundImageSource
-            fillMode: Image.PreserveAspectCrop
+            fillMode: Image.PreserveAspectFit
         }
 
         // Screen Overlay for offline state
