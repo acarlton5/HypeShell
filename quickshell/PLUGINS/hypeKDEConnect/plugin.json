@@ -1,0 +1,21 @@
+{
+    "id": "hypeKDEConnect",
+    "name": "Phone Connect",
+    "description": "Control connected devices via KDE Connect or Valent - view battery, send files, find phone, and more",
+    "version": "3.0.0",
+    "license": "MIT",
+    "author": "Avenge Media",
+    "icon": "devices",
+    "firstParty": false,
+    "component": "./HypeKDEConnect.qml",
+    "settings": "./HypeKDEConnectSettings.qml",
+    "requires_hype": ">=1.5",
+    "permissions": [
+        "settings_read",
+        "settings_write"
+    ],
+    "type": "widget",
+    "capabilities": [
+        "hypebar-widget"
+    ]
+}
