@@ -340,7 +340,7 @@ StyledRect {
 
         RowLayout {
             width: parent.width
-            spacing: Theme.spacingXXS
+            spacing: Theme.spacingXS
 
             ShareActionButton {
                 label: I18n.tr("URI", "KDE Connect share URI button")

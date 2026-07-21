@@ -78,7 +78,7 @@ StyledRect {
             }
 
             Column {
-                spacing: Theme.spacingXXS
+                spacing: Theme.spacingXS
                 anchors.verticalCenter: parent.verticalCenter
                 width: Math.max(0, parent.width - Theme.iconSize - Theme.spacingM * 2 - statusRow.width - 8)
 

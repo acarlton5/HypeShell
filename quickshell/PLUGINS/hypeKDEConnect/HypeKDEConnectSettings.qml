@@ -220,7 +220,7 @@ PluginSettings {
                     Column {
                         Layout.fillWidth: true
                         Layout.alignment: Qt.AlignVCenter
-                        spacing: Theme.spacingXXS
+                        spacing: Theme.spacingXS
                         StyledText { 
                             text: PhoneConnectService.available ? (serviceName + " Running") : "No Backend Running"
                             font.weight: Font.Medium
@@ -286,7 +286,7 @@ PluginSettings {
 
                                 Column {
                                     anchors.verticalCenter: parent.verticalCenter
-                                    spacing: Theme.spacingXXS
+                                    spacing: Theme.spacingXS
 
                                     StyledText {
                                         text: device?.name || modelData
@@ -403,7 +403,7 @@ PluginSettings {
                             HypeIcon { name: "image"; size: 22; anchors.verticalCenter: parent.verticalCenter; opacity: 0.8 }
                             Column {
                                 width: Math.max(0, parent.width - 22 - Theme.spacingM)
-                                spacing: Theme.spacingXXS
+                                spacing: Theme.spacingXS
                                 StyledText { text: "Custom Image"; font.weight: Font.Medium; color: Theme.surfaceText }
                                 StyledText { text: "Custom image to display for this device model in Control Center & Widget Pop-Up."; font.pixelSize: Theme.fontSizeSmall; color: Theme.surfaceVariantText; width: parent.width; wrapMode: Text.WordWrap }
                             }
@@ -455,7 +455,7 @@ PluginSettings {
 
                                     Row {
                                         anchors.centerIn: parent
-                                        spacing: Theme.spacingXXS
+                                        spacing: Theme.spacingXS
                                         HypeIcon {
                                             name: "folder"
                                             size: 16
@@ -498,7 +498,7 @@ PluginSettings {
                             HypeIcon { name: "folder"; size: 22; anchors.verticalCenter: parent.verticalCenter; opacity: 0.8 }
                             Column {
                                 width: Math.max(0, parent.width - 22 - Theme.spacingM)
-                                spacing: Theme.spacingXXS
+                                spacing: Theme.spacingXS
                                 StyledText { text: "Recent Images Path"; font.weight: Font.Medium; color: Theme.surfaceText }
                                 StyledText { text: "Directory to monitor for quick media sharing."; font.pixelSize: Theme.fontSizeSmall; color: Theme.surfaceVariantText; width: parent.width; wrapMode: Text.WordWrap }
                             }
@@ -558,7 +558,7 @@ PluginSettings {
                             HypeIcon { name: "devices"; size: 22; anchors.verticalCenter: parent.verticalCenter; opacity: 0.8 }
                             Column {
                                 width: Math.max(0, parent.width - 22 - Theme.spacingM)
-                                spacing: Theme.spacingXXS
+                                spacing: Theme.spacingXS
                                 StyledText { text: "Override Device Type"; font.weight: Font.Medium; color: Theme.surfaceText }
                                 StyledText { text: "Select the type of device to override standard framing, icon, and layouts."; font.pixelSize: Theme.fontSizeSmall; color: Theme.surfaceVariantText; width: parent.width; wrapMode: Text.WordWrap }
                             }
@@ -695,7 +695,7 @@ PluginSettings {
                         Column {
                             Layout.fillWidth: true
                             Layout.alignment: Qt.AlignVCenter
-                            spacing: Theme.spacingXXS
+                            spacing: Theme.spacingXS
                             StyledText { text: "Max Recent Images"; width: parent.width; font.weight: Font.Medium; color: Theme.surfaceText }
                             StyledText { text: "Number of recent images to display in the popout."; font.pixelSize: Theme.fontSizeSmall; color: Theme.surfaceVariantText; width: parent.width; wrapMode: Text.WordWrap }
                         }
@@ -802,7 +802,7 @@ PluginSettings {
                         Column {
                             Layout.fillWidth: true
                             Layout.alignment: Qt.AlignVCenter
-                            spacing: Theme.spacingXXS
+                            spacing: Theme.spacingXS
                             StyledText { text: "State Update Interval"; width: parent.width; font.weight: Font.Medium; color: Theme.surfaceText }
                             StyledText { text: "How often to automatically update/refresh the plugin state."; font.pixelSize: Theme.fontSizeSmall; color: Theme.surfaceVariantText; width: parent.width; wrapMode: Text.WordWrap }
                         }
@@ -913,7 +913,7 @@ PluginSettings {
 
                 Column {
                     width: parent.width
-                    spacing: Theme.spacingXXS
+                    spacing: Theme.spacingXS
                     StyledText { text: "Quick Actions Guide"; font.weight: Font.Medium; color: Theme.surfaceText }
                     StyledText { text: "Actions available in the popout for paired devices:"; font.pixelSize: Theme.fontSizeSmall; color: Theme.surfaceVariantText }
                 }

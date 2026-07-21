@@ -447,9 +447,9 @@ PluginComponent {
     ccWidgetIcon: {
         if (!PhoneConnectService.available)
             return "phonelink_off";
-        if (hasDevice && selectedDevice.isReachable)
+        if (hasDevice && selectedDevice?.isReachable === true)
             return "phonelink";
-        if (hasDevice && selectedDevice.isReachable)
+        if (hasDevice && selectedDevice?.isReachable === true)
             return "phonelink";
         return "phonelink_off";
     }
@@ -459,7 +459,7 @@ PluginComponent {
             return I18n.tr("Unavailable", "Phone Connect unavailable status");
         if (!hasDevice)
             return I18n.tr("No devices", "Phone Connect no devices status");
-        if (selectedDevice.isReachable) {
+        if (selectedDevice?.isReachable) {
             let text = selectedDevice.name;
             if (selectedDevice.batteryCharge >= 0)
                 text += " • " + selectedDevice.batteryCharge + "%";
@@ -467,7 +467,7 @@ PluginComponent {
         }
         return selectedDevice.name + " (" + I18n.tr("Offline", "Phone Connect offline status") + ")";
     }
-    ccWidgetIsActive: hasDevice && selectedDevice?.isReachable
+    ccWidgetIsActive: hasDevice && selectedDevice?.isReachable === true
     ccDetailHeight: 460
     popoutWidth: root.showDevicePlaceholder ? (400 + (container1Width - 135)) : 400
 
@@ -565,7 +565,7 @@ PluginComponent {
         sequence: "S"
         enabled: !root.isTyping && !root.showShareDialog && !root.showSmsDialog
         onActivated: {
-            if (root.selectedDeviceId && root.selectedDevice && root.selectedDevice.isReachable) {
+            if (root.selectedDeviceId && root.selectedDevice && root.selectedDevice?.isReachable) {
                 root.handleAction(root.selectedDeviceId, "share");
             }
         }
@@ -722,7 +722,7 @@ PluginComponent {
                 width: basePill ? basePill.visualWidth : 0
                 height: basePill ? basePill.visualHeight : 0
                 anchors.centerIn: parent
-                visible: root.enableChargingAnimation && root.hasDevice && root.selectedDevice?.isReachable && (root.selectedDevice?.batteryCharging ?? false)
+                visible: root.enableChargingAnimation && root.hasDevice && root.selectedDevice?.isReachable === true && (root.selectedDevice?.batteryCharging ?? false)
 
                 Rectangle {
                     id: hWaveMask
@@ -774,19 +774,19 @@ PluginComponent {
 
                     HypeIcon {
                         id: phoneIcon
-                        name: root.hasDevice && root.selectedDevice.isReachable ? "smartphone" : "phonelink_off"
+                        name: root.hasDevice && root.selectedDevice?.isReachable ? "smartphone" : "phonelink_off"
                         size: Theme.barIconSize(root.barThickness, -4)
                         color: {
                             if (!PhoneConnectService.available)
                                 return Theme.widgetIconColor;
-                            if (root.hasDevice && root.selectedDevice?.isReachable && root.selectedDevice?.batteryCharging)
+                            if (root.hasDevice && root.selectedDevice?.isReachable === true && root.selectedDevice?.batteryCharging)
                                 return Theme.primary;
                             return Theme.widgetIconColor;
                         }
                     }
 
                     HypeIcon {
-                        visible: root.hasDevice && root.selectedDevice?.isReachable && (root.selectedDevice?.batteryCharging ?? false)
+                        visible: root.hasDevice && root.selectedDevice?.isReachable === true && (root.selectedDevice?.batteryCharging ?? false)
                         name: "bolt"
                         size: phoneIcon.size * 0.45
                         color: Theme.primary
@@ -798,7 +798,7 @@ PluginComponent {
                 }
 
                 StyledText {
-                    visible: root.hasDevice && root.selectedDevice?.isReachable && (root.selectedDevice?.batteryCharge ?? -1) >= 0
+                    visible: root.hasDevice && root.selectedDevice?.isReachable === true && (root.selectedDevice?.batteryCharge ?? -1) >= 0
                     text: (root.selectedDevice?.batteryCharge ?? 0) + "%"
                     font.pixelSize: Theme.barTextSize(root.barThickness, root.barConfig?.fontScale)
                     color: Theme.widgetTextColor
@@ -834,7 +834,7 @@ PluginComponent {
                 width: basePill ? basePill.visualWidth : 0
                 height: basePill ? basePill.visualHeight : 0
                 anchors.centerIn: parent
-                visible: root.enableChargingAnimation && root.hasDevice && root.selectedDevice?.isReachable && (root.selectedDevice?.batteryCharging ?? false)
+                visible: root.enableChargingAnimation && root.hasDevice && root.selectedDevice?.isReachable === true && (root.selectedDevice?.batteryCharging ?? false)
 
                 Rectangle {
                     id: vWaveMask
@@ -886,19 +886,19 @@ PluginComponent {
 
                     HypeIcon {
                         id: phoneIconV
-                        name: root.hasDevice && root.selectedDevice.isReachable ? "smartphone" : "phonelink_off"
+                        name: root.hasDevice && root.selectedDevice?.isReachable ? "smartphone" : "phonelink_off"
                         size: Theme.barIconSize(root.barThickness)
                         color: {
                             if (!PhoneConnectService.available)
                                 return Theme.widgetIconColor;
-                            if (root.hasDevice && root.selectedDevice?.isReachable && root.selectedDevice?.batteryCharging)
+                            if (root.hasDevice && root.selectedDevice?.isReachable === true && root.selectedDevice?.batteryCharging)
                                 return Theme.primary;
                             return Theme.widgetIconColor;
                         }
                     }
 
                     HypeIcon {
-                        visible: root.hasDevice && root.selectedDevice?.isReachable && (root.selectedDevice?.batteryCharging ?? false)
+                        visible: root.hasDevice && root.selectedDevice?.isReachable === true && (root.selectedDevice?.batteryCharging ?? false)
                         name: "bolt"
                         size: phoneIconV.size * 0.45
                         color: Theme.primary
@@ -910,7 +910,7 @@ PluginComponent {
                 }
 
                 StyledText {
-                    visible: root.hasDevice && root.selectedDevice?.isReachable && (root.selectedDevice?.batteryCharge ?? -1) >= 0
+                    visible: root.hasDevice && root.selectedDevice?.isReachable === true && (root.selectedDevice?.batteryCharge ?? -1) >= 0
                     text: (root.selectedDevice?.batteryCharge ?? 0).toString()
                     font.pixelSize: Theme.barTextSize(root.barThickness, root.barConfig?.fontScale)
                     color: Theme.widgetTextColor
@@ -1067,7 +1067,7 @@ PluginComponent {
                         // Grouped Actions Container (for Switch & Refresh buttons)
                         Row {
                             Layout.alignment: Qt.AlignVCenter
-                            spacing: Theme.spacingXXS // Gap between switch & refresh buttons
+                            spacing: Theme.spacingXS // Gap between switch & refresh buttons
                             visible: true
 
                             // Switch Device button (only when multiple devices available)
@@ -1433,7 +1433,7 @@ PluginComponent {
 
                                     // Top Group: Device Name & Actions (Centered)
                                     ColumnLayout {
-                                        spacing: Theme.spacingXXS
+                                        spacing: Theme.spacingXS
                                         Layout.fillWidth: true
                                         Layout.alignment: Qt.AlignHCenter
 
@@ -1896,7 +1896,7 @@ PluginComponent {
 
                                     ColumnLayout {
                                         Layout.fillWidth: true
-                                        spacing: Theme.spacingXXS
+                                        spacing: Theme.spacingXS
                                         visible: root.phoneMprisPlayer !== null && root.phoneMprisPlayer.length > 0
 
                                         Item {

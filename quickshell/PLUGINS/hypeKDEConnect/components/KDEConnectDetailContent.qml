@@ -583,7 +583,7 @@ Item {
 
                     // Top Group: Device Name & Actions (Centered)
                     ColumnLayout {
-                        spacing: Theme.spacingXXS
+                        spacing: Theme.spacingXS
                         Layout.fillWidth: true
                         Layout.alignment: Qt.AlignHCenter
 
@@ -1448,7 +1448,7 @@ Item {
 
                     ColumnLayout {
                         Layout.fillWidth: true
-                        spacing: Theme.spacingXXS
+                        spacing: Theme.spacingXS
                         visible: root.pluginRoot.phoneMprisPlayer !== null && root.pluginRoot.phoneMprisPlayer.length > 0
 
                         Item {

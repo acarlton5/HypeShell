@@ -235,7 +235,7 @@ StyledRect {
 
         RowLayout {
             width: parent.width
-            spacing: Theme.spacingXXS
+            spacing: Theme.spacingXS
 
             StyledRect {
                 id: sendSmsBtn
