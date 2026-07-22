@@ -19,7 +19,7 @@ SHELL_INSTALL_DIR=$(DATA_DIR)/quickshell/hype
 ASSETS_DIR=assets
 APPLICATIONS_DIR=$(DATA_DIR)/applications
 SYSTEM_PLUGIN_DIR ?= /etc/xdg/quickshell/hype-plugins
-BUNDLED_PLUGIN_DIRS=hypeVoiceInput
+BUNDLED_PLUGIN_DIRS=
 
 .PHONY: all build clean lint-qml install install-bin install-shell install-bundled-plugins install-completions install-systemd install-icon install-desktop uninstall uninstall-bin uninstall-shell uninstall-bundled-plugins uninstall-completions uninstall-systemd uninstall-icon uninstall-desktop help
 
@@ -65,6 +65,7 @@ install-shell:
 install-bundled-plugins:
 	@echo "Installing bundled HypeShell plugins..."
 	@mkdir -p $(SYSTEM_PLUGIN_DIR)
+	@rm -rf $(SYSTEM_PLUGIN_DIR)/hypeVoiceInput
 	@for plugin in $(BUNDLED_PLUGIN_DIRS); do \
 		rm -rf $(SYSTEM_PLUGIN_DIR)/$$plugin; \
 		cp -a $(SHELL_DIR)/PLUGINS/$$plugin $(SYSTEM_PLUGIN_DIR)/$$plugin; \

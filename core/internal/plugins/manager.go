@@ -1,4 +1,4 @@
-﻿package plugins
+package plugins
 
 import (
 	"crypto/sha256"
@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"strings"
 
@@ -194,7 +195,63 @@ func (m *Manager) Install(plugin Plugin) error {
 		}
 	}
 
+	if plugin.SetupScript != "" {
+		if err := launchPluginSetup(pluginPath, plugin.SetupScript, plugin.Name); err != nil {
+			return fmt.Errorf("plugin installed, but dependency setup failed to start: %w", err)
+		}
+	}
+
 	return nil
+}
+
+func launchPluginSetup(pluginPath, relativeScript, title string) error {
+	scriptPath := filepath.Join(pluginPath, filepath.Clean(relativeScript))
+	if !strings.HasPrefix(scriptPath, pluginPath+string(os.PathSeparator)) {
+		return fmt.Errorf("setup script escapes plugin directory")
+	}
+	if info, err := os.Stat(scriptPath); err != nil || info.IsDir() {
+		return fmt.Errorf("setup script not found: %s", relativeScript)
+	}
+
+	terminal := ""
+	if configured := os.Getenv("TERMINAL"); configured != "" {
+		if resolved, err := exec.LookPath(configured); err == nil {
+			terminal = resolved
+		}
+	}
+	if terminal == "" {
+		for _, candidate := range []string{"ghostty", "kitty", "foot", "alacritty", "wezterm", "konsole", "gnome-terminal", "xterm"} {
+			if resolved, err := exec.LookPath(candidate); err == nil {
+				terminal = resolved
+				break
+			}
+		}
+	}
+	if terminal == "" {
+		return fmt.Errorf("no supported terminal found")
+	}
+
+	command := fmt.Sprintf("bash %q; status=$?; if [ $status -ne 0 ]; then printf '\\nSetup failed (exit %%s). Press Enter to close.\\n' \"$status\"; read; fi; exit $status", scriptPath)
+	base := filepath.Base(terminal)
+	var args []string
+	switch base {
+	case "ghostty":
+		args = []string{"--class=hypeshell-plugin-setup", "--title=" + title + " Setup", "-e", "sh", "-c", command}
+	case "kitty":
+		args = []string{"--class", "hypeshell-plugin-setup", "-T", title + " Setup", "-e", "sh", "-c", command}
+	case "foot":
+		args = []string{"--app-id=hypeshell-plugin-setup", "--title=" + title + " Setup", "-e", "sh", "-c", command}
+	case "alacritty", "wezterm":
+		args = []string{"-T", title + " Setup", "-e", "sh", "-c", command}
+	case "konsole":
+		args = []string{"--nofork", "-p", "tabtitle=" + title + " Setup", "-e", "sh", "-c", command}
+	case "gnome-terminal":
+		args = []string{"--", "sh", "-c", command}
+	default:
+		args = []string{"-e", "sh", "-c", command}
+	}
+
+	return exec.Command(terminal, args...).Start()
 }
 
 func (m *Manager) getRepoName(repoURL string) string {

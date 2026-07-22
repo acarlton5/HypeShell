@@ -273,7 +273,7 @@ HypePopout {
                 if (hypeShellUpdateCount + generalUpdateCount === 0)
                     return;
                 upgradeStarting = true;
-                let command = "/usr/local/bin/hype system update --noconfirm";
+                let command = "hype system update --noconfirm";
                 if (!SettingsData.updaterIncludeFlatpak)
                     command += " --no-flatpak";
                 if (!SettingsData.updaterAllowAUR)

@@ -1,0 +1,72 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+arch="$(uname -m)"
+model_dir="${XDG_DATA_HOME:-$HOME/.local/share}/whisper.cpp/models"
+bin_dir="$HOME/.local/bin"
+cache_dir="${XDG_CACHE_HOME:-$HOME/.cache}/hype-voice-input/whisper.cpp"
+model_url="https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-base.en.bin"
+
+install_arch_packages() {
+    local helper=""
+    for candidate in paru yay; do
+        if command -v "$candidate" >/dev/null 2>&1; then
+            helper="$candidate"
+            break
+        fi
+    done
+
+    if [ -n "$helper" ]; then
+        "$helper" -S --needed wtype wl-clipboard pipewire cmake git curl
+    else
+        sudo pacman -S --needed wtype wl-clipboard pipewire cmake git curl
+    fi
+
+    if [ "$arch" = "x86_64" ] && [ -n "$helper" ]; then
+        if "$helper" -S --needed whisper.cpp-git whisper.cpp-model-base.en; then
+            return 0
+        fi
+        printf 'Packaged whisper.cpp failed; falling back to a local source build.\n'
+    fi
+    return 1
+}
+
+install_build_tools() {
+    if command -v pacman >/dev/null 2>&1; then
+        install_arch_packages || true
+    elif command -v apt-get >/dev/null 2>&1; then
+        sudo apt-get update
+        sudo apt-get install -y pipewire-audio-client-libraries wl-clipboard wtype cmake git curl build-essential
+    elif command -v dnf >/dev/null 2>&1; then
+        sudo dnf install -y pipewire-utils wl-clipboard wtype cmake git curl gcc-c++ make
+    else
+        printf 'Unsupported package manager. Install PipeWire, wtype, wl-clipboard, git, cmake, curl, and a C++ compiler.\n' >&2
+        exit 2
+    fi
+}
+
+if command -v whisper-cli >/dev/null 2>&1 && command -v pw-record >/dev/null 2>&1 && command -v wtype >/dev/null 2>&1; then
+    printf 'Voice2Text dependencies are already installed.\n'
+    exit 0
+fi
+
+printf 'Preparing Voice2Text dependencies for %s…\n' "$arch"
+install_build_tools
+
+if ! command -v whisper-cli >/dev/null 2>&1; then
+    rm -rf "$cache_dir"
+    mkdir -p "$(dirname "$cache_dir")" "$bin_dir"
+    git clone --depth 1 https://github.com/ggerganov/whisper.cpp.git "$cache_dir"
+    cmake -S "$cache_dir" -B "$cache_dir/build" -DCMAKE_BUILD_TYPE=Release -DWHISPER_BUILD_TESTS=OFF -DWHISPER_BUILD_EXAMPLES=ON
+    cmake --build "$cache_dir/build" --config Release -j"$(getconf _NPROCESSORS_ONLN 2>/dev/null || printf 2)"
+    install -m 755 "$cache_dir/build/bin/whisper-cli" "$bin_dir/whisper-cli"
+fi
+
+if [ ! -r "$model_dir/ggml-base.en.bin" ] && [ ! -r /usr/share/whisper.cpp-model-base.en/ggml-base.en.bin ]; then
+    mkdir -p "$model_dir"
+    curl -fL --retry 3 "$model_url" -o "$model_dir/ggml-base.en.bin"
+fi
+
+printf '\nVoice2Text setup complete. This window will close automatically.\n'
+sleep 1

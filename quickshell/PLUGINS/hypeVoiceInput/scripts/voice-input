@@ -32,6 +32,16 @@ find_model() {
     return 1
 }
 
+find_whisper_cli() {
+    if command -v whisper-cli >/dev/null 2>&1; then
+        command -v whisper-cli
+    elif [ -x "$HOME/.local/bin/whisper-cli" ]; then
+        printf '%s\n' "$HOME/.local/bin/whisper-cli"
+    else
+        return 1
+    fi
+}
+
 stop_recorder() {
     [ -r "$pid_file" ] || return 0
     recorder_pid="$(cat "$pid_file")"
@@ -48,7 +58,7 @@ stop_recorder() {
 case "$action" in
     start)
         command -v pw-record >/dev/null 2>&1 || { echo "pw-record is required (PipeWire)." >&2; exit 2; }
-        command -v whisper-cli >/dev/null 2>&1 || { echo "whisper-cli is required (whisper.cpp)." >&2; exit 2; }
+        find_whisper_cli >/dev/null || { echo "whisper-cli is required (whisper.cpp)." >&2; exit 2; }
         find_model >/dev/null || { echo "Choose a whisper.cpp GGML model in Voice Input settings." >&2; exit 2; }
         stop_recorder
         rm -f "$audio_file" "$output_base.txt"
@@ -60,7 +70,8 @@ case "$action" in
         stop_recorder
         [ -s "$audio_file" ] || { echo "No microphone audio was captured." >&2; exit 3; }
         resolved_model="$(find_model)" || { echo "Whisper model is unavailable." >&2; exit 2; }
-        whisper-cli -m "$resolved_model" -f "$audio_file" -l "$language" -nt -np -otxt -of "$output_base" >/dev/null
+        whisper_bin="$(find_whisper_cli)" || { echo "whisper-cli is required (whisper.cpp)." >&2; exit 2; }
+        "$whisper_bin" -m "$resolved_model" -f "$audio_file" -l "$language" -nt -np -otxt -of "$output_base" >/dev/null
         transcript="$(sed 's/^[[:space:]]*//; s/[[:space:]]*$//' "$output_base.txt" | tr '\n' ' ' | sed 's/[[:space:]][[:space:]]*/ /g')"
         [ -n "$transcript" ] || { echo "No speech was detected." >&2; exit 4; }
         printf 'TRANSCRIPT\n%s\n' "$transcript"

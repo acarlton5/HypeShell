@@ -941,7 +941,10 @@ Item {
                             visible: aboutTab.hasHypeShellUpdate || aboutTab.totalSystemUpdates > 0
                             backgroundColor: Qt.rgba(Theme.surfaceText.r, Theme.surfaceText.g, Theme.surfaceText.b, 0.08)
                             textColor: Theme.surfaceText
-                            onClicked: PopoutService.openSystemUpdate()
+                            onClicked: {
+                                PopoutService.closeSettings();
+                                Qt.callLater(() => PopoutService.openSystemUpdate());
+                            }
                         }
                     }
                 }

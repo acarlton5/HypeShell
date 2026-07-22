@@ -32,8 +32,11 @@ can be selected in the plugin settings.
 
 ## Installation
 
-Install the plugin from HypeShell's plugin registry, then add **Voice Input** to
-your Hypebar in Settings. Restart HypeShell if it was installed manually.
+Install the plugin from HypeShell's plugin registry. HypeShell opens a setup
+terminal that installs the runtime tools and detects the machine architecture.
+On x86_64 Arch it first uses the packaged whisper.cpp build; on ARM it builds
+whisper.cpp locally under `~/.local` to avoid incompatible AUR architecture
+metadata. Then add **Voice Input** to your Hypebar in Settings.
 
 ## Privacy
 

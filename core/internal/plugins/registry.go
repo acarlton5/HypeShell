@@ -1,4 +1,4 @@
-﻿package plugins
+package plugins
 
 import (
 	"encoding/json"
@@ -23,10 +23,11 @@ type Plugin struct {
 	Author       string   `json:"author"`
 	Description  string   `json:"description"`
 	Dependencies []string `json:"dependencies,omitempty"`
+	SetupScript  string   `json:"setup_script,omitempty"`
 	Compositors  []string `json:"compositors"`
 	Distro       []string `json:"distro"`
 	Screenshot   string   `json:"screenshot,omitempty"`
-	RequiresHYPE  string   `json:"requires_hype,omitempty"`
+	RequiresHYPE string   `json:"requires_hype,omitempty"`
 	Featured     bool     `json:"featured,omitempty"`
 }
 
