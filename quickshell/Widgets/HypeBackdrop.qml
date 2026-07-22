@@ -49,7 +49,7 @@ Item {
         smooth: true
         mipmap: true
         asynchronous: true
-        source: "file://" + Theme.shellDir + "/assets/hypeshell-logo.svg"
+        source: "file://" + Theme.shellDir + "/assets/hypeshell-logo.png"
         opacity: 0.25
         visible: !isColorWallpaper
         layer.enabled: true

@@ -105,7 +105,7 @@ Singleton {
     function getAppIcon(appId: string, desktopEntry: var): string {
         // ! TODO - after QS 0.3, we can install our icon properly
         if (appId === "org.quickshell" || appId === "com.hypeshell.shell") {
-            return Qt.resolvedUrl("../assets/hypeshell-logo.svg");
+            return Qt.resolvedUrl("../assets/hypeshell-logo.png");
         }
 
         const moddedId = moddedAppId(appId);

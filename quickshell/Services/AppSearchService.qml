@@ -162,7 +162,7 @@ Singleton {
         });
     }
 
-    readonly property string hypeLogoPath: Qt.resolvedUrl("../assets/hypeshell-logo.svg")
+    readonly property string hypeLogoPath: Qt.resolvedUrl("../assets/hypeshell-logo.png")
 
     readonly property var builtInPlugins: ({
             "hype_settings": {

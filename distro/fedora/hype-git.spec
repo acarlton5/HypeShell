@@ -121,7 +121,7 @@ core/bin/${HYPE_BINARY} completion fish > %{buildroot}%{_datadir}/fish/vendor_co
 install -Dm644 assets/systemd/hype.service %{buildroot}%{_userunitdir}/hype.service
 
 install -Dm644 assets/hype-open.desktop %{buildroot}%{_datadir}/applications/hype-open.desktop
-install -Dm644 assets/hypelogo.svg %{buildroot}%{_datadir}/icons/hicolor/scalable/apps/hypelogo.svg
+install -Dm644 assets/hypeshell-logo.png %{buildroot}%{_datadir}/icons/hicolor/512x512/apps/hypeshell-logo.png
 
 # Install shell files to shared data location
 install -dm755 %{buildroot}%{_datadir}/quickshell/hype
@@ -144,7 +144,7 @@ pkill -USR1 -x hype >/dev/null 2>&1 || :
 %{_datadir}/quickshell/hype/
 %{_userunitdir}/hype.service
 %{_datadir}/applications/hype-open.desktop
-%{_datadir}/icons/hicolor/scalable/apps/hypelogo.svg
+%{_datadir}/icons/hicolor/512x512/apps/hypeshell-logo.png
 
 %files -n hype-cli
 %{_bindir}/hype

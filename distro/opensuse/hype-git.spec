@@ -116,7 +116,7 @@ install -d %{buildroot}%{_datadir}/fish/vendor_completions.d
 install -Dm644 assets/systemd/hype.service %{buildroot}%{_userunitdir}/hype.service
 
 install -Dm644 assets/hype-open.desktop %{buildroot}%{_datadir}/applications/hype-open.desktop
-install -Dm644 assets/hypelogo.svg %{buildroot}%{_datadir}/icons/hicolor/scalable/apps/hypelogo.svg
+install -Dm644 assets/hypeshell-logo.png %{buildroot}%{_datadir}/icons/hicolor/512x512/apps/hypeshell-logo.png
 
 install -dm755 %{buildroot}%{_datadir}/quickshell/hype
 cp -r quickshell/* %{buildroot}%{_datadir}/quickshell/hype/
@@ -152,9 +152,9 @@ pkill -USR1 -x hype >/dev/null 2>&1 || :
 %{_userunitdir}/hype.service
 %{_datadir}/applications/hype-open.desktop
 %dir %{_datadir}/icons/hicolor
-%dir %{_datadir}/icons/hicolor/scalable
-%dir %{_datadir}/icons/hicolor/scalable/apps
-%{_datadir}/icons/hicolor/scalable/apps/hypelogo.svg
+%dir %{_datadir}/icons/hicolor/512x512
+%dir %{_datadir}/icons/hicolor/512x512/apps
+%{_datadir}/icons/hicolor/512x512/apps/hypeshell-logo.png
 
 %changelog
 * Sun Dec 14 2025 Avenge Media <AvengeMedia.US@gmail.com> - 1.0.2+git2528.d336866f-1

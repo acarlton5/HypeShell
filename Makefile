@@ -8,7 +8,7 @@ BUILD_DIR=$(CORE_DIR)/bin
 PREFIX ?= /usr/local
 INSTALL_DIR=$(PREFIX)/bin
 DATA_DIR=$(PREFIX)/share
-ICON_DIR=$(DATA_DIR)/icons/hicolor/scalable/apps
+ICON_DIR=$(DATA_DIR)/icons/hicolor/512x512/apps
 
 USER_HOME := $(if $(SUDO_USER),$(shell getent passwd $(SUDO_USER) | cut -d: -f6),$(HOME))
 USER_GROUP := $(if $(SUDO_USER),$(shell id -gn $(SUDO_USER) 2>/dev/null),)
@@ -96,8 +96,9 @@ install-systemd:
 
 install-icon:
 	@echo "Installing icon..."
-	@install -D -m 644 $(ASSETS_DIR)/hypeshell-logo.svg $(ICON_DIR)/hypeshell-logo.svg
-	@install -D -m 644 $(ASSETS_DIR)/hypeshell-logo.svg $(ICON_DIR)/danklogo.svg
+	@install -D -m 644 $(ASSETS_DIR)/hypeshell-logo.png $(ICON_DIR)/hypeshell-logo.png
+	@install -D -m 644 $(ASSETS_DIR)/hypeshell-logo.png $(ICON_DIR)/danklogo.png
+	@rm -f $(DATA_DIR)/icons/hicolor/scalable/apps/hypeshell-logo.svg $(DATA_DIR)/icons/hicolor/scalable/apps/danklogo.svg
 	@gtk-update-icon-cache -q $(DATA_DIR)/icons/hicolor 2>/dev/null || true
 	@echo "Icon installed"
 
@@ -149,8 +150,8 @@ uninstall-systemd:
 
 uninstall-icon:
 	@echo "Removing icon..."
-	@rm -f $(ICON_DIR)/hypeshell-logo.svg
-	@rm -f $(ICON_DIR)/danklogo.svg
+	@rm -f $(ICON_DIR)/hypeshell-logo.png
+	@rm -f $(ICON_DIR)/danklogo.png
 	@gtk-update-icon-cache -q $(DATA_DIR)/icons/hicolor 2>/dev/null || true
 	@echo "Icon removed"
 

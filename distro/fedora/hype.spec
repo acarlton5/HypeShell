@@ -89,7 +89,7 @@ install -d %{buildroot}%{_datadir}/fish/vendor_completions.d
 install -Dm644 %{_builddir}/hype-qml/assets/systemd/hype.service %{buildroot}%{_userunitdir}/hype.service
 
 install -Dm644 %{_builddir}/hype-qml/assets/hype-open.desktop %{buildroot}%{_datadir}/applications/hype-open.desktop
-install -Dm644 %{_builddir}/hype-qml/assets/hypelogo.svg %{buildroot}%{_datadir}/icons/hicolor/scalable/apps/hypelogo.svg
+install -Dm644 %{_builddir}/hype-qml/assets/hypeshell-logo.png %{buildroot}%{_datadir}/icons/hicolor/512x512/apps/hypeshell-logo.png
 
 install -dm755 %{buildroot}%{_datadir}/quickshell/hype
 cp -r %{_builddir}/hype-qml/* %{buildroot}%{_datadir}/quickshell/hype/
@@ -111,7 +111,7 @@ pkill -USR1 -x hype >/dev/null 2>&1 || :
 %{_datadir}/quickshell/hype/
 %{_userunitdir}/hype.service
 %{_datadir}/applications/hype-open.desktop
-%{_datadir}/icons/hicolor/scalable/apps/hypelogo.svg
+%{_datadir}/icons/hicolor/512x512/apps/hypeshell-logo.png
 
 %files -n hype-cli
 %{_bindir}/hype
