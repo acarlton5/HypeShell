@@ -169,6 +169,33 @@ echo "Installing HypeShell..."
 make -C "$tmp/source" PREFIX="/usr/local" install
 install -D -m 644 "$tmp/install-fingerprint" "/usr/local/share/hypeshell/install-fingerprint"
 
+hardware_profile="generic"
+hardware_arch="$(uname -m)"
+if { [ "$hardware_arch" = "aarch64" ] || [ "$hardware_arch" = "arm64" ]; } && { { [ -r /proc/device-tree/compatible ] && tr '\0' '\n' </proc/device-tree/compatible 2>/dev/null | grep -qi '^apple,'; } || { [ -r /proc/device-tree/model ] && grep -aqi 'Apple' /proc/device-tree/model; }; }; then
+    hardware_profile="apple-silicon"
+fi
+
+echo "Applying HypeShell hardware profile: $hardware_profile"
+user_group="$(id -gn "$update_user")"
+user_hardware_dir="$update_home/.config/hypr/hype"
+user_hardware_file="$user_hardware_dir/hardware.conf"
+shared_hardware_file="/usr/local/share/hypeshell/hyprland/hype/hardware.conf"
+install -d -o "$update_user" -g "$user_group" "$user_hardware_dir"
+if [ "$hardware_profile" = "apple-silicon" ]; then
+    hardware_source="$tmp/source/assets/hardware/apple-silicon/hypr-hardware.conf"
+    install -D -m 644 "$hardware_source" "$shared_hardware_file"
+    install -o "$update_user" -g "$user_group" -m 644 "$hardware_source" "$user_hardware_file"
+else
+    install -D -m 644 /dev/null "$shared_hardware_file"
+    install -o "$update_user" -g "$user_group" -m 644 /dev/null "$user_hardware_file"
+fi
+
+user_hypr_config="$update_home/.config/hypr/hyprland.conf"
+hardware_source_line='source = ./hype/hardware.conf'
+if [ -f "$user_hypr_config" ] && ! grep -Fqx "$hardware_source_line" "$user_hypr_config"; then
+    runuser -u "$update_user" -- sh -c 'printf "\n%%s\n" "$1" >> "$2"' sh "$hardware_source_line" "$user_hypr_config"
+fi
+
 echo "HypeShell self-update complete. Reloading service in 2 seconds..."
 if [ -n "$invoking_uid" ]; then
     (
