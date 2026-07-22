@@ -21,6 +21,7 @@ find_model() {
     for candidate in \
         "$HOME/.local/share/whisper.cpp/models/ggml-base.en.bin" \
         "$HOME/.local/share/whisper/models/ggml-base.en.bin" \
+        "/usr/share/whisper.cpp-model-base.en/ggml-base.en.bin" \
         "/usr/share/whisper.cpp/models/ggml-base.en.bin"
     do
         if [ -r "$candidate" ]; then
