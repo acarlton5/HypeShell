@@ -63,7 +63,8 @@ func HandleInstall(conn net.Conn, req models.Request) {
 	}
 
 	models.Respond(conn, req.ID, SuccessResult{
-		Success: true,
-		Message: fmt.Sprintf("plugin installed: %s", plugin.Name),
+		Success:      true,
+		Message:      fmt.Sprintf("plugin installed: %s", plugin.Name),
+		SetupStarted: plugin.SetupScript != "",
 	})
 }

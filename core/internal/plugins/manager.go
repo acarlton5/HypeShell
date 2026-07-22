@@ -231,14 +231,14 @@ func launchPluginSetup(pluginPath, relativeScript, title string) error {
 		return fmt.Errorf("no supported terminal found")
 	}
 
-	command := fmt.Sprintf("bash %q; status=$?; if [ $status -ne 0 ]; then printf '\\nSetup failed (exit %%s). Press Enter to close.\\n' \"$status\"; read; fi; exit $status", scriptPath)
+	command := fmt.Sprintf("marker=\"${XDG_RUNTIME_DIR:-/tmp}/hypeshell-plugin-setup.active\"; : > \"$marker\"; trap 'rm -f \"$marker\"' EXIT HUP INT TERM; printf '\\033[1;36m=== %%s Dependency Setup ===\\033[0m\\n' %q; printf '\\033[33mYou may be prompted for your sudo password.\\033[0m\\n\\n'; bash %q; status=$?; if [ $status -eq 0 ]; then printf '\\n\\033[1;32m=== Setup complete. Closing… ===\\033[0m\\n'; sleep 1; else printf '\\n\\033[1;31m=== Setup failed (exit %%s). Press Enter to close. ===\\033[0m\\n' \"$status\"; read; fi; exit $status", title, scriptPath)
 	base := filepath.Base(terminal)
 	var args []string
 	switch base {
 	case "ghostty":
-		args = []string{"--class=hypeshell-plugin-setup", "--title=" + title + " Setup", "-e", "sh", "-c", command}
+		args = []string{"--class=hypeshell-plugin-setup", "--title=" + title + " Setup", "--window-decoration=false", "--initial-width=680", "--initial-height=420", "--font-size=11", "--background=#0c0f14", "--foreground=#cdd6f4", "--window-padding-x=15", "--window-padding-y=15", "-e", "sh", "-c", command}
 	case "kitty":
-		args = []string{"--class", "hypeshell-plugin-setup", "-T", title + " Setup", "-e", "sh", "-c", command}
+		args = []string{"--detach=no", "--class", "hypeshell-plugin-setup", "-T", title + " Setup", "-o", "hide_window_decorations=yes", "-o", "remember_window_size=no", "-o", "initial_width=680", "-o", "initial_height=420", "-o", "font_size=11", "-o", "background=#0c0f14", "-o", "foreground=#cdd6f4", "-o", "window_padding_width=15", "-e", "sh", "-c", command}
 	case "foot":
 		args = []string{"--app-id=hypeshell-plugin-setup", "--title=" + title + " Setup", "-e", "sh", "-c", command}
 	case "alacritty", "wezterm":

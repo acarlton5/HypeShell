@@ -1,4 +1,4 @@
-﻿package plugins
+package plugins
 
 type PluginInfo struct {
 	ID           string   `json:"id"`
@@ -11,15 +11,17 @@ type PluginInfo struct {
 	Capabilities []string `json:"capabilities,omitempty"`
 	Compositors  []string `json:"compositors,omitempty"`
 	Dependencies []string `json:"dependencies,omitempty"`
+	SetupScript  string   `json:"setup_script,omitempty"`
 	Installed    bool     `json:"installed,omitempty"`
 	FirstParty   bool     `json:"firstParty,omitempty"`
 	Featured     bool     `json:"featured,omitempty"`
 	Note         string   `json:"note,omitempty"`
 	HasUpdate    bool     `json:"hasUpdate,omitempty"`
-	RequiresHYPE  string   `json:"requires_hype,omitempty"`
+	RequiresHYPE string   `json:"requires_hype,omitempty"`
 }
 
 type SuccessResult struct {
-	Success bool   `json:"success"`
-	Message string `json:"message"`
+	Success      bool   `json:"success"`
+	Message      string `json:"message"`
+	SetupStarted bool   `json:"setupStarted,omitempty"`
 }

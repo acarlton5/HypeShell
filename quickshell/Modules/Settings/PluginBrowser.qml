@@ -1,6 +1,7 @@
 ﻿import QtQuick
 import QtQuick.Controls
 import Quickshell
+import Quickshell.Io
 import qs.Common
 import qs.Modals.Common
 import qs.Services
@@ -21,6 +22,10 @@ FloatingWindow {
     property bool pendingInstallHandled: false
     property string typeFilter: ""
     property var installingPlugins: ({})
+    property string dependencySetupPlugin: ""
+    property bool dependencySetupEnable: false
+    property bool dependencySetupMarkerSeen: false
+    property int dependencySetupProbeAttempts: 0
 
     function isPluginInstalling(pluginName) {
         return installingPlugins[pluginName] === true;
@@ -104,21 +109,73 @@ FloatingWindow {
                 ToastService.showError(I18n.tr("Install failed: %1", "installation error").arg(response.error));
                 return;
             }
-            ToastService.showInfo(I18n.tr("Installed: %1", "installation success").arg(pluginName));
-            PluginService.scanPlugins();
-            refreshPlugins();
-            if (enableAfterInstall) {
-                Qt.callLater(() => {
-                    PluginService.enablePlugin(pluginName);
-                    const plugin = PluginService.availablePlugins[pluginName];
-                    if (plugin?.type === "desktop") {
-                        const defaultConfig = DesktopWidgetRegistry.getDefaultConfig(pluginName);
-                        SettingsData.createDesktopWidgetInstance(pluginName, plugin.name || pluginName, defaultConfig);
-                    }
-                    hide();
-                });
+            if (response.result?.setupStarted) {
+                dependencySetupPlugin = pluginName;
+                dependencySetupEnable = enableAfterInstall;
+                dependencySetupMarkerSeen = false;
+                dependencySetupProbeAttempts = 0;
+                hide();
+                dependencySetupProbeTimer.restart();
+                return;
             }
+            completePluginInstall(pluginName, enableAfterInstall, false);
         });
+    }
+
+    function completePluginInstall(pluginName, enableAfterInstall, reopenBrowser) {
+        ToastService.showInfo(I18n.tr("Installed: %1", "installation success").arg(pluginName));
+        PluginService.scanPlugins();
+        refreshPlugins();
+        if (enableAfterInstall) {
+            Qt.callLater(() => {
+                PluginService.enablePlugin(pluginName);
+                const plugin = PluginService.availablePlugins[pluginName];
+                if (plugin?.type === "desktop") {
+                    const defaultConfig = DesktopWidgetRegistry.getDefaultConfig(pluginName);
+                    SettingsData.createDesktopWidgetInstance(pluginName, plugin.name || pluginName, defaultConfig);
+                }
+                if (reopenBrowser)
+                    show();
+                else
+                    hide();
+            });
+        } else if (reopenBrowser) {
+            show();
+        }
+    }
+
+    Timer {
+        id: dependencySetupProbeTimer
+        interval: 300
+        repeat: false
+        onTriggered: {
+            if (!dependencySetupProbe.running)
+                dependencySetupProbe.running = true;
+        }
+    }
+
+    Process {
+        id: dependencySetupProbe
+        command: ["sh", "-c", "test -e \"${XDG_RUNTIME_DIR:-/tmp}/hypeshell-plugin-setup.active\""]
+        running: false
+        onExited: exitCode => {
+            root.dependencySetupProbeAttempts++;
+            if (exitCode === 0) {
+                root.dependencySetupMarkerSeen = true;
+                dependencySetupProbeTimer.restart();
+                return;
+            }
+            if (!root.dependencySetupMarkerSeen && root.dependencySetupProbeAttempts < 20) {
+                dependencySetupProbeTimer.restart();
+                return;
+            }
+            const pluginName = root.dependencySetupPlugin;
+            const enableAfterInstall = root.dependencySetupEnable;
+            root.dependencySetupPlugin = "";
+            root.dependencySetupEnable = false;
+            if (pluginName)
+                root.completePluginInstall(pluginName, enableAfterInstall, true);
+        }
     }
 
     function refreshPlugins() {
