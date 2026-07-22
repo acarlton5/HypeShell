@@ -18,6 +18,52 @@ PluginComponent {
     readonly property bool autoInsert: pluginData.autoInsert !== false
     readonly property bool active: phase === "listening" || phase === "transcribing"
 
+    component VoiceStateIcon: Item {
+        implicitWidth: Theme.iconSize + 2
+        implicitHeight: Theme.iconSize + 2
+
+        HypeIcon {
+            anchors.centerIn: parent
+            visible: root.phase !== "transcribing"
+            name: root.phase === "listening" ? "stop_circle" : "mic"
+            color: root.phase === "listening" ? Theme.error : Theme.primary
+            size: Theme.iconSize
+
+            SequentialAnimation on scale {
+                running: root.phase === "listening"
+                loops: Animation.Infinite
+                NumberAnimation { to: 1.14; duration: 420; easing.type: Easing.InOutSine }
+                NumberAnimation { to: 0.92; duration: 420; easing.type: Easing.InOutSine }
+            }
+        }
+
+        Row {
+            anchors.centerIn: parent
+            visible: root.phase === "transcribing"
+            spacing: 2
+
+            Repeater {
+                model: 4
+                Rectangle {
+                    required property int index
+                    anchors.verticalCenter: parent.verticalCenter
+                    width: 3
+                    height: 6 + index * 2
+                    radius: 2
+                    color: Theme.primary
+
+                    SequentialAnimation on height {
+                        running: root.phase === "transcribing"
+                        loops: Animation.Infinite
+                        PauseAnimation { duration: index * 55 }
+                        NumberAnimation { to: 18 - index * 2; duration: 190; easing.type: Easing.InOutSine }
+                        NumberAnimation { to: 5 + index * 2; duration: 190; easing.type: Easing.InOutSine }
+                    }
+                }
+            }
+        }
+    }
+
     function runAction(action) {
         if (actionProcess.running)
             return;
@@ -88,30 +134,11 @@ PluginComponent {
     }
 
     horizontalBarPill: Component {
-        Row {
-            spacing: Theme.spacingXS
-            HypeIcon {
-                anchors.verticalCenter: parent.verticalCenter
-                name: root.active ? "graphic_eq" : "mic"
-                color: root.active ? Theme.error : Theme.primary
-                size: Theme.iconSize - 3
-            }
-            StyledText {
-                anchors.verticalCenter: parent.verticalCenter
-                text: root.phase === "listening" ? "LISTENING" : "VOICE"
-                color: root.active ? Theme.error : Theme.primary
-                font.pixelSize: Theme.fontSizeSmall
-                font.weight: Font.Bold
-            }
-        }
+        VoiceStateIcon {}
     }
 
     verticalBarPill: Component {
-        HypeIcon {
-            name: root.active ? "graphic_eq" : "mic"
-            color: root.active ? Theme.error : Theme.primary
-            size: Theme.iconSize
-        }
+        VoiceStateIcon {}
     }
 
     popoutContent: Component {
@@ -128,36 +155,89 @@ PluginComponent {
                     width: parent.width
                     height: 150
 
-                    Rectangle {
+                    Item {
                         id: voiceOrb
                         anchors.centerIn: parent
-                        width: 108
-                        height: 108
-                        radius: width / 2
-                        color: root.phase === "error" ? Theme.errorContainer : Theme.primaryContainer
-                        border.width: 2
-                        border.color: root.phase === "listening" ? Theme.error : Theme.primary
+                        width: 126
+                        height: 126
+                        property real motionPhase: 0
 
                         SequentialAnimation on scale {
                             running: root.phase === "listening"
                             loops: Animation.Infinite
-                            NumberAnimation { to: 1.10; duration: 650; easing.type: Easing.InOutSine }
-                            NumberAnimation { to: 0.96; duration: 650; easing.type: Easing.InOutSine }
+                            NumberAnimation { to: 1.045; duration: 720; easing.type: Easing.InOutSine }
+                            NumberAnimation { to: 0.985; duration: 720; easing.type: Easing.InOutSine }
+                        }
+
+                        Canvas {
+                            id: orbCanvas
+                            anchors.fill: parent
+                            antialiasing: true
+
+                            onPaint: {
+                                const ctx = getContext("2d");
+                                const w = width;
+                                const h = height;
+                                const cx = w / 2;
+                                const cy = h / 2;
+                                const radius = Math.min(w, h) * 0.47;
+                                ctx.clearRect(0, 0, w, h);
+                                ctx.save();
+                                ctx.beginPath();
+                                ctx.arc(cx, cy, radius, 0, Math.PI * 2);
+                                ctx.clip();
+
+                                const base = ctx.createRadialGradient(cx - 18, cy - 24, 4, cx, cy, radius);
+                                base.addColorStop(0, "#e8fbff");
+                                base.addColorStop(0.24, "#74ddff");
+                                base.addColorStop(0.62, "#3578e5");
+                                base.addColorStop(1, "#101d58");
+                                ctx.fillStyle = base;
+                                ctx.fillRect(0, 0, w, h);
+
+                                ctx.globalCompositeOperation = "screen";
+                                const colors = ["rgba(255,255,255,0.82)", "rgba(75,239,255,0.72)", "rgba(118,99,255,0.65)"];
+                                for (let i = 0; i < 3; i++) {
+                                    const angle = voiceOrb.motionPhase * (0.7 + i * 0.18) + i * 2.1;
+                                    const bx = cx + Math.cos(angle) * (20 + i * 5);
+                                    const by = cy + Math.sin(angle * 1.17) * (17 + i * 4);
+                                    const blob = ctx.createRadialGradient(bx, by, 1, bx, by, 43 - i * 5);
+                                    blob.addColorStop(0, colors[i]);
+                                    blob.addColorStop(1, "rgba(0,0,0,0)");
+                                    ctx.fillStyle = blob;
+                                    ctx.fillRect(0, 0, w, h);
+                                }
+                                ctx.restore();
+
+                                ctx.beginPath();
+                                ctx.arc(cx, cy, radius, 0, Math.PI * 2);
+                                ctx.lineWidth = 2;
+                                ctx.strokeStyle = root.phase === "error" ? "#ff6b7a" : "rgba(190,245,255,0.75)";
+                                ctx.stroke();
+                            }
+                        }
+
+                        Timer {
+                            interval: 33
+                            repeat: true
+                            running: root.phase === "listening" || root.phase === "transcribing"
+                            onTriggered: {
+                                voiceOrb.motionPhase += root.phase === "transcribing" ? 0.075 : 0.045;
+                                orbCanvas.requestPaint();
+                            }
+                        }
+
+                        Connections {
+                            target: root
+                            function onPhaseChanged() { orbCanvas.requestPaint(); }
                         }
 
                         HypeIcon {
                             anchors.centerIn: parent
-                            name: root.phase === "transcribing" ? "progress_activity" : (root.phase === "done" ? "check" : "mic")
-                            size: 44
-                            color: root.phase === "error" ? Theme.error : Theme.primary
-                            rotation: 0
-                            RotationAnimation on rotation {
-                                running: root.phase === "transcribing"
-                                from: 0
-                                to: 360
-                                duration: 900
-                                loops: Animation.Infinite
-                            }
+                            name: root.phase === "done" ? "check" : (root.phase === "error" ? "error" : "mic")
+                            size: 32
+                            color: "#f5fdff"
+                            opacity: 0.92
                         }
                     }
 
