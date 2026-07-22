@@ -12,7 +12,6 @@ PluginComponent {
 
     property string phase: "idle"
     property string detail: "Ready to listen"
-    property string lastTranscript: ""
     readonly property string scriptPath: Qt.resolvedUrl("scripts/voice-input").toString().replace("file://", "")
     readonly property string modelPath: pluginData.modelPath || ""
     readonly property string language: pluginData.language || "en"
@@ -100,18 +99,6 @@ PluginComponent {
         onTriggered: root.runAction("stop")
     }
 
-    Timer {
-        id: successResetTimer
-        interval: 700
-        repeat: false
-        onTriggered: {
-            if (root.phase === "done") {
-                root.phase = "idle";
-                root.detail = "";
-            }
-        }
-    }
-
     Process {
         id: actionProcess
         running: false
@@ -128,10 +115,8 @@ PluginComponent {
                     root.detail = "";
                     root.closePopout();
                 } else if (status === "TRANSCRIPT") {
-                    root.phase = "done";
-                    root.lastTranscript = lines.join("\n").trim();
-                    root.detail = root.autoInsert ? "Inserted into the focused field" : "Transcription copied to clipboard";
-                    successResetTimer.restart();
+                    root.phase = "idle";
+                    root.detail = "";
                 } else if (status === "CANCELLED") {
                     root.phase = "idle";
                     root.detail = "Recording cancelled";
@@ -170,7 +155,7 @@ PluginComponent {
         id: listeningOrbWindow
 
         screen: root.parentScreen
-        visible: root.phase === "listening"
+        visible: root.phase === "listening" || root.phase === "transcribing"
         color: "transparent"
         implicitWidth: 112
         implicitHeight: 112
@@ -237,13 +222,41 @@ PluginComponent {
 
             HypeIcon {
                 anchors.centerIn: parent
+                visible: root.phase === "listening"
                 name: "stop_circle"
                 size: 27
                 color: "#f5fdff"
             }
 
+            Row {
+                anchors.centerIn: parent
+                visible: root.phase === "transcribing"
+                spacing: 3
+
+                Repeater {
+                    model: 4
+                    Rectangle {
+                        required property int index
+                        anchors.verticalCenter: parent.verticalCenter
+                        width: 4
+                        height: 7 + index * 2
+                        radius: 2
+                        color: "#f5fdff"
+
+                        SequentialAnimation on height {
+                            running: root.phase === "transcribing"
+                            loops: Animation.Infinite
+                            PauseAnimation { duration: index * 55 }
+                            NumberAnimation { to: 22 - index * 2; duration: 190; easing.type: Easing.InOutSine }
+                            NumberAnimation { to: 6 + index * 2; duration: 190; easing.type: Easing.InOutSine }
+                        }
+                    }
+                }
+            }
+
             MouseArea {
                 anchors.fill: parent
+                enabled: root.phase === "listening"
                 cursorShape: Qt.PointingHandCursor
                 onClicked: root.toggleRecording()
             }
@@ -251,6 +264,7 @@ PluginComponent {
             Rectangle {
                 anchors.right: parent.right
                 anchors.top: parent.top
+                visible: root.phase === "listening"
                 width: 25
                 height: 25
                 radius: width / 2
@@ -365,7 +379,7 @@ PluginComponent {
 
                         HypeIcon {
                             anchors.centerIn: parent
-                            name: root.phase === "listening" ? "stop_circle" : (root.phase === "done" ? "check" : (root.phase === "error" ? "error" : "mic"))
+                            name: root.phase === "listening" ? "stop_circle" : (root.phase === "error" ? "error" : "mic")
                             size: 32
                             color: "#f5fdff"
                             opacity: 0.92
@@ -402,18 +416,6 @@ PluginComponent {
                             }
                         }
                     }
-                }
-
-                StyledText {
-                    width: parent.width
-                    visible: root.lastTranscript !== ""
-                    text: root.lastTranscript
-                    color: Theme.surfaceText
-                    font.pixelSize: Theme.fontSizeMedium
-                    wrapMode: Text.WordWrap
-                    horizontalAlignment: Text.AlignHCenter
-                    maximumLineCount: 4
-                    elide: Text.ElideRight
                 }
 
                 HypeButton {
