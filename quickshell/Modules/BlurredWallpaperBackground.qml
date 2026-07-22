@@ -219,7 +219,7 @@ Variants {
             property int textureWidth: Math.min(modelData.width, maxTextureSize)
             property int textureHeight: Math.min(modelData.height, maxTextureSize)
 
-            AnimatedImage {
+            LoopingAnimatedImage {
                 id: currentWallpaper
                 anchors.fill: parent
                 visible: false
@@ -228,23 +228,11 @@ Variants {
                 retainWhileLoading: true
                 smooth: true
                 cache: true
-                playing: source !== ""
-                onCurrentFrameChanged: {
-                    if (frameCount > 1 && currentFrame >= frameCount - 1) {
-                        Qt.callLater(() => {
-                            if (!source)
-                                return;
-                            playing = false;
-                            currentFrame = 0;
-                            playing = true;
-                        });
-                    }
-                }
                 sourceSize: Qt.size(root.textureWidth, root.textureHeight)
                 fillMode: root.getFillMode(SessionData.isGreeterMode ? GreetdSettings.wallpaperFillMode : SessionData.getMonitorWallpaperFillMode(modelData.name))
             }
 
-            AnimatedImage {
+            LoopingAnimatedImage {
                 id: nextWallpaper
                 anchors.fill: parent
                 visible: false
@@ -253,18 +241,6 @@ Variants {
                 retainWhileLoading: true
                 smooth: true
                 cache: true
-                playing: source !== ""
-                onCurrentFrameChanged: {
-                    if (frameCount > 1 && currentFrame >= frameCount - 1) {
-                        Qt.callLater(() => {
-                            if (!source)
-                                return;
-                            playing = false;
-                            currentFrame = 0;
-                            playing = true;
-                        });
-                    }
-                }
                 sourceSize: Qt.size(root.textureWidth, root.textureHeight)
                 fillMode: root.getFillMode(SessionData.isGreeterMode ? GreetdSettings.wallpaperFillMode : SessionData.getMonitorWallpaperFillMode(modelData.name))
 

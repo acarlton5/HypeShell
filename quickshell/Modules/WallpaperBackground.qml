@@ -347,7 +347,7 @@ Variants {
             property int textureWidth: Math.min(Math.round(modelData.width * screenScale), maxTextureSize)
             property int textureHeight: Math.min(Math.round(modelData.height * screenScale), maxTextureSize)
 
-            AnimatedImage {
+            LoopingAnimatedImage {
                 id: currentWallpaper
                 anchors.fill: parent
                 visible: true
@@ -357,23 +357,11 @@ Variants {
                 retainWhileLoading: true
                 smooth: true
                 cache: true
-                playing: source !== ""
-                onCurrentFrameChanged: {
-                    if (frameCount > 1 && currentFrame >= frameCount - 1) {
-                        Qt.callLater(() => {
-                            if (!source)
-                                return;
-                            playing = false;
-                            currentFrame = 0;
-                            playing = true;
-                        });
-                    }
-                }
                 sourceSize: Qt.size(root.textureWidth, root.textureHeight)
                 fillMode: root.getFillMode(SessionData.getMonitorWallpaperFillMode(modelData.name))
             }
 
-            AnimatedImage {
+            LoopingAnimatedImage {
                 id: nextWallpaper
                 anchors.fill: parent
                 visible: source !== ""
@@ -383,18 +371,6 @@ Variants {
                 retainWhileLoading: true
                 smooth: true
                 cache: true
-                playing: source !== ""
-                onCurrentFrameChanged: {
-                    if (frameCount > 1 && currentFrame >= frameCount - 1) {
-                        Qt.callLater(() => {
-                            if (!source)
-                                return;
-                            playing = false;
-                            currentFrame = 0;
-                            playing = true;
-                        });
-                    }
-                }
                 sourceSize: Qt.size(root.textureWidth, root.textureHeight)
                 fillMode: root.getFillMode(SessionData.getMonitorWallpaperFillMode(modelData.name))
 
