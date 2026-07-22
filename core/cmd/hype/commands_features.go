@@ -5,7 +5,6 @@ package main
 import (
 	"bufio"
 	"context"
-	"errors"
 	"fmt"
 	"os"
 	"os/exec"
@@ -13,7 +12,6 @@ import (
 	"strings"
 	"time"
 
-	"github.com/acarlton5/HypeShell/core/internal/distros"
 	"github.com/acarlton5/HypeShell/core/internal/errdefs"
 	"github.com/acarlton5/HypeShell/core/internal/log"
 	"github.com/acarlton5/HypeShell/core/internal/privesc"
@@ -49,7 +47,6 @@ var updateInstallCmd = &cobra.Command{
 	Short:   "Install the latest HypeShell update",
 	Long:    "Install the latest HypeShell update using the appropriate package manager for your distribution",
 	Args:    cobra.NoArgs,
-	PreRunE: findConfig,
 	Run: func(cmd *cobra.Command, args []string) {
 		runUpdate()
 	},
@@ -92,39 +89,34 @@ func runUpdateCheck() {
 }
 
 func runUpdate() {
-	osInfo, err := distros.GetOSInfo()
+	ctx := context.Background()
+	var backend sysupdate.Backend
+	for _, candidate := range sysupdate.Select(ctx).All() {
+		if candidate.ID() == "hypeshell" {
+			backend = candidate
+			break
+		}
+	}
+	if backend == nil {
+		log.Fatal("Error updating HypeShell: installation fingerprint was not found")
+	}
+
+	updates, err := backend.CheckUpdates(ctx)
 	if err != nil {
-		log.Fatalf("Error detecting OS: %v", err)
+		log.Fatalf("Error checking for updates: %v", err)
+	}
+	if len(updates) == 0 {
+		fmt.Println("✓ You are already running the latest HypeShell revision.")
+		return
 	}
 
-	config, exists := distros.Registry[osInfo.Distribution.ID]
-	if !exists {
-		log.Fatalf("Unsupported distribution: %s", osInfo.Distribution.ID)
+	err = backend.Upgrade(ctx, sysupdate.UpgradeOptions{AttachStdio: true}, func(line string) {
+		fmt.Println(line)
+	})
+	if err != nil {
+		log.Fatalf("Error updating HypeShell: %v", err)
 	}
-
-	var updateErr error
-	switch config.Family {
-	case distros.FamilyArch:
-		updateErr = updateArchLinux()
-	case distros.FamilySUSE:
-		updateErr = updateOtherDistros()
-	default:
-		updateErr = updateOtherDistros()
-	}
-
-	if updateErr != nil {
-		if errors.Is(updateErr, errdefs.ErrUpdateCancelled) {
-			log.Info("Update cancelled.")
-			return
-		}
-		if errors.Is(updateErr, errdefs.ErrNoUpdateNeeded) {
-			return
-		}
-		log.Fatalf("Error updating HypeShell: %v", updateErr)
-	}
-
-	log.Info("Update complete! Restarting HypeShell...")
-	restartShell()
+	fmt.Println("✓ HypeShell update installed.")
 }
 
 func updateArchLinux() error {
