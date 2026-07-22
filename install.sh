@@ -12,6 +12,7 @@ SKIP_INSTALL=0
 SKIP_PACKAGE_REMOVAL=0
 REMOVE_HYPE_PACKAGES=0
 UPDATE_EXISTING=0
+UNSAFE_CLEAN_REBUILD=0
 INSTALL_GREETER=1
 INSTALL_HYPRLAND_SESSION=1
 HARDWARE_PROFILE="auto"
@@ -40,6 +41,10 @@ Run with no flags for a clean install. Use --update to repair/update an existing
 
 Options:
   --update              Repair/update an existing HypeShell install and remove legacy upstream packages.
+  --unsafe-clean-rebuild
+                        DESTRUCTIVE: erase HypeShell-owned user config, state, cache,
+                        Hyprland session config, and installed files, then rebuild
+                        the auto-detected Apple Silicon or generic profile from source.
   --dry-run             Print what would happen without making changes.
   --yes                 Compatibility no-op; installs run by default.
   --purge-user-data     Delete old user config/state/cache instead of backing it up.
@@ -77,6 +82,7 @@ Options:
 Examples:
   $SCRIPT_NAME
   $SCRIPT_NAME --update
+  $SCRIPT_NAME --unsafe-clean-rebuild
   $SCRIPT_NAME --source ~/src/HypeShell
   $SCRIPT_NAME --update --purge-user-data --skip-install
 EOF
@@ -86,6 +92,13 @@ while [ "$#" -gt 0 ]; do
     case "$1" in
         --update)
             UPDATE_EXISTING=1
+            REMOVE_HYPE_PACKAGES=1
+            CLEAN_DISPLAY_MANAGER=1
+            ;;
+        --unsafe-clean-rebuild)
+            UNSAFE_CLEAN_REBUILD=1
+            UPDATE_EXISTING=1
+            PURGE_USER_DATA=1
             REMOVE_HYPE_PACKAGES=1
             CLEAN_DISPLAY_MANAGER=1
             ;;
@@ -518,6 +531,19 @@ remove_legacy_user_artifacts() {
     backup_legacy_children "$HOME/.config/HypeMaterialShell/themes"
     backup_legacy_children "$HOME/.local/share/HypeMaterialShell/plugins"
     backup_legacy_children "$HOME/.local/share/HypeMaterialShell/themes"
+}
+
+remove_current_hypeshell_user_artifacts() {
+    [ "$UNSAFE_CLEAN_REBUILD" -eq 1 ] || return 0
+
+    echo "WARNING: --unsafe-clean-rebuild is deleting HypeShell-owned user data."
+    backup_or_remove "$HOME/.config/quickshell/hype"
+    backup_or_remove "$HOME/.config/HypeShell"
+    backup_or_remove "${XDG_STATE_HOME:-$HOME/.local/state}/HypeShell"
+    backup_or_remove "${XDG_CACHE_HOME:-$HOME/.cache}/HypeShell"
+    backup_or_remove "${XDG_CONFIG_HOME:-$HOME/.config}/hypr/hype"
+    backup_or_remove "${XDG_CONFIG_HOME:-$HOME/.config}/hypr/hyprland.conf"
+    remove_user_file_if_exists "$HOME/.config/systemd/user/hype.service"
 }
 
 remove_legacy_system_artifacts() {
@@ -1347,6 +1373,15 @@ EOF
         mkdir -p "$BACKUP_DIR"
     fi
 
+    if [ "$UNSAFE_CLEAN_REBUILD" -eq 1 ]; then
+        echo ""
+        echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+        echo "UNSAFE CLEAN REBUILD: HypeShell settings and session state will be erased."
+        echo "Detected hardware profile: $(detect_hardware_profile)"
+        echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+        echo ""
+    fi
+
     write_install_fingerprint "started"
 
     install_source_dependency
@@ -1363,6 +1398,7 @@ EOF
     protect_hyprland_dependency
     remove_legacy_packages
     remove_legacy_user_artifacts
+    remove_current_hypeshell_user_artifacts
     remove_legacy_system_artifacts
     install_hype
     install_hyprland_session

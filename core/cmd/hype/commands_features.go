@@ -17,6 +17,7 @@ import (
 	"github.com/acarlton5/HypeShell/core/internal/errdefs"
 	"github.com/acarlton5/HypeShell/core/internal/log"
 	"github.com/acarlton5/HypeShell/core/internal/privesc"
+	"github.com/acarlton5/HypeShell/core/internal/server/sysupdate"
 	shellthemes "github.com/acarlton5/HypeShell/core/internal/themes"
 	"github.com/acarlton5/HypeShell/core/internal/utils"
 	"github.com/acarlton5/HypeShell/core/internal/version"
@@ -58,24 +59,36 @@ func runUpdateCheck() {
 	fmt.Println("Checking for HypeShell updates...")
 	fmt.Println()
 
-	versionInfo, err := version.GetHYPEVersionInfo()
+	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+	defer cancel()
+
+	var backend sysupdate.Backend
+	for _, candidate := range sysupdate.Select(ctx).All() {
+		if candidate.ID() == "hypeshell" {
+			backend = candidate
+			break
+		}
+	}
+	if backend == nil {
+		log.Fatal("Error checking for updates: HypeShell installation fingerprint was not found")
+	}
+
+	updates, err := backend.CheckUpdates(ctx)
 	if err != nil {
 		log.Fatalf("Error checking for updates: %v", err)
 	}
-
-	fmt.Printf("Current version: %s\n", versionInfo.Current)
-	fmt.Printf("Latest version:  %s\n", versionInfo.Latest)
-	fmt.Println()
-
-	if versionInfo.HasUpdate {
+	if len(updates) > 0 {
+		update := updates[0]
+		fmt.Printf("Current revision: %s\n", update.FromVersion)
+		fmt.Printf("Latest revision:  %s\n", update.ToVersion)
+		fmt.Println()
 		fmt.Println("✓ Update available!")
 		fmt.Println()
 		fmt.Println("Run 'hype update install' to install the latest version.")
-		os.Exit(0)
-	} else {
-		fmt.Println("✓ You are running the latest version.")
-		os.Exit(0)
+		return
 	}
+
+	fmt.Println("✓ You are running the latest version.")
 }
 
 func runUpdate() {
