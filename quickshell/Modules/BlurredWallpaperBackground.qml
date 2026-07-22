@@ -230,8 +230,15 @@ Variants {
                 cache: true
                 playing: source !== ""
                 onCurrentFrameChanged: {
-                    if (frameCount > 1 && currentFrame >= frameCount - 1)
-                        currentFrame = 0;
+                    if (frameCount > 1 && currentFrame >= frameCount - 1) {
+                        Qt.callLater(() => {
+                            if (!source)
+                                return;
+                            playing = false;
+                            currentFrame = 0;
+                            playing = true;
+                        });
+                    }
                 }
                 sourceSize: Qt.size(root.textureWidth, root.textureHeight)
                 fillMode: root.getFillMode(SessionData.isGreeterMode ? GreetdSettings.wallpaperFillMode : SessionData.getMonitorWallpaperFillMode(modelData.name))
@@ -248,8 +255,15 @@ Variants {
                 cache: true
                 playing: source !== ""
                 onCurrentFrameChanged: {
-                    if (frameCount > 1 && currentFrame >= frameCount - 1)
-                        currentFrame = 0;
+                    if (frameCount > 1 && currentFrame >= frameCount - 1) {
+                        Qt.callLater(() => {
+                            if (!source)
+                                return;
+                            playing = false;
+                            currentFrame = 0;
+                            playing = true;
+                        });
+                    }
                 }
                 sourceSize: Qt.size(root.textureWidth, root.textureHeight)
                 fillMode: root.getFillMode(SessionData.isGreeterMode ? GreetdSettings.wallpaperFillMode : SessionData.getMonitorWallpaperFillMode(modelData.name))
