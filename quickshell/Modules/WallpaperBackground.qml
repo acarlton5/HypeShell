@@ -347,7 +347,7 @@ Variants {
             property int textureWidth: Math.min(Math.round(modelData.width * screenScale), maxTextureSize)
             property int textureHeight: Math.min(Math.round(modelData.height * screenScale), maxTextureSize)
 
-            Image {
+            AnimatedImage {
                 id: currentWallpaper
                 anchors.fill: parent
                 visible: true
@@ -357,11 +357,12 @@ Variants {
                 retainWhileLoading: true
                 smooth: true
                 cache: true
+                playing: source !== ""
                 sourceSize: Qt.size(root.textureWidth, root.textureHeight)
                 fillMode: root.getFillMode(SessionData.getMonitorWallpaperFillMode(modelData.name))
             }
 
-            Image {
+            AnimatedImage {
                 id: nextWallpaper
                 anchors.fill: parent
                 visible: source !== ""
@@ -371,6 +372,7 @@ Variants {
                 retainWhileLoading: true
                 smooth: true
                 cache: true
+                playing: source !== ""
                 sourceSize: Qt.size(root.textureWidth, root.textureHeight)
                 fillMode: root.getFillMode(SessionData.getMonitorWallpaperFillMode(modelData.name))
 
