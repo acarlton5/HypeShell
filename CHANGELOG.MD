@@ -1,6 +1,7 @@
 This file  is more of a quick reference so I know what to account for before next releases. 
  
 # Updater smoke tests 
+- 2026-07-22: Triggered a clean Framework updater verification after the new Hype branding and plugin dependency workflow landed.
 - 2026-05-18: Added beautiful, borderless kitty and ghostty overlay terminal and kept the popout shade open during execution.
 - 2026-05-18: Implemented 100% background privilege escalation via Polkit (`pkexec`) bypass. Redesigned Settings About tab with 4 granular, color-coded service status cards (HypeShell, Pacman, Paru/AUR, Flatpak) and styled scrollable inline update panel in SystemUpdatePopout. Fully resolved Go 1.26 toolchain and missing Go core symbol declarations.
 - 2026-05-18: Deployed dynamic invoking-user Go compiler resolution to guarantee successful compilation in stripped systemd/polkit elevated environments.
