@@ -1,5 +1,6 @@
 import QtQuick
 import Quickshell.Wayland
+import Quickshell.Io
 import qs.Common
 import qs.Modals
 import qs.Services
@@ -18,6 +19,8 @@ HypePopout {
     }
 
     property bool _reopenAfterUpgrade: false
+    property bool _updateTerminalWasSeen: false
+    property int _terminalProbeAttempts: 0
 
     readonly property bool polkitModalOpen: polkitAuthSurfaceModal.shouldBeVisible
     readonly property bool inlineAuthActive: (PolkitService.agent?.isActive ?? false) && PolkitService.agent?.flow !== null
@@ -67,6 +70,37 @@ HypePopout {
                 return;
             if (!systemUpdatePopout._reopenAfterUpgrade)
                 return;
+            terminalCloseTimer.restart();
+        }
+    }
+
+    Timer {
+        id: terminalCloseTimer
+        interval: 300
+        repeat: false
+        onTriggered: {
+            if (!terminalWindowProbe.running)
+                terminalWindowProbe.running = true;
+        }
+    }
+
+    Process {
+        id: terminalWindowProbe
+        command: ["sh", "-c", "hyprctl clients -j 2>/dev/null | grep -q 'hypeshell-update'"]
+        running: false
+        onExited: exitCode => {
+            if (!systemUpdatePopout._reopenAfterUpgrade)
+                return;
+            systemUpdatePopout._terminalProbeAttempts++;
+            if (exitCode === 0) {
+                systemUpdatePopout._updateTerminalWasSeen = true;
+                terminalCloseTimer.restart();
+                return;
+            }
+            if (SystemUpdateService.isUpgrading || (!systemUpdatePopout._updateTerminalWasSeen && systemUpdatePopout._terminalProbeAttempts < 12)) {
+                terminalCloseTimer.restart();
+                return;
+            }
             systemUpdatePopout._reopenAfterUpgrade = false;
             systemUpdatePopout.open();
         }
@@ -119,7 +153,10 @@ HypePopout {
 
             function prepareTerminalUpdate() {
                 systemUpdatePopout._reopenAfterUpgrade = true;
+                systemUpdatePopout._updateTerminalWasSeen = false;
+                systemUpdatePopout._terminalProbeAttempts = 0;
                 systemUpdatePopout.close();
+                terminalCloseTimer.restart();
             }
 
             function handleUpgradeStartError(response) {

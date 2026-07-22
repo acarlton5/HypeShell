@@ -166,10 +166,10 @@ Item {
 
     function terminalLaunchArgs(terminal, title, shellCmd) {
         const appId = "hypeshell-update";
-        const full = `export SUDO_PROMPT="[HypeShell] sudo password for %u: "; printf '\\033[1;36m=== ${title} ===\\033[0m\\n'; printf '\\033[2m$ ${shellCmd}\\033[0m\\n\\n'; ${shellCmd}; status=$?; printf '\\n\\033[1;32m=== Update finished. Press Enter to close. ===\\033[0m\\n'; read _; exit $status`;
+        const full = `export SUDO_PROMPT="[HypeShell] sudo password for %u: "; printf '\\033[1;36m=== ${title} ===\\033[0m\\n'; printf '\\033[2m$ ${shellCmd}\\033[0m\\n\\n'; ${shellCmd}; status=$?; if [ "$status" -eq 0 ]; then printf '\\n\\033[1;32m=== Update complete. Closing… ===\\033[0m\\n'; sleep 1; else printf '\\n\\033[1;31m=== Update failed (exit %s). Press Enter to close. ===\\033[0m\\n' "$status"; read _; fi; exit $status`;
         switch (terminal) {
         case "kitty":
-            return [terminal, "--class", appId, "-T", title, "-e", "sh", "-c", full];
+            return [terminal, "--detach=no", "--class", appId, "-T", title, "-e", "sh", "-c", full];
         case "alacritty":
             return [terminal, "--class", appId, "-T", title, "-e", "sh", "-c", full];
         case "foot":

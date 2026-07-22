@@ -38,7 +38,7 @@ PluginComponent {
 
     Timer {
         id: stopDelay
-        interval: 350
+        interval: 100
         repeat: false
         onTriggered: root.runAction("stop")
     }

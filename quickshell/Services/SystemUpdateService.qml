@@ -155,7 +155,7 @@ Singleton {
             ToastService.showError(I18n.tr("No terminal configured"), I18n.tr("Pick a terminal in Settings → Launcher (or set $TERMINAL)."));
             return;
         }
-        const updateCommand = `${SettingsData.updaterCustomCommand} && echo -n "Updates complete! " ; echo "Press Enter to close..." && read`;
+        const updateCommand = `${SettingsData.updaterCustomCommand}; status=$?; if [ "$status" -eq 0 ]; then echo "Updates complete. Closing…"; sleep 1; else echo "Update failed (exit $status). Press Enter to close."; read _; fi; exit "$status"`;
         const termClass = SettingsData.updaterTerminalAdditionalParams || "";
         var argv = [terminal];
         if (termClass.length > 0) {
