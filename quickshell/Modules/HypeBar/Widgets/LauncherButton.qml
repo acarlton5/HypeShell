@@ -44,14 +44,6 @@ BasePill {
                 mipmap: true
                 asynchronous: true
                 source: "file://" + Theme.shellDir + "/assets/hypeshell-logo.png"
-                layer.enabled: Theme.effectiveLogoColor !== ""
-                layer.smooth: true
-                layer.mipmap: true
-                layer.effect: MultiEffect {
-                    saturation: 0
-                    colorization: 1
-                    colorizationColor: Theme.effectiveLogoColor
-                }
             }
 
             IconImage {

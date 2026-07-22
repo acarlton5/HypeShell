@@ -52,13 +52,5 @@ Item {
         source: "file://" + Theme.shellDir + "/assets/hypeshell-logo.png"
         opacity: 0.25
         visible: !isColorWallpaper
-        layer.enabled: true
-        layer.smooth: true
-        layer.mipmap: true
-        layer.effect: MultiEffect {
-            saturation: 0
-            colorization: 1
-            colorizationColor: Theme.primary
-        }
     }
 }

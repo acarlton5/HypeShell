@@ -29,14 +29,6 @@ Item {
                 mipmap: true
                 asynchronous: true
                 source: "file://" + Theme.shellDir + "/assets/hypeshell-logo.png"
-                layer.enabled: true
-                layer.smooth: true
-                layer.mipmap: true
-                layer.effect: MultiEffect {
-                    saturation: 0
-                    colorization: 1
-                    colorizationColor: Theme.primary
-                }
             }
 
             Column {
