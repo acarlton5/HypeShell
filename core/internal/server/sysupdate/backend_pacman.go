@@ -98,6 +98,9 @@ func (b archHelperBackend) Upgrade(ctx context.Context, opts UpgradeOptions, onL
 	if !BackendHasTargets(b, opts.Targets, opts.IncludeAUR, opts.IncludeFlatpak) {
 		return nil
 	}
+	if opts.AttachStdio {
+		return Run(ctx, archHelperUpgradeArgv(b.id, opts.IncludeAUR), RunOptions{OnLine: onLine, AttachStdio: true})
+	}
 	if !b.RunsInTerminal() {
 		cmdPath, err := exec.LookPath(b.id)
 		if err != nil {

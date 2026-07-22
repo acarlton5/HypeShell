@@ -233,17 +233,19 @@ HypePopout {
                     SystemUpdateService.cancelUpdates();
                     return;
                 }
-                const targets = hypeShellUpdates.concat(generalUpdates);
-                if (targets.length === 0)
+                if (hypeShellUpdateCount + generalUpdateCount === 0)
                     return;
                 upgradeStarting = true;
+                let command = "/usr/local/bin/hype system update --noconfirm";
+                if (!SettingsData.updaterIncludeFlatpak)
+                    command += " --no-flatpak";
+                if (!SettingsData.updaterAllowAUR)
+                    command += " --no-aur";
                 const opts = {
-                    includeFlatpak: SettingsData.updaterIncludeFlatpak,
-                    includeAUR: SettingsData.updaterAllowAUR,
-                    targets: targets
+                    customCommand: command,
+                    customTitle: "HypeShell - Update All"
                 };
-                if (hasHypeShellUpdate || generalUpdates.some(pkg => pkg.backend === "paru" || pkg.backend === "yay" || pkg.repo === "aur"))
-                    prepareTerminalUpdate();
+                prepareTerminalUpdate();
                 HYPEService.sysupdateUpgrade(opts, response => {
                     if (handleUpgradeStartError(response))
                         return;

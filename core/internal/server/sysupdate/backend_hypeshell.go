@@ -68,6 +68,9 @@ func (b hypeShellBackend) Upgrade(ctx context.Context, opts UpgradeOptions, onLi
 		onLine("$ hype update install")
 		onLine("Updating HypeShell from GitHub main")
 	}
+	if opts.AttachStdio {
+		return Run(ctx, []string{"sudo", "bash", "-c", cmd}, RunOptions{OnLine: onLine, AttachStdio: true})
+	}
 
 	if opts.Password != "" {
 		sudoArgv := []string{"sudo", "-S", "bash", "-c", cmd}
