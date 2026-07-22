@@ -358,6 +358,10 @@ Variants {
                 smooth: true
                 cache: true
                 playing: source !== ""
+                onCurrentFrameChanged: {
+                    if (frameCount > 1 && currentFrame >= frameCount - 1)
+                        currentFrame = 0;
+                }
                 sourceSize: Qt.size(root.textureWidth, root.textureHeight)
                 fillMode: root.getFillMode(SessionData.getMonitorWallpaperFillMode(modelData.name))
             }
@@ -373,6 +377,10 @@ Variants {
                 smooth: true
                 cache: true
                 playing: source !== ""
+                onCurrentFrameChanged: {
+                    if (frameCount > 1 && currentFrame >= frameCount - 1)
+                        currentFrame = 0;
+                }
                 sourceSize: Qt.size(root.textureWidth, root.textureHeight)
                 fillMode: root.getFillMode(SessionData.getMonitorWallpaperFillMode(modelData.name))
 
