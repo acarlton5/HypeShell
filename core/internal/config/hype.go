@@ -1,4 +1,4 @@
-﻿package config
+package config
 
 import (
 	"fmt"
@@ -11,12 +11,6 @@ func LocateHYPEConfig() (string, error) {
 	var primaryPaths []string
 	var legacyPaths []string
 
-	configHome, err := os.UserConfigDir()
-	if err == nil && configHome != "" {
-		primaryPaths = append(primaryPaths, filepath.Join(configHome, "quickshell", "hype"))
-		legacyPaths = append(legacyPaths, filepath.Join(configHome, "quickshell", "hype"))
-	}
-
 	// System data directories
 	dataDirs := os.Getenv("XDG_DATA_DIRS")
 	if dataDirs == "" {
@@ -26,8 +20,15 @@ func LocateHYPEConfig() (string, error) {
 	for dir := range strings.SplitSeq(dataDirs, ":") {
 		if dir != "" {
 			primaryPaths = append(primaryPaths, filepath.Join(dir, "quickshell", "hype"))
-			legacyPaths = append(legacyPaths, filepath.Join(dir, "quickshell", "hype"))
 		}
+	}
+
+	// The updater installs the maintained shell payload into the system data
+	// directory. Prefer it over old per-user copies left by earlier releases;
+	// user settings live separately under ~/.config/HypeShell.
+	configHome, err := os.UserConfigDir()
+	if err == nil && configHome != "" {
+		legacyPaths = append(legacyPaths, filepath.Join(configHome, "quickshell", "hype"))
 	}
 
 	// System config directories (fallback)
@@ -39,7 +40,6 @@ func LocateHYPEConfig() (string, error) {
 	for dir := range strings.SplitSeq(configDirs, ":") {
 		if dir != "" {
 			primaryPaths = append(primaryPaths, filepath.Join(dir, "quickshell", "hype"))
-			legacyPaths = append(legacyPaths, filepath.Join(dir, "quickshell", "hype"))
 		}
 	}
 

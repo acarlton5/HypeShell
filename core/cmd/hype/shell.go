@@ -1,4 +1,4 @@
-﻿package main
+package main
 
 import (
 	"context"
@@ -14,6 +14,7 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/acarlton5/HypeShell/core/internal/config"
 	"github.com/acarlton5/HypeShell/core/internal/log"
 	"github.com/acarlton5/HypeShell/core/internal/server"
 )
@@ -68,6 +69,16 @@ func runDetachedRestart(targetPIDStr string) {
 	}
 
 	time.Sleep(500 * time.Millisecond)
+
+	// Do not carry an obsolete config path across an updater-triggered restart.
+	// Once the previous process is gone, resolve the freshly installed shell.
+	os.Remove(filepath.Join(getRuntimeDir(), "HYPESHELL.path"))
+	os.Remove(filepath.Join(getRuntimeDir(), "hypelinux.path"))
+	if customConfigPath == "" {
+		if installedConfig, locateErr := config.LocateHYPEConfig(); locateErr == nil {
+			configPath = installedConfig
+		}
+	}
 
 	killShell()
 	runShellDaemon(false)
