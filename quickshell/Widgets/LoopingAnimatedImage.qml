@@ -6,7 +6,12 @@ AnimatedImage {
     property bool restartPending: false
 
     cache: false
-    playing: source !== ""
+    playing: false
+
+    onSourceChanged: {
+        if (!restartPending)
+            playing = source !== "";
+    }
 
     onCurrentFrameChanged: {
         if (restartPending || frameCount <= 1 || currentFrame < frameCount - 1)
@@ -15,6 +20,7 @@ AnimatedImage {
         restartPending = true;
         const animationSource = source;
         Qt.callLater(() => {
+            root.playing = false;
             root.source = "";
             Qt.callLater(() => {
                 root.source = animationSource;
