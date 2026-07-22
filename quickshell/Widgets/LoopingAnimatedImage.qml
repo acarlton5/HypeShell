@@ -5,6 +5,7 @@ AnimatedImage {
 
     property bool restartPending: false
 
+    cache: false
     playing: source !== ""
 
     onCurrentFrameChanged: {
