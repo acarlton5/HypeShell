@@ -140,7 +140,7 @@ func wrapInTerminal(term, title, shellCmd string) []string {
 		shellQuote(title),
 		shellQuote(displayCmd),
 	)
-	closer := `printf '\n\033[1;32m=== Done. Press Enter to close. ===\033[0m\n'; read`
+	closer := `status=$?; if [ "$status" -eq 0 ]; then printf '\n\033[1;32m=== Update complete. Closing… ===\033[0m\n'; sleep 1; else printf '\n\033[1;31m=== Update failed (exit %s). Press Enter to close. ===\033[0m\n' "$status"; read; fi; exit "$status"`
 	export := `export SUDO_PROMPT="[HypeShell] sudo password for %u: "; `
 	full := export + banner + "; " + shellCmd + "; " + closer
 
@@ -149,6 +149,7 @@ func wrapInTerminal(term, title, shellCmd string) []string {
 	case "kitty":
 		argv = []string{
 			term,
+			"--detach=no",
 			"--class", appID,
 			"-T", title,
 			"-o", "hide_window_decorations=yes",
