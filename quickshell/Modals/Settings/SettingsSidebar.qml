@@ -167,13 +167,6 @@ Rectangle {
                     "hyprlandNiriOnly": true
                 },
                 {
-                    "id": "updater",
-                    "text": I18n.tr("System Updater"),
-                    "icon": "refresh",
-                    "tabIndex": 20,
-                    "updaterOnly": true
-                },
-                {
                     "id": "desktop_widgets",
                     "text": I18n.tr("Desktop Widgets"),
                     "icon": "widgets",
@@ -346,8 +339,6 @@ Rectangle {
         if (item.niriOnly && !CompositorService.isNiri)
             return false;
         if (item.clipboardOnly && (!HYPEService.isConnected || HYPEService.apiVersion < 23))
-            return false;
-        if (item.updaterOnly && !SystemUpdateService.sysupdateAvailable)
             return false;
         return true;
     }

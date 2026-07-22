@@ -383,21 +383,6 @@ FocusScope {
         }
 
         Loader {
-            id: systemUpdaterLoader
-            anchors.fill: parent
-            active: root.currentIndex === 20
-            visible: active
-            focus: active
-
-            sourceComponent: SystemUpdaterTab {}
-
-            onActiveChanged: {
-                if (active && item)
-                    Qt.callLater(() => item.forceActiveFocus());
-            }
-        }
-
-        Loader {
             id: powerSleepLoader
             anchors.fill: parent
             active: root.currentIndex === 21

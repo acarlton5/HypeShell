@@ -4,8 +4,10 @@ import qs.Services
 import qs.Widgets
 import qs.Modules.Settings.Widgets
 
-Item {
+Column {
     id: root
+
+    spacing: Theme.spacingXL
 
     readonly property var intervalOptions: [
         {
@@ -48,21 +50,8 @@ Item {
         return 1800;
     }
 
-    HypeFlickable {
-        anchors.fill: parent
-        clip: true
-        contentHeight: mainColumn.height + Theme.spacingXL
-        contentWidth: width
-
-        Column {
-            id: mainColumn
-            topPadding: 4
-            width: Math.min(550, parent.width - Theme.spacingL * 2)
-            anchors.horizontalCenter: parent.horizontalCenter
-            spacing: Theme.spacingXL
-
-            SettingsCard {
-                width: parent.width
+    SettingsCard {
+        width: parent.width
                 iconName: "refresh"
                 title: I18n.tr("System Updater")
                 settingKey: "systemUpdater"
@@ -110,10 +99,10 @@ Item {
                 }
 
                 TerminalPickerRow {}
-            }
+    }
 
-            SettingsCard {
-                width: parent.width
+    SettingsCard {
+        width: parent.width
                 iconName: "tune"
                 title: I18n.tr("Advanced")
                 settingKey: "systemUpdaterAdvanced"
@@ -242,7 +231,5 @@ Item {
                         }
                     }
                 }
-            }
-        }
     }
 }

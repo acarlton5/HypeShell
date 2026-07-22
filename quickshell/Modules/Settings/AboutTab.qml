@@ -1,6 +1,5 @@
 import QtQuick
 import QtQuick.Effects
-import Quickshell
 import qs.Common
 import qs.Services
 import qs.Widgets
@@ -18,34 +17,8 @@ Item {
     readonly property int paruUpdatesCount: availableUpdates.filter(pkg => pkg.backend === "paru" || pkg.backend === "yay" || pkg.repo === "aur").length
     readonly property int flatpakUpdatesCount: availableUpdates.filter(pkg => pkg.backend === "flatpak" || pkg.repo === "flatpak").length
     readonly property int totalSystemUpdates: pacmanUpdatesCount + paruUpdatesCount + flatpakUpdatesCount
-    property bool updateStarting: false
-
-    function triggerCheck() {
-        SystemUpdateService.checkForUpdates();
-        ShellVersionService.checkForUpdates();
-    }
-
-    function runAllUpdatesNow() {
-        if (updateStarting || SystemUpdateService.isUpgrading)
-            return;
-        updateStarting = true;
-        let command = "hype system update --noconfirm";
-        if (!SettingsData.updaterIncludeFlatpak)
-            command += " --no-flatpak";
-        if (!SettingsData.updaterAllowAUR)
-            command += " --no-aur";
-        HYPEService.sysupdateUpgrade({
-            customCommand: command,
-            customTitle: "HypeShell - Update All"
-        }, response => {
-            updateStarting = false;
-            if (response?.error) {
-                ToastService.showError(I18n.tr("Update failed to start"), response.error);
-                return;
-            }
-            PopoutService.closeSettings();
-            SystemUpdateService.requestState();
-        });
+    function openUpdater() {
+        PopoutService.openSystemUpdateFromSettings();
     }
 
     property bool isHyprland: CompositorService.isHyprland
@@ -186,75 +159,6 @@ Item {
         default:
             return Theme.surfaceVariantText;
         }
-    }
-
-    function terminalLaunchArgs(terminal, title, shellCmd) {
-        const appId = "hypeshell-update";
-        const full = `export SUDO_PROMPT="[HypeShell] sudo password for %u: "; printf '\\033[1;36m=== ${title} ===\\033[0m\\n'; printf '\\033[2m$ ${shellCmd}\\033[0m\\n\\n'; ${shellCmd}; status=$?; if [ "$status" -eq 0 ]; then printf '\\n\\033[1;32m=== Update complete. Closing… ===\\033[0m\\n'; sleep 1; else printf '\\n\\033[1;31m=== Update failed (exit %s). Press Enter to close. ===\\033[0m\\n' "$status"; read _; fi; exit $status`;
-        switch (terminal) {
-        case "kitty":
-            return [terminal, "--detach=no", "--class", appId, "-T", title, "-e", "sh", "-c", full];
-        case "alacritty":
-            return [terminal, "--class", appId, "-T", title, "-e", "sh", "-c", full];
-        case "foot":
-            return [terminal, "--app-id=" + appId, "--title=" + title, "-e", "sh", "-c", full];
-        case "ghostty":
-            return [terminal, "--class=" + appId, "--title=" + title, "-e", "sh", "-c", full];
-        case "wezterm":
-            return [terminal, "--class", appId, "-T", title, "-e", "sh", "-c", full];
-        case "konsole":
-            return [terminal, "-p", "tabtitle=" + title, "-e", "sh", "-c", full];
-        case "gnome-terminal":
-            return [terminal, "--title=" + title, "--", "sh", "-c", full];
-        case "xterm":
-            return [terminal, "-class", appId, "-T", title, "-e", "sh", "-c", full];
-        default:
-            return [terminal, "-e", "sh", "-c", full];
-        }
-    }
-
-    function runHypeUpdate() {
-        if (SystemUpdateService.sysupdateAvailable && HYPEService.isConnected) {
-            PopoutService.openSystemUpdate();
-            HYPEService.sysupdateRefresh(true, refreshResponse => {
-                if (refreshResponse.error) {
-                    ToastService.showError(I18n.tr("Update check failed"), refreshResponse.error);
-                    return;
-                }
-                const packages = refreshResponse.result?.packages || [];
-                const target = packages.find(pkg => pkg.backend === "hypeshell" || pkg.repo === "hypeshell" || pkg.name === "HypeShell");
-                SystemUpdateService.requestState();
-                if (!target) {
-                    ShellVersionService.checkForUpdates();
-                    ToastService.showInfo(I18n.tr("HypeShell is up to date"), I18n.tr("No HypeShell update is currently available."));
-                    return;
-                }
-
-                PopoutService.openSystemUpdate();
-                HYPEService.sysupdateUpgrade({
-                    "targets": [target]
-                }, response => {
-                    if (response.error) {
-                        ToastService.showError(I18n.tr("Update failed to start"), response.error);
-                        return;
-                    }
-                    SystemUpdateService.requestState();
-                    PopoutService.openSystemUpdate();
-                });
-            });
-            return;
-        }
-
-        const installed = SessionData.installedTerminals || [];
-        const terminal = SessionData.resolveTerminal() || (installed.length > 0 ? installed[0] : "");
-        if (!terminal || terminal.length === 0) {
-            ToastService.showError(I18n.tr("No terminal configured"), I18n.tr("Pick a terminal in Settings or install kitty."));
-            return;
-        }
-
-        const command = ShellVersionService.installerUpdateCommand("--reboot-if-needed");
-        Quickshell.execDetached(aboutTab.terminalLaunchArgs(terminal, "HypeShell Update", command));
-        ToastService.showInfo(I18n.tr("HypeShell update started"), I18n.tr("Follow the terminal window to finish the update."));
     }
 
     HypeFlickable {
@@ -929,25 +833,20 @@ Item {
                         spacing: Theme.spacingS
 
                         HypeButton {
-                            text: (ShellVersionService.updateStatus === "checking" || SystemUpdateService.isChecking) ? I18n.tr("Checking") : I18n.tr("Check for Updates")
-                            iconName: "refresh"
-                            enabled: ShellVersionService.updateStatus !== "checking" && !SystemUpdateService.isChecking
+                            text: I18n.tr("Open Updater")
+                            iconName: "system_update"
+                            enabled: SystemUpdateService.sysupdateAvailable
                             backgroundColor: Theme.primary
                             textColor: Theme.primaryText
-                            onClicked: aboutTab.triggerCheck()
-                        }
-
-                        HypeButton {
-                            text: aboutTab.updateStarting ? I18n.tr("Starting…") : I18n.tr("Update Now")
-                            iconName: "system_update"
-                            visible: aboutTab.hasHypeShellUpdate || aboutTab.totalSystemUpdates > 0
-                            backgroundColor: Qt.rgba(Theme.surfaceText.r, Theme.surfaceText.g, Theme.surfaceText.b, 0.08)
-                            textColor: Theme.surfaceText
-                            enabled: !aboutTab.updateStarting && !SystemUpdateService.isUpgrading
-                            onClicked: aboutTab.runAllUpdatesNow()
+                            onClicked: aboutTab.openUpdater()
                         }
                     }
                 }
+            }
+
+            SystemUpdaterTab {
+                width: parent.width
+                visible: SystemUpdateService.sysupdateAvailable
             }
 
             StyledRect {
