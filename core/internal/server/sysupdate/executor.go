@@ -10,6 +10,7 @@ import (
 	"strings"
 	"sync"
 
+	"github.com/acarlton5/HypeShell/core/internal/branding"
 	"github.com/acarlton5/HypeShell/core/internal/privesc"
 )
 
@@ -136,7 +137,8 @@ func wrapInTerminal(term, title, shellCmd string) []string {
 	}
 
 	banner := fmt.Sprintf(
-		`printf '\033[1;36m          /\\\n       __/  \\__\n     _/ ##  ## \\_\n    /   ##  ##   \\\n   /    ######    \\\n  |     ##  ##     |\n  |     ##  ##     |\n   \\               /\n    \\__   /\\   __/\n       \\_/  \\_/\033[0m\n\n'; printf '\033[1m%%s\033[0m\n' %s; printf '\033[2m$ %%s\033[0m\n' %s; printf '\033[33mYou may be prompted for your sudo password to apply system updates.\033[0m\n\n'`,
+		`printf '\033[1;36m%%s\033[0m\n\n' %s; printf '\033[1m%%s\033[0m\n' %s; printf '\033[2m$ %%s\033[0m\n' %s; printf '\033[33mYou may be prompted for your sudo password to apply system updates.\033[0m\n\n'`,
+		shellQuote(branding.ASCII),
 		shellQuote(title),
 		shellQuote(displayCmd),
 	)
@@ -155,8 +157,8 @@ func wrapInTerminal(term, title, shellCmd string) []string {
 			"-T", title,
 			"-o", "hide_window_decorations=yes",
 			"-o", "remember_window_size=no",
-			"-o", "initial_width=680",
-			"-o", "initial_height=420",
+			"-o", "initial_width=920",
+			"-o", "initial_height=720",
 			"-o", "font_size=11",
 			"-o", "background=#0c0f14",
 			"-o", "foreground=#cdd6f4",
@@ -173,8 +175,8 @@ func wrapInTerminal(term, title, shellCmd string) []string {
 			"--class=" + appID,
 			"--title=" + title,
 			"--window-decoration=false",
-			"--initial-width=680",
-			"--initial-height=420",
+			"--initial-width=920",
+			"--initial-height=720",
 			"--font-size=11",
 			"--background=#0c0f14",
 			"--foreground=#cdd6f4",

@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 
+	"github.com/acarlton5/HypeShell/core/internal/branding"
 	"github.com/acarlton5/HypeShell/core/internal/tui"
 	"github.com/charmbracelet/lipgloss"
 )
@@ -14,23 +15,11 @@ func printASCII() {
 func getThemedASCII() string {
 	theme := tui.TerminalTheme()
 
-	logo := `
-          /\
-       __/  \__
-     _/ ##  ## \_
-    /   ##  ##   \
-   /    ######    \
-  |     ##  ##     |
-  |     ##  ##     |
-   \               /
-    \__   /\   __/
-       \_/  \_/`
-
 	style := lipgloss.NewStyle().
 		Foreground(lipgloss.Color(theme.Primary)).
 		Bold(true)
 
-	return style.Render(logo) + "\n"
+	return style.Render(branding.ASCII) + "\n"
 }
 
 func getHelpTemplate() string {
