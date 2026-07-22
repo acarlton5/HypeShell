@@ -942,8 +942,11 @@ Item {
                             backgroundColor: Qt.rgba(Theme.surfaceText.r, Theme.surfaceText.g, Theme.surfaceText.b, 0.08)
                             textColor: Theme.surfaceText
                             onClicked: {
+                                // Queue the global updater before closing Settings. Closing
+                                // Settings destroys this tab and any Qt.callLater callback
+                                // owned by it, which previously made this button a no-op.
+                                PopoutService.openSystemUpdate();
                                 PopoutService.closeSettings();
-                                Qt.callLater(() => PopoutService.openSystemUpdate());
                             }
                         }
                     }
