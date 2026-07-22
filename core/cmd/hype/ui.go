@@ -15,13 +15,16 @@ func getThemedASCII() string {
 	theme := tui.TerminalTheme()
 
 	logo := `
-H   H  Y   Y  PPPP   EEEEE
-H   H   Y Y   P   P  E
-HHHHH    Y    PPPP   EEEE
-H   H    Y    P      E
-H   H    Y    P      EEEEE
-
-HypeShell`
+          /\
+       __/  \__
+     _/ ##  ## \_
+    /   ##  ##   \
+   /    ######    \
+  |     ##  ##     |
+  |     ##  ##     |
+   \               /
+    \__   /\   __/
+       \_/  \_/`
 
 	style := lipgloss.NewStyle().
 		Foreground(lipgloss.Color(theme.Primary)).

@@ -231,7 +231,7 @@ func launchPluginSetup(pluginPath, relativeScript, title string) error {
 		return fmt.Errorf("no supported terminal found")
 	}
 
-	command := fmt.Sprintf("marker=\"${XDG_RUNTIME_DIR:-/tmp}/hypeshell-plugin-setup.active\"; : > \"$marker\"; trap 'rm -f \"$marker\"' EXIT HUP INT TERM; printf '\\033[1;36m=== %%s Dependency Setup ===\\033[0m\\n' %q; printf '\\033[33mYou may be prompted for your sudo password.\\033[0m\\n\\n'; bash %q; status=$?; if [ $status -eq 0 ]; then printf '\\n\\033[1;32m=== Setup complete. Closing… ===\\033[0m\\n'; sleep 1; else printf '\\n\\033[1;31m=== Setup failed (exit %%s). Press Enter to close. ===\\033[0m\\n' \"$status\"; read; fi; exit $status", title, scriptPath)
+	command := fmt.Sprintf("marker=\"${XDG_RUNTIME_DIR:-/tmp}/hypeshell-plugin-setup.active\"; : > \"$marker\"; trap 'rm -f \"$marker\"' EXIT HUP INT TERM; printf '\\033[1;36m          /\\\\\\n       __/  \\\\__\\n     _/ ##  ## \\\\_\\n    /   ##  ##   \\\\\\n   /    ######    \\\\\\n  |     ##  ##     |\\n  |     ##  ##     |\\n   \\\\               /\\n    \\\\__   /\\\\   __/\\n       \\\\_/  \\\\_/\\033[0m\\n\\n'; printf '\\033[1m%%s Dependency Setup\\033[0m\\n' %q; printf '\\033[33mYou may be prompted for your sudo password.\\033[0m\\n\\n'; bash %q; status=$?; if [ $status -eq 0 ]; then printf '\\n\\033[1;32m=== Setup complete. Closing… ===\\033[0m\\n'; sleep 1; else printf '\\n\\033[1;31m=== Setup failed (exit %%s). Press Enter to close. ===\\033[0m\\n' \"$status\"; read; fi; exit $status", title, scriptPath)
 	base := filepath.Base(terminal)
 	var args []string
 	switch base {

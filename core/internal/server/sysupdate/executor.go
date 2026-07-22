@@ -136,7 +136,7 @@ func wrapInTerminal(term, title, shellCmd string) []string {
 	}
 
 	banner := fmt.Sprintf(
-		`printf '\033[1;36mH   H  Y   Y  PPPP   EEEEE\nH   H   Y Y   P   P  E\nHHHHH    Y    PPPP   EEEE\nH   H    Y    P      E\nH   H    Y    P      EEEEE\n\nHypeShell\033[0m\n\n'; printf '\033[1m%%s\033[0m\n' %s; printf '\033[2m$ %%s\033[0m\n' %s; printf '\033[33mYou may be prompted for your sudo password to apply system updates.\033[0m\n\n'`,
+		`printf '\033[1;36m          /\\\n       __/  \\__\n     _/ ##  ## \\_\n    /   ##  ##   \\\n   /    ######    \\\n  |     ##  ##     |\n  |     ##  ##     |\n   \\               /\n    \\__   /\\   __/\n       \\_/  \\_/\033[0m\n\n'; printf '\033[1m%%s\033[0m\n' %s; printf '\033[2m$ %%s\033[0m\n' %s; printf '\033[33mYou may be prompted for your sudo password to apply system updates.\033[0m\n\n'`,
 		shellQuote(title),
 		shellQuote(displayCmd),
 	)

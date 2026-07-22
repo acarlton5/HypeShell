@@ -308,20 +308,6 @@ Item {
                             source: "file://" + Theme.shellDir + "/assets/hypeshell-logo.png"
                         }
 
-                        Text {
-                            anchors.verticalCenter: parent.verticalCenter
-                            text: "HYPESHELL"
-                            font.pixelSize: parent.compactLogo ? 32 : 48
-                            font.weight: Font.Bold
-                            font.family: interFont.name
-                            color: Theme.surfaceText
-                            antialiasing: true
-
-                            FontLoader {
-                                id: interFont
-                                source: Qt.resolvedUrl("../../assets/fonts/inter/InterVariable.ttf")
-                            }
-                        }
                     }
 
                     StyledText {

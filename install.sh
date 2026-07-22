@@ -1379,6 +1379,10 @@ maybe_reboot_if_needed() {
 main() {
     trap write_failure_fingerprint ERR
 
+    printf '\033[1;36m'
+    printf '%s\n' '          /\' '       __/  \__' '     _/ ##  ## \_' '    /   ##  ##   \' '   /    ######    \' '  |     ##  ##     |' '  |     ##  ##     |' '   \               /' '    \__   /\   __/' '       \_/  \_/'
+    printf '\033[0m\n'
+
     if [ "$YES" -eq 0 ]; then
         cat <<EOF
 Dry run only. Re-run without --dry-run to make changes.
