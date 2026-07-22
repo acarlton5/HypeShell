@@ -117,6 +117,21 @@ HypePopout {
             readonly property bool isTerminalOperation: hasTerminalBackend || (SystemUpdateService.recentLog || []).some(line => String(line).indexOf("Running in terminal:") >= 0)
             readonly property color statusColor: SystemUpdateService.hasError ? Theme.error : (SystemUpdateService.isUpgrading ? Theme.primary : Theme.surfaceVariantText)
 
+            function prepareTerminalUpdate() {
+                systemUpdatePopout._reopenAfterUpgrade = true;
+                systemUpdatePopout.close();
+            }
+
+            function handleUpgradeStartError(response) {
+                upgradeStarting = false;
+                if (!response?.error)
+                    return false;
+                systemUpdatePopout._reopenAfterUpgrade = false;
+                systemUpdatePopout.open();
+                ToastService.showError(I18n.tr("Update failed to start"), response.error);
+                return true;
+            }
+
             function runHypeShellUpdate() {
                 if (upgradeStarting || SystemUpdateService.isUpgrading)
                     return;
@@ -126,12 +141,11 @@ HypePopout {
                     includeAUR: false,
                     targets: [hypeShellUpdate]
                 };
+                prepareTerminalUpdate();
                 HYPEService.sysupdateUpgrade(opts, response => {
-                    upgradeStarting = false;
-                    if (response?.error) {
-                        ToastService.showError(I18n.tr("Update failed to start"), response.error);
+                    if (handleUpgradeStartError(response))
                         return;
-                    }
+                    upgradeStarting = false;
                     SystemUpdateService.requestState();
                 });
             }
@@ -147,11 +161,9 @@ HypePopout {
                     targets: targets
                 };
                 HYPEService.sysupdateUpgrade(opts, response => {
-                    upgradeStarting = false;
-                    if (response?.error) {
-                        ToastService.showError(I18n.tr("Update failed to start"), response.error);
+                    if (handleUpgradeStartError(response))
                         return;
-                    }
+                    upgradeStarting = false;
                     SystemUpdateService.requestState();
                 });
             }
@@ -166,12 +178,11 @@ HypePopout {
                     includeAUR: true,
                     targets: targets
                 };
+                prepareTerminalUpdate();
                 HYPEService.sysupdateUpgrade(opts, response => {
-                    upgradeStarting = false;
-                    if (response?.error) {
-                        ToastService.showError(I18n.tr("Update failed to start"), response.error);
+                    if (handleUpgradeStartError(response))
                         return;
-                    }
+                    upgradeStarting = false;
                     SystemUpdateService.requestState();
                 });
             }
@@ -205,12 +216,12 @@ HypePopout {
                     includeAUR: SettingsData.updaterAllowAUR,
                     targets: generalUpdates
                 };
+                if (generalUpdates.some(pkg => pkg.backend === "paru" || pkg.backend === "yay" || pkg.repo === "aur"))
+                    prepareTerminalUpdate();
                 HYPEService.sysupdateUpgrade(opts, response => {
-                    upgradeStarting = false;
-                    if (response?.error) {
-                        ToastService.showError(I18n.tr("Update failed to start"), response.error);
+                    if (handleUpgradeStartError(response))
                         return;
-                    }
+                    upgradeStarting = false;
                     SystemUpdateService.requestState();
                 });
             }
@@ -222,11 +233,23 @@ HypePopout {
                     SystemUpdateService.cancelUpdates();
                     return;
                 }
-                if (hasHypeShellUpdate) {
-                    runHypeShellUpdate();
-                } else if (generalUpdateCount > 0) {
-                    runSystemUpdate();
-                }
+                const targets = hypeShellUpdates.concat(generalUpdates);
+                if (targets.length === 0)
+                    return;
+                upgradeStarting = true;
+                const opts = {
+                    includeFlatpak: SettingsData.updaterIncludeFlatpak,
+                    includeAUR: SettingsData.updaterAllowAUR,
+                    targets: targets
+                };
+                if (hasHypeShellUpdate || generalUpdates.some(pkg => pkg.backend === "paru" || pkg.backend === "yay" || pkg.repo === "aur"))
+                    prepareTerminalUpdate();
+                HYPEService.sysupdateUpgrade(opts, response => {
+                    if (handleUpgradeStartError(response))
+                        return;
+                    upgradeStarting = false;
+                    SystemUpdateService.requestState();
+                });
             }
 
             function statusText() {

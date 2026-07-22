@@ -8,7 +8,6 @@ FocusScope {
     id: root
 
     property var currentFlow: PolkitService.agent?.flow
-    property string passwordInput: ""
     property bool isLoading: false
     property bool awaitingFprintForPassword: false
     property var windowControls: null
@@ -65,7 +64,7 @@ FocusScope {
     }
 
     function reset() {
-        passwordInput = "";
+        passwordField.text = "";
         isLoading = false;
         awaitingFprintForPassword = false;
     }
@@ -73,8 +72,8 @@ FocusScope {
     function _commitSubmit() {
         isLoading = true;
         awaitingFprintForPassword = false;
-        currentFlow.submit(passwordInput);
-        passwordInput = "";
+        currentFlow.submit(passwordField.text);
+        passwordField.text = "";
     }
 
     function submitAuth() {
@@ -105,13 +104,13 @@ FocusScope {
         function onIsResponseRequiredChanged() {
             if (!root.currentFlow.isResponseRequired)
                 return;
-            if (root.awaitingFprintForPassword && root.passwordInput !== "") {
+            if (root.awaitingFprintForPassword && passwordField.text !== "") {
                 root._commitSubmit();
                 return;
             }
             root.awaitingFprintForPassword = false;
             root.isLoading = false;
-            root.passwordInput = "";
+            passwordField.text = "";
             passwordField.forceActiveFocus();
         }
 
@@ -284,12 +283,10 @@ FocusScope {
             opacity: root.isLoading ? 0.5 : 1
             font.pixelSize: Theme.fontSizeMedium
             textColor: Theme.surfaceText
-            text: root.passwordInput
             showPasswordToggle: !(root.currentFlow?.responseVisible ?? false)
             echoMode: (root.currentFlow?.responseVisible ?? false) || passwordVisible ? TextInput.Normal : TextInput.Password
             placeholderText: ""
             enabled: !root.isLoading
-            onTextEdited: root.passwordInput = text
             onAccepted: root.submitAuth()
         }
 
