@@ -1,13 +1,13 @@
-﻿# HypeShell
+# HypeShell
 
 <div align="center">
   <a href="https://github.com/acarlton5/HypeShell">
     <img src="assets/hypeshell-logo.svg" alt="HypeShell" width="200">
   </a>
 
-### A modern Hyprland-only desktop shell
+### A theme-aware desktop shell built for Hyprland
 
-Built with [Quickshell](https://quickshell.org/) and [Go](https://go.dev/)
+Independent, community-developed software built with [Quickshell](https://quickshell.org/) and [Go](https://go.dev/)
 
 [![Documentation](https://img.shields.io/badge/docs-HypeShell-9ccbfb?style=for-the-badge&labelColor=101418)](https://github.com/acarlton5/HypeShell)
 [![GitHub stars](https://img.shields.io/github/stars/acarlton5/HypeShell?style=for-the-badge&labelColor=101418&color=ffd700)](https://github.com/acarlton5/HypeShell/stargazers)
@@ -17,7 +17,7 @@ Built with [Quickshell](https://quickshell.org/) and [Go](https://go.dev/)
 
 </div>
 
-HypeShell is a complete desktop shell for [Hyprland](https://hyprland.org/), reshaped into a Hyprland-only OS shell with Hype-owned install, plugin, theme, and update paths.
+HypeShell is an independent desktop shell and Hyprland session. It provides a panel, launcher, control center, notifications, dynamic system-wide theming, plugins, and a single `hype` command-line interface. It is designed for ordinary x86-64 Linux computers as well as Arch Linux ARM on Apple Silicon. HypeShell is not a Dank Linux distribution or package.
 
 ## Repository Structure
 
@@ -35,35 +35,11 @@ HypeShell/
 │   ├── internal/       # System integration, IPC, distro support
 │   └── pkg/            # Shared packages
 ├── distro/             # Distribution packaging
-│   ├── fedora/         # Fedora RPM specs
-│   ├── debian/         # Debian packaging
-│   └── nix/            # NixOS/home-manager modules
+│   ├── fedora/         # Fedora packaging work
+│   ├── ubuntu/         # Debian/Ubuntu packaging work
+│   └── nix/            # Nix packaging and modules
 └── flake.nix           # Nix flake for declarative installation
 ```
-
-## See it in Action
-
-<div align="center">
-
-https://github.com/user-attachments/assets/1200a739-7770-4601-8b85-695ca527819a
-
-</div>
-
-<details><summary><strong>More Screenshots</strong></summary>
-
-<div align="center">
-
-<img src="https://github.com/user-attachments/assets/203a9678-c3b7-4720-bb97-853a511ac5c8" width="600" alt="Desktop" />
-
-<img src="https://github.com/user-attachments/assets/a937cf35-a43b-4558-8c39-5694ff5fcac4" width="600" alt="Dashboard" />
-
-<img src="https://github.com/user-attachments/assets/2da00ea1-8921-4473-a2a9-44a44535a822" width="450" alt="Launcher" />
-
-<img src="https://github.com/user-attachments/assets/732c30de-5f4a-4a2b-a995-c8ab656cecd5" width="600" alt="Control Center" />
-
-</div>
-
-</details>
 
 ## Installation
 
@@ -71,7 +47,9 @@ https://github.com/user-attachments/assets/1200a739-7770-4601-8b85-695ca527819a
 curl -fsSL https://raw.githubusercontent.com/acarlton5/HypeShell/main/install.sh | bash
 ```
 
-The installer clones this HypeShell repo, installs missing tools such as Go, make, and Quickshell, builds the shell from source, installs the HypeShell-owned Hyprland session/config files, and can switch SDDM/GDM/LightDM to the HypeShell greeter on `greetd`. It treats Hyprland as the compositor dependency and does not install upstream `hype-shell`, `hype-shell-hyprland`, or `hype-hyprland` packages.
+The installer builds HypeShell from this repository, installs its Hyprland session and user service, and configures the HypeShell greeter through `greetd`. It installs required build/runtime dependencies when they are missing. Existing display managers are only replaced as part of the greeter setup.
+
+Hardware detection defaults to `auto`. Apple Silicon machines receive the bundled Arch Linux ARM/Asahi Hyprland configuration; other computers use the generic profile. You can override detection with `--hardware-profile apple-silicon` or `--hardware-profile generic`. The GTK setup also migrates older `dank-colors.css` files to HypeShell's `hype-colors.css` naming.
 
 To repair or update an existing install:
 
@@ -79,7 +57,7 @@ To repair or update an existing install:
 curl -fsSL https://raw.githubusercontent.com/acarlton5/HypeShell/main/install.sh | bash -s -- --update
 ```
 
-Manual source install on a clean Arch install:
+Install from a local checkout:
 
 ```bash
 git clone https://github.com/acarlton5/HypeShell.git
@@ -87,7 +65,7 @@ cd HypeShell
 ./install.sh
 ```
 
-Manual installation docs will live in this repository while HypeShell's dedicated docs are rebuilt.
+Review all installer and recovery options with `./install.sh --help`. Use `--dry-run` to preview system changes.
 
 ## Features
 
@@ -98,7 +76,7 @@ Wallpaper-based color schemes that automatically theme GTK, Qt, terminals, edito
 Real-time CPU, RAM, GPU metrics and temperatures with [dgop](https://github.com/AvengeMedia/dgop). Process list with search and management.
 
 **Powerful Launcher**
-Spotlight-style search for applications, files ([dsearch](https://github.com/AvengeMedia/hypesearch)), emojis, running windows, calculator, and commands. Extensible with plugins.
+Spotlight-style search for applications, files, emojis, running windows, calculations, and commands. The launcher is extensible through HypeShell plugins.
 
 **Control Center**
 Unified interface for network, Bluetooth, audio devices, display settings, and night mode.
@@ -113,7 +91,7 @@ MPRIS player controls, calendar sync, weather widgets, and clipboard history wit
 Lock screen, idle detection, auto-lock/suspend with separate AC/battery settings, and greeter support.
 
 **Plugin System**
-Extend functionality with the Hype plugin registry.
+Extend the panel, launcher, control center, and popouts with installable HypeShell plugins. Bundled integrations include KDE Connect and the configurable AI launcher.
 
 ## Supported Compositor
 
@@ -126,15 +104,17 @@ HypeShell targets [Hyprland](https://hyprland.org/) only, with workspace switchi
 Control the shell from the command line or keybinds:
 
 ```bash
-hype run              # Start the shell
-hype ipc call spotlight toggle
-hype ipc call audio setvolume 50
-hype ipc call wallpaper set /path/to/image.jpg
-hype brightness list  # List available displays
-hype plugins search   # Browse plugin registry
+hype run                                  # Start the shell
+hype restart                              # Restart the running shell
+hype ipc spotlight toggle                 # Toggle Spotlight
+hype ipc audio setvolume 50                # Set output volume
+hype ipc wallpaper set /path/to/image.jpg  # Change wallpaper
+hype brightness list                      # List brightness devices
+hype plugins browse                       # Browse available plugins
+hype doctor                               # Diagnose an installation
 ```
 
-The legacy `hype` command remains as a temporary compatibility alias during the HypeShell transition.
+The `hype` binary is HypeShell's native CLI. Run `hype --help` or `hype ipc --help` for the complete command list.
 
 ## Documentation
 
@@ -147,7 +127,7 @@ See component-specific documentation:
 
 - **[quickshell/](quickshell/)** - QML shell development, widgets, and modules
 - **[core/](core/)** - Go backend, CLI tools, and system integration
-- **[distro/](distro/)** - Distribution packaging (Fedora, Debian, NixOS)
+- **[distro/](distro/)** - Packaging work for supported distribution formats
 
 ### Building from Source
 
@@ -189,8 +169,9 @@ For documentation contributions, open a pull request in this repository.
 
 ## Credits
 
+HypeShell is independently maintained and contains work derived from open-source shell projects. It is not affiliated with or distributed as Dank Linux.
+
 - [quickshell](https://quickshell.org/) - Shell framework
-- [niri](https://github.com/YaLTeR/niri) - Scrolling window manager
 - [Ly-sec](http://github.com/ly-sec) - Wallpaper effects from [Noctalia](https://github.com/noctalia-dev/noctalia-shell)
 - [soramanew](https://github.com/soramanew) - [Caelestia](https://github.com/caelestia-dots/shell) inspiration
 - [end-4](https://github.com/end-4) - [dots-hyprland](https://github.com/end-4/dots-hyprland) inspiration

@@ -1,4 +1,4 @@
-﻿#!/usr/bin/env bash
+#!/usr/bin/env bash
 
 CONFIG_DIR="$1"
 
@@ -12,7 +12,13 @@ apply_gtk3_colors() {
 
     local gtk3_dir="$config_dir/gtk-3.0"
     local hype_colors="$gtk3_dir/hype-colors.css"
+    local legacy_colors="$gtk3_dir/dank-colors.css"
     local gtk_css="$gtk3_dir/gtk.css"
+
+    if [ ! -e "$hype_colors" ] && [ -e "$legacy_colors" ]; then
+        ln -s "dank-colors.css" "$hype_colors"
+        echo "Migrated legacy GTK3 color filename"
+    fi
 
     if [ ! -f "$hype_colors" ]; then
         echo "Error: hype-colors.css not found at $hype_colors" >&2
@@ -36,8 +42,14 @@ apply_gtk4_colors() {
 
     local gtk4_dir="$config_dir/gtk-4.0"
     local hype_colors="$gtk4_dir/hype-colors.css"
+    local legacy_colors="$gtk4_dir/dank-colors.css"
     local gtk_css="$gtk4_dir/gtk.css"
     local gtk4_import="@import url(\"hype-colors.css\");"
+
+    if [ ! -e "$hype_colors" ] && [ -e "$legacy_colors" ]; then
+        ln -s "dank-colors.css" "$hype_colors"
+        echo "Migrated legacy GTK4 color filename"
+    fi
 
     if [ ! -f "$hype_colors" ]; then
         echo "Error: GTK4 hype-colors.css not found at $hype_colors" >&2
