@@ -311,6 +311,21 @@ Singleton {
     property var _systemUpdatePendingScreen: null
     property bool _systemUpdateHasPosition: false
 
+    Timer {
+        id: systemUpdateSettingsHandoffTimer
+        interval: 350
+        repeat: false
+        onTriggered: root.openSystemUpdate()
+    }
+
+    function openSystemUpdateFromSettings() {
+        // Settings is a separate floating window. Let its close animation and
+        // teardown finish before opening the layer-shell updater; keeping this
+        // timer on the singleton ensures the handoff survives Settings unload.
+        closeSettings();
+        systemUpdateSettingsHandoffTimer.restart();
+    }
+
     function _defaultSystemUpdateScreen() {
         return Quickshell.screens.length > 0 ? Quickshell.screens[0] : null;
     }
