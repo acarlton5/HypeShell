@@ -83,13 +83,13 @@ PluginComponent {
     }
 
     pillClickAction: function() {
-        if (phase === "listening") {
-            toggleRecording();
+        if (root.phase === "listening") {
+            root.toggleRecording();
             return;
         }
-        if (phase === "transcribing" || phase === "starting")
+        if (root.phase === "transcribing" || root.phase === "starting")
             return;
-        togglePopout();
+        root.togglePopout();
     }
 
     Timer {
