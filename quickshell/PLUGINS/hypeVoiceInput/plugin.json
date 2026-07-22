@@ -1,0 +1,15 @@
+{
+    "id": "hypeVoiceInput",
+    "name": "Voice Input",
+    "description": "Private on-device speech-to-text for the currently focused text field",
+    "version": "0.1.0",
+    "license": "MIT",
+    "author": "HypeShell",
+    "icon": "mic",
+    "type": "widget",
+    "capabilities": ["hypebar-widget"],
+    "component": "./VoiceInput.qml",
+    "settings": "./VoiceInputSettings.qml",
+    "requires_hype": ">=1.5",
+    "permissions": ["settings_read", "settings_write"]
+}
