@@ -26,11 +26,7 @@ xdg-mime default org.kde.dolphin.desktop x-scheme-handler/kdeconnect
 /usr/lib/kdeconnect/kdeconnectd
 ```
 
-You can start at niri startup in `~/.config/niri/config.kdl`
-
-```kdl
-spawn-at-startup "kdeconnectd"
-```
+Start it from your Hyprland session or as a user service.
 
 ### For Valent
 
@@ -77,17 +73,6 @@ systemctl --user enable --now valent
 **Known issue:**
 
 - Valent clipboard sync may fail silently on some Wayland compositors unless Valent is focused. Text/file sharing is unaffected.
-
-**Niri example** (`~/.config/niri/config.kdl`):
-
-```kdl
-environment {
-    SSH_AUTH_SOCK "/run/user/1000/gcr/ssh"
-}
-
-spawn-at-startup "systemctl" "--user" "import-environment" "SSH_AUTH_SOCK"
-spawn-at-startup "valent" "--gapplication-service"
-```
 
 ## Phone Setup
 

@@ -429,7 +429,7 @@ PluginComponent {
     property bool deviceSwitching: false
 
     onCustomPhoneImageChanged: {
-        console.log("[DMS DEBUG HypeKDEConnect] customPhoneImage changed to:", customPhoneImage);
+        console.log("[HYPE DEBUG HypeKDEConnect] customPhoneImage changed to:", customPhoneImage);
     }
 
     // Reactive binding: always reflects the latest device data from the service
@@ -596,7 +596,7 @@ PluginComponent {
             const filename = url.split("/").pop() || url;
             const filePath = url.startsWith("file://") ? url.substring(7) : url;
 
-            Quickshell.execDetached(["dms", "notify", "--app", serviceName, "--icon", "smartphone", "--file", filePath, I18n.tr("File received from %1", "Phone Connect file share notification").arg(device?.name || deviceId), filename]);
+            Quickshell.execDetached(["hype", "notify", "--app", serviceName, "--icon", "smartphone", "--file", filePath, I18n.tr("File received from %1", "Phone Connect file share notification").arg(device?.name || deviceId), filename]);
         }
     }
 
@@ -2568,7 +2568,7 @@ PluginComponent {
                                                     onClicked: {
                                                         if (!recentImageSendButton.isEnabled)
                                                             return;
-                                                        Quickshell.execDetached(["sh", "-c", "gdbus call --session --dest org.freedesktop.portal.Desktop --object-path /org/freedesktop/portal/desktop --method org.freedesktop.portal.Share.Share \"\" \"Share Image\" {} \"file://$1\" >/dev/null 2>&1 || dms open \"$1\"", "--", modelData.path]);
+                                                        Quickshell.execDetached(["sh", "-c", "gdbus call --session --dest org.freedesktop.portal.Desktop --object-path /org/freedesktop/portal/desktop --method org.freedesktop.portal.Share.Share \"\" \"Share Image\" {} \"file://$1\" >/dev/null 2>&1 || hype open \"$1\"", "--", modelData.path]);
                                                         root.closePopout();
                                                     }
                                                 }

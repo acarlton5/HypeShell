@@ -1,6 +1,6 @@
 {
     "id": "hypeKDEConnect",
-    "name": "Phone Connect",
+    "name": "Phone Companion",
     "description": "Control connected devices via KDE Connect or Valent - view battery, send files, find phone, and more",
     "version": "3.0.0",
     "license": "MIT",

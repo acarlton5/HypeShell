@@ -1218,7 +1218,7 @@ Item {
                                     onClicked: {
                                         if (!recentImageSendButton.isEnabled)
                                             return;
-                                        Quickshell.execDetached(["sh", "-c", "gdbus call --session --dest org.freedesktop.portal.Desktop --object-path /org/freedesktop/portal/desktop --method org.freedesktop.portal.Share.Share \"\" \"Share Image\" {} \"file://$1\" >/dev/null 2>&1 || dms open \"$1\"", "--", modelData.path]);
+                                        Quickshell.execDetached(["sh", "-c", "gdbus call --session --dest org.freedesktop.portal.Desktop --object-path /org/freedesktop/portal/desktop --method org.freedesktop.portal.Share.Share \"\" \"Share Image\" {} \"file://$1\" >/dev/null 2>&1 || hype open \"$1\"", "--", modelData.path]);
                                         PopoutService.closeControlCenter();
                                     }
                                 }
