@@ -59,6 +59,7 @@ install-shell:
 	@echo "Installing shell files to $(SHELL_INSTALL_DIR)..."
 	@mkdir -p $(SHELL_INSTALL_DIR)
 	@cp -r $(SHELL_DIR)/* $(SHELL_INSTALL_DIR)/
+	@rm -rf $(SHELL_INSTALL_DIR)/PLUGINS/hypeVoiceInput
 	@rm -rf $(SHELL_INSTALL_DIR)/.git* $(SHELL_INSTALL_DIR)/.github
 	@echo "Shell files installed"
 
