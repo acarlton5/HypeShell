@@ -18,8 +18,10 @@ SHELL_DIR=quickshell
 SHELL_INSTALL_DIR=$(DATA_DIR)/quickshell/hype
 ASSETS_DIR=assets
 APPLICATIONS_DIR=$(DATA_DIR)/applications
+SYSTEM_PLUGIN_DIR ?= /etc/xdg/quickshell/hype-plugins
+BUNDLED_PLUGIN_DIRS=hypeVoiceInput
 
-.PHONY: all build clean lint-qml install install-bin install-shell install-completions install-systemd install-icon install-desktop uninstall uninstall-bin uninstall-shell uninstall-completions uninstall-systemd uninstall-icon uninstall-desktop help
+.PHONY: all build clean lint-qml install install-bin install-shell install-bundled-plugins install-completions install-systemd install-icon install-desktop uninstall uninstall-bin uninstall-shell uninstall-bundled-plugins uninstall-completions uninstall-systemd uninstall-icon uninstall-desktop help
 
 all: build
 
@@ -60,6 +62,15 @@ install-shell:
 	@rm -rf $(SHELL_INSTALL_DIR)/.git* $(SHELL_INSTALL_DIR)/.github
 	@echo "Shell files installed"
 
+install-bundled-plugins:
+	@echo "Installing bundled HypeShell plugins..."
+	@mkdir -p $(SYSTEM_PLUGIN_DIR)
+	@for plugin in $(BUNDLED_PLUGIN_DIRS); do \
+		rm -rf $(SYSTEM_PLUGIN_DIR)/$$plugin; \
+		cp -a $(SHELL_DIR)/PLUGINS/$$plugin $(SYSTEM_PLUGIN_DIR)/$$plugin; \
+	done
+	@echo "Bundled plugins installed to $(SYSTEM_PLUGIN_DIR)"
+
 install-completions: build
 	@echo "Installing shell completions..."
 	@mkdir -p $(DATA_DIR)/bash-completion/completions
@@ -95,7 +106,7 @@ install-desktop:
 	@update-desktop-database -q $(APPLICATIONS_DIR) 2>/dev/null || true
 	@echo "Desktop entry installed"
 
-install: build install-bin install-shell install-completions install-systemd install-icon install-desktop
+install: build install-bin install-shell install-bundled-plugins install-completions install-systemd install-icon install-desktop
 	@echo ""
 	@echo "Installation complete!"
 	@echo ""
@@ -112,6 +123,10 @@ uninstall-shell:
 	@echo "Removing shell files from $(SHELL_INSTALL_DIR)..."
 	@rm -rf $(SHELL_INSTALL_DIR)
 	@echo "Shell files removed"
+
+uninstall-bundled-plugins:
+	@for plugin in $(BUNDLED_PLUGIN_DIRS); do rm -rf $(SYSTEM_PLUGIN_DIR)/$$plugin; done
+	@echo "Bundled HypeShell plugins removed"
 
 uninstall-completions:
 	@echo "Removing shell completions..."
@@ -144,7 +159,7 @@ uninstall-desktop:
 	@update-desktop-database -q $(APPLICATIONS_DIR) 2>/dev/null || true
 	@echo "Desktop entry removed"
 
-uninstall: uninstall-systemd uninstall-desktop uninstall-icon uninstall-completions uninstall-shell uninstall-bin
+uninstall: uninstall-systemd uninstall-desktop uninstall-icon uninstall-completions uninstall-bundled-plugins uninstall-shell uninstall-bin
 	@echo ""
 	@echo "Uninstallation complete!"
 
@@ -162,6 +177,7 @@ help:
 	@echo "  install              - Build and install everything (requires sudo)"
 	@echo "  install-bin          - Install only the binary"
 	@echo "  install-shell        - Install only shell files"
+	@echo "  install-bundled-plugins - Install bundled plugins"
 	@echo "  install-completions  - Install only shell completions"
 	@echo "  install-systemd      - Install only systemd service"
 	@echo "  install-icon         - Install only icon"
@@ -171,6 +187,7 @@ help:
 	@echo "  uninstall            - Remove everything (requires sudo)"
 	@echo "  uninstall-bin        - Remove only the binary"
 	@echo "  uninstall-shell      - Remove only shell files"
+	@echo "  uninstall-bundled-plugins - Remove bundled plugins"
 	@echo "  uninstall-completions - Remove only shell completions"
 	@echo "  uninstall-systemd    - Remove only systemd service"
 	@echo "  uninstall-icon       - Remove only icon"
