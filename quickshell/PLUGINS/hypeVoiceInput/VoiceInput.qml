@@ -28,7 +28,19 @@ PluginComponent {
     }
 
     function toggleRecording() {
-        runAction(phase === "listening" ? "stop" : "start");
+        if (phase === "listening") {
+            closePopout();
+            stopDelay.restart();
+            return;
+        }
+        runAction("start");
+    }
+
+    Timer {
+        id: stopDelay
+        interval: 350
+        repeat: false
+        onTriggered: root.runAction("stop")
     }
 
     Process {

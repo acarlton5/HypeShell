@@ -66,6 +66,9 @@ case "$action" in
         printf 'TRANSCRIPT\n%s\n' "$transcript"
         printf '%s' "$transcript" | wl-copy 2>/dev/null || true
         if [ "$auto_insert" = "1" ]; then
+            # Give Hyprland time to return keyboard focus after the voice
+            # popout closes before emitting text into the active application.
+            sleep 0.35
             if command -v wtype >/dev/null 2>&1; then
                 wtype -- "$transcript"
             elif command -v hyprctl >/dev/null 2>&1 && command -v wl-copy >/dev/null 2>&1; then
