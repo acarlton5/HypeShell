@@ -932,7 +932,10 @@ Item {
     LazyLoader {
         id: systemUpdateLoader
 
-        active: false
+        // The updater is core UI and is opened from several independent
+        // windows. Keep it instantiated so Settings never has to race an
+        // asynchronous loader while its own window is closing.
+        active: true
 
         Component.onCompleted: {
             PopoutService.systemUpdateLoader = systemUpdateLoader;
@@ -940,12 +943,6 @@ Item {
 
         SystemUpdatePopout {
             id: systemUpdatePopout
-            onPopoutClosed: {
-                if (systemUpdatePopout._reopenAfterUpgrade) {
-                    return;
-                }
-                PopoutService.unloadSystemUpdate();
-            }
 
             Component.onCompleted: {
                 PopoutService.systemUpdatePopout = systemUpdatePopout;
