@@ -311,6 +311,10 @@ Item {
             pillClickAction(pos.x, pos.y, pos.width, section, currentScreen);
             return;
         }
+        togglePopout();
+    }
+
+    function togglePopout() {
         if (!hasPopout)
             return;
 

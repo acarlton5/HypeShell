@@ -142,7 +142,8 @@ func wrapInTerminal(term, title, shellCmd string) []string {
 	)
 	closer := `status=$?; if [ "$status" -eq 0 ]; then printf '\n\033[1;32m=== Update complete. Closing… ===\033[0m\n'; sleep 1; else printf '\n\033[1;31m=== Update failed (exit %s). Press Enter to close. ===\033[0m\n' "$status"; read; fi; exit "$status"`
 	export := `export SUDO_PROMPT="[HypeShell] sudo password for %u: "; `
-	full := export + banner + "; " + shellCmd + "; " + closer
+	lifetime := `marker="${XDG_RUNTIME_DIR:-/tmp}/hypeshell-update-terminal.active"; : > "$marker"; trap 'rm -f "$marker"' EXIT HUP INT TERM; `
+	full := lifetime + export + banner + "; " + shellCmd + "; " + closer
 
 	var argv []string
 	switch term {

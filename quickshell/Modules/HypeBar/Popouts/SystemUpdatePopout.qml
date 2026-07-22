@@ -86,7 +86,7 @@ HypePopout {
 
     Process {
         id: terminalWindowProbe
-        command: ["sh", "-c", "hyprctl clients -j 2>/dev/null | grep -q 'hypeshell-update'"]
+        command: ["sh", "-c", "test -e \"${XDG_RUNTIME_DIR:-/tmp}/hypeshell-update-terminal.active\""]
         running: false
         onExited: exitCode => {
             if (!systemUpdatePopout._reopenAfterUpgrade)

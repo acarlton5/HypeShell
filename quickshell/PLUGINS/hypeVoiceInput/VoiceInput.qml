@@ -82,6 +82,16 @@ PluginComponent {
         runAction("start");
     }
 
+    pillClickAction: function() {
+        if (phase === "listening") {
+            toggleRecording();
+            return;
+        }
+        if (phase === "transcribing" || phase === "starting")
+            return;
+        togglePopout();
+    }
+
     Timer {
         id: stopDelay
         interval: 100
@@ -238,6 +248,13 @@ PluginComponent {
                             size: 32
                             color: "#f5fdff"
                             opacity: 0.92
+                        }
+
+                        MouseArea {
+                            anchors.fill: parent
+                            enabled: root.phase !== "transcribing" && root.phase !== "starting"
+                            cursorShape: Qt.PointingHandCursor
+                            onClicked: root.toggleRecording()
                         }
                     }
 
