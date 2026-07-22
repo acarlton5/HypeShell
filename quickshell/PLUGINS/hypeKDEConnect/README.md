@@ -1,4 +1,4 @@
-# DankKDEConnect / Phone Connect Plugin
+# HypeShell Phone Companion Plugin
 
 Connect your phone to your desktop. Supports both KDE Connect and Valent backends.
 
