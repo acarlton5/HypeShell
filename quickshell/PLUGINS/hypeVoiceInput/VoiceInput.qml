@@ -1,6 +1,7 @@
 import QtQuick
 import Quickshell
 import Quickshell.Io
+import Quickshell.Wayland
 import qs.Common
 import qs.Services
 import qs.Widgets
@@ -99,6 +100,18 @@ PluginComponent {
         onTriggered: root.runAction("stop")
     }
 
+    Timer {
+        id: successResetTimer
+        interval: 700
+        repeat: false
+        onTriggered: {
+            if (root.phase === "done") {
+                root.phase = "idle";
+                root.detail = "";
+            }
+        }
+    }
+
     Process {
         id: actionProcess
         running: false
@@ -112,11 +125,13 @@ PluginComponent {
                 const status = lines.shift();
                 if (status === "LISTENING") {
                     root.phase = "listening";
-                    root.detail = "Listening… tap again when finished";
+                    root.detail = "";
+                    root.closePopout();
                 } else if (status === "TRANSCRIPT") {
                     root.phase = "done";
                     root.lastTranscript = lines.join("\n").trim();
                     root.detail = root.autoInsert ? "Inserted into the focused field" : "Transcription copied to clipboard";
+                    successResetTimer.restart();
                 } else if (status === "CANCELLED") {
                     root.phase = "idle";
                     root.detail = "Recording cancelled";
@@ -151,10 +166,116 @@ PluginComponent {
         VoiceStateIcon {}
     }
 
+    PanelWindow {
+        id: listeningOrbWindow
+
+        screen: root.parentScreen
+        visible: root.phase === "listening"
+        color: "transparent"
+        implicitWidth: 112
+        implicitHeight: 112
+
+        anchors.right: true
+        anchors.bottom: true
+
+        WlrLayershell.namespace: "hype:voice-input-orb"
+        WlrLayershell.layer: WlrLayer.Overlay
+        WlrLayershell.exclusiveZone: -1
+        WlrLayershell.keyboardFocus: WlrKeyboardFocus.None
+        WlrLayershell.margins {
+            right: 28
+            bottom: 28
+        }
+
+        Item {
+            id: floatingOrb
+            anchors.centerIn: parent
+            width: 86
+            height: 86
+            property real motionPhase: 0
+
+            Canvas {
+                id: floatingOrbCanvas
+                anchors.fill: parent
+                antialiasing: true
+                onPaint: {
+                    const ctx = getContext("2d");
+                    const cx = width / 2;
+                    const cy = height / 2;
+                    const radius = width * 0.46;
+                    ctx.clearRect(0, 0, width, height);
+                    ctx.beginPath();
+                    ctx.arc(cx, cy, radius, 0, Math.PI * 2);
+                    ctx.clip();
+                    const base = ctx.createRadialGradient(cx - 12, cy - 15, 2, cx, cy, radius);
+                    base.addColorStop(0, "#e8fbff");
+                    base.addColorStop(0.28, "#74ddff");
+                    base.addColorStop(0.65, "#3578e5");
+                    base.addColorStop(1, "#101d58");
+                    ctx.fillStyle = base;
+                    ctx.fillRect(0, 0, width, height);
+                    const bx = cx + Math.cos(floatingOrb.motionPhase) * 17;
+                    const by = cy + Math.sin(floatingOrb.motionPhase * 1.2) * 14;
+                    const glow = ctx.createRadialGradient(bx, by, 1, bx, by, 30);
+                    glow.addColorStop(0, "rgba(255,255,255,0.82)");
+                    glow.addColorStop(1, "rgba(0,0,0,0)");
+                    ctx.globalCompositeOperation = "screen";
+                    ctx.fillStyle = glow;
+                    ctx.fillRect(0, 0, width, height);
+                }
+            }
+
+            Timer {
+                interval: 33
+                repeat: true
+                running: listeningOrbWindow.visible
+                onTriggered: {
+                    floatingOrb.motionPhase += 0.055;
+                    floatingOrbCanvas.requestPaint();
+                }
+            }
+
+            HypeIcon {
+                anchors.centerIn: parent
+                name: "stop_circle"
+                size: 27
+                color: "#f5fdff"
+            }
+
+            MouseArea {
+                anchors.fill: parent
+                cursorShape: Qt.PointingHandCursor
+                onClicked: root.toggleRecording()
+            }
+
+            Rectangle {
+                anchors.right: parent.right
+                anchors.top: parent.top
+                width: 25
+                height: 25
+                radius: width / 2
+                color: Theme.error
+
+                HypeIcon {
+                    anchors.centerIn: parent
+                    name: "close"
+                    size: 15
+                    color: Theme.errorText
+                }
+
+                MouseArea {
+                    anchors.fill: parent
+                    cursorShape: Qt.PointingHandCursor
+                    onClicked: root.runAction("cancel")
+                }
+            }
+        }
+    }
+
     popoutContent: Component {
         PopoutComponent {
             headerText: "Voice Input"
-            detailsText: root.detail
+            detailsText: ""
             showCloseButton: true
 
             Column {
