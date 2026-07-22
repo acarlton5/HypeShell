@@ -106,8 +106,8 @@ HypePopout {
         }
     }
 
-    popupWidth: 720
-    popupHeight: 540
+    popupWidth: 460
+    popupHeight: 500
     triggerWidth: 55
     positioning: ""
     screen: triggerScreen
@@ -135,6 +135,7 @@ HypePopout {
             focus: true
 
             property bool upgradeStarting: false
+            property var queuedUpdates: []
 
             readonly property alias inlineAuthContent: inlineAuthLoader.item
 
@@ -143,6 +144,7 @@ HypePopout {
             readonly property int hypeShellUpdateCount: hasHypeShellUpdate ? 1 : 0
             readonly property var hypeShellUpdates: hasHypeShellUpdate ? [hypeShellUpdate] : []
             readonly property var generalUpdates: (SystemUpdateService.availableUpdates || []).filter(pkg => pkg.backend !== "hypeshell" && pkg.repo !== "hypeshell" && pkg.name !== "HypeShell")
+            readonly property var allUpdates: hypeShellUpdates.concat(generalUpdates)
             readonly property int generalUpdateCount: generalUpdates.length
             readonly property int pacmanUpdatesCount: generalUpdates.filter(pkg => pkg.backend === "pacman").length
             readonly property int paruUpdatesCount: generalUpdates.filter(pkg => pkg.backend === "paru" || pkg.backend === "yay" || pkg.repo === "aur").length
@@ -273,6 +275,13 @@ HypePopout {
                 if (hypeShellUpdateCount + generalUpdateCount === 0)
                     return;
                 upgradeStarting = true;
+                queuedUpdates = allUpdates.filter(pkg => {
+                    if ((pkg.backend === "flatpak" || pkg.repo === "flatpak") && !SettingsData.updaterIncludeFlatpak)
+                        return false;
+                    if ((pkg.backend === "paru" || pkg.backend === "yay" || pkg.repo === "aur") && !SettingsData.updaterAllowAUR)
+                        return false;
+                    return true;
+                });
                 let command = "hype system update --noconfirm";
                 if (!SettingsData.updaterIncludeFlatpak)
                     command += " --no-flatpak";
@@ -349,6 +358,259 @@ HypePopout {
 
             Rectangle {
                 anchors.fill: parent
+                visible: !systemUpdatePopout.inlineAuthActive
+                color: "transparent"
+
+                Row {
+                    id: compactHeader
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    anchors.top: parent.top
+                    anchors.margins: Theme.spacingL
+                    height: 40
+                    spacing: Theme.spacingM
+
+                    HypeIcon {
+                        anchors.verticalCenter: parent.verticalCenter
+                        name: SystemUpdateService.isChecking ? "refresh" : "system_update_alt"
+                        size: 24
+                        color: Theme.primary
+
+                        RotationAnimator on rotation {
+                            from: 0
+                            to: 360
+                            duration: 1000
+                            loops: Animation.Infinite
+                            running: SystemUpdateService.isChecking
+                        }
+                    }
+
+                    Column {
+                        anchors.verticalCenter: parent.verticalCenter
+                        width: parent.width - compactRefresh.width - 24 - Theme.spacingM * 2
+                        spacing: 1
+
+                        StyledText {
+                            text: I18n.tr("System Updates")
+                            font.pixelSize: Theme.fontSizeLarge
+                            font.weight: Font.DemiBold
+                            color: Theme.surfaceText
+                        }
+
+                        StyledText {
+                            text: updaterPanel.statusText()
+                            font.pixelSize: Theme.fontSizeSmall
+                            color: updaterPanel.statusColor
+                        }
+                    }
+
+                    HypeActionButton {
+                        id: compactRefresh
+                        anchors.verticalCenter: parent.verticalCenter
+                        buttonSize: 34
+                        iconName: "refresh"
+                        iconSize: 19
+                        enabled: !SystemUpdateService.isChecking && !SystemUpdateService.isUpgrading
+                        opacity: enabled ? 1 : 0.45
+                        onClicked: SystemUpdateService.checkForUpdates()
+                    }
+                }
+
+                Rectangle {
+                    id: availableShade
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    anchors.top: compactHeader.bottom
+                    anchors.bottom: compactQueue.visible ? compactQueue.top : compactActions.top
+                    anchors.leftMargin: Theme.spacingL
+                    anchors.rightMargin: Theme.spacingL
+                    anchors.topMargin: Theme.spacingM
+                    anchors.bottomMargin: Theme.spacingM
+                    radius: Theme.cornerRadius
+                    color: Theme.withAlpha(Theme.surfaceContainerHigh, 0.72)
+                    border.color: Theme.withAlpha(Theme.outline, 0.14)
+                    border.width: 1
+                    clip: true
+
+                    StyledText {
+                        id: availableTitle
+                        anchors.left: parent.left
+                        anchors.right: parent.right
+                        anchors.top: parent.top
+                        anchors.margins: Theme.spacingM
+                        text: I18n.tr("Available")
+                        font.pixelSize: Theme.fontSizeMedium
+                        font.weight: Font.Medium
+                        color: Theme.surfaceText
+                    }
+
+                    StyledText {
+                        anchors.fill: parent
+                        anchors.margins: Theme.spacingL
+                        horizontalAlignment: Text.AlignHCenter
+                        verticalAlignment: Text.AlignVCenter
+                        visible: updaterPanel.allUpdates.length === 0 || SystemUpdateService.hasError || SystemUpdateService.isChecking
+                        text: {
+                            if (SystemUpdateService.hasError)
+                                return SystemUpdateService.errorMessage;
+                            if (SystemUpdateService.isChecking)
+                                return I18n.tr("Checking for updates…");
+                            return I18n.tr("Everything is up to date");
+                        }
+                        font.pixelSize: Theme.fontSizeMedium
+                        color: SystemUpdateService.hasError ? Theme.error : Theme.surfaceVariantText
+                        wrapMode: Text.WordWrap
+                    }
+
+                    HypeListView {
+                        anchors.left: parent.left
+                        anchors.right: parent.right
+                        anchors.top: availableTitle.bottom
+                        anchors.bottom: parent.bottom
+                        anchors.margins: Theme.spacingS
+                        visible: updaterPanel.allUpdates.length > 0 && !SystemUpdateService.hasError && !SystemUpdateService.isChecking
+                        clip: true
+                        spacing: 2
+                        model: updaterPanel.allUpdates
+
+                        delegate: Rectangle {
+                            required property var modelData
+
+                            width: ListView.view.width
+                            height: 54
+                            radius: Theme.cornerRadius
+                            color: Theme.withAlpha(Theme.surfaceVariantText, 0.04)
+
+                            Row {
+                                anchors.fill: parent
+                                anchors.margins: Theme.spacingS
+                                spacing: Theme.spacingM
+
+                                Rectangle {
+                                    anchors.verticalCenter: parent.verticalCenter
+                                    width: 52
+                                    height: 24
+                                    radius: 12
+                                    color: Theme.withAlpha(Theme.primary, 0.16)
+
+                                    StyledText {
+                                        anchors.centerIn: parent
+                                        text: updaterPanel.repoLabel(modelData)
+                                        font.pixelSize: Theme.fontSizeSmall
+                                        color: Theme.primary
+                                        elide: Text.ElideRight
+                                    }
+                                }
+
+                                Column {
+                                    anchors.verticalCenter: parent.verticalCenter
+                                    width: parent.width - 52 - Theme.spacingM
+                                    spacing: 1
+
+                                    StyledText {
+                                        width: parent.width
+                                        text: modelData.name || ""
+                                        font.pixelSize: Theme.fontSizeMedium
+                                        font.weight: Font.Medium
+                                        color: Theme.surfaceText
+                                        elide: Text.ElideRight
+                                    }
+
+                                    StyledText {
+                                        width: parent.width
+                                        text: {
+                                            const from = modelData.fromVersion || "";
+                                            const to = modelData.toVersion || "";
+                                            return from && to ? `${from} → ${to}` : (to || from);
+                                        }
+                                        font.pixelSize: Theme.fontSizeSmall
+                                        color: Theme.surfaceVariantText
+                                        elide: Text.ElideRight
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                Rectangle {
+                    id: compactQueue
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    anchors.bottom: compactActions.top
+                    anchors.leftMargin: Theme.spacingL
+                    anchors.rightMargin: Theme.spacingL
+                    anchors.bottomMargin: Theme.spacingM
+                    height: visible ? Math.min(116, queueColumn.implicitHeight + Theme.spacingM * 2) : 0
+                    visible: SystemUpdateService.isUpgrading && updaterPanel.queuedUpdates.length > 0
+                    radius: Theme.cornerRadius
+                    color: Theme.withAlpha(Theme.primary, 0.08)
+                    border.color: Theme.withAlpha(Theme.primary, 0.24)
+                    border.width: 1
+                    clip: true
+
+                    Column {
+                        id: queueColumn
+                        anchors.left: parent.left
+                        anchors.right: parent.right
+                        anchors.top: parent.top
+                        anchors.margins: Theme.spacingM
+                        spacing: Theme.spacingXS
+
+                        StyledText {
+                            text: I18n.tr("Updating now")
+                            font.pixelSize: Theme.fontSizeSmall
+                            font.weight: Font.DemiBold
+                            color: Theme.primary
+                        }
+
+                        Repeater {
+                            model: updaterPanel.queuedUpdates
+
+                            StyledText {
+                                required property var modelData
+                                width: queueColumn.width
+                                text: "• " + (modelData.name || updaterPanel.repoLabel(modelData))
+                                font.pixelSize: Theme.fontSizeSmall
+                                color: Theme.surfaceText
+                                elide: Text.ElideRight
+                            }
+                        }
+                    }
+                }
+
+                Row {
+                    id: compactActions
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    anchors.bottom: parent.bottom
+                    anchors.margins: Theme.spacingL
+                    height: 42
+                    spacing: Theme.spacingM
+
+                    HypeButton {
+                        width: (parent.width - Theme.spacingM) * 0.62
+                        height: parent.height
+                        text: SystemUpdateService.isUpgrading ? I18n.tr("Cancel") : I18n.tr("Update All")
+                        iconName: SystemUpdateService.isUpgrading ? "close" : "system_update_alt"
+                        enabled: (SystemUpdateService.isUpgrading || updaterPanel.allUpdates.length > 0) && !updaterPanel.upgradeStarting
+                        backgroundColor: Theme.primary
+                        textColor: Theme.primaryText
+                        onClicked: updaterPanel.runUpdate()
+                    }
+
+                    HypeButton {
+                        width: parent.width - parent.children[0].width - Theme.spacingM
+                        height: parent.height
+                        text: I18n.tr("Close")
+                        onClicked: systemUpdatePopout.close()
+                    }
+                }
+            }
+
+            Rectangle {
+                anchors.fill: parent
+                visible: systemUpdatePopout.inlineAuthActive
                 color: "transparent"
 
                 Rectangle {

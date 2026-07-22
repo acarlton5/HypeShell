@@ -22,6 +22,19 @@ Item {
     required property var workspaceRenameModalLoader
     required property var windowRuleModalLoader
 
+    Connections {
+        target: PopoutService
+
+        function onSystemUpdateFromSettingsRequested() {
+            const bar = root.getPreferredBar("systemUpdateButtonRef");
+            if (bar) {
+                bar.triggerSystemUpdate();
+                return;
+            }
+            PopoutService.openSystemUpdate();
+        }
+    }
+
     function getPreferredBar(refPropertyName) {
         if (!root.hypeBarRepeater || root.hypeBarRepeater.count === 0)
             return null;
