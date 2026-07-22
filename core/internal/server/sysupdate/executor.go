@@ -132,7 +132,7 @@ func wrapInTerminal(term, title, shellCmd string) []string {
 
 	displayCmd := shellCmd
 	if len(displayCmd) > 80 || strings.Contains(displayCmd, "\n") {
-		displayCmd = "hype update --self"
+		displayCmd = "hype update install"
 	}
 
 	banner := fmt.Sprintf(

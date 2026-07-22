@@ -1,4 +1,4 @@
-﻿//go:build !distro_binary
+//go:build !distro_binary
 
 package main
 
@@ -24,12 +24,12 @@ import (
 )
 
 var updateCmd = &cobra.Command{
-	Use:     "update",
-	Short:   "Update HypeShell to the latest version",
-	Long:    "Update HypeShell to the latest version using the appropriate package manager for your distribution",
-	PreRunE: findConfig,
+	Use:   "update",
+	Short: "Check for or install HypeShell updates",
+	Long:  "Check for HypeShell updates without changing the system. Use 'hype update install' to install an available update.",
+	Args:  cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
-		runUpdate()
+		runUpdateCheck()
 	},
 }
 
@@ -37,8 +37,20 @@ var updateCheckCmd = &cobra.Command{
 	Use:   "check",
 	Short: "Check if updates are available for HypeShell",
 	Long:  "Check for available updates without performing the actual update",
+	Args:  cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
 		runUpdateCheck()
+	},
+}
+
+var updateInstallCmd = &cobra.Command{
+	Use:     "install",
+	Short:   "Install the latest HypeShell update",
+	Long:    "Install the latest HypeShell update using the appropriate package manager for your distribution",
+	Args:    cobra.NoArgs,
+	PreRunE: findConfig,
+	Run: func(cmd *cobra.Command, args []string) {
+		runUpdate()
 	},
 }
 
@@ -58,7 +70,7 @@ func runUpdateCheck() {
 	if versionInfo.HasUpdate {
 		fmt.Println("✓ Update available!")
 		fmt.Println()
-		fmt.Println("Run 'hype update' to install the latest version.")
+		fmt.Println("Run 'hype update install' to install the latest version.")
 		os.Exit(0)
 	} else {
 		fmt.Println("✓ You are running the latest version.")

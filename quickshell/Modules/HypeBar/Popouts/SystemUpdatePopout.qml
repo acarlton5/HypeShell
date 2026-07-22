@@ -252,12 +252,12 @@ HypePopout {
                 if (SystemUpdateService.hasError)
                     return "$ hype update\nerror: " + SystemUpdateService.errorMessage;
                 if (SystemUpdateService.isChecking)
-                    return "$ hype update --check\nresolving HypeShell and system update state...";
+                    return "$ hype update check\nresolving HypeShell and system update state...";
                 if (hypeShellUpdateCount > 0)
-                    return "$ hype update --self\nready: HypeShell " + hypeShellUpdate.fromVersion + " -> " + hypeShellUpdate.toVersion;
+                    return "$ hype update install\nready: HypeShell " + hypeShellUpdate.fromVersion + " -> " + hypeShellUpdate.toVersion;
                 if (!SystemUpdateService.helperAvailable)
                     return "$ hype update\nno supported update backend is available";
-                return "$ hype update --self\nHypeShell current";
+                return "$ hype update check\nHypeShell current";
             }
 
             function repoLabel(pkg) {
@@ -325,7 +325,7 @@ HypePopout {
 
                             StyledText {
                                 width: parent.width
-                                text: "hype update --self"
+                                text: "hype update install"
                                 font.family: Theme.monoFontFamily || "monospace"
                                 font.pixelSize: Theme.fontSizeLarge
                                 font.weight: Font.Medium

@@ -77,7 +77,8 @@ Custom IPC via unix socket (JSON API) for shell communication.
 - `hype plugins [install|browse|search]` - Plugin management
 - `hype brightness [list|set]` - Control display/monitor brightness
 - `hype color pick` - Native color picker (see below)
-- `hype update` - Update HYPE and dependencies (disabled in distro packages)
+- `hype update [check]` - Check for HypeShell updates without installing
+- `hype update install` - Install the latest HypeShell update (disabled in distro packages)
 - `hype greeter install` - Install greetd greeter (disabled in distro packages)
 
 ### Color Picker

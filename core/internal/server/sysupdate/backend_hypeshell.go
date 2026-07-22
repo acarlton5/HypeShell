@@ -19,10 +19,10 @@ func init() {
 
 type hypeShellBackend struct{}
 
-func (hypeShellBackend) ID() string             { return "hypeshell" }
-func (hypeShellBackend) DisplayName() string    { return "HypeShell" }
-func (hypeShellBackend) Repo() RepoKind         { return RepoHypeShell }
-func (hypeShellBackend) NeedsAuth() bool        { return true }
+func (hypeShellBackend) ID() string          { return "hypeshell" }
+func (hypeShellBackend) DisplayName() string { return "HypeShell" }
+func (hypeShellBackend) Repo() RepoKind      { return RepoHypeShell }
+func (hypeShellBackend) NeedsAuth() bool     { return true }
 func (hypeShellBackend) RunsInTerminal() bool {
 	return false
 }
@@ -65,7 +65,7 @@ func (b hypeShellBackend) Upgrade(ctx context.Context, opts UpgradeOptions, onLi
 	realDbus := os.Getenv("DBUS_SESSION_BUS_ADDRESS")
 	cmd := hypeShellSelfUpdateScript(realUID, realUser, realHome, realXdg, realDbus)
 	if onLine != nil {
-		onLine("$ hype update --self")
+		onLine("$ hype update install")
 		onLine("Updating HypeShell from GitHub main")
 	}
 

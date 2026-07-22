@@ -1,4 +1,4 @@
-﻿//go:build !distro_binary
+//go:build !distro_binary
 
 package main
 
@@ -22,7 +22,7 @@ func init() {
 	greeterCmd.AddCommand(greeterInstallCmd, greeterSyncCmd, greeterEnableCmd, greeterStatusCmd, greeterUninstallCmd)
 	authCmd.AddCommand(authSyncCmd)
 	setupCmd.AddCommand(setupBindsCmd, setupLayoutCmd, setupColorsCmd, setupAlttabCmd, setupOutputsCmd, setupCursorCmd, setupWindowrulesCmd)
-	updateCmd.AddCommand(updateCheckCmd)
+	updateCmd.AddCommand(updateCheckCmd, updateInstallCmd)
 	pluginsCmd.AddCommand(pluginsBrowseCmd, pluginsListCmd, pluginsInstallCmd, pluginsUninstallCmd, pluginsUpdateCmd)
 	rootCmd.AddCommand(getCommonCommands()...)
 
