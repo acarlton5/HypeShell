@@ -988,7 +988,7 @@ HypePopout {
                         width: Math.max(210, (parent.width - Theme.spacingM) * 0.42)
                         height: parent.height
                         radius: Theme.cornerRadius
-                        color: primaryMouseArea.containsMouse && primaryMouseArea.enabled ? Theme.primaryHover : Theme.withAlpha(Theme.primary, 0.14)
+                        color: primaryMouseArea.containsMouse && primaryMouseArea.enabled ? Qt.darker(Theme.primary, 1.08) : Theme.primary
                         opacity: primaryMouseArea.enabled ? 1.0 : 0.5
 
                         Row {
@@ -999,7 +999,7 @@ HypePopout {
                                 anchors.verticalCenter: parent.verticalCenter
                                 name: SystemUpdateService.isUpgrading ? "close" : "system_update_alt"
                                 size: 18
-                                color: Theme.primary
+                                color: Theme.background
                             }
                             StyledText {
                                 anchors.verticalCenter: parent.verticalCenter
@@ -1010,7 +1010,7 @@ HypePopout {
                                 }
                                 font.pixelSize: Theme.fontSizeMedium
                                 font.weight: Font.Medium
-                                color: Theme.primary
+                                color: Theme.background
                             }
                         }
 
