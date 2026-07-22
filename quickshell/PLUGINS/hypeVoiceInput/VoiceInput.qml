@@ -244,7 +244,7 @@ PluginComponent {
 
                         HypeIcon {
                             anchors.centerIn: parent
-                            name: root.phase === "done" ? "check" : (root.phase === "error" ? "error" : "mic")
+                            name: root.phase === "listening" ? "stop_circle" : (root.phase === "done" ? "check" : (root.phase === "error" ? "error" : "mic"))
                             size: 32
                             color: "#f5fdff"
                             opacity: 0.92
@@ -293,16 +293,6 @@ PluginComponent {
                     horizontalAlignment: Text.AlignHCenter
                     maximumLineCount: 4
                     elide: Text.ElideRight
-                }
-
-                HypeButton {
-                    width: parent.width
-                    enabled: root.phase !== "starting" && root.phase !== "transcribing"
-                    text: root.phase === "listening" ? "Stop and transcribe" : "Start listening"
-                    iconName: root.phase === "listening" ? "stop_circle" : "mic"
-                    backgroundColor: root.phase === "listening" ? Theme.error : Theme.primary
-                    textColor: root.phase === "listening" ? Theme.errorText : Theme.primaryText
-                    onClicked: root.toggleRecording()
                 }
 
                 HypeButton {
