@@ -718,6 +718,35 @@ install_visualizer_dependency() {
     install_package_if_available cava || echo "Warning: could not install cava automatically; audio visualizers may be disabled." >&2
 }
 
+install_primary_file_manager() {
+    # HypeShell uses Thunar. Remove Dolphin and its now-unused dependency tree;
+    # package managers will retain anything still required by KDE Connect.
+    if have pacman; then
+        if pacman -Q dolphin >/dev/null 2>&1; then
+            sudo_run pacman -Rns --noconfirm dolphin
+        fi
+        if ! have thunar; then
+            sudo_run pacman -S --needed --noconfirm thunar
+        fi
+    elif have dnf; then
+        if rpm -q dolphin >/dev/null 2>&1; then
+            sudo_run dnf remove -y dolphin
+        fi
+        have thunar || sudo_run dnf install -y thunar
+    elif have apt-get; then
+        if dpkg-query -W -f='${Status}' dolphin 2>/dev/null | grep -q 'install ok installed'; then
+            sudo_run apt-get purge -y dolphin
+            sudo_run apt-get autoremove -y
+        fi
+        have thunar || { sudo_run apt-get update; sudo_run apt-get install -y thunar; }
+    elif have zypper; then
+        if rpm -q dolphin >/dev/null 2>&1; then
+            sudo_run zypper --non-interactive remove --clean-deps dolphin
+        fi
+        have thunar || sudo_run zypper --non-interactive install thunar
+    fi
+}
+
 source_fingerprint() {
     if [ -n "$SOURCE_DIR" ] && [ -d "$SOURCE_DIR/.git" ] && have git; then
         git -C "$SOURCE_DIR" rev-parse --short=12 HEAD 2>/dev/null && return 0
@@ -1026,6 +1055,7 @@ install_hype() {
     install_qt_wayland_dependency
     install_terminal_dependency
     install_visualizer_dependency
+    install_primary_file_manager
 
     run make -C "$SOURCE_DIR" build
     sudo_run make -C "$SOURCE_DIR" PREFIX="$PREFIX" install

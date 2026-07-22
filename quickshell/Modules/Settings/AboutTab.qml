@@ -18,10 +18,34 @@ Item {
     readonly property int paruUpdatesCount: availableUpdates.filter(pkg => pkg.backend === "paru" || pkg.backend === "yay" || pkg.repo === "aur").length
     readonly property int flatpakUpdatesCount: availableUpdates.filter(pkg => pkg.backend === "flatpak" || pkg.repo === "flatpak").length
     readonly property int totalSystemUpdates: pacmanUpdatesCount + paruUpdatesCount + flatpakUpdatesCount
+    property bool updateStarting: false
 
     function triggerCheck() {
         SystemUpdateService.checkForUpdates();
         ShellVersionService.checkForUpdates();
+    }
+
+    function runAllUpdatesNow() {
+        if (updateStarting || SystemUpdateService.isUpgrading)
+            return;
+        updateStarting = true;
+        let command = "hype system update --noconfirm";
+        if (!SettingsData.updaterIncludeFlatpak)
+            command += " --no-flatpak";
+        if (!SettingsData.updaterAllowAUR)
+            command += " --no-aur";
+        HYPEService.sysupdateUpgrade({
+            customCommand: command,
+            customTitle: "HypeShell - Update All"
+        }, response => {
+            updateStarting = false;
+            if (response?.error) {
+                ToastService.showError(I18n.tr("Update failed to start"), response.error);
+                return;
+            }
+            PopoutService.closeSettings();
+            SystemUpdateService.requestState();
+        });
     }
 
     property bool isHyprland: CompositorService.isHyprland
@@ -936,12 +960,13 @@ Item {
                         }
 
                         HypeButton {
-                            text: I18n.tr("Update Now")
+                            text: aboutTab.updateStarting ? I18n.tr("Starting…") : I18n.tr("Update Now")
                             iconName: "system_update"
                             visible: aboutTab.hasHypeShellUpdate || aboutTab.totalSystemUpdates > 0
                             backgroundColor: Qt.rgba(Theme.surfaceText.r, Theme.surfaceText.g, Theme.surfaceText.b, 0.08)
                             textColor: Theme.surfaceText
-                            onClicked: PopoutService.openSystemUpdateFromSettings()
+                            enabled: !aboutTab.updateStarting && !SystemUpdateService.isUpgrading
+                            onClicked: aboutTab.runAllUpdatesNow()
                         }
                     }
                 }
