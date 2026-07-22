@@ -790,7 +790,7 @@ Item {
 
                                     StyledText {
                                         text: aboutTab.hasHypeShellUpdate ? `${aboutTab.hypeShellUpdate.fromVersion}  ➔  ${aboutTab.hypeShellUpdate.toVersion}` : I18n.tr("Up to date")
-                                        font.family: aboutTab.hasHypeShellUpdate ? (Theme.monoFontFamily || "monospace") : undefined
+                                        font.family: aboutTab.hasHypeShellUpdate ? (Theme.monoFontFamily || "monospace") : Theme.fontFamily
                                         font.pixelSize: Theme.fontSizeSmall
                                         color: aboutTab.hasHypeShellUpdate ? Theme.primary : Theme.success
                                     }

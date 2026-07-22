@@ -601,7 +601,7 @@ HypePopout {
                                         StyledText {
                                             text: I18n.tr("HypeShell Self-Update Available")
                                             font.pixelSize: Theme.fontSizeMedium
-                                            font.weight: Font.SemiBold
+                                            font.weight: Font.DemiBold
                                             color: Theme.primary
                                         }
 
@@ -684,7 +684,7 @@ HypePopout {
                                         StyledText {
                                             text: I18n.tr("Pacman Updates")
                                             font.pixelSize: Theme.fontSizeMedium
-                                            font.weight: Font.SemiBold
+                                            font.weight: Font.DemiBold
                                             color: Theme.surfaceText
                                         }
 
@@ -735,7 +735,7 @@ HypePopout {
                                         StyledText {
                                             text: I18n.tr("Paru Updates (AUR)")
                                             font.pixelSize: Theme.fontSizeMedium
-                                            font.weight: Font.SemiBold
+                                            font.weight: Font.DemiBold
                                             color: Theme.surfaceText
                                         }
 
@@ -786,7 +786,7 @@ HypePopout {
                                         StyledText {
                                             text: I18n.tr("Flatpak Updates")
                                             font.pixelSize: Theme.fontSizeMedium
-                                            font.weight: Font.SemiBold
+                                            font.weight: Font.DemiBold
                                             color: Theme.surfaceText
                                         }
 
@@ -837,7 +837,7 @@ HypePopout {
                                         StyledText {
                                             text: I18n.tr("System Up To Date")
                                             font.pixelSize: Theme.fontSizeLarge
-                                            font.weight: Font.SemiBold
+                                            font.weight: Font.DemiBold
                                             color: Theme.success
                                         }
 

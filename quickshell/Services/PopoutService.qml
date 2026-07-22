@@ -310,18 +310,29 @@ Singleton {
     property string _systemUpdatePendingSection: "center"
     property var _systemUpdatePendingScreen: null
     property bool _systemUpdateHasPosition: false
+    property var _systemUpdateSettingsScreen: null
 
     Timer {
         id: systemUpdateSettingsHandoffTimer
         interval: 350
         repeat: false
-        onTriggered: root.openSystemUpdate()
+        onTriggered: {
+            const target = root._systemUpdateSettingsScreen || root._defaultSystemUpdateScreen();
+            root._systemUpdateSettingsScreen = null;
+            if (!target) {
+                root.openSystemUpdate();
+                return;
+            }
+            const triggerWidth = 40;
+            root.openSystemUpdate(Math.max(0, target.width / 2 - triggerWidth / 2), Math.max(Theme.spacingL, Theme.barHeight + Theme.spacingM), triggerWidth, "center", target);
+        }
     }
 
     function openSystemUpdateFromSettings() {
         // Settings is a separate floating window. Let its close animation and
         // teardown finish before opening the layer-shell updater; keeping this
         // timer on the singleton ensures the handoff survives Settings unload.
+        _systemUpdateSettingsScreen = settingsModal?.effectiveScreen || _defaultSystemUpdateScreen();
         closeSettings();
         systemUpdateSettingsHandoffTimer.restart();
     }
