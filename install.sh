@@ -745,6 +745,17 @@ install_primary_file_manager() {
         fi
         have thunar || sudo_run zypper --non-interactive install thunar
     fi
+
+    if have xdg-mime; then
+        xdg-mime default thunar.desktop inode/directory || echo "Warning: could not set Thunar as the default file manager." >&2
+    fi
+
+    gtk3_dir="${XDG_CONFIG_HOME:-$HOME/.config}/gtk-3.0"
+    gtk3_css="$gtk3_dir/gtk.css"
+    if [ ! -e "$gtk3_css" ] && [ ! -L "$gtk3_css" ]; then
+        mkdir -p "$gtk3_dir"
+        ln -s hype-colors.css "$gtk3_css"
+    fi
 }
 
 source_fingerprint() {

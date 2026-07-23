@@ -629,7 +629,7 @@ Singleton {
     property int dockMaxVisibleRunningApps: 0
     property bool dockShowOverflowBadge: true
     property bool dockShowTrash: false
-    property string dockTrashFileManager: "default"
+    property string dockTrashFileManager: "thunar"
     property string dockTrashCustomCommand: ""
 
     property bool notificationOverlayEnabled: false

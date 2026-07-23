@@ -43,7 +43,7 @@ Singleton {
     Process {
         id: detectProc
         running: false
-        command: ["sh", "-c", "for fm in nautilus thunar dolphin nemo caja pcmanfm pcmanfm-qt krusader; do command -v $fm >/dev/null 2>&1 && echo $fm; done"]
+        command: ["sh", "-c", "for fm in thunar nautilus nemo caja pcmanfm pcmanfm-qt krusader; do command -v $fm >/dev/null 2>&1 && echo $fm; done"]
         stdout: StdioCollector {
             onStreamFinished: {
                 const detected = (text || "").split("\n").map(s => s.trim()).filter(s => s.length > 0);
