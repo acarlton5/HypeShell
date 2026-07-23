@@ -1383,6 +1383,58 @@ Singleton {
         applyHyprlandColorsFromCurrentTheme();
         applyCustomThemeWallpaper(themeData);
         applyCustomThemeWindowStyle(themeData);
+        applyCustomThemeDesktop(themeData);
+    }
+
+    function applyCustomThemeDesktop(themeData) {
+        const desktop = themeData.desktop || {};
+        const cursor = desktop.cursor || null;
+        const icons = desktop.icons || null;
+        const gtk = desktop.gtk || null;
+        if (!cursor && !icons && !gtk)
+            return;
+
+        const home = Quickshell.env("HOME");
+        const commands = ["mkdir -p " + shellQuote(home + "/.local/share/icons") + " " + shellQuote(home + "/.local/share/themes")];
+
+        function linkAsset(asset, destinationRoot) {
+            if (!asset || !asset.name)
+                return;
+
+            let source = "";
+            if (asset.archive) {
+                const archive = resolveCustomThemeAssetPath(asset.archive);
+                const slash = archive.lastIndexOf("/");
+                const cacheRoot = archive.substring(0, slash) + "/.extracted";
+                const rootName = asset.root || asset.name;
+                source = cacheRoot + "/" + rootName;
+                commands.push("test -d " + shellQuote(source) + " || { mkdir -p " + shellQuote(cacheRoot) + " && tar -xf " + shellQuote(archive) + " -C " + shellQuote(cacheRoot) + "; }");
+            } else if (asset.path) {
+                source = resolveCustomThemeAssetPath(asset.path);
+                commands.push("test -d " + shellQuote(source));
+            } else {
+                return;
+            }
+            commands.push("ln -sfn " + shellQuote(source) + " " + shellQuote(destinationRoot + "/" + asset.name));
+        }
+
+        linkAsset(cursor, home + "/.local/share/icons");
+        linkAsset(icons, home + "/.local/share/icons");
+        linkAsset(gtk, home + "/.local/share/themes");
+
+        if (gtk && gtk.name)
+            commands.push("gsettings set org.gnome.desktop.interface gtk-theme " + shellQuote(gtk.name) + " >/dev/null 2>&1 || true");
+
+        Proc.runCommand("custom-theme-desktop", ["sh", "-c", commands.join(" && ")], (output, exitCode) => {
+            if (exitCode !== 0) {
+                log.warn("Failed to install custom theme desktop assets:", output);
+                return;
+            }
+            if (cursor && cursor.name)
+                SettingsData.setCursorTheme(cursor.name);
+            if (icons && icons.name)
+                SettingsData.setIconTheme(icons.name);
+        });
     }
 
     function applyHyprlandColorsFromCurrentTheme() {

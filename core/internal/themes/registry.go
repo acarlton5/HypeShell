@@ -125,21 +125,35 @@ type ThemeWindowStyle struct {
 	Opacity             string `json:"opacity,omitempty"`
 }
 
+type ThemeDesktopAsset struct {
+	Name    string `json:"name"`
+	Path    string `json:"path,omitempty"`
+	Archive string `json:"archive,omitempty"`
+	Root    string `json:"root,omitempty"`
+}
+
+type ThemeDesktopStyle struct {
+	Cursor *ThemeDesktopAsset `json:"cursor,omitempty"`
+	Icons  *ThemeDesktopAsset `json:"icons,omitempty"`
+	GTK    *ThemeDesktopAsset `json:"gtk,omitempty"`
+}
+
 type Theme struct {
-	ID          string            `json:"id"`
-	Name        string            `json:"name"`
-	Version     string            `json:"version"`
-	Author      string            `json:"author"`
-	Description string            `json:"description"`
-	Dark        ColorScheme       `json:"dark"`
-	Light       ColorScheme       `json:"light"`
-	Variants    *ThemeVariants    `json:"variants,omitempty"`
-	Wallpapers  []ThemeWallpaper  `json:"wallpapers,omitempty"`
-	Window      *ThemeWindowStyle `json:"window,omitempty"`
-	Borders     *ThemeWindowStyle `json:"borders,omitempty"`
-	AssetBaseURL string            `json:"assetBaseUrl,omitempty"`
-	PreviewPath string            `json:"-"`
-	SourceDir   string            `json:"sourceDir,omitempty"`
+	ID           string             `json:"id"`
+	Name         string             `json:"name"`
+	Version      string             `json:"version"`
+	Author       string             `json:"author"`
+	Description  string             `json:"description"`
+	Dark         ColorScheme        `json:"dark"`
+	Light        ColorScheme        `json:"light"`
+	Variants     *ThemeVariants     `json:"variants,omitempty"`
+	Wallpapers   []ThemeWallpaper   `json:"wallpapers,omitempty"`
+	Window       *ThemeWindowStyle  `json:"window,omitempty"`
+	Borders      *ThemeWindowStyle  `json:"borders,omitempty"`
+	Desktop      *ThemeDesktopStyle `json:"desktop,omitempty"`
+	AssetBaseURL string             `json:"assetBaseUrl,omitempty"`
+	PreviewPath  string             `json:"-"`
+	SourceDir    string             `json:"sourceDir,omitempty"`
 }
 
 type GitClient interface {

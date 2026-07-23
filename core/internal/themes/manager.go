@@ -1,4 +1,4 @@
-﻿package themes
+package themes
 
 import (
 	"encoding/json"
@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"net/url"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"strings"
 	"time"
@@ -146,7 +147,62 @@ func (m *Manager) copyThemeAssets(srcDir, dstDir string, theme Theme) {
 	}
 
 	m.copyThemeAssetDir(srcDir, dstDir, "wallpapers")
+	m.copyThemeAssetDir(srcDir, dstDir, "desktop")
 	m.downloadRemoteThemeAssets(dstDir, theme)
+	m.extractDesktopAssets(dstDir, theme)
+}
+
+func (m *Manager) extractDesktopAssets(themeDir string, theme Theme) {
+	if theme.Desktop == nil || m.fs.Name() != "OsFs" {
+		return
+	}
+
+	assets := []*ThemeDesktopAsset{theme.Desktop.Cursor, theme.Desktop.Icons, theme.Desktop.GTK}
+	for _, asset := range assets {
+		if asset == nil || asset.Archive == "" {
+			continue
+		}
+		archive := filepath.Clean(asset.Archive)
+		root := filepath.Clean(asset.Root)
+		if filepath.IsAbs(archive) || strings.Contains(archive, "..") || root == "." || root != filepath.Base(root) {
+			log.Warn("skipping unsafe desktop theme asset", "archive", asset.Archive, "root", asset.Root)
+			continue
+		}
+
+		archivePath := filepath.Join(themeDir, archive)
+		extractDir := filepath.Join(filepath.Dir(archivePath), ".extracted")
+		expectedDir := filepath.Join(extractDir, root)
+		if exists, _ := afero.DirExists(m.fs, expectedDir); exists {
+			continue
+		}
+
+		list, err := exec.Command("tar", "-tf", archivePath).Output()
+		if err != nil || !safeArchiveEntries(string(list)) {
+			log.Warn("refusing unsafe or unreadable desktop theme archive", "archive", archivePath, "err", err)
+			continue
+		}
+		if err := m.fs.MkdirAll(extractDir, 0o755); err != nil {
+			log.Warn("failed to prepare desktop theme assets", "dir", extractDir, "err", err)
+			continue
+		}
+		if output, err := exec.Command("tar", "-xf", archivePath, "-C", extractDir).CombinedOutput(); err != nil {
+			log.Warn("failed to extract desktop theme asset", "archive", archivePath, "err", err, "output", strings.TrimSpace(string(output)))
+		}
+	}
+}
+
+func safeArchiveEntries(list string) bool {
+	for _, entry := range strings.Split(list, "\n") {
+		entry = strings.TrimSpace(entry)
+		if entry == "" {
+			continue
+		}
+		clean := filepath.Clean(entry)
+		if filepath.IsAbs(clean) || clean == ".." || strings.HasPrefix(clean, ".."+string(filepath.Separator)) {
+			return false
+		}
+	}
+	return true
 }
 
 func appendThemeAsset(assets []string, asset string) []string {
