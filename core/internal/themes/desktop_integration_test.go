@@ -64,3 +64,33 @@ func TestThemeDesktopAssetFixture(t *testing.T) {
 		}
 	}
 }
+
+func TestRegistryThemeRepositoryFixture(t *testing.T) {
+	repository := os.Getenv("HYPE_THEME_REPOSITORY")
+	if repository == "" {
+		t.Skip("HYPE_THEME_REPOSITORY is not set")
+	}
+	themeID := os.Getenv("HYPE_THEME_ID")
+	if themeID == "" {
+		t.Fatal("HYPE_THEME_ID is not set")
+	}
+
+	resolved, sourceDir, cleanup, err := resolveRegistryThemeSource(Theme{
+		ID:         themeID,
+		Repository: repository,
+	}, "")
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer cleanup()
+
+	if resolved.ID != themeID {
+		t.Fatalf("resolved ID = %q, want %q", resolved.ID, themeID)
+	}
+	if _, err := os.Stat(filepath.Join(sourceDir, "theme.json")); err != nil {
+		t.Fatalf("resolved source does not contain theme.json: %v", err)
+	}
+	if resolved.Repository != repository {
+		t.Fatalf("resolved repository = %q, want %q", resolved.Repository, repository)
+	}
+}

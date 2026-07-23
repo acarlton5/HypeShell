@@ -43,10 +43,10 @@ var updateCheckCmd = &cobra.Command{
 }
 
 var updateInstallCmd = &cobra.Command{
-	Use:     "install",
-	Short:   "Install the latest HypeShell update",
-	Long:    "Install the latest HypeShell update using the appropriate package manager for your distribution",
-	Args:    cobra.NoArgs,
+	Use:   "install",
+	Short: "Install the latest HypeShell update",
+	Long:  "Install the latest HypeShell update using the appropriate package manager for your distribution",
+	Args:  cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
 		runUpdate()
 	},
@@ -393,7 +393,7 @@ func refreshThemeRegistryAssets() error {
 		}
 
 		registryThemeDir := registry.GetThemeDir(theme.SourceDir)
-		if err := manager.Update(*theme, registryThemeDir); err != nil {
+		if err := manager.UpdateRegistryTheme(*theme, registryThemeDir); err != nil {
 			fmt.Printf("Warning: Could not refresh installed theme %s: %v\n", installedID, err)
 			skipped++
 			continue

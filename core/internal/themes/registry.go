@@ -151,6 +151,7 @@ type Theme struct {
 	Window       *ThemeWindowStyle  `json:"window,omitempty"`
 	Borders      *ThemeWindowStyle  `json:"borders,omitempty"`
 	Desktop      *ThemeDesktopStyle `json:"desktop,omitempty"`
+	Repository   string             `json:"repository,omitempty"`
 	AssetBaseURL string             `json:"assetBaseUrl,omitempty"`
 	PreviewPath  string             `json:"-"`
 	SourceDir    string             `json:"sourceDir,omitempty"`

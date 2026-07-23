@@ -40,7 +40,7 @@ func HandleInstall(conn net.Conn, req models.Request) {
 	}
 
 	registryThemeDir := registry.GetThemeDir(theme.SourceDir)
-	if err := manager.Install(*theme, registryThemeDir); err != nil {
+	if err := manager.InstallRegistryTheme(*theme, registryThemeDir); err != nil {
 		models.RespondError(conn, req.ID, fmt.Sprintf("failed to install theme: %v", err))
 		return
 	}

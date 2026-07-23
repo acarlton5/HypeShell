@@ -310,7 +310,62 @@ func (m *Manager) InstallFromRegistry(registry *Registry, themeID string) error 
 	}
 
 	registryThemeDir := registry.GetThemeDir(theme.SourceDir)
-	return m.Install(*theme, registryThemeDir)
+	return m.InstallRegistryTheme(*theme, registryThemeDir)
+}
+
+func (m *Manager) InstallRegistryTheme(theme Theme, registryThemeDir string) error {
+	sourceTheme, sourceDir, cleanup, err := resolveRegistryThemeSource(theme, registryThemeDir)
+	if err != nil {
+		return err
+	}
+	defer cleanup()
+	return m.Install(sourceTheme, sourceDir)
+}
+
+func (m *Manager) UpdateRegistryTheme(theme Theme, registryThemeDir string) error {
+	sourceTheme, sourceDir, cleanup, err := resolveRegistryThemeSource(theme, registryThemeDir)
+	if err != nil {
+		return err
+	}
+	defer cleanup()
+	return m.Update(sourceTheme, sourceDir)
+}
+
+func resolveRegistryThemeSource(theme Theme, registryThemeDir string) (Theme, string, func(), error) {
+	if theme.Repository == "" {
+		return theme, registryThemeDir, func() {}, nil
+	}
+	if !strings.HasPrefix(theme.Repository, "https://github.com/") {
+		return Theme{}, "", func() {}, fmt.Errorf("unsupported theme repository: %s", theme.Repository)
+	}
+
+	tempDir, err := os.MkdirTemp("", "hypeshell-theme-")
+	if err != nil {
+		return Theme{}, "", func() {}, fmt.Errorf("failed to create theme download directory: %w", err)
+	}
+	cleanup := func() { _ = os.RemoveAll(tempDir) }
+	if err := (&realGitClient{}).PlainClone(tempDir, theme.Repository); err != nil {
+		cleanup()
+		return Theme{}, "", func() {}, fmt.Errorf("failed to download theme repository: %w", err)
+	}
+
+	data, err := os.ReadFile(filepath.Join(tempDir, "theme.json"))
+	if err != nil {
+		cleanup()
+		return Theme{}, "", func() {}, fmt.Errorf("theme repository has no theme.json: %w", err)
+	}
+	var sourceTheme Theme
+	if err := json.Unmarshal(data, &sourceTheme); err != nil {
+		cleanup()
+		return Theme{}, "", func() {}, fmt.Errorf("failed to parse repository theme.json: %w", err)
+	}
+	if sourceTheme.ID != theme.ID {
+		cleanup()
+		return Theme{}, "", func() {}, fmt.Errorf("theme repository ID %q does not match registry ID %q", sourceTheme.ID, theme.ID)
+	}
+	sourceTheme.Repository = theme.Repository
+	sourceTheme.SourceDir = theme.SourceDir
+	return sourceTheme, tempDir, cleanup, nil
 }
 
 func (m *Manager) Update(theme Theme, registryThemeDir string) error {
