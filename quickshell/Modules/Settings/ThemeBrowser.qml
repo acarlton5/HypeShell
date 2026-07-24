@@ -443,7 +443,7 @@ FloatingWindow {
                                     text: I18n.tr("Installing %1", "theme installation status").arg(installRow.installData.name || installRow.modelData)
                                     font.pixelSize: Theme.fontSizeMedium
                                     font.weight: Font.Medium
-                                    color: Theme.primaryText
+                                    color: Theme.surfaceText
                                     elide: Text.ElideRight
                                 }
 
@@ -451,8 +451,7 @@ FloatingWindow {
                                     width: parent.width
                                     text: (installRow.installData.detail || installRow.installData.stage || "") + "  •  " + (installRow.installData.elapsed || 0) + "s"
                                     font.pixelSize: Theme.fontSizeSmall
-                                    color: Theme.primaryText
-                                    opacity: 0.8
+                                    color: Theme.surfaceVariantText
                                     elide: Text.ElideRight
                                 }
                             }
