@@ -2272,7 +2272,13 @@ Singleton {
                 break;
             default:
                 if (typeof ToastService !== "undefined") {
-                    ToastService.showError(I18n.tr("Theme worker failed (%1)").arg(exitCode));
+                    if (currentTheme === dynamic) {
+                        // Dynamic-theme failures are already represented inline in
+                        // Theme Settings. Avoid an intrusive duplicate notification.
+                        ToastService.wallpaperErrorStatus = "error";
+                    } else {
+                        ToastService.showError(I18n.tr("Theme worker failed (%1)").arg(exitCode));
+                    }
                 }
                 log.warn("Matugen worker failed with exit code:", exitCode);
                 root.matugenCompleted(currentMode, "error");

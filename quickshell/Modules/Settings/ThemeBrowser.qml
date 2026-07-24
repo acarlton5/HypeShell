@@ -21,19 +21,40 @@ FloatingWindow {
     property bool pendingInstallHandled: false
     property string pendingApplyThemeId: ""
     property var installingThemes: ({})
-    property string installingThemeName: ""
-    property int installElapsedSeconds: 0
+    readonly property var activeInstallIds: Object.keys(installingThemes)
 
     function isThemeInstalling(themeId) {
-        return installingThemes[themeId] === true;
+        return installingThemes[themeId] !== undefined;
     }
 
-    function setThemeInstalling(themeId, installing) {
+    function startThemeInstall(themeId, themeName) {
         var next = Object.assign({}, installingThemes);
-        if (installing)
-            next[themeId] = true;
-        else
-            delete next[themeId];
+        next[themeId] = {
+            "name": themeName,
+            "stage": I18n.tr("Starting…", "theme installation stage"),
+            "detail": I18n.tr("Preparing installation", "theme installation detail"),
+            "elapsed": 0
+        };
+        installingThemes = next;
+    }
+
+    function updateThemeInstall(themeId, stage, detail) {
+        var current = installingThemes[themeId];
+        if (!current)
+            return;
+        var next = Object.assign({}, installingThemes);
+        next[themeId] = {
+            "name": current.name,
+            "stage": stage,
+            "detail": detail,
+            "elapsed": current.elapsed
+        };
+        installingThemes = next;
+    }
+
+    function finishThemeInstall(themeId) {
+        var next = Object.assign({}, installingThemes);
+        delete next[themeId];
         installingThemes = next;
     }
 
@@ -81,14 +102,14 @@ FloatingWindow {
     function installTheme(themeId, themeName, applyAfterInstall) {
         if (isThemeInstalling(themeId))
             return;
-        setThemeInstalling(themeId, true);
-        installingThemeName = themeName;
-        installElapsedSeconds = 0;
+        startThemeInstall(themeId, themeName);
         ToastService.showInfo(I18n.tr("Installing: %1", "installation progress").arg(themeName));
         HYPEService.installTheme(themeId, response => {
-            setThemeInstalling(themeId, false);
-            installingThemeName = "";
-            installElapsedSeconds = 0;
+            if (response.result && response.result.progress === true) {
+                updateThemeInstall(themeId, response.result.stage || "", response.result.detail || "");
+                return;
+            }
+            finishThemeInstall(themeId);
             if (response.error) {
                 ToastService.showError(I18n.tr("Install failed: %1", "installation error").arg(response.error));
                 return;
@@ -191,16 +212,26 @@ FloatingWindow {
         selectedIndex = -1;
         keyboardNavigationActive = false;
         isLoading = false;
-        installingThemes = ({});
-        installingThemeName = "";
-        installElapsedSeconds = 0;
     }
 
     Timer {
         interval: 1000
         repeat: true
-        running: root.installingThemeName.length > 0
-        onTriggered: root.installElapsedSeconds++
+        running: root.activeInstallIds.length > 0
+        onTriggered: {
+            var next = Object.assign({}, root.installingThemes);
+            for (var i = 0; i < root.activeInstallIds.length; i++) {
+                var id = root.activeInstallIds[i];
+                var current = next[id];
+                next[id] = {
+                    "name": current.name,
+                    "stage": current.stage,
+                    "detail": current.detail,
+                    "elapsed": current.elapsed + 1
+                };
+            }
+            root.installingThemes = next;
+        }
     }
 
     ConfirmModal {
@@ -357,81 +388,94 @@ FloatingWindow {
                 }
             }
 
-            Rectangle {
+            Column {
                 id: installStatus
                 anchors.left: parent.left
                 anchors.right: parent.right
                 anchors.top: browserSearchField.bottom
                 anchors.topMargin: Theme.spacingM
-                height: visible ? 68 : 0
-                visible: root.installingThemeName.length > 0
-                radius: Theme.cornerRadius
-                color: Theme.primaryContainer
-                border.width: 1
-                border.color: Theme.primary
-                clip: true
+                height: visible ? (root.activeInstallIds.length * 68 + Math.max(0, root.activeInstallIds.length - 1) * spacing) : 0
+                visible: root.activeInstallIds.length > 0
+                spacing: Theme.spacingXS
 
-                Row {
-                    anchors.fill: parent
-                    anchors.margins: Theme.spacingM
-                    spacing: Theme.spacingM
+                Repeater {
+                    model: root.activeInstallIds
 
-                    HypeIcon {
-                        name: "sync"
-                        size: 28
-                        color: Theme.primary
-                        anchors.verticalCenter: parent.verticalCenter
+                    Rectangle {
+                        id: installRow
+                        required property string modelData
+                        readonly property var installData: root.installingThemes[modelData] || ({})
+                        width: installStatus.width
+                        height: 68
+                        radius: Theme.cornerRadius
+                        color: Theme.primaryContainer
+                        border.width: 1
+                        border.color: Theme.primary
+                        clip: true
 
-                        RotationAnimator on rotation {
-                            from: 0
-                            to: 360
-                            duration: 900
-                            loops: Animation.Infinite
-                            running: installStatus.visible
+                        Row {
+                            anchors.fill: parent
+                            anchors.margins: Theme.spacingM
+                            spacing: Theme.spacingM
+
+                            HypeIcon {
+                                name: "sync"
+                                size: 28
+                                color: Theme.primary
+                                anchors.verticalCenter: parent.verticalCenter
+
+                                RotationAnimator on rotation {
+                                    from: 0
+                                    to: 360
+                                    duration: 900
+                                    loops: Animation.Infinite
+                                    running: installRow.visible
+                                }
+                            }
+
+                            Column {
+                                width: parent.width - 44
+                                spacing: 3
+                                anchors.verticalCenter: parent.verticalCenter
+
+                                StyledText {
+                                    width: parent.width
+                                    text: I18n.tr("Installing %1", "theme installation status").arg(installRow.installData.name || installRow.modelData)
+                                    font.pixelSize: Theme.fontSizeMedium
+                                    font.weight: Font.Medium
+                                    color: Theme.primaryText
+                                    elide: Text.ElideRight
+                                }
+
+                                StyledText {
+                                    width: parent.width
+                                    text: (installRow.installData.detail || installRow.installData.stage || "") + "  •  " + (installRow.installData.elapsed || 0) + "s"
+                                    font.pixelSize: Theme.fontSizeSmall
+                                    color: Theme.primaryText
+                                    opacity: 0.8
+                                    elide: Text.ElideRight
+                                }
+                            }
                         }
-                    }
 
-                    Column {
-                        width: parent.width - 44
-                        spacing: 3
-                        anchors.verticalCenter: parent.verticalCenter
+                        Rectangle {
+                            id: rowProgress
+                            width: parent.width * 0.35
+                            height: 3
+                            anchors.bottom: parent.bottom
+                            radius: height / 2
+                            color: Theme.primary
 
-                        StyledText {
-                            width: parent.width
-                            text: I18n.tr("Installing %1", "theme installation status").arg(root.installingThemeName)
-                            font.pixelSize: Theme.fontSizeMedium
-                            font.weight: Font.Medium
-                            color: Theme.primaryText
-                            elide: Text.ElideRight
-                        }
-
-                        StyledText {
-                            width: parent.width
-                            text: I18n.tr("Downloading wallpapers and desktop assets… %1s", "theme installation detail").arg(root.installElapsedSeconds)
-                            font.pixelSize: Theme.fontSizeSmall
-                            color: Theme.primaryText
-                            opacity: 0.8
-                            elide: Text.ElideRight
-                        }
-                    }
-                }
-
-                Rectangle {
-                    id: downloadProgress
-                    width: parent.width * 0.35
-                    height: 3
-                    anchors.bottom: parent.bottom
-                    radius: height / 2
-                    color: Theme.primary
-
-                    SequentialAnimation on x {
-                        loops: Animation.Infinite
-                        running: installStatus.visible
-                        NumberAnimation {
-                            from: -downloadProgress.width
-                            to: installStatus.width
-                            duration: 1200
-                            easing.type: Easing.InOutQuad
+                            SequentialAnimation on x {
+                                loops: Animation.Infinite
+                                running: installRow.visible
+                                NumberAnimation {
+                                    from: -rowProgress.width
+                                    to: installRow.width
+                                    duration: 1200
+                                    easing.type: Easing.InOutQuad
+                                }
+                            }
                         }
                     }
                 }

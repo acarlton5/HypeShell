@@ -94,3 +94,36 @@ func TestRegistryThemeRepositoryFixture(t *testing.T) {
 		t.Fatalf("resolved repository = %q, want %q", resolved.Repository, repository)
 	}
 }
+
+func TestInstallRegistryThemeReportsProgress(t *testing.T) {
+	sourceDir := t.TempDir()
+	if err := os.WriteFile(filepath.Join(sourceDir, "theme.json"), []byte(`{"id":"progressTest","name":"Progress Test","version":"1.0.0"}`), 0o644); err != nil {
+		t.Fatal(err)
+	}
+
+	manager := &Manager{fs: afero.NewOsFs(), themesDir: t.TempDir()}
+	var stages []string
+	err := manager.InstallRegistryThemeWithProgress(Theme{
+		ID:      "progressTest",
+		Name:    "Progress Test",
+		Version: "1.0.0",
+	}, sourceDir, func(stage, _ string) {
+		stages = append(stages, stage)
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	for _, expected := range []string{"downloading", "installing", "wallpapers", "desktop", "remote-assets", "extracting", "finishing"} {
+		found := false
+		for _, stage := range stages {
+			if stage == expected {
+				found = true
+				break
+			}
+		}
+		if !found {
+			t.Fatalf("progress stages %v do not contain %q", stages, expected)
+		}
+	}
+}

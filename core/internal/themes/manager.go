@@ -84,6 +84,10 @@ func (m *Manager) findInstalledPath(themeID string) string {
 }
 
 func (m *Manager) Install(theme Theme, registryThemeDir string) error {
+	return m.install(theme, registryThemeDir, nil)
+}
+
+func (m *Manager) install(theme Theme, registryThemeDir string, progress func(string, string)) error {
 	themeDir := m.getInstalledDir(theme.ID)
 
 	exists, err := afero.DirExists(m.fs, themeDir)
@@ -109,11 +113,20 @@ func (m *Manager) Install(theme Theme, registryThemeDir string) error {
 		return fmt.Errorf("failed to write theme file: %w", err)
 	}
 
-	m.copyThemeAssets(registryThemeDir, themeDir, theme)
+	m.copyThemeAssetsWithProgress(registryThemeDir, themeDir, theme, progress)
 	return nil
 }
 
 func (m *Manager) copyThemeAssets(srcDir, dstDir string, theme Theme) {
+	m.copyThemeAssetsWithProgress(srcDir, dstDir, theme, nil)
+}
+
+func (m *Manager) copyThemeAssetsWithProgress(srcDir, dstDir string, theme Theme, progress func(string, string)) {
+	report := func(stage, detail string) {
+		if progress != nil {
+			progress(stage, detail)
+		}
+	}
 	assets := []string{"preview.svg", "preview-dark.svg", "preview-light.svg"}
 
 	if theme.Variants != nil {
@@ -132,6 +145,7 @@ func (m *Manager) copyThemeAssets(srcDir, dstDir string, theme Theme) {
 		assets = appendThemeAsset(assets, wallpaper.DarkPath)
 	}
 
+	report("wallpapers", fmt.Sprintf("Copying %d wallpaper files", len(theme.Wallpapers)))
 	for _, asset := range assets {
 		srcPath := filepath.Join(srcDir, asset)
 		if exists, _ := afero.Exists(m.fs, srcPath); !exists {
@@ -147,8 +161,11 @@ func (m *Manager) copyThemeAssets(srcDir, dstDir string, theme Theme) {
 	}
 
 	m.copyThemeAssetDir(srcDir, dstDir, "wallpapers")
+	report("desktop", "Copying cursor, icon, and GTK assets")
 	m.copyThemeAssetDir(srcDir, dstDir, "desktop")
+	report("remote-assets", "Checking additional theme assets")
 	m.downloadRemoteThemeAssets(dstDir, theme)
+	report("extracting", "Extracting desktop asset archives")
 	m.extractDesktopAssets(dstDir, theme)
 }
 
@@ -314,12 +331,27 @@ func (m *Manager) InstallFromRegistry(registry *Registry, themeID string) error 
 }
 
 func (m *Manager) InstallRegistryTheme(theme Theme, registryThemeDir string) error {
+	return m.InstallRegistryThemeWithProgress(theme, registryThemeDir, nil)
+}
+
+func (m *Manager) InstallRegistryThemeWithProgress(theme Theme, registryThemeDir string, progress func(string, string)) error {
+	report := func(stage, detail string) {
+		if progress != nil {
+			progress(stage, detail)
+		}
+	}
+	report("downloading", "Downloading theme repository")
 	sourceTheme, sourceDir, cleanup, err := resolveRegistryThemeSource(theme, registryThemeDir)
 	if err != nil {
 		return err
 	}
 	defer cleanup()
-	return m.Install(sourceTheme, sourceDir)
+	report("installing", "Preparing installed theme")
+	if err := m.install(sourceTheme, sourceDir, progress); err != nil {
+		return err
+	}
+	report("finishing", "Preparing desktop assets")
+	return nil
 }
 
 func (m *Manager) UpdateRegistryTheme(theme Theme, registryThemeDir string) error {

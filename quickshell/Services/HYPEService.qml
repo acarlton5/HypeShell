@@ -382,7 +382,9 @@ Singleton {
         const callback = pendingRequests[response.id];
 
         if (callback) {
-            delete pendingRequests[response.id];
+            const isProgressUpdate = response.result && response.result.progress === true;
+            if (!isProgressUpdate)
+                delete pendingRequests[response.id];
             callback(response);
         }
     }
