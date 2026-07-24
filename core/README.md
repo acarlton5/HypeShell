@@ -29,7 +29,6 @@ All Wayland protocols are consumed as a client - connecting to the compositor.
 | `keyboard-shortcuts-inhibit-unstable-v1`  | Inhibit compositor shortcuts during color picker/screenshot |
 | `ext-data-control-v1`                     | Clipboard history and persistence                           |
 | `ext-workspace-v1`                        | Workspace integration                                       |
-| `dwl-ipc-unstable-v2`                     | dwl/MangoWC IPC for tags, outputs, etc.                     |
 
 ### DBus Interfaces
 
@@ -159,13 +158,12 @@ curl -fsSL https://install.hypelinux.com | sh
 Headless mode requires cached sudo credentials. Run `sudo -v` first:
 
 ```bash
-sudo -v && curl -fsSL https://install.hypelinux.com | sh -s -- -c niri -t ghostty -y
 sudo -v && curl -fsSL https://install.hypelinux.com | sh -s -- -c hyprland -t kitty --include-deps hype-greeter -y
 ```
 
 | Flag | Short | Description |
 |------|-------|-------------|
-| `--compositor <niri|hyprland>` | `-c` | Compositor/WM to install (required for headless) |
+| `--compositor <hyprland>` | `-c` | Compositor to install (defaults to Hyprland) |
 | `--term <ghostty|kitty|alacritty>` | `-t` | Terminal emulator (required for headless) |
 | `--include-deps <name,...>` | | Enable optional dependencies (e.g. `hype-greeter`) |
 | `--exclude-deps <name,...>` | | Skip specific dependencies |
@@ -181,9 +179,9 @@ When no flags are provided, `hypeinstall` launches the interactive TUI.
 
 ### Headless mode validation rules
 
-Headless mode activates when `--compositor` or `--term` is provided.
+Headless mode activates when `--term` is provided.
 
-- Both `--compositor` and `--term` are required; providing only one results in an error.
+- `--term` is required; `--compositor` is optional and only accepts `hyprland`.
 - Headless-only flags (`--include-deps`, `--exclude-deps`, `--replace-configs`, `--replace-configs-all`, `--yes`) are rejected in TUI mode.
 - Positional arguments are not accepted.
 
@@ -194,7 +192,7 @@ Set the `HYPEINSTALL_LOG_DIR` environment variable to override the log directory
 
 ## Supported Distributions
 
-Arch, Fedora, Debian, Ubuntu, openSUSE, Gentoo (and derivatives)
+Arch, Fedora, Ubuntu, openSUSE, Gentoo (and derivatives with Hyprland packages)
 
 **Arch Linux**
 Uses `pacman` for system packages, builds AUR packages via `makepkg`, no AUR helper dependency.
@@ -205,9 +203,6 @@ Uses COPR repositories (`avengemedia/hypelinux`, `avengemedia/hype`).
 
 **Ubuntu**
 Requires PPA support. Most packages built from source (slow first install).
-
-**Debian**
-Debian 13+ (Trixie). niri only, no Hyprland support. Builds from source.
 
 **openSUSE**
 Most packages available in standard repos. Minimal building required.

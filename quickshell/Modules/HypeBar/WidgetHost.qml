@@ -259,7 +259,6 @@ Loader {
             "notepadButton": components.notepadButtonComponent,
             "colorPicker": components.colorPickerComponent,
             "systemUpdate": components.systemUpdateComponent,
-            "layout": components.layoutComponent,
             "powerMenuButton": components.powerMenuButtonComponent,
             "appsDock": components.appsDockComponent
         };
@@ -281,8 +280,7 @@ Loader {
             "memUsage": dgopAvailable,
             "cpuTemp": dgopAvailable,
             "gpuTemp": dgopAvailable,
-            "network_speed_monitor": dgopAvailable,
-            "layout": CompositorService.isDwl && DwlService.dwlAvailable
+            "network_speed_monitor": dgopAvailable
         };
 
         return widgetVisibility[widgetId] ?? true;

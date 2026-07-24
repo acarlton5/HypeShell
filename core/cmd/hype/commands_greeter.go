@@ -1,4 +1,4 @@
-﻿package main
+package main
 
 import (
 	"bufio"
@@ -1122,12 +1122,8 @@ func enableGreeter(nonInteractive bool) error {
 	fmt.Println("Detecting installed compositors...")
 	compositors := greeter.DetectCompositors()
 
-	if utils.CommandExists("sway") {
-		compositors = append(compositors, "sway")
-	}
-
 	if len(compositors) == 0 {
-		return fmt.Errorf("no supported compositors found (niri, Hyprland, or sway required)")
+		return fmt.Errorf("Hyprland is required")
 	}
 
 	var selectedCompositor string

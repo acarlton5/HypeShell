@@ -1,4 +1,4 @@
-﻿package headless
+package headless
 
 import (
 	"strings"
@@ -14,12 +14,12 @@ func TestParseWindowManager(t *testing.T) {
 		want    deps.WindowManager
 		wantErr bool
 	}{
-		{"niri lowercase", "niri", deps.WindowManagerNiri, false},
-		{"niri mixed case", "Niri", deps.WindowManagerNiri, false},
+		{"niri unsupported", "niri", 0, true},
+		{"niri mixed case unsupported", "Niri", 0, true},
 		{"hyprland lowercase", "hyprland", deps.WindowManagerHyprland, false},
 		{"hyprland mixed case", "Hyprland", deps.WindowManagerHyprland, false},
 		{"invalid", "sway", 0, true},
-		{"empty", "", 0, true},
+		{"empty defaults to hyprland", "", deps.WindowManagerHyprland, false},
 	}
 
 	for _, tt := range tests {
@@ -70,7 +70,7 @@ func TestParseTerminal(t *testing.T) {
 
 func TestDepExists(t *testing.T) {
 	dependencies := []deps.Dependency{
-		{Name: "niri", Status: deps.StatusInstalled},
+		{Name: "hyprland", Status: deps.StatusInstalled},
 		{Name: "ghostty", Status: deps.StatusMissing},
 		{Name: "hype (HypeMaterialShell)", Status: deps.StatusInstalled},
 		{Name: "hype-greeter", Status: deps.StatusMissing},
@@ -81,7 +81,7 @@ func TestDepExists(t *testing.T) {
 		dep  string
 		want bool
 	}{
-		{"existing dep", "niri", true},
+		{"existing dep", "hyprland", true},
 		{"existing dep with special chars", "hype (HypeMaterialShell)", true},
 		{"existing optional dep", "hype-greeter", true},
 		{"non-existing dep", "firefox", false},
@@ -100,7 +100,7 @@ func TestDepExists(t *testing.T) {
 
 func TestNewRunner(t *testing.T) {
 	cfg := Config{
-		Compositor:  "niri",
+		Compositor:  "hyprland",
 		Terminal:    "ghostty",
 		IncludeDeps: []string{"hype-greeter"},
 		ExcludeDeps: []string{"some-pkg"},
@@ -111,8 +111,8 @@ func TestNewRunner(t *testing.T) {
 	if r == nil {
 		t.Fatal("NewRunner returned nil")
 	}
-	if r.cfg.Compositor != "niri" {
-		t.Errorf("cfg.Compositor = %q, want %q", r.cfg.Compositor, "niri")
+	if r.cfg.Compositor != "hyprland" {
+		t.Errorf("cfg.Compositor = %q, want %q", r.cfg.Compositor, "hyprland")
 	}
 	if r.cfg.Terminal != "ghostty" {
 		t.Errorf("cfg.Terminal = %q, want %q", r.cfg.Terminal, "ghostty")
@@ -165,13 +165,13 @@ func TestRunRequiresYes(t *testing.T) {
 
 func TestConfigYesStoredCorrectly(t *testing.T) {
 	// Yes=false (default) should be stored
-	rNo := NewRunner(Config{Compositor: "niri", Terminal: "ghostty", Yes: false})
+	rNo := NewRunner(Config{Compositor: "hyprland", Terminal: "ghostty", Yes: false})
 	if rNo.cfg.Yes {
 		t.Error("cfg.Yes = true, want false")
 	}
 
 	// Yes=true should be stored
-	rYes := NewRunner(Config{Compositor: "niri", Terminal: "ghostty", Yes: true})
+	rYes := NewRunner(Config{Compositor: "hyprland", Terminal: "ghostty", Yes: true})
 	if !rYes.cfg.Yes {
 		t.Error("cfg.Yes = false, want true")
 	}
@@ -204,7 +204,7 @@ func TestValidConfigNamesCompleteness(t *testing.T) {
 }
 
 func TestBuildReplaceConfigs(t *testing.T) {
-	allDeployerKeys := []string{"Niri", "Hyprland", "Ghostty", "Kitty", "Alacritty"}
+	allDeployerKeys := []string{"Hyprland", "Ghostty", "Kitty", "Alacritty"}
 
 	tests := []struct {
 		name           string
@@ -226,13 +226,13 @@ func TestBuildReplaceConfigs(t *testing.T) {
 		},
 		{
 			name:           "specific configs",
-			replaceConfigs: []string{"niri", "ghostty"},
+			replaceConfigs: []string{"hyprland", "ghostty"},
 			wantNil:        false,
-			wantEnabled:    []string{"Niri", "Ghostty"},
+			wantEnabled:    []string{"Hyprland", "Ghostty"},
 		},
 		{
 			name:           "both flags set",
-			replaceConfigs: []string{"niri"},
+			replaceConfigs: []string{"hyprland"},
 			replaceAll:     true,
 			wantErr:        true,
 		},
@@ -243,9 +243,9 @@ func TestBuildReplaceConfigs(t *testing.T) {
 		},
 		{
 			name:           "case insensitive",
-			replaceConfigs: []string{"NIRI", "Ghostty"},
+			replaceConfigs: []string{"HYPRLAND", "Ghostty"},
 			wantNil:        false,
-			wantEnabled:    []string{"Niri", "Ghostty"},
+			wantEnabled:    []string{"Hyprland", "Ghostty"},
 		},
 		{
 			name:           "single config",
@@ -255,15 +255,15 @@ func TestBuildReplaceConfigs(t *testing.T) {
 		},
 		{
 			name:           "whitespace entry",
-			replaceConfigs: []string{"  ", "niri"},
+			replaceConfigs: []string{"  ", "hyprland"},
 			wantNil:        false,
-			wantEnabled:    []string{"Niri"},
+			wantEnabled:    []string{"Hyprland"},
 		},
 		{
 			name:           "duplicate entry",
-			replaceConfigs: []string{"niri", "niri"},
+			replaceConfigs: []string{"hyprland", "hyprland"},
 			wantNil:        false,
-			wantEnabled:    []string{"Niri"},
+			wantEnabled:    []string{"Hyprland"},
 		},
 	}
 
@@ -315,9 +315,9 @@ func TestBuildReplaceConfigs(t *testing.T) {
 
 func TestConfigReplaceConfigsStoredCorrectly(t *testing.T) {
 	r := NewRunner(Config{
-		Compositor:        "niri",
+		Compositor:        "hyprland",
 		Terminal:          "ghostty",
-		ReplaceConfigs:    []string{"niri", "ghostty"},
+		ReplaceConfigs:    []string{"hyprland", "ghostty"},
 		ReplaceConfigsAll: false,
 	})
 	if len(r.cfg.ReplaceConfigs) != 2 {
@@ -328,7 +328,7 @@ func TestConfigReplaceConfigsStoredCorrectly(t *testing.T) {
 	}
 
 	r2 := NewRunner(Config{
-		Compositor:        "niri",
+		Compositor:        "hyprland",
 		Terminal:          "ghostty",
 		ReplaceConfigsAll: true,
 	})
@@ -342,7 +342,7 @@ func TestConfigReplaceConfigsStoredCorrectly(t *testing.T) {
 
 func TestBuildDisabledItems(t *testing.T) {
 	dependencies := []deps.Dependency{
-		{Name: "niri", Status: deps.StatusInstalled},
+		{Name: "hyprland", Status: deps.StatusInstalled},
 		{Name: "ghostty", Status: deps.StatusMissing},
 		{Name: "hype (HypeMaterialShell)", Status: deps.StatusInstalled},
 		{Name: "hype-greeter", Status: deps.StatusMissing},
@@ -362,7 +362,7 @@ func TestBuildDisabledItems(t *testing.T) {
 		{
 			name:         "no flags set, hype-greeter disabled by default",
 			wantDisabled: []string{"hype-greeter"},
-			wantEnabled:  []string{"niri", "ghostty", "waybar"},
+			wantEnabled:  []string{"hyprland", "ghostty", "waybar"},
 		},
 		{
 			name:        "include hype-greeter enables it",
@@ -406,9 +406,9 @@ func TestBuildDisabledItems(t *testing.T) {
 		{
 			name: "no hype-greeter in deps, nothing disabled by default",
 			deps: []deps.Dependency{
-				{Name: "niri", Status: deps.StatusInstalled},
+				{Name: "hyprland", Status: deps.StatusInstalled},
 			},
-			wantEnabled: []string{"niri"},
+			wantEnabled: []string{"hyprland"},
 		},
 	}
 

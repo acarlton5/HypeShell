@@ -1,4 +1,4 @@
-﻿package main
+package main
 
 import (
 	"encoding/json"
@@ -25,9 +25,9 @@ var resolveIncludeCmd = &cobra.Command{
 	ValidArgsFunction: func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
 		switch len(args) {
 		case 0:
-			return []string{"hyprland", "niri", "mangowc"}, cobra.ShellCompDirectiveNoFileComp
+			return []string{"hyprland"}, cobra.ShellCompDirectiveNoFileComp
 		case 1:
-			return []string{"cursor.kdl", "cursor.conf", "outputs.kdl", "outputs.conf", "binds.kdl", "binds.conf"}, cobra.ShellCompDirectiveNoFileComp
+			return []string{"cursor.conf", "outputs.conf", "binds.conf"}, cobra.ShellCompDirectiveNoFileComp
 		}
 		return nil, cobra.ShellCompDirectiveNoFileComp
 	},
@@ -53,12 +53,8 @@ func runResolveInclude(cmd *cobra.Command, args []string) {
 	switch compositor {
 	case "hyprland":
 		result, err = checkHyprlandInclude(filename)
-	case "niri":
-		result, err = checkNiriInclude(filename)
-	case "mangowc", "dwl", "mango":
-		result, err = checkMangoWCInclude(filename)
 	default:
-		log.Fatalf("Unknown compositor: %s", compositor)
+		log.Fatalf("Unsupported compositor %q: HypeShell only supports Hyprland", compositor)
 	}
 
 	if err != nil {

@@ -24,14 +24,7 @@ func (m Model) viewSelectWindowManager() string {
 		name        string
 		description string
 	}{
-		{"niri", "Scrollable-tiling Wayland compositor."},
-	}
-
-	if m.osInfo == nil || m.osInfo.Distribution.ID != "debian" {
-		options = append(options, struct {
-			name        string
-			description string
-		}{"Hyprland", "Dynamic tiling Wayland compositor."})
+		{"Hyprland", "Dynamic tiling Wayland compositor."},
 	}
 
 	for i, option := range options {
@@ -152,10 +145,7 @@ func (m Model) updateSelectTerminalState(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 func (m Model) updateSelectWindowManagerState(msg tea.Msg) (tea.Model, tea.Cmd) {
 	if keyMsg, ok := msg.(tea.KeyMsg); ok {
-		maxWMIndex := 1
-		if m.osInfo != nil && m.osInfo.Distribution.ID == "debian" {
-			maxWMIndex = 0
-		}
+		maxWMIndex := 0
 
 		switch keyMsg.String() {
 		case "up":
@@ -190,12 +180,7 @@ func (m Model) detectDependencies() tea.Cmd {
 		}
 
 		// Convert TUI selection to deps enum
-		var wm deps.WindowManager
-		if m.selectedWM == 0 {
-			wm = deps.WindowManagerNiri // First option is Niri
-		} else {
-			wm = deps.WindowManagerHyprland // Second option is Hyprland
-		}
+		wm := deps.WindowManagerHyprland
 
 		var terminal deps.Terminal
 		if m.osInfo != nil && m.osInfo.Distribution.ID == "gentoo" {

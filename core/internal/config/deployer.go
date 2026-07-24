@@ -1,4 +1,4 @@
-﻿package config
+package config
 
 import (
 	"context"
@@ -64,7 +64,6 @@ func (cd *ConfigDeployer) deployConfigurationsInternal(ctx context.Context, wm d
 
 	// Primary config file paths used to detect fresh installs.
 	configPrimaryPaths := map[string]string{
-		"Niri":      filepath.Join(os.Getenv("HOME"), ".config", "niri", "config.kdl"),
 		"Hyprland":  filepath.Join(os.Getenv("HOME"), ".config", "hypr", "hyprland.conf"),
 		"Ghostty":   filepath.Join(os.Getenv("HOME"), ".config", "ghostty", "config"),
 		"Kitty":     filepath.Join(os.Getenv("HOME"), ".config", "kitty", "kitty.conf"),
@@ -90,14 +89,6 @@ func (cd *ConfigDeployer) deployConfigurationsInternal(ctx context.Context, wm d
 	}
 
 	switch wm {
-	case deps.WindowManagerNiri:
-		if shouldReplaceConfig("Niri") {
-			result, err := cd.deployNiriConfig(terminal, useSystemd)
-			results = append(results, result)
-			if err != nil {
-				return results, fmt.Errorf("failed to deploy Niri config: %w", err)
-			}
-		}
 	case deps.WindowManagerHyprland:
 		if shouldReplaceConfig("Hyprland") {
 			result, err := cd.deployHyprlandConfig(terminal, useSystemd)
@@ -106,6 +97,8 @@ func (cd *ConfigDeployer) deployConfigurationsInternal(ctx context.Context, wm d
 				return results, fmt.Errorf("failed to deploy Hyprland config: %w", err)
 			}
 		}
+	default:
+		return results, fmt.Errorf("unsupported window manager: HypeShell only supports Hyprland")
 	}
 
 	switch terminal {
@@ -136,117 +129,6 @@ func (cd *ConfigDeployer) deployConfigurationsInternal(ctx context.Context, wm d
 	}
 
 	return results, nil
-}
-
-func (cd *ConfigDeployer) deployNiriConfig(terminal deps.Terminal, useSystemd bool) (DeploymentResult, error) {
-	result := DeploymentResult{
-		ConfigType: "Niri",
-		Path:       filepath.Join(os.Getenv("HOME"), ".config", "niri", "config.kdl"),
-	}
-
-	configDir := filepath.Dir(result.Path)
-	if err := os.MkdirAll(configDir, 0o755); err != nil {
-		result.Error = fmt.Errorf("failed to create config directory: %w", err)
-		return result, result.Error
-	}
-
-	hypeDir := filepath.Join(configDir, "hype")
-	if err := os.MkdirAll(hypeDir, 0o755); err != nil {
-		result.Error = fmt.Errorf("failed to create hype directory: %w", err)
-		return result, result.Error
-	}
-
-	var existingConfig string
-	if _, err := os.Stat(result.Path); err == nil {
-		cd.log("Found existing Niri configuration")
-
-		existingData, err := os.ReadFile(result.Path)
-		if err != nil {
-			result.Error = fmt.Errorf("failed to read existing config: %w", err)
-			return result, result.Error
-		}
-		existingConfig = string(existingData)
-
-		timestamp := time.Now().Format("2006-01-02_15-04-05")
-		result.BackupPath = result.Path + ".backup." + timestamp
-		if err := os.WriteFile(result.BackupPath, existingData, 0o644); err != nil {
-			result.Error = fmt.Errorf("failed to create backup: %w", err)
-			return result, result.Error
-		}
-		cd.log(fmt.Sprintf("Backed up existing config to %s", result.BackupPath))
-	}
-
-	var terminalCommand string
-	switch terminal {
-	case deps.TerminalGhostty:
-		terminalCommand = "ghostty"
-	case deps.TerminalKitty:
-		terminalCommand = "kitty"
-	case deps.TerminalAlacritty:
-		terminalCommand = "alacritty"
-	default:
-		terminalCommand = "ghostty"
-	}
-
-	newConfig := strings.ReplaceAll(NiriConfig, "{{TERMINAL_COMMAND}}", terminalCommand)
-
-	if !useSystemd {
-		newConfig = cd.transformNiriConfigForNonSystemd(newConfig, terminalCommand)
-	}
-
-	if existingConfig != "" {
-		mergedConfig, err := cd.mergeNiriOutputSections(newConfig, existingConfig, hypeDir)
-		if err != nil {
-			cd.log(fmt.Sprintf("Warning: Failed to merge output sections: %v", err))
-		} else {
-			newConfig = mergedConfig
-			cd.log("Successfully merged existing output sections")
-		}
-	}
-
-	if err := os.WriteFile(result.Path, []byte(newConfig), 0o644); err != nil {
-		result.Error = fmt.Errorf("failed to write config: %w", err)
-		return result, result.Error
-	}
-
-	if err := cd.deployNiriDmsConfigs(hypeDir, terminalCommand); err != nil {
-		result.Error = fmt.Errorf("failed to deploy hype configs: %w", err)
-		return result, result.Error
-	}
-
-	result.Deployed = true
-	cd.log("Successfully deployed Niri configuration")
-	return result, nil
-}
-
-func (cd *ConfigDeployer) deployNiriDmsConfigs(hypeDir, terminalCommand string) error {
-	configs := []struct {
-		name    string
-		content string
-	}{
-		{"colors.kdl", NiriColorsConfig},
-		{"layout.kdl", NiriLayoutConfig},
-		{"alttab.kdl", NiriAlttabConfig},
-		{"binds.kdl", strings.ReplaceAll(NiriBindsConfig, "{{TERMINAL_COMMAND}}", terminalCommand)},
-		{"outputs.kdl", ""},
-		{"cursor.kdl", ""},
-		{"windowrules.kdl", ""},
-	}
-
-	for _, cfg := range configs {
-		path := filepath.Join(hypeDir, cfg.name)
-		// Skip if file already exists and is not empty to preserve user modifications
-		if info, err := os.Stat(path); err == nil && info.Size() > 0 {
-			cd.log(fmt.Sprintf("Skipping %s (already exists)", cfg.name))
-			continue
-		}
-		if err := os.WriteFile(path, []byte(cfg.content), 0o644); err != nil {
-			return fmt.Errorf("failed to write %s: %w", cfg.name, err)
-		}
-		cd.log(fmt.Sprintf("Deployed %s", cfg.name))
-	}
-
-	return nil
 }
 
 func (cd *ConfigDeployer) deployGhosttyConfig() ([]DeploymentResult, error) {
@@ -441,54 +323,6 @@ func (cd *ConfigDeployer) deployAlacrittyConfig() ([]DeploymentResult, error) {
 	results = append(results, themeResult)
 
 	return results, nil
-}
-
-func (cd *ConfigDeployer) mergeNiriOutputSections(newConfig, existingConfig, hypeDir string) (string, error) {
-	outputRegex := regexp.MustCompile(`(?m)^(/-)?\s*output\s+"[^"]+"\s*\{[^{}]*(?:\{[^{}]*\}[^{}]*)*\}`)
-	existingOutputs := outputRegex.FindAllString(existingConfig, -1)
-
-	if len(existingOutputs) == 0 {
-		return newConfig, nil
-	}
-
-	outputsPath := filepath.Join(hypeDir, "outputs.kdl")
-	if _, err := os.Stat(outputsPath); err != nil {
-		var outputsContent strings.Builder
-		for _, output := range existingOutputs {
-			outputsContent.WriteString(output)
-			outputsContent.WriteString("\n\n")
-		}
-		if err := os.WriteFile(outputsPath, []byte(outputsContent.String()), 0o644); err != nil {
-			cd.log(fmt.Sprintf("Warning: Failed to migrate outputs to %s: %v", outputsPath, err))
-		} else {
-			cd.log("Migrated output sections to hype/outputs.kdl")
-		}
-	}
-
-	exampleOutputRegex := regexp.MustCompile(`(?m)^/-output "eDP-2" \{[^{}]*(?:\{[^{}]*\}[^{}]*)*\}`)
-	mergedConfig := exampleOutputRegex.ReplaceAllString(newConfig, "")
-
-	inputEndRegex := regexp.MustCompile(`(?m)^}$`)
-	inputMatches := inputEndRegex.FindAllStringIndex(newConfig, -1)
-
-	if len(inputMatches) < 1 {
-		return "", fmt.Errorf("could not find insertion point for output sections")
-	}
-
-	insertPos := inputMatches[0][1]
-
-	var builder strings.Builder
-	builder.WriteString(mergedConfig[:insertPos])
-	builder.WriteString("\n// Outputs from existing configuration\n")
-
-	for _, output := range existingOutputs {
-		builder.WriteString(output)
-		builder.WriteString("\n")
-	}
-
-	builder.WriteString(mergedConfig[insertPos:])
-
-	return builder.String(), nil
 }
 
 // deployHyprlandConfig handles Hyprland configuration deployment with backup and merging
@@ -691,28 +525,4 @@ func (cd *ConfigDeployer) transformHyprlandConfigForNonSystemd(config, terminalC
 	}
 
 	return strings.Join(result, "\n")
-}
-
-func (cd *ConfigDeployer) transformNiriConfigForNonSystemd(config, terminalCommand string) string {
-	envVars := fmt.Sprintf(`environment {
-  XDG_CURRENT_DESKTOP "niri"
-  QT_QPA_PLATFORM "wayland;xcb"
-  ELECTRON_OZONE_PLATFORM_HINT "auto"
-  QT_QPA_PLATFORMTHEME "gtk3"
-  QT_QPA_PLATFORMTHEME_QT6 "gtk3"
-  TERMINAL "%s"
-}`, terminalCommand)
-
-	config = regexp.MustCompile(`environment \{[^}]*\}`).ReplaceAllString(config, envVars)
-
-	spawnDms := `spawn-at-startup "hype" "run"`
-	if !strings.Contains(config, spawnDms) {
-		// Insert spawn-at-startup for hype after the environment block
-		envBlockEnd := regexp.MustCompile(`environment \{[^}]*\}`)
-		if loc := envBlockEnd.FindStringIndex(config); loc != nil {
-			config = config[:loc[1]] + "\n" + spawnDms + config[loc[1]:]
-		}
-	}
-
-	return config
 }

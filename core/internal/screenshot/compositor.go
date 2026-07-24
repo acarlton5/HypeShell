@@ -31,40 +31,8 @@ func DetectCompositor() Compositor {
 		return detectedCompositor
 	}
 
-	hyprlandSig := os.Getenv("HYPRLAND_INSTANCE_SIGNATURE")
-	niriSocket := os.Getenv("NIRI_SOCKET")
-	swaySocket := os.Getenv("SWAYSOCK")
-	scrollSocket := os.Getenv("SCROLLSOCK")
-	miracleSocket := os.Getenv("MIRACLESOCK")
-
-	switch {
-	case niriSocket != "":
-		if _, err := os.Stat(niriSocket); err == nil {
-			detectedCompositor = CompositorNiri
-			return detectedCompositor
-		}
-	case scrollSocket != "":
-		if _, err := os.Stat(scrollSocket); err == nil {
-			detectedCompositor = CompositorScroll
-			return detectedCompositor
-		}
-	case miracleSocket != "":
-		if _, err := os.Stat(miracleSocket); err == nil {
-			detectedCompositor = CompositorMiracle
-			return detectedCompositor
-		}
-	case swaySocket != "":
-		if _, err := os.Stat(swaySocket); err == nil {
-			detectedCompositor = CompositorSway
-			return detectedCompositor
-		}
-	case hyprlandSig != "":
+	if os.Getenv("HYPRLAND_INSTANCE_SIGNATURE") != "" {
 		detectedCompositor = CompositorHyprland
-		return detectedCompositor
-	}
-
-	if detectDWLProtocol() {
-		detectedCompositor = CompositorDWL
 		return detectedCompositor
 	}
 
@@ -116,14 +84,10 @@ type WindowGeometry struct {
 }
 
 func GetActiveWindow() (*WindowGeometry, error) {
-	switch DetectCompositor() {
-	case CompositorHyprland:
-		return getHyprlandActiveWindow()
-	case CompositorDWL:
-		return getDWLActiveWindow()
-	default:
-		return nil, fmt.Errorf("window capture requires Hyprland or DWL")
+	if DetectCompositor() != CompositorHyprland {
+		return nil, fmt.Errorf("window capture requires Hyprland")
 	}
+	return getHyprlandActiveWindow()
 }
 
 type hyprlandWindow struct {
@@ -425,21 +389,10 @@ func queryDWLActiveOutput() string {
 }
 
 func GetFocusedMonitor() string {
-	switch DetectCompositor() {
-	case CompositorHyprland:
-		return getHyprlandFocusedMonitor()
-	case CompositorSway:
-		return getSwayFocusedMonitor()
-	case CompositorScroll:
-		return getScrollFocusedMonitor()
-	case CompositorMiracle:
-		return getMiracleFocusedMonitor()
-	case CompositorNiri:
-		return getNiriFocusedMonitor()
-	case CompositorDWL:
-		return getDWLFocusedMonitor()
+	if DetectCompositor() != CompositorHyprland {
+		return ""
 	}
-	return ""
+	return getHyprlandFocusedMonitor()
 }
 
 type outputInfo struct {

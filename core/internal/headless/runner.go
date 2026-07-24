@@ -1,4 +1,4 @@
-﻿package headless
+package headless
 
 import (
 	"context"
@@ -21,7 +21,6 @@ var ErrConfirmationRequired = fmt.Errorf("confirmation required: pass --yes to p
 // replaceConfigs. Keep in sync with the config types checked by
 // shouldReplaceConfig in deployer.go.
 var validConfigNames = map[string]string{
-	"niri":      "Niri",
 	"hyprland":  "Hyprland",
 	"ghostty":   "Ghostty",
 	"kitty":     "Kitty",
@@ -30,15 +29,15 @@ var validConfigNames = map[string]string{
 
 // orderedConfigNames defines the canonical order for config names in output.
 // Must be kept in sync with validConfigNames.
-var orderedConfigNames = []string{"niri", "hyprland", "ghostty", "kitty", "alacritty"}
+var orderedConfigNames = []string{"hyprland", "ghostty", "kitty", "alacritty"}
 
 // Config holds all CLI parameters for unattended installation.
 type Config struct {
-	Compositor        string // "niri" or "hyprland"
+	Compositor        string // "hyprland"
 	Terminal          string // "ghostty", "kitty", or "alacritty"
 	IncludeDeps       []string
 	ExcludeDeps       []string
-	ReplaceConfigs    []string // specific configs to deploy (e.g. "niri", "ghostty")
+	ReplaceConfigs    []string // specific configs to deploy (e.g. "hyprland", "ghostty")
 	ReplaceConfigsAll bool     // deploy/replace all configurations
 	Yes               bool
 }
@@ -216,16 +215,12 @@ func (r *Runner) Run() error {
 
 	// 9. Greeter setup (if hype-greeter was included)
 	if !disabledItems["hype-greeter"] && r.depExists(dependencies, "hype-greeter") {
-		compositorName := "niri"
-		if wm == deps.WindowManagerHyprland {
-			compositorName = "Hyprland"
-		}
 		fmt.Fprintln(os.Stdout, "Configuring HYPE greeter...")
 		logFunc := func(line string) {
 			r.log(line)
 			fmt.Fprintf(os.Stdout, "  greeter: %s\n", line)
 		}
-		if err := greeter.AutoSetupGreeter(compositorName, sudoPassword, logFunc); err != nil {
+		if err := greeter.AutoSetupGreeter("Hyprland", sudoPassword, logFunc); err != nil {
 			// Non-fatal, matching TUI behavior
 			fmt.Fprintf(os.Stderr, "Warning: greeter setup issue (non-fatal): %v\n", err)
 		}
@@ -343,7 +338,7 @@ func (r *Runner) buildReplaceConfigs() (map[string]bool, error) {
 		}
 		deployerKey, ok := validConfigNames[strings.ToLower(name)]
 		if !ok {
-			return nil, fmt.Errorf("--replace-configs: unknown config %q; valid values: niri, hyprland, ghostty, kitty, alacritty", name)
+			return nil, fmt.Errorf("--replace-configs: unknown config %q; valid values: hyprland, ghostty, kitty, alacritty", name)
 		}
 		result[deployerKey] = true
 	}
@@ -360,12 +355,10 @@ func (r *Runner) log(message string) {
 
 func (r *Runner) parseWindowManager() (deps.WindowManager, error) {
 	switch strings.ToLower(r.cfg.Compositor) {
-	case "niri":
-		return deps.WindowManagerNiri, nil
-	case "hyprland":
+	case "", "hyprland":
 		return deps.WindowManagerHyprland, nil
 	default:
-		return 0, fmt.Errorf("invalid --compositor value %q: must be 'niri' or 'hyprland'", r.cfg.Compositor)
+		return 0, fmt.Errorf("invalid --compositor value %q: HypeShell only supports 'hyprland'", r.cfg.Compositor)
 	}
 }
 

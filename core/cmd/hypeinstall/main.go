@@ -1,4 +1,4 @@
-﻿package main
+package main
 
 import (
 	"fmt"
@@ -28,10 +28,11 @@ var (
 var rootCmd = &cobra.Command{
 	Use:   "hypeinstall",
 	Short: "Install HypeMaterialShell and its dependencies",
-	Long: `hypeinstall sets up HypeMaterialShell with your chosen compositor and terminal.
+	Long: `hypeinstall sets up HypeShell for Hyprland with your chosen terminal.
 
-Without flags, it launches an interactive TUI. Providing either --compositor
-or --term activates headless (unattended) mode, which requires both flags.
+Without flags, it launches an interactive TUI. Providing --term activates
+headless (unattended) mode. --compositor is retained as a compatibility flag
+and only accepts hyprland.
 
 Headless mode requires cached sudo credentials. Run 'sudo -v' beforehand, or
 configure passwordless sudo for your user.`,
@@ -42,11 +43,11 @@ configure passwordless sudo for your user.`,
 }
 
 func init() {
-	rootCmd.Flags().StringVarP(&compositor, "compositor", "c", "", "Compositor/WM to install: niri or hyprland (enables headless mode)")
+	rootCmd.Flags().StringVarP(&compositor, "compositor", "c", "hyprland", "Compositor/WM to install (hyprland only)")
 	rootCmd.Flags().StringVarP(&term, "term", "t", "", "Terminal emulator to install: ghostty, kitty, or alacritty (enables headless mode)")
 	rootCmd.Flags().StringSliceVar(&includeDeps, "include-deps", []string{}, "Optional deps to enable (e.g. hype-greeter)")
 	rootCmd.Flags().StringSliceVar(&excludeDeps, "exclude-deps", []string{}, "Deps to skip during installation")
-	rootCmd.Flags().StringSliceVar(&replaceConfigs, "replace-configs", []string{}, "Deploy only named configs (e.g. niri,ghostty)")
+	rootCmd.Flags().StringSliceVar(&replaceConfigs, "replace-configs", []string{}, "Deploy only named configs (e.g. hyprland,ghostty)")
 	rootCmd.Flags().BoolVar(&replaceConfigsAll, "replace-configs-all", false, "Deploy and replace all configurations")
 	rootCmd.Flags().BoolVarP(&yes, "yes", "y", false, "Auto-confirm all prompts")
 }
@@ -64,7 +65,7 @@ func main() {
 }
 
 func runHypeinstall(cmd *cobra.Command, args []string) error {
-	headlessMode := compositor != "" || term != ""
+	headlessMode := term != ""
 
 	if !headlessMode {
 		// Reject headless-only flags when running in TUI mode.
@@ -82,7 +83,7 @@ func runHypeinstall(cmd *cobra.Command, args []string) error {
 			}
 		}
 		if len(set) > 0 {
-			return fmt.Errorf("flags %s are only valid in headless mode (requires both --compositor and --term)", strings.Join(set, ", "))
+			return fmt.Errorf("flags %s are only valid in headless mode (requires --term)", strings.Join(set, ", "))
 		}
 	}
 
@@ -93,10 +94,6 @@ func runHypeinstall(cmd *cobra.Command, args []string) error {
 }
 
 func runHeadless() error {
-	// Validate required flags
-	if compositor == "" {
-		return fmt.Errorf("--compositor is required for headless mode (niri or hyprland)")
-	}
 	if term == "" {
 		return fmt.Errorf("--term is required for headless mode (ghostty, kitty, or alacritty)")
 	}

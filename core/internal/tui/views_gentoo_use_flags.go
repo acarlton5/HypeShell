@@ -65,10 +65,7 @@ func (m Model) updateGentooUseFlagsState(msg tea.Msg) (tea.Model, tea.Cmd) {
 			m.skipGentooUseFlags = !m.skipGentooUseFlags
 			return m, nil
 		case "enter":
-			if m.selectedWM == 1 {
-				return m, m.checkGCCVersion()
-			}
-			return m.enterAuthPhase()
+			return m, m.checkGCCVersion()
 		case "esc":
 			m.state = StateDependencyReview
 			return m, nil

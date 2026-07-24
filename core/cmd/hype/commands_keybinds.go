@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
-	"path/filepath"
 
 	"github.com/acarlton5/HypeShell/core/internal/keybinds"
 	"github.com/acarlton5/HypeShell/core/internal/keybinds/providers"
@@ -88,37 +87,6 @@ func initializeProviders() {
 		log.Warnf("Failed to register Hyprland provider: %v", err)
 	}
 
-	mangowcProvider := providers.NewMangoWCProvider("")
-	if err := registry.Register(mangowcProvider); err != nil {
-		log.Warnf("Failed to register MangoWC provider: %v", err)
-	}
-
-	configDir, _ := os.UserConfigDir()
-
-	if configDir != "" {
-		scrollProvider := providers.NewSwayProvider(filepath.Join(configDir, "scroll"))
-		if err := registry.Register(scrollProvider); err != nil {
-			log.Warnf("Failed to register Scroll provider: %v", err)
-		}
-	}
-
-	miracleProvider := providers.NewMiracleProvider("")
-	if err := registry.Register(miracleProvider); err != nil {
-		log.Warnf("Failed to register Miracle WM provider: %v", err)
-	}
-
-	if configDir != "" {
-		swayProvider := providers.NewSwayProvider(filepath.Join(configDir, "sway"))
-		if err := registry.Register(swayProvider); err != nil {
-			log.Warnf("Failed to register Sway provider: %v", err)
-		}
-	}
-
-	niriProvider := providers.NewNiriProvider("")
-	if err := registry.Register(niriProvider); err != nil {
-		log.Warnf("Failed to register Niri provider: %v", err)
-	}
-
 	config := keybinds.DefaultDiscoveryConfig()
 	if err := keybinds.AutoDiscoverProviders(registry, config); err != nil {
 		log.Warnf("Failed to auto-discover providers: %v", err)
@@ -150,16 +118,6 @@ func makeProviderWithPath(name, path string) keybinds.Provider {
 	switch name {
 	case "hyprland":
 		return providers.NewHyprlandProvider(path)
-	case "mangowc":
-		return providers.NewMangoWCProvider(path)
-	case "sway":
-		return providers.NewSwayProvider(path)
-	case "scroll":
-		return providers.NewSwayProvider(path)
-	case "miracle":
-		return providers.NewMiracleProvider(path)
-	case "niri":
-		return providers.NewNiriProvider(path)
 	default:
 		return nil
 	}

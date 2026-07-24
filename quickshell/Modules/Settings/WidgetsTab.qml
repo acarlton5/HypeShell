@@ -33,14 +33,6 @@ Item {
     property var baseWidgetDefinitions: {
         var coreWidgets = [
             {
-                "id": "layout",
-                "text": I18n.tr("Layout"),
-                "description": I18n.tr("Display and switch DWL layouts"),
-                "icon": "view_quilt",
-                "enabled": CompositorService.isDwl && DwlService.dwlAvailable,
-                "warning": !CompositorService.isDwl ? I18n.tr("Requires DWL compositor") : (!DwlService.dwlAvailable ? I18n.tr("DWL service not available") : undefined)
-            },
-            {
                 "id": "launcherButton",
                 "text": I18n.tr("App Launcher"),
                 "description": I18n.tr("Quick access to application launcher"),

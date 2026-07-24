@@ -77,7 +77,6 @@ Singletons providing system integration:
 - `DgopService` - System metrics (CPU, RAM, GPU)
 
 **Integration**
-- `NiriService` - Niri workspace integration
 - `HyprlandService` - Hyprland workspace integration
 - `PluginService` - Plugin discovery and lifecycle
 
@@ -137,11 +136,11 @@ Variants {
 }
 ```
 
-Workspace switchers adapt to compositor (Niri/Hyprland).
+Workspace switchers use Hyprland workspaces.
 
 ## Plugin System
 
-External plugins in `~/.config/HypeMaterialShell/plugins/`:
+External plugins in `~/.config/HypeShell/plugins/`:
 
 **Widget plugins** - UI components in Hype Bar
 **Daemon plugins** - Background processes without UI

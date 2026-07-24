@@ -280,16 +280,10 @@ func resolveGreeterWrapperPath() string {
 }
 
 func DetectCompositors() []string {
-	var compositors []string
-
-	if utils.CommandExists("niri") {
-		compositors = append(compositors, "niri")
-	}
 	if utils.CommandExists("Hyprland") {
-		compositors = append(compositors, "Hyprland")
+		return []string{"Hyprland"}
 	}
-
-	return compositors
+	return nil
 }
 
 func PromptCompositorChoice(compositors []string) (string, error) {
@@ -1321,7 +1315,7 @@ func syncNiriGreeterConfig(logFunc func(string), sudoPassword string) error {
 		return fmt.Errorf("failed to install greetd niri hype config: %w", err)
 	}
 
-	mainContent := fmt.Sprintf("%s\ninclude \"%s\"\n", config.NiriGreeterConfig, hypePath)
+	mainContent := fmt.Sprintf("include \"%s\"\n", hypePath)
 	mainTemp, err := os.CreateTemp("", "hype-greeter-niri-main-*.kdl")
 	if err != nil {
 		return fmt.Errorf("failed to create temp file: %w", err)

@@ -1,6 +1,5 @@
 ﻿import QtQuick
 import Quickshell.Hyprland
-import Quickshell.I3
 import Quickshell.Services.SystemTray
 import Quickshell.Wayland
 import qs.Common
@@ -141,116 +140,27 @@ Item {
 
     function getRealWorkspaces() {
         const screenName = _barScreenName;
-        if (CompositorService.isNiri) {
-            const fallbackWorkspaces = [
-                {
-                    "id": 1,
-                    "idx": 0,
-                    "name": ""
-                },
-                {
-                    "id": 2,
-                    "idx": 1,
-                    "name": ""
-                }
-            ];
-            if (!screenName || SettingsData.workspaceFollowFocus) {
-                const currentWorkspaces = NiriService.getCurrentOutputWorkspaces();
-                return currentWorkspaces.length > 0 ? currentWorkspaces : fallbackWorkspaces;
-            }
-            const workspaces = NiriService.allWorkspaces.filter(ws => ws.output === screenName);
-            return workspaces.length > 0 ? workspaces : fallbackWorkspaces;
-        } else if (CompositorService.isHyprland) {
-            const workspaces = Hyprland.workspaces?.values || [];
+        const workspaces = Hyprland.workspaces?.values || [];
 
-            if (!screenName || SettingsData.workspaceFollowFocus) {
-                const sorted = workspaces.slice().sort((a, b) => a.id - b.id);
-                const filtered = sorted.filter(ws => ws.id > -1);
-                return filtered.length > 0 ? filtered : [
-                    {
-                        "id": 1,
-                        "name": "1"
-                    }
-                ];
-            }
-
-            const monitorWorkspaces = workspaces.filter(ws => {
-                return ws.lastIpcObject && ws.lastIpcObject.monitor === screenName && ws.id > -1;
-            });
-
-            if (monitorWorkspaces.length === 0) {
-                return [
-                    {
-                        "id": 1,
-                        "name": "1"
-                    }
-                ];
-            }
-
-            return monitorWorkspaces.sort((a, b) => a.id - b.id);
-        } else if (CompositorService.isDwl) {
-            if (!DwlService.dwlAvailable) {
-                return [0];
-            }
-            if (SettingsData.dwlShowAllTags) {
-                return Array.from({
-                    length: DwlService.tagCount
-                }, (_, i) => i);
-            }
-            return DwlService.getVisibleTags(screenName);
-        } else if (CompositorService.isSway || CompositorService.isScroll || CompositorService.isMiracle) {
-            const workspaces = I3.workspaces?.values || [];
-            if (workspaces.length === 0)
-                return [
-                    {
-                        "num": 1
-                    }
-                ];
-
-            if (!screenName || SettingsData.workspaceFollowFocus) {
-                return workspaces.slice().sort((a, b) => a.num - b.num);
-            }
-
-            const monitorWorkspaces = workspaces.filter(ws => ws.monitor?.name === screenName);
-            return monitorWorkspaces.length > 0 ? monitorWorkspaces.sort((a, b) => a.num - b.num) : [
-                {
-                    "num": 1
-                }
-            ];
+        if (!screenName || SettingsData.workspaceFollowFocus) {
+            const sorted = workspaces.slice().sort((a, b) => a.id - b.id);
+            const filtered = sorted.filter(ws => ws.id > -1);
+            return filtered.length > 0 ? filtered : [{"id": 1, "name": "1"}];
         }
-        return [1];
+
+        const monitorWorkspaces = workspaces.filter(ws => {
+            return ws.lastIpcObject && ws.lastIpcObject.monitor === screenName && ws.id > -1;
+        });
+        return monitorWorkspaces.length > 0
+            ? monitorWorkspaces.sort((a, b) => a.id - b.id)
+            : [{"id": 1, "name": "1"}];
     }
 
     function getCurrentWorkspace() {
         const screenName = _barScreenName;
-        if (CompositorService.isNiri) {
-            if (!screenName || SettingsData.workspaceFollowFocus) {
-                return NiriService.getCurrentWorkspaceNumber();
-            }
-            const activeWs = NiriService.allWorkspaces.find(ws => ws.output === screenName && ws.is_active);
-            return activeWs ? activeWs.idx : 1;
-        } else if (CompositorService.isHyprland) {
-            const monitors = Hyprland.monitors?.values || [];
-            const currentMonitor = monitors.find(monitor => monitor.name === screenName);
-            return currentMonitor?.activeWorkspace?.id ?? 1;
-        } else if (CompositorService.isDwl) {
-            if (!DwlService.dwlAvailable)
-                return 0;
-            const outputState = DwlService.getOutputState(screenName);
-            if (!outputState || !outputState.tags)
-                return 0;
-            const activeTags = DwlService.getActiveTags(screenName);
-            return activeTags.length > 0 ? activeTags[0] : 0;
-        } else if (CompositorService.isSway || CompositorService.isScroll || CompositorService.isMiracle) {
-            if (!screenName || SettingsData.workspaceFollowFocus) {
-                const focusedWs = I3.workspaces?.values?.find(ws => ws.focused === true);
-                return focusedWs ? focusedWs.num : 1;
-            }
-
-            const focusedWs = I3.workspaces?.values?.find(ws => ws.monitor?.name === screenName && ws.focused === true);
-            return focusedWs ? focusedWs.num : 1;
-        }
-        return 1;
+        const monitors = Hyprland.monitors?.values || [];
+        const currentMonitor = monitors.find(monitor => monitor.name === screenName);
+        return currentMonitor?.activeWorkspace?.id ?? 1;
     }
 
     function switchWorkspace(direction) {
@@ -259,48 +169,13 @@ Item {
             return;
         }
 
-        if (CompositorService.isNiri) {
-            const currentWs = getCurrentWorkspace();
-            const currentIndex = realWorkspaces.findIndex(ws => ws && ws.idx === currentWs);
-            const validIndex = currentIndex === -1 ? 0 : currentIndex;
-            const nextIndex = direction > 0 ? Math.min(validIndex + 1, realWorkspaces.length - 1) : Math.max(validIndex - 1, 0);
+        const currentWs = getCurrentWorkspace();
+        const currentIndex = realWorkspaces.findIndex(ws => ws.id === currentWs);
+        const validIndex = currentIndex === -1 ? 0 : currentIndex;
+        const nextIndex = direction > 0 ? Math.min(validIndex + 1, realWorkspaces.length - 1) : Math.max(validIndex - 1, 0);
 
-            if (nextIndex !== validIndex) {
-                const nextWorkspace = realWorkspaces[nextIndex];
-                if (!nextWorkspace || nextWorkspace.idx === undefined) {
-                    return;
-                }
-                NiriService.switchToWorkspace(nextWorkspace.idx);
-            }
-        } else if (CompositorService.isHyprland) {
-            const currentWs = getCurrentWorkspace();
-            const currentIndex = realWorkspaces.findIndex(ws => ws.id === currentWs);
-            const validIndex = currentIndex === -1 ? 0 : currentIndex;
-            const nextIndex = direction > 0 ? Math.min(validIndex + 1, realWorkspaces.length - 1) : Math.max(validIndex - 1, 0);
-
-            if (nextIndex !== validIndex) {
-                Hyprland.dispatch(`workspace ${realWorkspaces[nextIndex].id}`);
-            }
-        } else if (CompositorService.isDwl) {
-            const currentTag = getCurrentWorkspace();
-            const currentIndex = realWorkspaces.findIndex(tag => tag === currentTag);
-            const validIndex = currentIndex === -1 ? 0 : currentIndex;
-            const nextIndex = direction > 0 ? Math.min(validIndex + 1, realWorkspaces.length - 1) : Math.max(validIndex - 1, 0);
-
-            if (nextIndex !== validIndex) {
-                DwlService.switchToTag(_barScreenName, realWorkspaces[nextIndex]);
-            }
-        } else if (CompositorService.isSway || CompositorService.isScroll || CompositorService.isMiracle) {
-            const currentWs = getCurrentWorkspace();
-            const currentIndex = realWorkspaces.findIndex(ws => ws.num === currentWs);
-            const validIndex = currentIndex === -1 ? 0 : currentIndex;
-            const nextIndex = direction > 0 ? Math.min(validIndex + 1, realWorkspaces.length - 1) : Math.max(validIndex - 1, 0);
-
-            if (nextIndex !== validIndex) {
-                try {
-                    I3.dispatch(`workspace number ${realWorkspaces[nextIndex].num}`);
-                } catch (_) {}
-            }
+        if (nextIndex !== validIndex) {
+            Hyprland.dispatch(`workspace ${realWorkspaces[nextIndex].id}`);
         }
     }
 
@@ -413,7 +288,6 @@ Item {
             "gpuTemp": gpuTempComponent,
             "notificationButton": notificationButtonComponent,
             "battery": batteryComponent,
-            "layout": layoutComponent,
             "controlCenterButton": controlCenterButtonComponent,
             "capsLockIndicator": capsLockIndicatorComponent,
             "idleInhibitor": idleInhibitorComponent,
@@ -455,7 +329,6 @@ Item {
             "gpuTempComponent": gpuTempComponent,
             "notificationButtonComponent": notificationButtonComponent,
             "batteryComponent": batteryComponent,
-            "layoutComponent": layoutComponent,
             "controlCenterButtonComponent": controlCenterButtonComponent,
             "capsLockIndicatorComponent": capsLockIndicatorComponent,
             "idleInhibitorComponent": idleInhibitorComponent,
@@ -1298,37 +1171,6 @@ Item {
                     batteryPopoutLoader.item.setTriggerPosition(pos.x, pos.y, pos.width, widgetSection, barWindow.screen, barPosition, barWindow.effectiveBarThickness, effectiveBarConfig?.spacing ?? 4, effectiveBarConfig);
                 }
                 PopoutManager.requestPopout(batteryPopoutLoader.item, undefined, "battery");
-            }
-        }
-    }
-
-    Component {
-        id: layoutComponent
-
-        DWLLayout {
-            id: layoutWidget
-            layoutPopupVisible: layoutPopoutLoader.item ? layoutPopoutLoader.item.shouldBeVisible : false
-            widgetThickness: barWindow.widgetThickness
-            barThickness: barWindow.effectiveBarThickness
-            axis: barWindow.axis
-            section: topBarContent.getWidgetSection(parent) || "center"
-            popoutTarget: layoutPopoutLoader.item ?? null
-            parentScreen: barWindow.screen
-            onToggleLayoutPopup: {
-                layoutPopoutLoader.active = true;
-                if (!layoutPopoutLoader.item)
-                    return;
-                const effectiveBarConfig = topBarContent.barConfig;
-                const barPosition = barWindow.axis?.edge === "left" ? 2 : (barWindow.axis?.edge === "right" ? 3 : (barWindow.axis?.edge === "top" ? 0 : 1));
-
-                if (layoutPopoutLoader.item.setTriggerPosition) {
-                    const globalPos = layoutWidget.mapToItem(null, 0, 0);
-                    const pos = SettingsData.getPopupTriggerPosition(globalPos, barWindow.screen, barWindow.effectiveBarThickness, layoutWidget.width, effectiveBarConfig?.spacing ?? 4, barPosition, effectiveBarConfig);
-                    const widgetSection = topBarContent.getWidgetSection(parent) || "center";
-                    layoutPopoutLoader.item.setTriggerPosition(pos.x, pos.y, pos.width, widgetSection, barWindow.screen, barPosition, barWindow.effectiveBarThickness, effectiveBarConfig?.spacing ?? 4, effectiveBarConfig);
-                }
-
-                PopoutManager.requestPopout(layoutPopoutLoader.item, undefined, "layout");
             }
         }
     }

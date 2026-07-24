@@ -1,4 +1,4 @@
-﻿package tui
+package tui
 
 import (
 	"context"
@@ -209,12 +209,7 @@ func (m Model) installPackages() tea.Cmd {
 		}
 
 		// Convert TUI selection to deps enum
-		var wm deps.WindowManager
-		if m.selectedWM == 0 {
-			wm = deps.WindowManagerNiri
-		} else {
-			wm = deps.WindowManagerHyprland
-		}
+		wm := deps.WindowManagerHyprland
 
 		installerProgressChan := make(chan distros.InstallProgressMsg, 100)
 
@@ -244,10 +239,7 @@ func (m Model) installPackages() tea.Cmd {
 						}
 					}
 					if greeterSelected {
-						compositorName := "niri"
-						if m.selectedWM == 1 {
-							compositorName = "Hyprland"
-						}
+						compositorName := "Hyprland"
 						m.packageProgressChan <- packageInstallProgressMsg{
 							progress:  0.92,
 							step:      "Configuring HYPE greeter...",

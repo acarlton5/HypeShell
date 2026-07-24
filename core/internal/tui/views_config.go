@@ -103,15 +103,7 @@ func (m Model) updateDeployingConfigsState(msg tea.Msg) (tea.Model, tea.Cmd) {
 func (m Model) deployConfigurations() tea.Cmd {
 	return func() tea.Msg {
 		// Determine the selected window manager
-		var wm deps.WindowManager
-		switch m.selectedWM {
-		case 0:
-			wm = deps.WindowManagerNiri
-		case 1:
-			wm = deps.WindowManagerHyprland
-		default:
-			wm = deps.WindowManagerNiri
-		}
+		wm := deps.WindowManagerHyprland
 
 		// Determine the selected terminal
 		var terminal deps.Terminal
@@ -288,29 +280,16 @@ func (m Model) checkExistingConfigurations() tea.Cmd {
 	return func() tea.Msg {
 		var configs []ExistingConfigInfo
 
-		if m.selectedWM == 0 {
-			niriPath := filepath.Join(os.Getenv("HOME"), ".config", "niri", "config.kdl")
-			niriExists := false
-			if _, err := os.Stat(niriPath); err == nil {
-				niriExists = true
-			}
-			configs = append(configs, ExistingConfigInfo{
-				ConfigType: "Niri",
-				Path:       niriPath,
-				Exists:     niriExists,
-			})
-		} else {
-			hyprlandPath := filepath.Join(os.Getenv("HOME"), ".config", "hypr", "hyprland.conf")
-			hyprlandExists := false
-			if _, err := os.Stat(hyprlandPath); err == nil {
-				hyprlandExists = true
-			}
-			configs = append(configs, ExistingConfigInfo{
-				ConfigType: "Hyprland",
-				Path:       hyprlandPath,
-				Exists:     hyprlandExists,
-			})
+		hyprlandPath := filepath.Join(os.Getenv("HOME"), ".config", "hypr", "hyprland.conf")
+		hyprlandExists := false
+		if _, err := os.Stat(hyprlandPath); err == nil {
+			hyprlandExists = true
 		}
+		configs = append(configs, ExistingConfigInfo{
+			ConfigType: "Hyprland",
+			Path:       hyprlandPath,
+			Exists:     hyprlandExists,
+		})
 
 		if m.osInfo != nil && m.osInfo.Distribution.ID == "gentoo" {
 			if m.selectedTerminal == 0 {

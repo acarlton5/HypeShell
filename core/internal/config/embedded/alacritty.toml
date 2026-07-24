@@ -1,6 +1,6 @@
 [general]
 import = [
-  "~/.config/alacritty/dank-theme.toml"
+  "~/.config/alacritty/hype-theme.toml"
 ]
 
 [window]

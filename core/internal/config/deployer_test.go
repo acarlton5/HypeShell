@@ -1,4 +1,4 @@
-﻿package config
+package config
 
 import (
 	"context"
@@ -10,176 +10,6 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
-
-func TestMergeNiriOutputSections(t *testing.T) {
-	cd := &ConfigDeployer{}
-
-	tests := []struct {
-		name           string
-		newConfig      string
-		existingConfig string
-		wantError      bool
-		wantContains   []string
-	}{
-		{
-			name: "no existing outputs",
-			newConfig: `input {
-    keyboard {
-        xkb {
-        }
-    }
-}
-layout {
-    gaps 5
-}`,
-			existingConfig: `input {
-    keyboard {
-        xkb {
-        }
-    }
-}
-layout {
-    gaps 10
-}`,
-			wantError:    false,
-			wantContains: []string{"gaps 5"}, // Should keep new config
-		},
-		{
-			name: "merge single output",
-			newConfig: `input {
-    keyboard {
-        xkb {
-        }
-    }
-}
-/-output "eDP-2" {
-    mode "2560x1600@239.998993"
-    position x=2560 y=0
-}
-layout {
-    gaps 5
-}`,
-			existingConfig: `input {
-    keyboard {
-        xkb {
-        }
-    }
-}
-output "eDP-1" {
-    mode "1920x1080@60.000000"
-    position x=0 y=0
-    scale 1.0
-}
-layout {
-    gaps 10
-}`,
-			wantError: false,
-			wantContains: []string{
-				"gaps 5",                              // New config preserved
-				`output "eDP-1"`,                      // Existing output merged
-				"1920x1080@60.000000",                 // Existing output details
-				"Outputs from existing configuration", // Comment added
-			},
-		},
-		{
-			name: "merge multiple outputs",
-			newConfig: `input {
-    keyboard {
-        xkb {
-        }
-    }
-}
-/-output "eDP-2" {
-    mode "2560x1600@239.998993"
-    position x=2560 y=0
-}
-layout {
-    gaps 5
-}`,
-			existingConfig: `input {
-    keyboard {
-        xkb {
-        }
-    }
-}
-output "eDP-1" {
-    mode "1920x1080@60.000000"
-    position x=0 y=0
-    scale 1.0
-}
-/-output "HDMI-1" {
-    mode "1920x1080@60.000000"
-    position x=1920 y=0
-}
-layout {
-    gaps 10
-}`,
-			wantError: false,
-			wantContains: []string{
-				"gaps 5",              // New config preserved
-				`output "eDP-1"`,      // First existing output
-				`/-output "HDMI-1"`,   // Second existing output (commented)
-				"1920x1080@60.000000", // Output details
-			},
-		},
-		{
-			name: "merge commented outputs",
-			newConfig: `input {
-    keyboard {
-        xkb {
-        }
-    }
-}
-/-output "eDP-2" {
-    mode "2560x1600@239.998993"
-    position x=2560 y=0
-}
-layout {
-    gaps 5
-}`,
-			existingConfig: `input {
-    keyboard {
-        xkb {
-        }
-    }
-}
-/-output "eDP-1" {
-    mode "1920x1080@60.000000"
-    position x=0 y=0
-    scale 1.0
-}
-layout {
-    gaps 10
-}`,
-			wantError: false,
-			wantContains: []string{
-				"gaps 5",              // New config preserved
-				`/-output "eDP-1"`,    // Commented output preserved
-				"1920x1080@60.000000", // Output details
-			},
-		},
-	}
-
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			tmpDir := t.TempDir()
-			result, err := cd.mergeNiriOutputSections(tt.newConfig, tt.existingConfig, tmpDir)
-
-			if tt.wantError {
-				assert.Error(t, err)
-				return
-			}
-
-			require.NoError(t, err)
-
-			for _, want := range tt.wantContains {
-				assert.Contains(t, result, want, "merged config should contain: %s", want)
-			}
-
-			assert.NotContains(t, result, `/-output "eDP-2"`, "example output should be removed")
-		})
-	}
-}
 
 func TestConfigDeploymentFlow(t *testing.T) {
 	tempDir, err := os.MkdirTemp("", "hypeinstall-test")
@@ -450,14 +280,6 @@ general {
 	})
 }
 
-func TestNiriConfigStructure(t *testing.T) {
-	assert.Contains(t, NiriConfig, "input {")
-	assert.Contains(t, NiriConfig, "layout {")
-
-	assert.Contains(t, NiriBindsConfig, "binds {")
-	assert.Contains(t, NiriBindsConfig, `spawn "{{TERMINAL_COMMAND}}"`)
-}
-
 func TestHyprlandConfigStructure(t *testing.T) {
 	assert.Contains(t, HyprlandConfig, "# MONITOR CONFIG")
 	assert.Contains(t, HyprlandConfig, "# STARTUP APPS")
@@ -628,7 +450,6 @@ func TestAlacrittyConfigDeployment(t *testing.T) {
 
 func TestShouldReplaceConfigDeployIfMissing(t *testing.T) {
 	allFalse := map[string]bool{
-		"Niri":      false,
 		"Hyprland":  false,
 		"Ghostty":   false,
 		"Kitty":     false,
@@ -649,7 +470,7 @@ func TestShouldReplaceConfigDeployIfMissing(t *testing.T) {
 
 		results, err := cd.DeployConfigurationsSelectiveWithReinstalls(
 			context.Background(),
-			deps.WindowManagerNiri,
+			deps.WindowManagerHyprland,
 			deps.TerminalGhostty,
 			nil, // installedDeps
 			nil, // replaceConfigs
@@ -682,7 +503,7 @@ func TestShouldReplaceConfigDeployIfMissing(t *testing.T) {
 
 		results, err := cd.DeployConfigurationsSelectiveWithReinstalls(
 			context.Background(),
-			deps.WindowManagerNiri,
+			deps.WindowManagerHyprland,
 			deps.TerminalGhostty,
 			nil,      // installedDeps
 			allFalse, // replaceConfigs — all false
@@ -717,11 +538,11 @@ func TestShouldReplaceConfigDeployIfMissing(t *testing.T) {
 		err = os.WriteFile(ghosttyPath, []byte("# existing ghostty config\n"), 0o644)
 		require.NoError(t, err)
 
-		// Also create the Niri primary config file
-		niriPath := filepath.Join(tempDir, ".config", "niri", "config.kdl")
-		err = os.MkdirAll(filepath.Dir(niriPath), 0o755)
+		// Also create the Hyprland primary config file
+		hyprlandPath := filepath.Join(tempDir, ".config", "hypr", "hyprland.conf")
+		err = os.MkdirAll(filepath.Dir(hyprlandPath), 0o755)
 		require.NoError(t, err)
-		err = os.WriteFile(niriPath, []byte("// existing niri config\n"), 0o644)
+		err = os.WriteFile(hyprlandPath, []byte("# existing hyprland config\n"), 0o644)
 		require.NoError(t, err)
 
 		logChan := make(chan string, 100)
@@ -729,7 +550,7 @@ func TestShouldReplaceConfigDeployIfMissing(t *testing.T) {
 
 		results, err := cd.DeployConfigurationsSelectiveWithReinstalls(
 			context.Background(),
-			deps.WindowManagerNiri,
+			deps.WindowManagerHyprland,
 			deps.TerminalGhostty,
 			nil,      // installedDeps
 			allFalse, // replaceConfigs — all false
@@ -737,7 +558,7 @@ func TestShouldReplaceConfigDeployIfMissing(t *testing.T) {
 		)
 		require.NoError(t, err)
 
-		// Both Niri and Ghostty config files exist, so with all false they should be skipped
+		// Both Hyprland and Ghostty config files exist, so with all false they should be skipped
 		for _, r := range results {
 			assert.Fail(t, "expected no configs to be deployed", "got deployed config: %s", r.ConfigType)
 		}
@@ -763,7 +584,6 @@ func TestShouldReplaceConfigDeployIfMissing(t *testing.T) {
 		cd := NewConfigDeployer(logChan)
 
 		replaceConfigs := map[string]bool{
-			"Niri":      false,
 			"Hyprland":  false,
 			"Ghostty":   true, // explicitly true
 			"Kitty":     false,
@@ -772,7 +592,7 @@ func TestShouldReplaceConfigDeployIfMissing(t *testing.T) {
 
 		results, err := cd.DeployConfigurationsSelectiveWithReinstalls(
 			context.Background(),
-			deps.WindowManagerNiri,
+			deps.WindowManagerHyprland,
 			deps.TerminalGhostty,
 			nil,            // installedDeps
 			replaceConfigs, // Ghostty=true, rest=false

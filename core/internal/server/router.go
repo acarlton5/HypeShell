@@ -11,7 +11,6 @@ import (
 	"github.com/acarlton5/HypeShell/core/internal/server/clipboard"
 	"github.com/acarlton5/HypeShell/core/internal/server/cups"
 	serverDbus "github.com/acarlton5/HypeShell/core/internal/server/dbus"
-	"github.com/acarlton5/HypeShell/core/internal/server/dwl"
 	"github.com/acarlton5/HypeShell/core/internal/server/evdev"
 	"github.com/acarlton5/HypeShell/core/internal/server/extworkspace"
 	"github.com/acarlton5/HypeShell/core/internal/server/freedesktop"
@@ -123,15 +122,6 @@ func RouteRequest(conn net.Conn, req models.Request) {
 			return
 		}
 		tailscale.HandleRequest(conn, req, tailscaleManager)
-		return
-	}
-
-	if strings.HasPrefix(req.Method, "dwl.") {
-		if dwlManager == nil {
-			models.RespondError(conn, req.ID, "dwl manager not initialized")
-			return
-		}
-		dwl.HandleRequest(conn, req, dwlManager)
 		return
 	}
 

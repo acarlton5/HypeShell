@@ -3,7 +3,6 @@ pragma ComponentBehavior: Bound
 
 import QtQuick
 import Quickshell
-import Quickshell.I3
 import Quickshell.Wayland
 import Quickshell.Hyprland
 import qs.Common
@@ -24,13 +23,6 @@ Singleton {
     readonly property bool useHyprlandFocusGrab: isHyprland && Quickshell.env("HYPE_HYPRLAND_EXCLUSIVE_FOCUS") !== "1"
 
     readonly property string hyprlandSignature: Quickshell.env("HYPRLAND_INSTANCE_SIGNATURE")
-    readonly property string niriSocket: Quickshell.env("NIRI_SOCKET")
-    readonly property string swaySocket: Quickshell.env("SWAYSOCK")
-    readonly property string scrollSocket: Quickshell.env("SWAYSOCK")
-    readonly property string miracleSocket: Quickshell.env("MIRACLESOCK")
-    readonly property string labwcPid: Quickshell.env("LABWC_PID")
-    property bool useNiriSorting: isNiri && NiriService
-
     property var randrScales: ({})
     property bool randrReady: false
     signal randrDataReady
@@ -81,22 +73,10 @@ Singleton {
             }
         }
 
-        if (isNiri && screen) {
-            const niriScale = NiriService.displayScales[screen.name];
-            if (niriScale !== undefined)
-                return niriScale;
-        }
-
         if (isHyprland && screen) {
             const hyprlandMonitor = Hyprland.monitors.values.find(m => m.name === screen.name);
             if (hyprlandMonitor?.scale !== undefined)
                 return hyprlandMonitor.scale;
-        }
-
-        if (isDwl && screen) {
-            const dwlScale = DwlService.getOutputScale(screen.name);
-            if (dwlScale !== undefined && dwlScale > 0)
-                return dwlScale;
         }
 
         return screen?.devicePixelRatio || 1;
@@ -106,13 +86,6 @@ Singleton {
         let screenName = "";
         if (isHyprland && Hyprland.focusedWorkspace?.monitor)
             screenName = Hyprland.focusedWorkspace.monitor.name;
-        else if (isNiri && NiriService.currentOutput)
-            screenName = NiriService.currentOutput;
-        else if (isSway || isScroll || isMiracle) {
-            const focusedWs = I3.workspaces?.values?.find(ws => ws.focused === true);
-            screenName = focusedWs?.monitor?.name || "";
-        } else if (isDwl && DwlService.activeOutput)
-            screenName = DwlService.activeOutput;
 
         if (!screenName)
             return Quickshell.screens.length > 0 ? Quickshell.screens[0] : null;
@@ -161,39 +134,18 @@ Singleton {
             }
         }
     }
-    Connections {
-        target: NiriService
-        function onWindowsChanged() {
-            root.scheduleSort();
-        }
-    }
-
     Component.onCompleted: {
         fetchRandrData();
         detectCompositor();
         scheduleSort();
         Qt.callLater(() => {
-            NiriService.generateNiriLayoutConfig();
             HyprlandService.generateLayoutConfig();
-            DwlService.generateLayoutConfig();
         });
-    }
-
-    Connections {
-        target: DwlService
-        function onStateChanged() {
-            if (isDwl && !isHyprland && !isNiri) {
-                scheduleSort();
-            }
-        }
     }
 
     function computeSortedToplevels() {
         if (!ToplevelManager.toplevels || !ToplevelManager.toplevels.values)
             return [];
-
-        if (useNiriSorting)
-            return NiriService.sortToplevels(ToplevelManager.toplevels.values);
 
         if (isHyprland)
             return sortHyprlandToplevelsSafe();
@@ -363,8 +315,6 @@ Singleton {
     }
 
     function filterCurrentWorkspace(toplevels, screen) {
-        if (useNiriSorting)
-            return NiriService.filterCurrentWorkspace(toplevels, screen);
         if (isHyprland)
             return filterHyprlandCurrentWorkspaceSafe(toplevels, screen);
         return toplevels;
@@ -373,19 +323,6 @@ Singleton {
     function filterCurrentDisplay(toplevels, screenName) {
         if (!toplevels || toplevels.length === 0 || !screenName)
             return toplevels;
-        if (useNiriSorting) {
-            const active = ToplevelManager.activeToplevel;
-            if (active && toplevels.length === 1 && toplevels[0] === active) {
-                if (NiriService.currentOutput !== screenName)
-                    return [];
-                const focusedWin = NiriService.windows.find(nw => nw.is_focused);
-                if (!focusedWin)
-                    return [];
-                const screenWsIds = new Set(NiriService.allWorkspaces.filter(ws => ws.output === screenName).map(ws => ws.id));
-                return screenWsIds.has(focusedWin.workspace_id) ? toplevels : [];
-            }
-            return NiriService.filterCurrentDisplay(toplevels, screenName);
-        }
         if (isHyprland)
             return filterHyprlandCurrentDisplaySafe(toplevels, screenName);
         return toplevels;
@@ -414,19 +351,6 @@ Singleton {
         const screenName = _screenName(screenOrName);
         if (!screenName)
             return false;
-
-        if (isNiri) {
-            const active = ToplevelManager.activeToplevel;
-            if (active?.fullscreen && active?.activated && _toplevelOnScreen(active, screenName))
-                return true;
-
-            const filtered = filterCurrentWorkspace(sortedToplevels, screenName);
-            for (let i = 0; i < filtered.length; i++) {
-                if (filtered[i]?.fullscreen)
-                    return true;
-            }
-            return false;
-        }
 
         if (isHyprland) {
             const filtered = filterCurrentWorkspace(sortedToplevels, screenName);
@@ -537,15 +461,13 @@ Singleton {
         onTriggered: {
             detectCompositor();
             Qt.callLater(() => {
-                NiriService.generateNiriLayoutConfig();
                 HyprlandService.generateLayoutConfig();
-                DwlService.generateLayoutConfig();
             });
         }
     }
 
     function detectCompositor() {
-        if (hyprlandSignature && hyprlandSignature.length > 0 && !niriSocket && !swaySocket && !scrollSocket && !miracleSocket && !labwcPid) {
+        if (hyprlandSignature && hyprlandSignature.length > 0) {
             isHyprland = true;
             isNiri = false;
             isDwl = false;
@@ -558,189 +480,26 @@ Singleton {
             return;
         }
 
-        if (niriSocket && niriSocket.length > 0) {
-            Proc.runCommand("niriSocketCheck", ["test", "-S", niriSocket], (output, exitCode) => {
-                if (exitCode === 0) {
-                    isNiri = true;
-                    isHyprland = false;
-                    isDwl = false;
-                    isSway = false;
-                    isScroll = false;
-                    isMiracle = false;
-                    isLabwc = false;
-                    compositor = "niri";
-                    log.info("Detected Niri with socket:", niriSocket);
-                    NiriService.generateNiriBlurrule();
-                }
-            }, 0);
-            return;
-        }
-
-        if (swaySocket && swaySocket.length > 0 && !scrollSocket && scrollSocket.length == 0 && !miracleSocket) {
-            Proc.runCommand("swaySocketCheck", ["test", "-S", swaySocket], (output, exitCode) => {
-                if (exitCode === 0) {
-                    isNiri = false;
-                    isHyprland = false;
-                    isDwl = false;
-                    isSway = true;
-                    isScroll = false;
-                    isMiracle = false;
-                    isLabwc = false;
-                    compositor = "sway";
-                    log.info("Detected Sway with socket:", swaySocket);
-                }
-            }, 0);
-            return;
-        }
-
-        if (miracleSocket && miracleSocket.length > 0) {
-            Proc.runCommand("miracleSocketCheck", ["test", "-S", miracleSocket], (output, exitCode) => {
-                if (exitCode === 0) {
-                    isNiri = false;
-                    isHyprland = false;
-                    isDwl = false;
-                    isSway = false;
-                    isScroll = false;
-                    isMiracle = true;
-                    isLabwc = false;
-                    compositor = "miracle";
-                    log.info("Detected Miracle WM with socket:", miracleSocket);
-                }
-            }, 0);
-            return;
-        }
-
-        if (scrollSocket && scrollSocket.length > 0 && !miracleSocket) {
-            Proc.runCommand("scrollSocketCheck", ["test", "-S", scrollSocket], (output, exitCode) => {
-                if (exitCode === 0) {
-                    isNiri = false;
-                    isHyprland = false;
-                    isDwl = false;
-                    isSway = false;
-                    isScroll = true;
-                    isMiracle = false;
-                    isLabwc = false;
-                    compositor = "scroll";
-                    log.info("Detected Scroll with socket:", scrollSocket);
-                }
-            }, 0);
-            return;
-        }
-
-        if (labwcPid && labwcPid.length > 0) {
-            isHyprland = false;
-            isNiri = false;
-            isDwl = false;
-            isSway = false;
-            isScroll = false;
-            isMiracle = false;
-            isLabwc = true;
-            compositor = "labwc";
-            log.info("Detected LabWC with PID:", labwcPid);
-            return;
-        }
-
-        if (HYPEService.hypeAvailable) {
-            Qt.callLater(checkForDwl);
-        } else {
-            isHyprland = false;
-            isNiri = false;
-            isDwl = false;
-            isSway = false;
-            isScroll = false;
-            isMiracle = false;
-            isLabwc = false;
-            compositor = "unknown";
-            log.warn("No compositor detected");
-        }
-    }
-
-    Connections {
-        target: HYPEService
-        function onCapabilitiesReceived() {
-            if (!isHyprland && !isNiri && !isDwl && !isLabwc) {
-                checkForDwl();
-            }
-        }
-    }
-
-    function checkForDwl() {
-        if (HYPEService.apiVersion >= 12 && HYPEService.capabilities.includes("dwl")) {
-            isHyprland = false;
-            isNiri = false;
-            isDwl = true;
-            isSway = false;
-            isScroll = false;
-            isMiracle = false;
-            isLabwc = false;
-            compositor = "dwl";
-            log.info("Detected DWL via HypeShell capability");
-        }
+        isHyprland = false;
+        isNiri = false;
+        isDwl = false;
+        isSway = false;
+        isScroll = false;
+        isMiracle = false;
+        isLabwc = false;
+        compositor = "unsupported";
+        log.warn("HypeShell requires Hyprland");
     }
 
     function powerOffMonitors() {
-        if (isNiri)
-            return NiriService.powerOffMonitors();
         if (isHyprland)
             return Hyprland.dispatch("dpms off");
-        if (isDwl)
-            return _dwlPowerOffMonitors();
-        if (isSway || isScroll || isMiracle) {
-            try {
-                I3.dispatch("output * dpms off");
-            } catch (_) {}
-            return;
-        }
-        if (isLabwc) {
-            Quickshell.execDetached(["hype", "dpms", "off"]);
-        }
-        log.warn("Cannot power off monitors, unknown compositor");
+        log.warn("Cannot power off monitors without Hyprland");
     }
 
     function powerOnMonitors() {
-        if (isNiri)
-            return NiriService.powerOnMonitors();
         if (isHyprland)
             return Hyprland.dispatch("dpms on");
-        if (isDwl)
-            return _dwlPowerOnMonitors();
-        if (isSway || isScroll || isMiracle) {
-            try {
-                I3.dispatch("output * dpms on");
-            } catch (_) {}
-            return;
-        }
-        if (isLabwc) {
-            Quickshell.execDetached(["hype", "dpms", "on"]);
-        }
-        log.warn("Cannot power on monitors, unknown compositor");
-    }
-
-    function _dwlPowerOffMonitors() {
-        if (!Quickshell.screens || Quickshell.screens.length === 0) {
-            log.warn("No screens available for DWL power off");
-            return;
-        }
-
-        for (let i = 0; i < Quickshell.screens.length; i++) {
-            const screen = Quickshell.screens[i];
-            if (screen && screen.name) {
-                Quickshell.execDetached(["mmsg", "-d", "disable_monitor," + screen.name]);
-            }
-        }
-    }
-
-    function _dwlPowerOnMonitors() {
-        if (!Quickshell.screens || Quickshell.screens.length === 0) {
-            log.warn("No screens available for DWL power on");
-            return;
-        }
-
-        for (let i = 0; i < Quickshell.screens.length; i++) {
-            const screen = Quickshell.screens[i];
-            if (screen && screen.name) {
-                Quickshell.execDetached(["mmsg", "-d", "enable_monitor," + screen.name]);
-            }
-        }
+        log.warn("Cannot power on monitors without Hyprland");
     }
 }

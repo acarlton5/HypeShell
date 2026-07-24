@@ -1,4 +1,4 @@
-﻿package main
+package main
 
 import (
 	"context"
@@ -59,16 +59,6 @@ var setupColorsCmd = &cobra.Command{
 	},
 }
 
-var setupAlttabCmd = &cobra.Command{
-	Use:   "alttab",
-	Short: "Deploy default alt-tab config (niri only)",
-	Run: func(cmd *cobra.Command, args []string) {
-		if err := runSetupDmsConfig("alttab"); err != nil {
-			log.Fatalf("Error: %v", err)
-		}
-	},
-}
-
 var setupOutputsCmd = &cobra.Command{
 	Use:   "outputs",
 	Short: "Deploy default outputs config",
@@ -100,55 +90,35 @@ var setupWindowrulesCmd = &cobra.Command{
 }
 
 type hypeConfigSpec struct {
-	niriFile    string
 	hyprFile    string
-	niriContent func(terminal string) string
 	hyprContent func(terminal string) string
 }
 
 var hypeConfigSpecs = map[string]hypeConfigSpec{
 	"binds": {
-		niriFile: "binds.kdl",
 		hyprFile: "binds.conf",
-		niriContent: func(t string) string {
-			return strings.ReplaceAll(config.NiriBindsConfig, "{{TERMINAL_COMMAND}}", t)
-		},
 		hyprContent: func(t string) string {
 			return strings.ReplaceAll(config.HyprBindsConfig, "{{TERMINAL_COMMAND}}", t)
 		},
 	},
 	"layout": {
-		niriFile:    "layout.kdl",
 		hyprFile:    "layout.conf",
-		niriContent: func(_ string) string { return config.NiriLayoutConfig },
 		hyprContent: func(_ string) string { return config.HyprLayoutConfig },
 	},
 	"colors": {
-		niriFile:    "colors.kdl",
 		hyprFile:    "colors.conf",
-		niriContent: func(_ string) string { return config.NiriColorsConfig },
 		hyprContent: func(_ string) string { return config.HyprColorsConfig },
 	},
-	"alttab": {
-		niriFile:    "alttab.kdl",
-		niriContent: func(_ string) string { return config.NiriAlttabConfig },
-	},
 	"outputs": {
-		niriFile:    "outputs.kdl",
 		hyprFile:    "outputs.conf",
-		niriContent: func(_ string) string { return "" },
 		hyprContent: func(_ string) string { return "" },
 	},
 	"cursor": {
-		niriFile:    "cursor.kdl",
 		hyprFile:    "cursor.conf",
-		niriContent: func(_ string) string { return "" },
 		hyprContent: func(_ string) string { return "" },
 	},
 	"windowrules": {
-		niriFile:    "windowrules.kdl",
 		hyprFile:    "windowrules.conf",
-		niriContent: func(_ string) string { return "" },
 		hyprContent: func(_ string) string { return "" },
 	},
 }
@@ -188,20 +158,10 @@ func detectTerminal() (string, error) {
 }
 
 func detectCompositorForSetup() (string, error) {
-	compositors := greeter.DetectCompositors()
-
-	switch len(compositors) {
-	case 0:
-		return "", fmt.Errorf("no supported compositors found (niri or Hyprland required)")
-	case 1:
-		return strings.ToLower(compositors[0]), nil
+	if len(greeter.DetectCompositors()) == 0 {
+		return "", fmt.Errorf("Hyprland is required")
 	}
-
-	selected, err := greeter.PromptCompositorChoice(compositors)
-	if err != nil {
-		return "", err
-	}
-	return strings.ToLower(selected), nil
+	return "hyprland", nil
 }
 
 func runSetupDmsConfig(name string) error {
@@ -215,30 +175,14 @@ func runSetupDmsConfig(name string) error {
 		return err
 	}
 
-	var filename string
-	var contentFn func(string) string
-	switch compositor {
-	case "niri":
-		filename = spec.niriFile
-		contentFn = spec.niriContent
-	case "hyprland":
-		filename = spec.hyprFile
-		contentFn = spec.hyprContent
-	default:
-		return fmt.Errorf("unsupported compositor: %s", compositor)
-	}
+	filename := spec.hyprFile
+	contentFn := spec.hyprContent
 
 	if filename == "" {
 		return fmt.Errorf("%s is not supported for %s", name, compositor)
 	}
 
-	var shellConfigDir string
-	switch compositor {
-	case "niri":
-		shellConfigDir = filepath.Join(os.Getenv("HOME"), ".config", "niri", "hype")
-	case "hyprland":
-		shellConfigDir = filepath.Join(os.Getenv("HOME"), ".config", "hypr", "hype")
-	}
+	shellConfigDir := filepath.Join(os.Getenv("HOME"), ".config", "hypr", "hype")
 
 	if err := os.MkdirAll(shellConfigDir, 0o755); err != nil {
 		return fmt.Errorf("failed to create shell config directory: %w", err)
@@ -319,8 +263,8 @@ func runSetup() error {
 			results = results[:1]
 		}
 	} else if terminalSelected {
-		results, err = deployer.DeployConfigurationsWithSystemd(ctx, deps.WindowManagerNiri, terminal, useSystemd)
-		if len(results) > 0 && results[0].ConfigType == "Niri" {
+		results, err = deployer.DeployConfigurationsWithSystemd(ctx, deps.WindowManagerHyprland, terminal, useSystemd)
+		if len(results) > 0 && results[0].ConfigType == "Hyprland" {
 			results = results[1:]
 		}
 	}
@@ -377,22 +321,19 @@ func execGroups(user string) (string, error) {
 
 func promptCompositor() (deps.WindowManager, bool) {
 	fmt.Println("Select compositor:")
-	fmt.Println("1) Niri")
-	fmt.Println("2) Hyprland")
-	fmt.Println("3) None")
+	fmt.Println("1) Hyprland")
+	fmt.Println("2) None")
 
 	var response string
-	fmt.Print("\nChoice (1-3): ")
+	fmt.Print("\nChoice (1-2): ")
 	fmt.Scanln(&response)
 	response = strings.TrimSpace(response)
 
 	switch response {
 	case "1":
-		return deps.WindowManagerNiri, true
-	case "2":
 		return deps.WindowManagerHyprland, true
 	default:
-		return deps.WindowManagerNiri, false
+		return deps.WindowManagerHyprland, false
 	}
 }
 
@@ -439,12 +380,7 @@ func checkExistingConfigs(wm deps.WindowManager, wmSelected bool, terminal deps.
 
 	if wmSelected {
 		var configPath string
-		switch wm {
-		case deps.WindowManagerNiri:
-			configPath = filepath.Join(homeDir, ".config", "niri", "config.kdl")
-		case deps.WindowManagerHyprland:
-			configPath = filepath.Join(homeDir, ".config", "hypr", "hyprland.conf")
-		}
+		configPath = filepath.Join(homeDir, ".config", "hypr", "hyprland.conf")
 
 		if _, err := os.Stat(configPath); err == nil {
 			willBackup = true

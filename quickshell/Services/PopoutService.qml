@@ -26,8 +26,6 @@ Singleton {
     property var vpnPopoutLoader: null
     property var systemUpdatePopout: null
     property var systemUpdateLoader: null
-    property var layoutPopout: null
-    property var layoutPopoutLoader: null
     property var clipboardHistoryPopout: null
     property var clipboardHistoryPopoutLoader: null
 
@@ -595,13 +593,6 @@ Singleton {
             return;
         clipboardHistoryPopout = null;
         clipboardHistoryPopoutLoader.active = false;
-    }
-
-    function unloadLayoutPopout() {
-        if (!layoutPopoutLoader)
-            return;
-        layoutPopout = null;
-        layoutPopoutLoader.active = false;
     }
 
     property bool _hypeLauncherV2WantsOpen: false

@@ -63,14 +63,6 @@ Item {
         }
     }
 
-    Loader {
-        id: blurredWallpaperBackgroundLoader
-        active: SettingsData.blurredWallpaperLayer && CompositorService.isNiri
-        asynchronous: false
-
-        sourceComponent: BlurredWallpaperBackground {}
-    }
-
     WallpaperBackground {}
 
     DesktopWidgetLayer {}
@@ -601,25 +593,6 @@ Item {
     }
 
     LazyLoader {
-        id: layoutPopoutLoader
-
-        active: false
-
-        Component.onCompleted: {
-            PopoutService.layoutPopoutLoader = layoutPopoutLoader;
-        }
-
-        DWLLayoutPopout {
-            id: layoutPopout
-            onPopoutClosed: PopoutService.unloadLayoutPopout()
-
-            Component.onCompleted: {
-                PopoutService.layoutPopout = layoutPopout;
-            }
-        }
-    }
-
-    LazyLoader {
         id: vpnPopoutLoader
 
         active: false
@@ -1144,14 +1117,6 @@ Item {
         active: CompositorService.isHyprland
         component: HyprlandOverview {
             id: hyprlandOverview
-        }
-    }
-
-    LazyLoader {
-        id: niriOverviewOverlayLoader
-        active: CompositorService.isNiri && SettingsData.niriOverviewOverlayEnabled
-        component: NiriOverviewOverlay {
-            id: niriOverviewOverlay
         }
     }
 

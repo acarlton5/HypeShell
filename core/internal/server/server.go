@@ -1,4 +1,4 @@
-﻿package server
+package server
 
 import (
 	"bufio"
@@ -22,7 +22,6 @@ import (
 	"github.com/acarlton5/HypeShell/core/internal/server/clipboard"
 	"github.com/acarlton5/HypeShell/core/internal/server/cups"
 	serverDbus "github.com/acarlton5/HypeShell/core/internal/server/dbus"
-	"github.com/acarlton5/HypeShell/core/internal/server/dwl"
 	"github.com/acarlton5/HypeShell/core/internal/server/evdev"
 	"github.com/acarlton5/HypeShell/core/internal/server/extworkspace"
 	"github.com/acarlton5/HypeShell/core/internal/server/freedesktop"
@@ -67,7 +66,6 @@ var bluezManager *bluez.Manager
 var appPickerManager *apppicker.Manager
 var cupsManager *cups.Manager
 var tailscaleManager *tailscale.Manager
-var dwlManager *dwl.Manager
 var extWorkspaceManager *extworkspace.Manager
 var brightnessManager *brightness.Manager
 var wlrOutputManager *wlroutput.Manager
@@ -253,30 +251,6 @@ func InitializeCupsManager() error {
 	cupsManager = manager
 
 	log.Info("CUPS manager initialized")
-	return nil
-}
-
-func InitializeDwlManager() error {
-	log.Info("Attempting to initialize DWL IPC...")
-
-	if wlContext == nil {
-		ctx, err := wlcontext.New()
-		if err != nil {
-			log.Errorf("Failed to create shared Wayland context: %v", err)
-			return err
-		}
-		wlContext = ctx
-	}
-
-	manager, err := dwl.NewManager(wlContext.Display())
-	if err != nil {
-		log.Debug("Failed to initialize dwl manager: %v", err)
-		return err
-	}
-
-	dwlManager = manager
-
-	log.Info("DWL IPC initialized successfully")
 	return nil
 }
 
@@ -495,10 +469,6 @@ func getCapabilities() Capabilities {
 		caps = append(caps, "tailscale")
 	}
 
-	if dwlManager != nil {
-		caps = append(caps, "dwl")
-	}
-
 	if extWorkspaceAvailable.Load() {
 		caps = append(caps, "extworkspace")
 	}
@@ -567,10 +537,6 @@ func getServerInfo() ServerInfo {
 
 	if tailscaleManager != nil && tailscaleManager.IsAvailable() {
 		caps = append(caps, "tailscale")
-	}
-
-	if dwlManager != nil {
-		caps = append(caps, "dwl")
 	}
 
 	if extWorkspaceAvailable.Load() {
@@ -1081,38 +1047,6 @@ func handleSubscribe(conn net.Conn, req models.Request) {
 		}()
 	}
 
-	if shouldSubscribe("dwl") && dwlManager != nil {
-		wg.Add(1)
-		dwlChan := dwlManager.Subscribe(clientID + "-dwl")
-		go func() {
-			defer wg.Done()
-			defer dwlManager.Unsubscribe(clientID + "-dwl")
-
-			initialState := dwlManager.GetState()
-			select {
-			case eventChan <- ServiceEvent{Service: "dwl", Data: initialState}:
-			case <-stopChan:
-				return
-			}
-
-			for {
-				select {
-				case state, ok := <-dwlChan:
-					if !ok {
-						return
-					}
-					select {
-					case eventChan <- ServiceEvent{Service: "dwl", Data: state}:
-					case <-stopChan:
-						return
-					}
-				case <-stopChan:
-					return
-				}
-			}
-		}()
-	}
-
 	if shouldSubscribe("extworkspace") {
 		if extWorkspaceManager == nil && extWorkspaceAvailable.Load() {
 			extWorkspaceInitMutex.Lock()
@@ -1412,9 +1346,6 @@ func cleanupManagers() {
 	if cupsManager != nil {
 		cupsManager.Close()
 	}
-	if dwlManager != nil {
-		dwlManager.Close()
-	}
 	if extWorkspaceManager != nil {
 		extWorkspaceManager.Close()
 	}
@@ -1584,19 +1515,6 @@ func Start(printDocs bool) error {
 		log.Info(" cups.resumePrinter                    - Resume printer (params: printerName)")
 		log.Info(" cups.cancelJob                        - Cancel job (params: printerName, jobID)")
 		log.Info(" cups.purgeJobs                        - Cancel all jobs (params: printerName)")
-		log.Info("DWL:")
-		log.Info(" dwl.getState                          - Get current dwl state (tags, windows, layouts, keyboard)")
-		log.Info(" dwl.setTags                           - Set active tags (params: output, tagmask, toggleTagset)")
-		log.Info(" dwl.setClientTags                     - Set focused client tags (params: output, andTags, xorTags)")
-		log.Info(" dwl.setLayout                         - Set layout (params: output, index)")
-		log.Info(" dwl.subscribe                         - Subscribe to dwl state changes (streaming)")
-		log.Info("   Output state includes:")
-		log.Info("     - tags         : Tag states (active, clients, focused)")
-		log.Info("     - layoutSymbol : Current layout name")
-		log.Info("     - title        : Focused window title")
-		log.Info("     - appId        : Focused window app ID")
-		log.Info("     - kbLayout     : Current keyboard layout")
-		log.Info("     - keymode      : Current keybind mode")
 		log.Info("ExtWorkspace:")
 		log.Info(" extworkspace.getState                 - Get current workspace state (groups, workspaces)")
 		log.Info(" extworkspace.activateWorkspace        - Activate workspace (params: groupID, workspaceID)")
@@ -1778,10 +1696,6 @@ func Start(printDocs bool) error {
 
 	if err := InitializeAppPickerManager(); err != nil {
 		log.Debugf("AppPicker manager unavailable: %v", err)
-	}
-
-	if err := InitializeDwlManager(); err != nil {
-		log.Debugf("DWL manager unavailable: %v", err)
 	}
 
 	if extworkspace.CheckCapability() {
