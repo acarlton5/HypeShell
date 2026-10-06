@@ -8,6 +8,7 @@ import (
 	"io"
 	"os"
 	"slices"
+	"strings"
 	"syscall"
 	"time"
 
@@ -46,8 +47,20 @@ func NewManager(display wlclient.WaylandDisplay, config Config) (*Manager, error
 		dbusSignal:    make(chan *dbus.Signal, 16),
 	}
 
-	if err := m.setupRegistry(); err != nil {
-		return nil, err
+	if isHyprlandSession() {
+		ctmBackend, err := newHyprlandCTMBackend(display)
+		if err == nil {
+			m.ctmBackend = ctmBackend
+			m.controlsInitialized = true
+			log.Info("Using Hyprland CTM color-temperature backend")
+		} else {
+			log.Debugf("Hyprland CTM backend unavailable, using gamma ramps: %v", err)
+		}
+	}
+	if m.ctmBackend == nil {
+		if err := m.setupRegistry(); err != nil {
+			return nil, err
+		}
 	}
 
 	if err := m.setupDBusMonitor(); err != nil {
@@ -75,6 +88,10 @@ func NewManager(display wlclient.WaylandDisplay, config Config) (*Manager, error
 	if config.Enabled {
 		m.post(func() {
 			log.Info("Gamma control enabled at startup")
+			if m.ctmBackend != nil {
+				m.applyCurrentTemp("startup")
+				return
+			}
 			gammaMgr := m.gammaControl.(*wlr_gamma_control.ZwlrGammaControlManagerV1)
 			m.availOutputsMu.RLock()
 			outs := slices.Clone(m.availableOutputs)
@@ -88,6 +105,14 @@ func NewManager(display wlclient.WaylandDisplay, config Config) (*Manager, error
 	}
 
 	return m, nil
+}
+
+func isHyprlandSession() bool {
+	if os.Getenv("HYPRLAND_INSTANCE_SIGNATURE") != "" {
+		return true
+	}
+	desktop := strings.ToLower(os.Getenv("XDG_CURRENT_DESKTOP") + ":" + os.Getenv("XDG_SESSION_DESKTOP"))
+	return strings.Contains(desktop, "hyprland")
 }
 
 func (m *Manager) post(fn func()) {
@@ -762,7 +787,7 @@ func (m *Manager) schedulerLoop() {
 }
 
 func (m *Manager) applyCurrentTemp(_ string) {
-	if !m.controlsInitialized || !m.anyOutputReady() {
+	if !m.controlsInitialized || (m.ctmBackend == nil && !m.anyOutputReady()) {
 		return
 	}
 
@@ -803,6 +828,16 @@ func (m *Manager) applyGamma(temp int) {
 	case !m.controlsInitialized:
 		return
 	case m.lastAppliedTemp == temp && m.lastAppliedGamma == gamma:
+		return
+	}
+
+	if m.ctmBackend != nil {
+		if err := m.ctmBackend.Apply(temp, gamma); err != nil {
+			log.Warnf("gamma: failed to apply Hyprland CTM: %v", err)
+			return
+		}
+		m.lastAppliedTemp = temp
+		m.lastAppliedGamma = gamma
 		return
 	}
 
@@ -1181,6 +1216,21 @@ func (m *Manager) SetEnabled(enabled bool) {
 	highTemp := m.config.HighTemp
 	m.configMutex.Unlock()
 
+	if m.ctmBackend != nil {
+		if enabled {
+			m.triggerUpdate()
+		} else {
+			m.post(func() {
+				if err := m.ctmBackend.Reset(); err != nil {
+					log.Warnf("gamma: failed to reset Hyprland CTM: %v", err)
+				}
+				m.lastAppliedTemp = 0
+				m.lastAppliedGamma = 0
+			})
+		}
+		return
+	}
+
 	switch {
 	case enabled && !m.controlsInitialized:
 		m.post(func() {
@@ -1225,6 +1275,11 @@ func (m *Manager) Close() {
 		m.subscribers.Delete(key)
 		return true
 	})
+
+	if m.ctmBackend != nil {
+		m.ctmBackend.Close()
+		m.ctmBackend = nil
+	}
 
 	m.outputs.Range(func(_ uint32, out *outputState) bool {
 		if ctrl, ok := out.gammaControl.(*wlr_gamma_control.ZwlrGammaControlV1); ok {

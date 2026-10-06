@@ -70,6 +70,7 @@ type Manager struct {
 	display             wlclient.WaylandDisplay
 	ctx                 *wlclient.Context
 	registry            *wlclient.Registry
+	ctmBackend          *hyprlandCTMBackend
 	gammaControl        any
 	availableOutputs    []*wlclient.Output
 	availOutputsMu      sync.RWMutex
