@@ -11,11 +11,18 @@ import (
 
 type hyprlandCTMBackend struct {
 	registry *wlclient.Registry
-	manager  *hyprland_ctm_control.HyprlandCtmControlManagerV1
+	manager  ctmControlManager
 
 	outputsMutex sync.RWMutex
 	outputs      map[uint32]*wlclient.Output
 	blocked      atomic.Bool
+}
+
+type ctmControlManager interface {
+	SetCtmForOutput(output *wlclient.Output, mat0, mat1, mat2, mat3, mat4, mat5, mat6, mat7, mat8 float64) error
+	Commit() error
+	Destroy() error
+	IsZombie() bool
 }
 
 func newHyprlandCTMBackend(display wlclient.WaylandDisplay) (*hyprlandCTMBackend, error) {
@@ -102,7 +109,10 @@ func (b *hyprlandCTMBackend) Apply(temp int, gamma float64) error {
 		return fmt.Errorf("hyprland CTM protocol is controlled by another client")
 	}
 
-	matrix := colorTemperatureMatrix(temp, gamma)
+	return b.applyMatrix(colorTemperatureMatrix(temp, gamma))
+}
+
+func (b *hyprlandCTMBackend) applyMatrix(matrix [9]float64) error {
 	b.outputsMutex.RLock()
 	outputs := make([]*wlclient.Output, 0, len(b.outputs))
 	for _, output := range b.outputs {
@@ -133,7 +143,7 @@ func (b *hyprlandCTMBackend) Reset() error {
 	if b == nil || b.manager == nil || b.manager.IsZombie() {
 		return nil
 	}
-	if err := b.manager.Commit(); err != nil {
+	if err := b.applyMatrix(identityColorMatrix()); err != nil {
 		return fmt.Errorf("reset output CTM: %w", err)
 	}
 	return nil
@@ -165,5 +175,13 @@ func colorTemperatureMatrix(temp int, gamma float64) [9]float64 {
 		whitepoint.r * gamma, 0, 0,
 		0, whitepoint.g * gamma, 0,
 		0, 0, whitepoint.b * gamma,
+	}
+}
+
+func identityColorMatrix() [9]float64 {
+	return [9]float64{
+		1, 0, 0,
+		0, 1, 0,
+		0, 0, 1,
 	}
 }
