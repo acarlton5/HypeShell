@@ -73,3 +73,23 @@ func TestCTMResetAppliesIdentityToEveryOutput(t *testing.T) {
 	assert.Equal(t, identityColorMatrix(), manager.matrices[1])
 	assert.Equal(t, 1, manager.commitCount)
 }
+
+func TestSetEnabledResetsCTMWhenAlreadyDisabled(t *testing.T) {
+	manager := &recordingCTMManager{}
+	backend := &hyprlandCTMBackend{
+		manager: manager,
+		outputs: map[uint32]*wlclient.Output{1: {}},
+	}
+	m := &Manager{
+		config:     DefaultConfig(),
+		ctmBackend: backend,
+		cmdq:       make(chan cmd, 1),
+	}
+
+	m.SetEnabled(false)
+	queued := <-m.cmdq
+	queued.fn()
+
+	assert.Equal(t, []([9]float64){identityColorMatrix()}, manager.matrices)
+	assert.Equal(t, 1, manager.commitCount)
+}

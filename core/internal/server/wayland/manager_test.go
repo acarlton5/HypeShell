@@ -388,6 +388,20 @@ func TestNotifySubscribers_NonBlocking(t *testing.T) {
 	assert.Len(t, m.dirty, 1)
 }
 
+func TestUpdateStateReportsNeutralTemperatureWhenDisabled(t *testing.T) {
+	config := DefaultConfig()
+	config.LowTemp = 2500
+	config.HighTemp = 2500
+	m := &Manager{
+		config: config,
+		dirty:  make(chan struct{}, 1),
+	}
+
+	m.updateStateFromSchedule()
+
+	assert.Equal(t, 6500, m.GetState().CurrentTemp)
+}
+
 func TestNewManager_GetRegistryError(t *testing.T) {
 	mockDisplay := mocks_wlclient.NewMockWaylandDisplay(t)
 

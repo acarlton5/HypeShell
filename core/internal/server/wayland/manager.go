@@ -102,6 +102,8 @@ func NewManager(display wlclient.WaylandDisplay, config Config) (*Manager, error
 			}
 			m.controlsInitialized = true
 		})
+	} else if m.ctmBackend != nil {
+		m.resetCTM()
 	}
 
 	return m, nil
@@ -960,6 +962,9 @@ func (m *Manager) updateStateFromSchedule() {
 		deadline = m.getNextDeadline(now)
 		isDay = now.After(times.Sunrise) && now.Before(times.Sunset)
 	}
+	if !config.Enabled {
+		temp = 6500
+	}
 
 	newState := State{
 		Config:         config,
@@ -1210,23 +1215,21 @@ func (m *Manager) SetEnabled(enabled bool) {
 	wasEnabled := m.config.Enabled
 	if wasEnabled == enabled {
 		m.configMutex.Unlock()
+		if !enabled && m.ctmBackend != nil {
+			m.post(m.resetCTM)
+		}
 		return
 	}
 	m.config.Enabled = enabled
 	highTemp := m.config.HighTemp
 	m.configMutex.Unlock()
+	m.updateStateFromSchedule()
 
 	if m.ctmBackend != nil {
 		if enabled {
 			m.triggerUpdate()
 		} else {
-			m.post(func() {
-				if err := m.ctmBackend.Reset(); err != nil {
-					log.Warnf("gamma: failed to reset Hyprland CTM: %v", err)
-				}
-				m.lastAppliedTemp = 0
-				m.lastAppliedGamma = 0
-			})
+			m.post(m.resetCTM)
 		}
 		return
 	}
@@ -1263,6 +1266,15 @@ func (m *Manager) SetEnabled(enabled bool) {
 		})
 		_ = highTemp
 	}
+}
+
+func (m *Manager) resetCTM() {
+	if err := m.ctmBackend.Reset(); err != nil {
+		log.Warnf("gamma: failed to reset Hyprland CTM: %v", err)
+	}
+	m.lastAppliedTemp = 0
+	m.lastAppliedGamma = 0
+	m.updateStateFromSchedule()
 }
 
 func (m *Manager) Close() {
