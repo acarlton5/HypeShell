@@ -1079,7 +1079,12 @@ ensure_hyprland_shell_startup() {
         fi
     done
 
-    touch "$hype_config_dir/outputs.lua" "$hype_config_dir/cursor.lua" "$hype_config_dir/windowrules.lua"
+    if [ "$detected_hardware_profile" = "steamdeck" ]; then
+        cp "$SOURCE_DIR/assets/hardware/steamdeck/hypr-hardware.lua" "$hype_config_dir/outputs.lua"
+    else
+        touch "$hype_config_dir/outputs.lua"
+    fi
+    touch "$hype_config_dir/cursor.lua" "$hype_config_dir/windowrules.lua"
 
     if [ ! -s "$config_file" ]; then
         if [ -r "$defaults_dir/hyprland.lua" ]; then
@@ -1239,21 +1244,29 @@ refresh_installed_registry_assets() {
         done
     fi
 
-    # Auto-install Anvil console plugin if steamdeck hardware profile is detected
+    # Auto-install Anvil console plugin and system session if steamdeck hardware profile is detected
     if [ "$detected_hardware_profile" = "steamdeck" ]; then
         echo "Steam Deck profile detected: auto-installing Anvil console launcher..."
         local anvil_plugin_dir="$plugin_root/hypeAnvil"
         local anvil_repo="https://github.com/acarlton5/Anvil.git"
         if [ ! -d "$anvil_plugin_dir" ]; then
             mkdir -p "$plugin_root"
-            if git clone "$anvil_repo" "$anvil_plugin_dir" >/dev/null 2>&1; then
+            if git clone "$anvil_repo" "$anvil_plugin_dir"; then
                 echo "Successfully installed hypeAnvil plugin into $anvil_plugin_dir"
             else
                 echo "Warning: failed to clone Anvil repository into $anvil_plugin_dir" >&2
             fi
         else
             echo "hypeAnvil plugin already present; pulling latest changes..."
-            git -C "$anvil_plugin_dir" pull origin main >/dev/null 2>&1 || true
+            git -C "$anvil_plugin_dir" pull origin main || true
+        fi
+
+        if [ -f "$anvil_plugin_dir/plugins/hypeAnvil/scripts/install-session" ]; then
+            echo "Installing Anvil Wayland session and application desktop entries..."
+            sudo bash "$anvil_plugin_dir/plugins/hypeAnvil/scripts/install-session" "$anvil_plugin_dir" || echo "Warning: failed to run Anvil install-session" >&2
+        elif [ -f "$anvil_plugin_dir/scripts/install-session" ]; then
+            echo "Installing Anvil Wayland session and application desktop entries..."
+            sudo bash "$anvil_plugin_dir/scripts/install-session" "$anvil_plugin_dir" || echo "Warning: failed to run Anvil install-session" >&2
         fi
     fi
 }
