@@ -9,7 +9,9 @@ auto_insert="${4:-1}"
 runtime_dir="${XDG_RUNTIME_DIR:-/tmp}/hype-voice-input"
 audio_file="$runtime_dir/recording.wav"
 pid_file="$runtime_dir/recorder.pid"
-output_base="$runtime_dir/transcript"
+diagnostic_file="$runtime_dir/whisper.log"
+
+export PATH="$HOME/.local/bin:$PATH"
 
 mkdir -p "$runtime_dir"
 
@@ -61,37 +63,52 @@ case "$action" in
         find_whisper_cli >/dev/null || { echo "whisper-cli is required (whisper.cpp)." >&2; exit 2; }
         find_model >/dev/null || { echo "Choose a whisper.cpp GGML model in Voice Input settings." >&2; exit 2; }
         stop_recorder
-        rm -f "$audio_file" "$output_base.txt"
+        rm -f "$audio_file" "$diagnostic_file" "$runtime_dir/transcript.txt"
         pw-record --format s16 --rate 16000 --channels 1 "$audio_file" >/dev/null 2>&1 &
         echo "$!" > "$pid_file"
         echo "LISTENING"
         ;;
     stop)
         stop_recorder
+        trap 'rm -f "$audio_file" "$diagnostic_file" "$runtime_dir/transcript.txt"' EXIT
         [ -s "$audio_file" ] || { echo "No microphone audio was captured." >&2; exit 3; }
         resolved_model="$(find_model)" || { echo "Whisper model is unavailable." >&2; exit 2; }
         whisper_bin="$(find_whisper_cli)" || { echo "whisper-cli is required (whisper.cpp)." >&2; exit 2; }
-        "$whisper_bin" -m "$resolved_model" -f "$audio_file" -l "$language" -nt -np -otxt -of "$output_base" >/dev/null
-        transcript="$(sed 's/^[[:space:]]*//; s/[[:space:]]*$//' "$output_base.txt" | tr '\n' ' ' | sed 's/[[:space:]][[:space:]]*/ /g')"
+        if ! transcript="$("$whisper_bin" -m "$resolved_model" -f "$audio_file" -l "$language" -nt -np 2>"$diagnostic_file")"; then
+            echo "Speech recognition failed." >&2
+            exit 3
+        fi
+        transcript="$(printf '%s' "$transcript" | tr '\n' ' ' | sed 's/[[:space:]][[:space:]]*/ /g; s/^ //; s/ $//')"
         [ -n "$transcript" ] || { echo "No speech was detected." >&2; exit 4; }
-        printf 'TRANSCRIPT\n%s\n' "$transcript"
-        printf '%s' "$transcript" | wl-copy 2>/dev/null || true
+        if command -v wl-copy >/dev/null 2>&1; then
+            if ! printf '%s' "$transcript" | wl-copy --type 'text/plain;charset=utf-8' >/dev/null 2>"$diagnostic_file"; then
+                echo "Could not copy the transcript to the clipboard." >&2
+                exit 2
+            fi
+        elif [ "$auto_insert" != "1" ]; then
+            echo "wl-copy is required to copy the transcript." >&2
+            exit 2
+        fi
         if [ "$auto_insert" = "1" ]; then
             # Give Hyprland time to return keyboard focus after the voice
             # popout closes before emitting text into the active application.
             sleep 0.08
-            if command -v wtype >/dev/null 2>&1; then
+            if [ -n "${HYPRLAND_INSTANCE_SIGNATURE:-}" ] && command -v hyprctl >/dev/null 2>&1 && command -v wl-copy >/dev/null 2>&1; then
+                if ! hyprctl dispatch 'hl.dsp.send_shortcut({ mods = "CTRL", key = "V" })' >/dev/null 2>&1; then
+                    hyprctl dispatch sendshortcut CTRL,V, >/dev/null
+                fi
+            elif command -v wtype >/dev/null 2>&1; then
                 wtype -- "$transcript"
-            elif command -v hyprctl >/dev/null 2>&1 && command -v wl-copy >/dev/null 2>&1; then
-                hyprctl dispatch sendshortcut CTRL,V,activewindow >/dev/null
             else
                 echo "Transcript copied; install wtype to type into the focused field." >&2
+                exit 2
             fi
         fi
+        printf 'TRANSCRIPT\n%s\n' "$transcript"
         ;;
     cancel)
         stop_recorder
-        rm -f "$audio_file" "$output_base.txt"
+        rm -f "$audio_file" "$diagnostic_file" "$runtime_dir/transcript.txt"
         echo "CANCELLED"
         ;;
     *)

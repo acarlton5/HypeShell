@@ -208,13 +208,20 @@ elif [ "$hardware_profile" = "steamdeck" ]; then
     install -o "$update_user" -g "$user_group" -m 644 "$hardware_source" "$user_hardware_file"
     # Auto-update Anvil gaming session and application desktop entries
     anvil_plugin_dir="$update_home/.config/HypeShell/plugins/hypeAnvil"
-    if [ -d "$anvil_plugin_dir/.git" ]; then
+    anvil_repo="https://github.com/acarlton5/Anvil.git"
+    if [ ! -d "$anvil_plugin_dir" ]; then
+        echo "Installing Anvil console plugin..."
+        runuser -u "$update_user" -- git clone "$anvil_repo" "$anvil_plugin_dir" || true
+    elif [ -d "$anvil_plugin_dir/.git" ]; then
         echo "Updating Anvil console from git..."
         runuser -u "$update_user" -- git -C "$anvil_plugin_dir" pull origin main || true
-        if [ -f "$anvil_plugin_dir/scripts/install-session" ]; then
-            echo "Refreshing Anvil session files..."
-            bash "$anvil_plugin_dir/scripts/install-session" "$anvil_plugin_dir" || true
-        fi
+    fi
+    if [ -f "$anvil_plugin_dir/scripts/install-session" ]; then
+        echo "Refreshing Anvil session files..."
+        bash "$anvil_plugin_dir/scripts/install-session" "$anvil_plugin_dir" || true
+    elif [ -f "$anvil_plugin_dir/plugins/hypeAnvil/scripts/install-session" ]; then
+        echo "Refreshing Anvil session files..."
+        bash "$anvil_plugin_dir/plugins/hypeAnvil/scripts/install-session" "$anvil_plugin_dir" || true
     fi
 else
     install -D -m 644 /dev/null "$shared_hardware_file"

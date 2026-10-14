@@ -1,4 +1,4 @@
-﻿//@ pragma Env QSG_RENDER_LOOP=threaded
+//@ pragma Env QSG_RENDER_LOOP=threaded
 //@ pragma Env QT_MEDIA_BACKEND=ffmpeg
 //@ pragma Env QT_FFMPEG_DECODING_HW_DEVICE_TYPES=vaapi
 //@ pragma Env QT_FFMPEG_ENCODING_HW_DEVICE_TYPES=vaapi
@@ -22,15 +22,24 @@ ShellRoot {
 
     Loader {
         id: hypeShellLoader
+
         asynchronous: false
-        sourceComponent: HYPEShell {}
         active: !entrypoint.runGreeter
+
+        sourceComponent: HYPEShell {
+        }
+
     }
 
     Loader {
         id: hypeGreeterLoader
+
         asynchronous: false
-        sourceComponent: HYPEGreeter {}
         active: entrypoint.runGreeter
+
+        sourceComponent: HYPEGreeter {
+        }
+
     }
+
 }

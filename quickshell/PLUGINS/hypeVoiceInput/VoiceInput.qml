@@ -125,20 +125,15 @@ PluginComponent {
         }
 
         stderr: StdioCollector {
-            onStreamFinished: {
-                const errorText = text.trim();
-                if (!errorText)
-                    return;
-                root.phase = "error";
-                root.detail = errorText.split("\n").pop();
-                ToastService.showError("Voice Input", root.detail);
-            }
+            id: actionErrors
         }
 
         onExited: exitCode => {
-            if (exitCode !== 0 && root.phase !== "error") {
+            if (exitCode !== 0) {
                 root.phase = "error";
-                root.detail = "Voice input failed (exit " + exitCode + ")";
+                const errorText = actionErrors.text.trim();
+                root.detail = errorText ? errorText.split("\n").pop() : "Voice input failed (exit " + exitCode + ")";
+                ToastService.showError("Voice Input", root.detail);
             }
         }
     }
