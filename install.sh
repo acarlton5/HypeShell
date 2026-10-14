@@ -1072,6 +1072,15 @@ configure_steamdeck_kernel_quirks() {
         sudo_run udevadm control --reload-rules || true
         sudo_run udevadm trigger || true
     fi
+
+    # 5. Enable SteamOS-style passwordless updates for HypeShell & Anvil console
+    echo "Configuring passwordless console update permissions (/etc/sudoers.d/99-steamdeck-updates)..."
+    local sudoers_file="/etc/sudoers.d/99-steamdeck-updates"
+    cat << 'EOF' | sudo_run tee "$sudoers_file" >/dev/null
+# Steam Deck Console UI seamless updates (SteamOS-style)
+%wheel ALL=(ALL) NOPASSWD: /usr/local/bin/hype update *, /usr/bin/pacman -Syu --noconfirm, /usr/bin/pacman -S --needed --noconfirm *
+EOF
+    sudo_run chmod 0440 "$sudoers_file" 2>/dev/null || true
 }
 
 install_hyprland_session() {
