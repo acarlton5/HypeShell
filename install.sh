@@ -1007,13 +1007,15 @@ configure_steamdeck_kernel_quirks() {
         fi
     fi
 
-    # 2. Kernel parameters to prevent dock reboot freeze (pci=noaer usbcore.autosuspend=-1 amdgpu.dcfeaturemask=0x2)
-    local deck_params="pci=noaer usbcore.autosuspend=-1 amdgpu.dcfeaturemask=0x2"
+    # 2. Kernel parameters to prevent dock reboot freeze (pci=noaer usbcore.autosuspend=-1)
+    local deck_params="pci=noaer usbcore.autosuspend=-1"
 
     for entry_dir in /boot/loader/entries /efi/loader/entries /boot/efi/loader/entries; do
         if [ -d "$entry_dir" ]; then
             for conf in "$entry_dir"/*.conf; do
                 [ -f "$conf" ] || continue
+                # Strip out broken dcfeaturemask override if present
+                sudo_run sed -i 's/ amdgpu\.dcfeaturemask=[^ ]*//g' "$conf" 2>/dev/null || true
                 if grep -q '^options' "$conf"; then
                     if ! grep -q 'pci=noaer' "$conf"; then
                         echo "Adding dock reboot fix parameters to systemd-boot entry: $conf"
@@ -1026,6 +1028,7 @@ configure_steamdeck_kernel_quirks() {
 
     # GRUB
     if [ -f /etc/default/grub ]; then
+        sudo_run sed -i 's/ amdgpu\.dcfeaturemask=[^ "]*//g' /etc/default/grub 2>/dev/null || true
         if ! grep -q 'pci=noaer' /etc/default/grub; then
             echo "Adding dock reboot fix parameters to /etc/default/grub..."
             sudo_run sed -i.bak -E "s/^(GRUB_CMDLINE_LINUX_DEFAULT=\"[^\"]*)\"/\1 $deck_params\"/" /etc/default/grub
@@ -1083,6 +1086,9 @@ install_hyprland_session() {
         sudo_run systemctl enable --now power-profiles-daemon.service || true
         install_package_if_available maliit-keyboard || install_package_if_available wvkbd || true
         install_package_if_available maliit-framework || true
+        install_package_if_available udisks2 || true
+        install_package_if_available udiskie || true
+        sudo_run systemctl enable --now udisks2.service || true
         configure_steamdeck_kernel_quirks || true
     else
         sudo_run install -D -m 644 /dev/null "$defaults_dir/hype/hardware.lua"
