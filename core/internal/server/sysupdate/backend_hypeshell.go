@@ -179,8 +179,17 @@ install -D -m 644 "$tmp/install-fingerprint" "/usr/local/share/hypeshell/install
 
 hardware_profile="generic"
 hardware_arch="$(uname -m)"
+dmi_product=""
+if [ -r /sys/devices/virtual/dmi/id/product_name ]; then
+    dmi_product="$(cat /sys/devices/virtual/dmi/id/product_name 2>/dev/null || true)"
+elif [ -r /sys/class/dmi/id/product_name ]; then
+    dmi_product="$(cat /sys/class/dmi/id/product_name 2>/dev/null || true)"
+fi
+
 if { [ "$hardware_arch" = "aarch64" ] || [ "$hardware_arch" = "arm64" ]; } && { { [ -r /proc/device-tree/compatible ] && tr '\0' '\n' </proc/device-tree/compatible 2>/dev/null | grep -qi '^apple,'; } || { [ -r /proc/device-tree/model ] && grep -aqi 'Apple' /proc/device-tree/model; }; }; then
     hardware_profile="apple-silicon"
+elif echo "$dmi_product" | grep -E -iq 'Jupiter|Galileo'; then
+    hardware_profile="steamdeck"
 fi
 
 echo "Applying HypeShell hardware profile: $hardware_profile"
@@ -193,6 +202,20 @@ if [ "$hardware_profile" = "apple-silicon" ]; then
     hardware_source="$tmp/source/assets/hardware/apple-silicon/hypr-hardware.lua"
     install -D -m 644 "$hardware_source" "$shared_hardware_file"
     install -o "$update_user" -g "$user_group" -m 644 "$hardware_source" "$user_hardware_file"
+elif [ "$hardware_profile" = "steamdeck" ]; then
+    hardware_source="$tmp/source/assets/hardware/steamdeck/hypr-hardware.lua"
+    install -D -m 644 "$hardware_source" "$shared_hardware_file"
+    install -o "$update_user" -g "$user_group" -m 644 "$hardware_source" "$user_hardware_file"
+    # Auto-update Anvil gaming session and application desktop entries
+    anvil_plugin_dir="$update_home/.config/HypeShell/plugins/hypeAnvil"
+    if [ -d "$anvil_plugin_dir/.git" ]; then
+        echo "Updating Anvil console from git..."
+        runuser -u "$update_user" -- git -C "$anvil_plugin_dir" pull origin main || true
+        if [ -f "$anvil_plugin_dir/scripts/install-session" ]; then
+            echo "Refreshing Anvil session files..."
+            bash "$anvil_plugin_dir/scripts/install-session" "$anvil_plugin_dir" || true
+        fi
+    fi
 else
     install -D -m 644 /dev/null "$shared_hardware_file"
     install -o "$update_user" -g "$user_group" -m 644 /dev/null "$user_hardware_file"
@@ -201,7 +224,7 @@ fi
 user_hypr_config="$update_home/.config/hypr/hyprland.lua"
 hardware_source_line='require("hype.hardware")'
 if [ -f "$user_hypr_config" ] && ! grep -Fqx "$hardware_source_line" "$user_hypr_config"; then
-    runuser -u "$update_user" -- sh -c 'printf "\n%%s\n" "$1" >> "$2"' sh "$hardware_source_line" "$user_hypr_config"
+    runuser -u "$update_user" -- sh -c 'printf "\n%s\n" "$1" >> "$2"' sh "$hardware_source_line" "$user_hypr_config"
 fi
 
 
