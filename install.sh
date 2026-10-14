@@ -1238,6 +1238,24 @@ refresh_installed_registry_assets() {
             "$hype_cmd" plugins update "$plugin_id" >/dev/null 2>&1 || echo "Warning: could not update plugin $plugin_id" >&2
         done
     fi
+
+    # Auto-install Anvil console plugin if steamdeck hardware profile is detected
+    if [ "$detected_hardware_profile" = "steamdeck" ]; then
+        echo "Steam Deck profile detected: auto-installing Anvil console launcher..."
+        local anvil_plugin_dir="$plugin_root/hypeAnvil"
+        local anvil_repo="https://github.com/acarlton5/Anvil.git"
+        if [ ! -d "$anvil_plugin_dir" ]; then
+            mkdir -p "$plugin_root"
+            if git clone "$anvil_repo" "$anvil_plugin_dir" >/dev/null 2>&1; then
+                echo "Successfully installed hypeAnvil plugin into $anvil_plugin_dir"
+            else
+                echo "Warning: failed to clone Anvil repository into $anvil_plugin_dir" >&2
+            fi
+        else
+            echo "hypeAnvil plugin already present; pulling latest changes..."
+            git -C "$anvil_plugin_dir" pull origin main >/dev/null 2>&1 || true
+        fi
+    fi
 }
 
 install_greeter_wrapper_from_source() {
