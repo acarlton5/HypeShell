@@ -1,4 +1,4 @@
-﻿import QtQuick
+import QtQuick
 import QtQuick.Effects
 import QtQuick.Layouts
 import Qt.labs.folderlistmodel
@@ -21,6 +21,7 @@ Item {
     }
 
     readonly property string xdgDataDirs: Quickshell.env("XDG_DATA_DIRS")
+    readonly property bool isSteamDeck: Quickshell.env("HYPESHELL_HARDWARE_PROFILE") === "steamdeck"
     property string screenName: ""
     property string hyprlandCurrentLayout: ""
     property string hyprlandKeyboard: ""
@@ -978,6 +979,24 @@ Item {
                             onVisibleChanged: {
                                 if (visible && isPrimaryScreen && !powerMenu.isVisible)
                                     forceActiveFocus();
+                            }
+                            onActiveFocusChanged: {
+                                if (activeFocus && root.isSteamDeck) {
+                                    if (!keyboard_controller.isKeyboardActive) {
+                                        keyboard_controller.show();
+                                    }
+                                }
+                            }
+                        }
+
+                        MouseArea {
+                            anchors.fill: parent
+                            z: -1
+                            onClicked: {
+                                inputField.forceActiveFocus();
+                                if (!keyboard_controller.isKeyboardActive) {
+                                    keyboard_controller.show();
+                                }
                             }
                         }
 

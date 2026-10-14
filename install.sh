@@ -989,6 +989,57 @@ protect_hyprland_dependency() {
     fi
 }
 
+configure_steamdeck_kernel_quirks() {
+    echo "Configuring Steam Deck kernel quirks and early KMS for Thunderbolt/USB-C docks..."
+
+    # 1. Early KMS (amdgpu) in mkinitcpio.conf
+    if [ -f /etc/mkinitcpio.conf ]; then
+        if ! grep -E -q '^[[:space:]]*MODULES=\([^)]*amdgpu[^)]*\)' /etc/mkinitcpio.conf; then
+            echo "Adding amdgpu to early KMS MODULES in /etc/mkinitcpio.conf..."
+            sudo_run sed -i.bak -E 's/^[[:space:]]*MODULES=\(([^)]*)\)/MODULES=(\1 amdgpu)/' /etc/mkinitcpio.conf
+            sudo_run sed -i -E 's/MODULES=\([[:space:]]+/MODULES=(/' /etc/mkinitcpio.conf
+            if have mkinitcpio; then
+                echo "Regenerating initramfs with early amdgpu KMS..."
+                sudo_run mkinitcpio -P || echo "Warning: mkinitcpio -P failed" >&2
+            fi
+        else
+            echo "amdgpu is already configured in /etc/mkinitcpio.conf."
+        fi
+    fi
+
+    # 2. Kernel parameters to prevent dock reboot freeze (pci=noaer usbcore.autosuspend=-1 amdgpu.dcfeaturemask=0x2)
+    local deck_params="pci=noaer usbcore.autosuspend=-1 amdgpu.dcfeaturemask=0x2"
+
+    for entry_dir in /boot/loader/entries /efi/loader/entries /boot/efi/loader/entries; do
+        if [ -d "$entry_dir" ]; then
+            for conf in "$entry_dir"/*.conf; do
+                [ -f "$conf" ] || continue
+                if grep -q '^options' "$conf"; then
+                    if ! grep -q 'pci=noaer' "$conf"; then
+                        echo "Adding dock reboot fix parameters to systemd-boot entry: $conf"
+                        sudo_run sed -i "/^options/ s/$/ $deck_params/" "$conf"
+                    fi
+                fi
+            done
+        fi
+    done
+
+    # GRUB
+    if [ -f /etc/default/grub ]; then
+        if ! grep -q 'pci=noaer' /etc/default/grub; then
+            echo "Adding dock reboot fix parameters to /etc/default/grub..."
+            sudo_run sed -i.bak -E "s/^(GRUB_CMDLINE_LINUX_DEFAULT=\"[^\"]*)\"/\1 $deck_params\"/" /etc/default/grub
+            if have grub-mkconfig; then
+                if [ -d /boot/grub ]; then
+                    sudo_run grub-mkconfig -o /boot/grub/grub.cfg || true
+                elif [ -d /boot/grub2 ]; then
+                    sudo_run grub-mkconfig -o /boot/grub2/grub.cfg || true
+                fi
+            fi
+        fi
+    fi
+}
+
 install_hyprland_session() {
     if [ "$INSTALL_HYPRLAND_SESSION" -eq 0 ] || [ "$SKIP_INSTALL" -eq 1 ]; then
         return 0
@@ -1030,6 +1081,9 @@ install_hyprland_session() {
         install_package_if_available wireplumber || true
         install_package_if_available power-profiles-daemon || true
         sudo_run systemctl enable --now power-profiles-daemon.service || true
+        install_package_if_available maliit-keyboard || install_package_if_available wvkbd || true
+        install_package_if_available maliit-framework || true
+        configure_steamdeck_kernel_quirks || true
     else
         sudo_run install -D -m 644 /dev/null "$defaults_dir/hype/hardware.lua"
         sudo_run install -D -m 644 /dev/null "$defaults_dir/hype/hardware.conf"

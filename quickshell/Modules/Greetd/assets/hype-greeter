@@ -220,6 +220,12 @@ if [[ -z "${NIRI_LOG:-}" ]]; then
     export NIRI_LOG=warn
 fi
 
+if [ -r /sys/devices/virtual/dmi/id/product_name ]; then
+    if grep -qi -e 'Jupiter' -e 'Galileo' /sys/devices/virtual/dmi/id/product_name 2>/dev/null; then
+        export HYPESHELL_HARDWARE_PROFILE="steamdeck"
+    fi
+fi
+
 if command -v qs >/dev/null 2>&1; then
     QS_BIN="qs"
 elif command -v quickshell >/dev/null 2>&1; then
@@ -327,6 +333,7 @@ if product_name_file then
 end
 
 if deck_transform ~= 0 then
+    hl.env("HYPESHELL_HARDWARE_PROFILE", "steamdeck")
     hl.monitor({
         output = "eDP-1",
         mode = "preferred",

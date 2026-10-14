@@ -5,6 +5,7 @@ Rectangle {
     id: root
     property Item target
     height: 60 * 5
+    z: 9999
     anchors.bottom: parent.bottom
     anchors.left: parent.left
     anchors.right: parent.right
@@ -305,40 +306,38 @@ onClicked: root.clicked(text)
 }
 signal clicked(string text)
 
-Connections {
-target: root
-function onClicked(text) {
-if (!keyboard_controller.target)
-return
-if (text === strShift) {
-root.shift = !root.shift
-} else if (text === '123') {
-root.symbols = true
-} else if (text === 'ABC') {
-root.symbols = false
-} else if (text === strEnter) {
-if (keyboard_controller.target.accepted) {
-keyboard_controller.target.accepted()
-}
-} else if (text === strClose) {
-root.dismissed()
-} else {
-if (text === strBackspace) {
-var current = keyboard_controller.target.text
-keyboard_controller.target.text = current.slice(0, current.length - 1)
-} else {
-var charToInsert = root.symbols ? text : (root.shift ? text.toUpperCase
-() : text)
-var current = keyboard_controller.target.text
-var cursorPos = keyboard_controller.target.cursorPosition
-keyboard_controller.target.text = current.slice(0,
-cursorPos) + charToInsert + current.slice(cursorPos)
-keyboard_controller.target.cursorPosition = cursorPos + 1
-}
+    Connections {
+        target: root
+        function onClicked(text) {
+            if (!root.target)
+                return
+            if (text === strShift) {
+                root.shift = !root.shift
+            } else if (text === '123') {
+                root.symbols = true
+            } else if (text === 'ABC') {
+                root.symbols = false
+            } else if (text === strEnter) {
+                if (root.target.accepted) {
+                    root.target.accepted()
+                }
+            } else if (text === strClose) {
+                root.dismissed()
+            } else {
+                if (text === strBackspace) {
+                    var current = root.target.text
+                    root.target.text = current.slice(0, current.length - 1)
+                } else {
+                    var charToInsert = root.symbols ? text : (root.shift ? text.toUpperCase() : text)
+                    var current = root.target.text
+                    var cursorPos = root.target.cursorPosition
+                    root.target.text = current.slice(0, cursorPos) + charToInsert + current.slice(cursorPos)
+                    root.target.cursorPosition = cursorPos + 1
+                }
 
-if (root.shift && text !== strShift)
-root.shift = false
-}
-}
-}
+                if (root.shift && text !== strShift)
+                    root.shift = false
+            }
+        }
+    }
 }
