@@ -312,6 +312,38 @@ NIRI_EOF
         TEMP_CONFIG=$(mktemp --suffix=.lua)
         cat > "$TEMP_CONFIG" << HYPRLAND_LUA_EOF
 hl.env("HYPE_RUN_GREETER", "1")
+
+-- Steam Deck / Hardware display rotation check
+local deck_transform = 0
+local product_name_file = io.open("/sys/devices/virtual/dmi/id/product_name", "r")
+if product_name_file then
+    local p = product_name_file:read("*a") or ""
+    product_name_file:close()
+    if p:find("Jupiter") then
+        deck_transform = 3
+    elseif p:find("Galileo") then
+        deck_transform = 1
+    end
+end
+
+if deck_transform ~= 0 then
+    hl.monitor({
+        output = "eDP-1",
+        mode = "preferred",
+        position = "0x0",
+        scale = "1",
+        transform = deck_transform,
+    })
+    hl.config({
+        input = {
+            touchdevice = {
+                transform = deck_transform,
+                output = "eDP-1"
+            }
+        }
+    })
+end
+
 hl.config({
     misc = {
         disable_hyprland_logo = true,
