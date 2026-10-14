@@ -198,9 +198,9 @@ if [ "$(uname -s)" != "Linux" ]; then
 fi
 
 case "$HARDWARE_PROFILE" in
-    auto|apple-silicon|generic) ;;
+    auto|apple-silicon|generic|steamdeck) ;;
     *)
-        echo "Error: --hardware-profile must be auto, apple-silicon, or generic." >&2
+        echo "Error: --hardware-profile must be auto, apple-silicon, generic, or steamdeck." >&2
         exit 2
         ;;
 esac
@@ -242,6 +242,20 @@ detect_hardware_profile() {
             return
         fi
     fi
+    
+    if [ -r /sys/devices/virtual/dmi/id/product_name ]; then
+        if grep -qi -e 'Jupiter' -e 'Galileo' /sys/devices/virtual/dmi/id/product_name 2>/dev/null; then
+            printf '%s\n' steamdeck
+            return
+        fi
+    fi
+    if [ -r /etc/os-release ]; then
+        if grep -qi -e 'steamos' -e 'bazzite-deck' /etc/os-release 2>/dev/null; then
+            printf '%s\n' steamdeck
+            return
+        fi
+    fi
+
     printf '%s\n' generic
 }
 
@@ -943,7 +957,6 @@ verify_hypeshell_source_payload() {
         "$SOURCE_DIR/core/internal/config/embedded/hypr-windowrules.lua" \
         "$SOURCE_DIR/quickshell/Modules/Greetd/assets/hype-greeter" \
         "$SOURCE_DIR/assets/sessions/hypeshell-hyprland.desktop" \
-        "$SOURCE_DIR/assets/hardware/apple-silicon/hypr-hardware.lua" \
         "$SOURCE_DIR/assets/sessions/hypeshell-hyprland-session"; do
         if [ ! -f "$required" ]; then
             echo "Missing required HypeShell payload: $required" >&2
@@ -998,6 +1011,7 @@ install_hyprland_session() {
     sudo_run install -D -m 644 "$SOURCE_DIR/assets/sessions/hypeshell-hyprland.desktop" "$PREFIX/share/wayland-sessions/hypeshell-hyprland.desktop"
     sudo_run install -D -m 644 "$SOURCE_DIR/core/internal/config/embedded/hyprland.lua" "$defaults_dir/hyprland.lua"
     sudo_run install -D -m 644 "$SOURCE_DIR/core/internal/config/embedded/hypr-colors.lua" "$defaults_dir/hype/colors.lua"
+
     sudo_run install -D -m 644 "$SOURCE_DIR/core/internal/config/embedded/hypr-layout.lua" "$defaults_dir/hype/layout.lua"
     sudo_run install -D -m 644 "$SOURCE_DIR/core/internal/config/embedded/hypr-binds.lua" "$defaults_dir/hype/binds.lua"
     if [ "$detected_hardware_profile" = "apple-silicon" ]; then
@@ -1009,8 +1023,16 @@ install_hyprland_session() {
         install_package_if_available asahi-audio || true
         install_package_if_available speakersafetyd || true
         sudo_run systemctl enable --now speakersafetyd.service || true
+    elif [ "$detected_hardware_profile" = "steamdeck" ]; then
+        sudo_run install -D -m 644 "$SOURCE_DIR/assets/hardware/steamdeck/hypr-hardware.lua" "$defaults_dir/hype/hardware.lua"
+        sudo_run install -D -m 644 "$SOURCE_DIR/assets/hardware/steamdeck/hypr-hardware.conf" "$defaults_dir/hype/hardware.conf"
+        install_package_if_available pipewire-pulse || true
+        install_package_if_available wireplumber || true
+        install_package_if_available power-profiles-daemon || true
+        sudo_run systemctl enable --now power-profiles-daemon.service || true
     else
         sudo_run install -D -m 644 /dev/null "$defaults_dir/hype/hardware.lua"
+        sudo_run install -D -m 644 /dev/null "$defaults_dir/hype/hardware.conf"
     fi
 
     sudo_run install -D -m 644 "$SOURCE_DIR/core/internal/config/embedded/hypr-outputs.lua" "$defaults_dir/hype/outputs.lua"
@@ -1038,6 +1060,9 @@ ensure_hyprland_shell_startup() {
     if [ "$detected_hardware_profile" = "apple-silicon" ]; then
         cp "$SOURCE_DIR/assets/hardware/apple-silicon/hypr-hardware.lua" "$hype_config_dir/hardware.lua"
         cp "$SOURCE_DIR/assets/hardware/apple-silicon/hypr-hardware.conf" "$hype_config_dir/hardware.conf"
+    elif [ "$detected_hardware_profile" = "steamdeck" ]; then
+        cp "$SOURCE_DIR/assets/hardware/steamdeck/hypr-hardware.lua" "$hype_config_dir/hardware.lua"
+        cp "$SOURCE_DIR/assets/hardware/steamdeck/hypr-hardware.conf" "$hype_config_dir/hardware.conf"
     else
         : > "$hype_config_dir/hardware.lua"
         : > "$hype_config_dir/hardware.conf"
