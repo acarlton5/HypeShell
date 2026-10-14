@@ -1363,10 +1363,10 @@ refresh_installed_registry_assets() {
 
         if [ -f "$anvil_plugin_dir/plugins/hypeAnvil/scripts/install-session" ]; then
             echo "Installing Anvil Wayland session and application desktop entries..."
-            sudo bash "$anvil_plugin_dir/plugins/hypeAnvil/scripts/install-session" "$anvil_plugin_dir" || echo "Warning: failed to run Anvil install-session" >&2
+            sudo_run bash "$anvil_plugin_dir/plugins/hypeAnvil/scripts/install-session" "$anvil_plugin_dir" || echo "Warning: failed to run Anvil install-session" >&2
         elif [ -f "$anvil_plugin_dir/scripts/install-session" ]; then
             echo "Installing Anvil Wayland session and application desktop entries..."
-            sudo bash "$anvil_plugin_dir/scripts/install-session" "$anvil_plugin_dir" || echo "Warning: failed to run Anvil install-session" >&2
+            sudo_run bash "$anvil_plugin_dir/scripts/install-session" "$anvil_plugin_dir" || echo "Warning: failed to run Anvil install-session" >&2
         fi
     fi
 }
