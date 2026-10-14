@@ -990,7 +990,7 @@ protect_hyprland_dependency() {
 }
 
 configure_steamdeck_kernel_quirks() {
-    echo "Configuring Steam Deck kernel quirks and early KMS for Thunderbolt/USB-C docks..."
+    echo "Configuring Steam Deck kernel quirks, bootloader rotation, and early KMS..."
 
     # 1. Early KMS (amdgpu) in mkinitcpio.conf
     if [ -f /etc/mkinitcpio.conf ]; then
@@ -1007,8 +1007,20 @@ configure_steamdeck_kernel_quirks() {
         fi
     fi
 
-    # 2. Kernel parameters to prevent dock reboot freeze (pci=noaer usbcore.autosuspend=-1)
-    local deck_params="pci=noaer usbcore.autosuspend=-1"
+    # Determine native display rotation:
+    # Valve Jupiter (LCD Deck) panel requires fbcon=rotate:3 for landscape.
+    # Valve Galileo (OLED Deck) panel requires fbcon=rotate:1 for landscape.
+    local fbcon_rot="3"
+    local dmi_product
+    dmi_product="$(cat /sys/devices/virtual/dmi/id/product_name 2>/dev/null || cat /sys/class/dmi/id/product_name 2>/dev/null || true)"
+    if echo "$dmi_product" | grep -iq 'Galileo'; then
+        fbcon_rot="1"
+    fi
+
+    # 2. Kernel parameters to prevent dock reboot freeze and fix/hide sideways boot logs
+    # fbcon=rotate:$rot rotates the virtual console framebuffer to landscape
+    # quiet loglevel=3 rd.udev.log_level=3 vt.global_cursor_default=0 hides messy sideways kernel scroll
+    local deck_params="pci=noaer usbcore.autosuspend=-1 fbcon=rotate:$fbcon_rot quiet loglevel=3 rd.udev.log_level=3 vt.global_cursor_default=0"
 
     for entry_dir in /boot/loader/entries /efi/loader/entries /boot/efi/loader/entries; do
         if [ -d "$entry_dir" ]; then
@@ -1026,20 +1038,39 @@ configure_steamdeck_kernel_quirks() {
         fi
     done
 
-    # GRUB
+    # 3. GRUB: hide sideways boot screen and rotate framebuffer
     if [ -f /etc/default/grub ]; then
         sudo_run sed -i 's/ amdgpu\.dcfeaturemask=[^ "]*//g' /etc/default/grub 2>/dev/null || true
+        # Hide GRUB sideways bootloader countdown
+        sudo_run sed -i -E 's/^GRUB_TIMEOUT=[0-9]+/GRUB_TIMEOUT=0/' /etc/default/grub 2>/dev/null || true
+        if ! grep -q '^GRUB_TIMEOUT_STYLE=' /etc/default/grub; then
+            echo 'GRUB_TIMEOUT_STYLE=hidden' | sudo_run tee -a /etc/default/grub >/dev/null
+        else
+            sudo_run sed -i -E 's/^GRUB_TIMEOUT_STYLE=.*/GRUB_TIMEOUT_STYLE=hidden/' /etc/default/grub 2>/dev/null || true
+        fi
+
         if ! grep -q 'pci=noaer' /etc/default/grub; then
-            echo "Adding dock reboot fix parameters to /etc/default/grub..."
+            echo "Adding dock reboot fix and fbcon rotation parameters to /etc/default/grub..."
             sudo_run sed -i.bak -E "s/^(GRUB_CMDLINE_LINUX_DEFAULT=\"[^\"]*)\"/\1 $deck_params\"/" /etc/default/grub
-            if have grub-mkconfig; then
-                if [ -d /boot/grub ]; then
-                    sudo_run grub-mkconfig -o /boot/grub/grub.cfg || true
-                elif [ -d /boot/grub2 ]; then
-                    sudo_run grub-mkconfig -o /boot/grub2/grub.cfg || true
-                fi
+        fi
+
+        if have grub-mkconfig; then
+            if [ -d /boot/grub ]; then
+                sudo_run grub-mkconfig -o /boot/grub/grub.cfg || true
+            elif [ -d /boot/grub2 ]; then
+                sudo_run grub-mkconfig -o /boot/grub2/grub.cfg || true
             fi
         fi
+    fi
+
+    # 4. Install Steam Deck gamepad / controller udev rules and input injection tools
+    echo "Ensuring game-devices-udev / steam-devices and tools (wtype, brightnessctl) are installed..."
+    install_package_if_available game-devices-udev 2>/dev/null || install_package_if_available steam-devices 2>/dev/null || true
+    install_package_if_available wtype 2>/dev/null || true
+    install_package_if_available brightnessctl 2>/dev/null || true
+    if have udevadm; then
+        sudo_run udevadm control --reload-rules || true
+        sudo_run udevadm trigger || true
     fi
 }
 
