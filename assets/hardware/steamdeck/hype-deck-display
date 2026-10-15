@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+# Steam Deck Console Display Switcher
+# When external display (DP/HDMI) is plugged in, turn off internal eDP-1 display.
+# When external display is disconnected, turn internal eDP-1 back on with correct orientation.
+
+# Resolve Steam Deck display rotation (LCD = 3, OLED Galileo = 1)
+deck_transform=3
+if [ -r /sys/devices/virtual/dmi/id/product_name ] && grep -qi "Galileo" /sys/devices/virtual/dmi/id/product_name 2>/dev/null; then
+    deck_transform=1
+fi
+
+has_external=false
+for status_file in /sys/class/drm/card*-DP-*/status /sys/class/drm/card*-HDMI-*/status; do
+    if [ -f "$status_file" ] && [ "$(cat "$status_file" 2>/dev/null)" = "connected" ]; then
+        has_external=true
+        break
+    fi
+done
+
+if [ "$has_external" = "true" ]; then
+    # Disable internal display so output goes only to external TV/monitor
+    hyprctl eval "hl.monitor({ output = 'eDP-1', disabled = true })" >/dev/null 2>&1 || true
+else
+    # Enable internal display with preferred orientation and touch device orientation
+    hyprctl eval "hl.monitor({ output = 'eDP-1', mode = 'preferred', position = '0x0', scale = '1', transform = $deck_transform })" >/dev/null 2>&1 || true
+    hyprctl eval "hl.config({ input = { touchdevice = { transform = $deck_transform, output = 'eDP-1' } } })" >/dev/null 2>&1 || true
+fi

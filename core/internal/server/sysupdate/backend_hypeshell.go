@@ -270,7 +270,7 @@ elif [ "$hardware_profile" = "steamdeck" ]; then
     done
 
     # Passwordless sudo and polkit rules for SteamOS-style background updating
-    echo "%wheel ALL=(ALL) NOPASSWD: /usr/bin/true, /usr/local/bin/hype update *, /usr/bin/pacman -Syu --noconfirm, /usr/bin/pacman -S --needed --noconfirm *, /usr/bin/pacman -S *" > /etc/sudoers.d/99-steamdeck-updates
+    echo "%%%%wheel ALL=(ALL) NOPASSWD: /usr/bin/true, /usr/local/bin/hype update *, /usr/bin/pacman -Syu --noconfirm, /usr/bin/pacman -S --needed --noconfirm *, /usr/bin/pacman -S *" > /etc/sudoers.d/99-steamdeck-updates
     chmod 0440 /etc/sudoers.d/99-steamdeck-updates || true
 
     if [ -d /etc/polkit-1/rules.d ]; then

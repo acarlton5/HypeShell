@@ -10,13 +10,53 @@ if product_name_file then
     end
 end
 
-hl.monitor({
-    output = "eDP-1",
-    mode = "preferred",
-    position = "0x0",
-    scale = "1",
-    transform = deck_transform,
-})
+-- Check if an external monitor is currently connected
+local function has_external_display()
+    local p = io.popen("for s in /sys/class/drm/card*-DP-*/status /sys/class/drm/card*-HDMI-*/status; do [ -f \"$s\" ] && grep -q '^connected' \"$s\" 2>/dev/null && echo 'yes' && exit 0; done; echo 'no'")
+    if p then
+        local res = p:read("*l") or "no"
+        p:close()
+        return res:find("yes") ~= nil
+    end
+    return false
+end
+
+local function update_displays()
+    if has_external_display() then
+        hl.monitor({
+            output = "eDP-1",
+            disabled = true,
+        })
+    else
+        hl.monitor({
+            output = "eDP-1",
+            mode = "preferred",
+            position = "0x0",
+            scale = "1",
+            transform = deck_transform,
+        })
+        hl.config({
+            input = {
+                touchdevice = {
+                    transform = deck_transform,
+                    output = "eDP-1"
+                }
+            }
+        })
+    end
+end
+
+-- Apply initial monitor configuration based on whether external screen is plugged in
+update_displays()
+
+-- Listen to monitor plug / unplug events to automatically toggle eDP-1
+hl.on("monitor.added", function()
+    update_displays()
+end)
+
+hl.on("monitor.removed", function()
+    update_displays()
+end)
 
 hl.config({
     input = {
