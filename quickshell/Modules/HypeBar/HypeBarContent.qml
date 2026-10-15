@@ -1,4 +1,4 @@
-﻿import QtQuick
+import QtQuick
 import Quickshell.Hyprland
 import Quickshell.Services.SystemTray
 import Quickshell.Wayland
@@ -298,6 +298,8 @@ Item {
             "vpn": vpnComponent,
             "notepadButton": notepadButtonComponent,
             "colorPicker": colorPickerComponent,
+            "virtualKeyboard": virtualKeyboardButtonComponent,
+            "virtualKeyboardButton": virtualKeyboardButtonComponent,
             "systemUpdate": systemUpdateComponent,
             "powerMenuButton": powerMenuButtonComponent
         };
@@ -339,6 +341,7 @@ Item {
             "vpnComponent": vpnComponent,
             "notepadButtonComponent": notepadButtonComponent,
             "colorPickerComponent": colorPickerComponent,
+            "virtualKeyboardButtonComponent": virtualKeyboardButtonComponent,
             "systemUpdateComponent": systemUpdateComponent,
             "powerMenuButtonComponent": powerMenuButtonComponent
         })
@@ -1359,6 +1362,18 @@ Item {
             onColorPickerRequested: {
                 barWindow.colorPickerRequested();
             }
+        }
+    }
+
+    Component {
+        id: virtualKeyboardButtonComponent
+
+        VirtualKeyboardButton {
+            widgetThickness: barWindow.widgetThickness
+            barThickness: barWindow.effectiveBarThickness
+            axis: barWindow.axis
+            section: topBarContent.getWidgetSection(parent) || "right"
+            parentScreen: barWindow.screen
         }
     }
 

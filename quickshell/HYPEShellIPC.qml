@@ -1,4 +1,4 @@
-﻿import QtQuick
+import QtQuick
 import Quickshell.Io
 import Quickshell.Hyprland
 import Quickshell.Wayland
@@ -21,6 +21,7 @@ Item {
     required property var hyprlandOverviewLoader
     required property var workspaceRenameModalLoader
     required property var windowRuleModalLoader
+    property var virtualKeyboard: null
 
     Connections {
         target: PopoutService
@@ -1838,5 +1839,61 @@ Item {
         }
 
         target: "tray"
+    }
+
+    IpcHandler {
+        target: "keyboard"
+
+        function toggle(): string {
+            if (root.virtualKeyboard) {
+                root.virtualKeyboard.toggle();
+                return "SUCCESS: Virtual keyboard toggled";
+            }
+            return "ERROR: Virtual keyboard not initialized";
+        }
+
+        function show(): string {
+            if (root.virtualKeyboard) {
+                root.virtualKeyboard.show();
+                return "SUCCESS: Virtual keyboard shown";
+            }
+            return "ERROR: Virtual keyboard not initialized";
+        }
+
+        function hide(): string {
+            if (root.virtualKeyboard) {
+                root.virtualKeyboard.hide();
+                return "SUCCESS: Virtual keyboard hidden";
+            }
+            return "ERROR: Virtual keyboard not initialized";
+        }
+    }
+
+    IpcHandler {
+        target: "osk"
+
+        function toggle(): string {
+            if (root.virtualKeyboard) {
+                root.virtualKeyboard.toggle();
+                return "SUCCESS: Virtual keyboard toggled";
+            }
+            return "ERROR: Virtual keyboard not initialized";
+        }
+
+        function show(): string {
+            if (root.virtualKeyboard) {
+                root.virtualKeyboard.show();
+                return "SUCCESS: Virtual keyboard shown";
+            }
+            return "ERROR: Virtual keyboard not initialized";
+        }
+
+        function hide(): string {
+            if (root.virtualKeyboard) {
+                root.virtualKeyboard.hide();
+                return "SUCCESS: Virtual keyboard hidden";
+            }
+            return "ERROR: Virtual keyboard not initialized";
+        }
     }
 }

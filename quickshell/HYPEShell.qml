@@ -1,4 +1,4 @@
-﻿import QtQuick
+import QtQuick
 import Quickshell
 import qs.Common
 import qs.Modals
@@ -25,6 +25,7 @@ import qs.Modules.HypeBar.Popouts
 import qs.Modules.Frame
 import qs.Modules.WorkspaceOverlays
 import qs.Modules.Settings.DisplayConfig
+import qs.Modules.Keyboard
 import qs.Services
 
 Item {
@@ -1008,7 +1009,12 @@ Item {
         }
     }
 
+    VirtualKeyboard {
+        id: virtualKeyboard
+    }
+
     HYPEShellIPC {
+        virtualKeyboard: virtualKeyboard
         powerMenuModalLoader: powerMenuModalLoader
         processListModalLoader: processListModalLoader
         controlCenterLoader: controlCenterLoader

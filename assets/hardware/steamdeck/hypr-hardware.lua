@@ -37,6 +37,8 @@ hl.config({
         ", XF86Shop, exec, hype ipc call launcher toggle",
         "SUPER, SPACE, exec, hype ipc call launcher toggle",
         ", XF86Search, exec, hype ipc call anvil toggle",
-        "SUPER ALT, A, exec, hype ipc call anvil toggle"
+        "SUPER ALT, A, exec, hype ipc call anvil toggle",
+        "SUPER, X, exec, hype ipc call keyboard toggle",
+        "SUPER, K, exec, hype ipc call keyboard toggle"
     }
 })

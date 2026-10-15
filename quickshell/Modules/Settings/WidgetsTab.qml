@@ -1,4 +1,4 @@
-﻿import QtQuick
+import QtQuick
 import QtQuick.Layouts
 import Quickshell
 import qs.Common
@@ -240,6 +240,13 @@ Item {
                 "icon": "update",
                 "enabled": SystemUpdateService.sysupdateAvailable,
                 "warning": SystemUpdateService.sysupdateAvailable ? undefined : I18n.tr("Requires HypeShell server with sysupdate capability")
+            },
+            {
+                "id": "virtualKeyboardButton",
+                "text": I18n.tr("Virtual Keyboard"),
+                "description": I18n.tr("Toggle on-screen touch keyboard"),
+                "icon": "keyboard",
+                "enabled": true
             },
             {
                 "id": "powerMenuButton",
