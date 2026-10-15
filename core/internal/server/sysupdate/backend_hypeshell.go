@@ -22,9 +22,9 @@ type hypeShellBackend struct{}
 func (hypeShellBackend) ID() string          { return "hypeshell" }
 func (hypeShellBackend) DisplayName() string { return "HypeShell" }
 func (hypeShellBackend) Repo() RepoKind      { return RepoHypeShell }
-func (hypeShellBackend) NeedsAuth() bool     { return true }
+func (hypeShellBackend) NeedsAuth() bool     { return false }
 func (hypeShellBackend) RunsInTerminal() bool {
-	return true
+	return false
 }
 func (hypeShellBackend) IsAvailable(ctx context.Context) bool {
 	return commandExists("git") && (commandExists("hype") || installedHypeShellCommit() != "")
@@ -80,20 +80,16 @@ func (b hypeShellBackend) Upgrade(ctx context.Context, opts UpgradeOptions, onLi
 		})
 	}
 
-	if b.RunsInTerminal() {
-		term := findTerminal(opts.Terminal)
-		if term == "" {
-			return fmt.Errorf("no terminal found (pick one in HypeShell settings, set $TERMINAL, or install kitty/ghostty/foot/alacritty)")
-		}
-		sudoCmd := "sudo bash -c " + shellQuote(cmd)
-		title := "HypeShell Self-Update"
-		return Run(ctx, wrapInTerminal(term, title, sudoCmd), RunOptions{OnLine: onLine})
-	}
-
 	bashPath, err := exec.LookPath("bash")
 	if err != nil {
 		bashPath = "/usr/bin/bash"
 	}
+
+	priv := privescBin(opts.UseSudo)
+	if priv == "sudo" {
+		return Run(ctx, []string{"sudo", "-n", bashPath, "-c", cmd}, RunOptions{OnLine: onLine})
+	}
+
 	return Run(ctx, []string{"pkexec", bashPath, "-c", cmd}, RunOptions{OnLine: onLine})
 }
 
@@ -268,13 +264,20 @@ elif [ "$hardware_profile" = "steamdeck" ]; then
             done
         fi
     done
+else
+    install -D -m 644 /dev/null "$shared_hardware_file"
+    install -o "$update_user" -g "$user_group" -m 644 /dev/null "$user_hardware_file"
+fi
 
-    # Passwordless sudo and polkit rules for SteamOS-style background updating
-    echo "%%%%wheel ALL=(ALL) NOPASSWD: /usr/bin/true, /usr/local/bin/hype update *, /usr/bin/pacman -Syu --noconfirm, /usr/bin/pacman -S --needed --noconfirm *, /usr/bin/pacman -S *" > /etc/sudoers.d/99-steamdeck-updates
-    chmod 0440 /etc/sudoers.d/99-steamdeck-updates || true
+# Passwordless sudo and polkit rules for universal SteamOS-style background updating
+if [ -d /etc/sudoers.d ]; then
+    sudoers_target="/etc/sudoers.d/99-hypeshell-updates"
+    echo "%%%%wheel ALL=(ALL) NOPASSWD: /usr/bin/true, /usr/local/bin/hype update *, /usr/bin/pacman -Syu --noconfirm, /usr/bin/pacman -S --needed --noconfirm *, /usr/bin/pacman -S *" > "$sudoers_target"
+    chmod 0440 "$sudoers_target" || true
+fi
 
-    if [ -d /etc/polkit-1/rules.d ]; then
-        cat << 'POLKIT_EOF' > /etc/polkit-1/rules.d/99-steamdeck-updates.rules
+if [ -d /etc/polkit-1/rules.d ]; then
+    cat << 'POLKIT_EOF' > /etc/polkit-1/rules.d/99-hypeshell-updates.rules
 polkit.addRule(function(action, subject) {
     if (action.id == "org.freedesktop.policykit.exec" &&
         (action.lookup("program") == "/usr/bin/pacman" || action.lookup("program") == "/usr/local/bin/hype") &&
@@ -283,11 +286,7 @@ polkit.addRule(function(action, subject) {
     }
 });
 POLKIT_EOF
-        chmod 0644 /etc/polkit-1/rules.d/99-steamdeck-updates.rules || true
-    fi
-else
-    install -D -m 644 /dev/null "$shared_hardware_file"
-    install -o "$update_user" -g "$user_group" -m 644 /dev/null "$user_hardware_file"
+    chmod 0644 /etc/polkit-1/rules.d/99-hypeshell-updates.rules || true
 fi
 
 user_hypr_config="$update_home/.config/hypr/hyprland.lua"

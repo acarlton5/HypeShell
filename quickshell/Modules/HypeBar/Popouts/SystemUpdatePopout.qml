@@ -180,7 +180,6 @@ HypePopout {
                     includeAUR: false,
                     targets: [hypeShellUpdate]
                 };
-                prepareTerminalUpdate();
                 HYPEService.sysupdateUpgrade(opts, response => {
                     if (handleUpgradeStartError(response))
                         return;
@@ -217,7 +216,6 @@ HypePopout {
                     includeAUR: true,
                     targets: targets
                 };
-                prepareTerminalUpdate();
                 HYPEService.sysupdateUpgrade(opts, response => {
                     if (handleUpgradeStartError(response))
                         return;
@@ -255,8 +253,6 @@ HypePopout {
                     includeAUR: SettingsData.updaterAllowAUR,
                     targets: generalUpdates
                 };
-                if (generalUpdates.some(pkg => pkg.backend === "paru" || pkg.backend === "yay" || pkg.repo === "aur"))
-                    prepareTerminalUpdate();
                 HYPEService.sysupdateUpgrade(opts, response => {
                     if (handleUpgradeStartError(response))
                         return;
