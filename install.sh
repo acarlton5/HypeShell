@@ -1048,6 +1048,9 @@ configure_steamdeck_kernel_quirks() {
         else
             sudo_run sed -i -E 's/^GRUB_TIMEOUT_STYLE=.*/GRUB_TIMEOUT_STYLE=hidden/' /etc/default/grub 2>/dev/null || true
         fi
+        if ! grep -q '^GRUB_RECORDFAIL_TIMEOUT=' /etc/default/grub; then
+            echo 'GRUB_RECORDFAIL_TIMEOUT=0' | sudo_run tee -a /etc/default/grub >/dev/null
+        fi
 
         if ! grep -q 'pci=noaer' /etc/default/grub; then
             echo "Adding dock reboot fix and fbcon rotation parameters to /etc/default/grub..."

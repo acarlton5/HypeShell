@@ -223,6 +223,51 @@ elif [ "$hardware_profile" = "steamdeck" ]; then
         echo "Refreshing Anvil session files..."
         bash "$anvil_plugin_dir/plugins/hypeAnvil/scripts/install-session" "$anvil_plugin_dir" || true
     fi
+
+    # Configure Steam Deck bootloader rotation, hide sideways GRUB, and early KMS
+    fbcon_rot="3"
+    if echo "$dmi_product" | grep -iq 'Galileo'; then
+        fbcon_rot="1"
+    fi
+    deck_params="pci=noaer usbcore.autosuspend=-1 fbcon=rotate:$fbcon_rot quiet loglevel=3 rd.udev.log_level=3 vt.global_cursor_default=0"
+
+    if [ -f /etc/default/grub ]; then
+        echo "Configuring GRUB to hide sideways menu and rotate console..."
+        sed -i 's/ amdgpu\.dcfeaturemask=[^ "]*//g' /etc/default/grub 2>/dev/null || true
+        sed -i -E 's/^GRUB_TIMEOUT=[0-9]+/GRUB_TIMEOUT=0/' /etc/default/grub 2>/dev/null || true
+        if ! grep -q '^GRUB_TIMEOUT_STYLE=' /etc/default/grub; then
+            echo 'GRUB_TIMEOUT_STYLE=hidden' >> /etc/default/grub
+        else
+            sed -i -E 's/^GRUB_TIMEOUT_STYLE=.*/GRUB_TIMEOUT_STYLE=hidden/' /etc/default/grub 2>/dev/null || true
+        fi
+        if ! grep -q '^GRUB_RECORDFAIL_TIMEOUT=' /etc/default/grub; then
+            echo 'GRUB_RECORDFAIL_TIMEOUT=0' >> /etc/default/grub
+        fi
+        if ! grep -q 'pci=noaer' /etc/default/grub; then
+            sed -i.bak -E "s/^(GRUB_CMDLINE_LINUX_DEFAULT=\"[^\"]*)\"/\1 $deck_params\"/" /etc/default/grub
+        fi
+        if command -v grub-mkconfig >/dev/null 2>&1; then
+            if [ -d /boot/grub ]; then
+                grub-mkconfig -o /boot/grub/grub.cfg || true
+            elif [ -d /boot/grub2 ]; then
+                grub-mkconfig -o /boot/grub2/grub.cfg || true
+            fi
+        fi
+    fi
+
+    for entry_dir in /boot/loader/entries /efi/loader/entries /boot/efi/loader/entries; do
+        if [ -d "$entry_dir" ]; then
+            for conf in "$entry_dir"/*.conf; do
+                [ -f "$conf" ] || continue
+                sed -i 's/ amdgpu\.dcfeaturemask=[^ ]*//g' "$conf" 2>/dev/null || true
+                if grep -q '^options' "$conf"; then
+                    if ! grep -q 'pci=noaer' "$conf"; then
+                        sed -i "/^options/ s/$/ $deck_params/" "$conf"
+                    fi
+                fi
+            done
+        fi
+    done
 else
     install -D -m 644 /dev/null "$shared_hardware_file"
     install -o "$update_user" -g "$user_group" -m 644 /dev/null "$user_hardware_file"
