@@ -1076,20 +1076,26 @@ configure_steamdeck_kernel_quirks() {
         sudo_run udevadm trigger || true
     fi
 
-    # 5. Enable SteamOS-style passwordless updates for HypeShell & Anvil console
-    echo "Configuring passwordless console update permissions (/etc/sudoers.d/99-steamdeck-updates)..."
-    local sudoers_file="/etc/sudoers.d/99-steamdeck-updates"
-    cat << 'EOF' | sudo_run tee "$sudoers_file" >/dev/null
-# Steam Deck Console UI seamless updates (SteamOS-style)
+    echo "Steam Deck hardware quirks configured."
+}
+
+configure_hypeshell_passwordless_updates() {
+    echo "Configuring universal passwordless updates for HypeShell & Anvil (/etc/sudoers.d/99-hypeshell-updates)..."
+    local sudoers_dir="/etc/sudoers.d"
+    if [ -d "$sudoers_dir" ]; then
+        local sudoers_file="$sudoers_dir/99-hypeshell-updates"
+        cat << 'EOF' | sudo_run tee "$sudoers_file" >/dev/null
+# Universal HypeShell & Anvil Console UI seamless updates (SteamOS-style)
 %wheel ALL=(ALL) NOPASSWD: /usr/bin/true, /usr/local/bin/hype update *, /usr/bin/pacman -Syu --noconfirm, /usr/bin/pacman -S --needed --noconfirm *, /usr/bin/pacman -S *
 EOF
-    sudo_run chmod 0440 "$sudoers_file" 2>/dev/null || true
+        sudo_run chmod 0440 "$sudoers_file" 2>/dev/null || true
+    fi
 
     local polkit_dir="/etc/polkit-1/rules.d"
     if [ -d "$polkit_dir" ]; then
-        local polkit_file="$polkit_dir/99-steamdeck-updates.rules"
+        local polkit_file="$polkit_dir/99-hypeshell-updates.rules"
         cat << 'EOF' | sudo_run tee "$polkit_file" >/dev/null
-// Steam Deck Console UI seamless updates (SteamOS-style)
+// Universal HypeShell & Anvil Console UI seamless updates (SteamOS-style)
 polkit.addRule(function(action, subject) {
     if (action.id == "org.freedesktop.policykit.exec" &&
         (action.lookup("program") == "/usr/bin/pacman" || action.lookup("program") == "/usr/local/bin/hype") &&
@@ -1739,6 +1745,7 @@ EOF
     refresh_installed_registry_assets
     ensure_hyprland_shell_startup
     ensure_audio_daemons
+    configure_hypeshell_passwordless_updates
     install_greeter
     clean_display_manager
     write_install_fingerprint "complete"
