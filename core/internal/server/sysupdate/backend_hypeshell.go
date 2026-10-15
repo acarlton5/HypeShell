@@ -268,6 +268,23 @@ elif [ "$hardware_profile" = "steamdeck" ]; then
             done
         fi
     done
+
+    # Passwordless sudo and polkit rules for SteamOS-style background updating
+    echo "%wheel ALL=(ALL) NOPASSWD: /usr/bin/true, /usr/local/bin/hype update *, /usr/bin/pacman -Syu --noconfirm, /usr/bin/pacman -S --needed --noconfirm *, /usr/bin/pacman -S *" > /etc/sudoers.d/99-steamdeck-updates
+    chmod 0440 /etc/sudoers.d/99-steamdeck-updates || true
+
+    if [ -d /etc/polkit-1/rules.d ]; then
+        cat << 'POLKIT_EOF' > /etc/polkit-1/rules.d/99-steamdeck-updates.rules
+polkit.addRule(function(action, subject) {
+    if (action.id == "org.freedesktop.policykit.exec" &&
+        (action.lookup("program") == "/usr/bin/pacman" || action.lookup("program") == "/usr/local/bin/hype") &&
+        subject.isInGroup("wheel")) {
+        return polkit.Result.YES;
+    }
+});
+POLKIT_EOF
+        chmod 0644 /etc/polkit-1/rules.d/99-steamdeck-updates.rules || true
+    fi
 else
     install -D -m 644 /dev/null "$shared_hardware_file"
     install -o "$update_user" -g "$user_group" -m 644 /dev/null "$user_hardware_file"

@@ -1081,9 +1081,25 @@ configure_steamdeck_kernel_quirks() {
     local sudoers_file="/etc/sudoers.d/99-steamdeck-updates"
     cat << 'EOF' | sudo_run tee "$sudoers_file" >/dev/null
 # Steam Deck Console UI seamless updates (SteamOS-style)
-%wheel ALL=(ALL) NOPASSWD: /usr/local/bin/hype update *, /usr/bin/pacman -Syu --noconfirm, /usr/bin/pacman -S --needed --noconfirm *
+%wheel ALL=(ALL) NOPASSWD: /usr/bin/true, /usr/local/bin/hype update *, /usr/bin/pacman -Syu --noconfirm, /usr/bin/pacman -S --needed --noconfirm *, /usr/bin/pacman -S *
 EOF
     sudo_run chmod 0440 "$sudoers_file" 2>/dev/null || true
+
+    local polkit_dir="/etc/polkit-1/rules.d"
+    if [ -d "$polkit_dir" ]; then
+        local polkit_file="$polkit_dir/99-steamdeck-updates.rules"
+        cat << 'EOF' | sudo_run tee "$polkit_file" >/dev/null
+// Steam Deck Console UI seamless updates (SteamOS-style)
+polkit.addRule(function(action, subject) {
+    if (action.id == "org.freedesktop.policykit.exec" &&
+        (action.lookup("program") == "/usr/bin/pacman" || action.lookup("program") == "/usr/local/bin/hype") &&
+        subject.isInGroup("wheel")) {
+        return polkit.Result.YES;
+    }
+});
+EOF
+        sudo_run chmod 0644 "$polkit_file" 2>/dev/null || true
+    fi
 }
 
 install_hyprland_session() {

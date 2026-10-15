@@ -15,9 +15,9 @@ import (
 )
 
 func init() {
+	RegisterSystemBackend(func() Backend { return &pacmanBackend{} })
 	RegisterSystemBackend(func() Backend { return &archHelperBackend{id: "paru"} })
 	RegisterSystemBackend(func() Backend { return &archHelperBackend{id: "yay"} })
-	RegisterSystemBackend(func() Backend { return &pacmanBackend{} })
 }
 
 var archUpdateLine = regexp.MustCompile(`^(\S+)\s+(\S+)\s+->\s+(\S+)`)
@@ -63,7 +63,13 @@ func (b archHelperBackend) NeedsAuth() bool { return true }
 func (b archHelperBackend) RunsInTerminal() bool {
 	return true
 }
-func (b archHelperBackend) IsAvailable(_ context.Context) bool { return commandExists(b.id) }
+func (b archHelperBackend) IsAvailable(ctx context.Context) bool {
+	if !commandExists(b.id) {
+		return false
+	}
+	cmd := exec.CommandContext(ctx, b.id, "--version")
+	return cmd.Run() == nil
+}
 
 func (b archHelperBackend) DisplayName() string {
 	switch b.id {
@@ -85,7 +91,8 @@ func (b archHelperBackend) CheckUpdates(ctx context.Context) ([]Package, error) 
 
 	aurOut, err := capturePermissive(ctx, b.id, "-Qua")
 	if err != nil {
-		return nil, err
+		log.Warnf("[sysupdate] %s -Qua failed (ignored): %v", b.id, err)
+		return pkgs, nil
 	}
 	pkgs = append(pkgs, parseArchUpdates(aurOut, b.id, RepoAUR)...)
 	return pkgs, nil

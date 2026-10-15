@@ -103,12 +103,16 @@ func Capture(ctx context.Context, argv []string) (string, error) {
 
 // privescBin returns the binary to use for privilege escalation.
 // When useSudo is true it auto-detects the best available tool (sudo/doas/run0).
-// When false it falls back to pkexec for GUI callers.
+// When false it prefers sudo if passwordless sudo is available (e.g. SteamOS / Steam Deck sudoers),
+// falling back to pkexec for GUI callers.
 func privescBin(useSudo bool) string {
 	if useSudo {
 		if t, err := privesc.Detect(); err == nil {
 			return t.Name()
 		}
+	}
+	if exec.Command("sudo", "-n", "true").Run() == nil {
+		return "sudo"
 	}
 	return "pkexec"
 }
