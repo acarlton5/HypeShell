@@ -138,7 +138,7 @@ HypePopout {
             property bool showLogDetails: false
             property var queuedUpdates: []
 
-            readonly property real animatedProgress: SystemUpdateService.progress
+            property real animatedProgress: SystemUpdateService.progress
             Behavior on animatedProgress {
                 NumberAnimation {
                     duration: 400
