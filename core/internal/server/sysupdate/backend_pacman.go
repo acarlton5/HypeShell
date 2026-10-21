@@ -155,6 +155,8 @@ func pacmanCheckViaFakeroot(ctx context.Context) (string, error) {
 		return "", fmt.Errorf("seed sync db: %w", err)
 	}
 
+	_ = os.Remove(filepath.Join(dir, "db.lck"))
+
 	refresh := exec.CommandContext(ctx, "fakeroot", "--", "pacman", "-Sy", "--dbpath", dir, "--logfile", "/dev/null", "--disable-sandbox")
 	if out, err := refresh.CombinedOutput(); err != nil {
 		return "", fmt.Errorf("fakeroot pacman -Sy: %w (%s)", err, strings.TrimSpace(string(out)))
