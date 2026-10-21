@@ -1086,7 +1086,7 @@ configure_hypeshell_passwordless_updates() {
         local sudoers_file="$sudoers_dir/99-hypeshell-updates"
         cat << 'EOF' | sudo_run tee "$sudoers_file" >/dev/null
 # Universal HypeShell & Anvil Console UI seamless updates (SteamOS-style)
-%wheel ALL=(ALL) NOPASSWD: /usr/bin/true, /usr/local/bin/hype update *, /usr/bin/pacman -Syu --noconfirm, /usr/bin/pacman -S --needed --noconfirm *, /usr/bin/pacman -S *
+%wheel ALL=(ALL) NOPASSWD: /usr/bin/true, /usr/local/bin/hype, /usr/local/bin/hype *, /usr/bin/pacman, /usr/bin/pacman *, /usr/bin/paru, /usr/bin/paru *
 EOF
         sudo_run chmod 0440 "$sudoers_file" 2>/dev/null || true
     fi
