@@ -71,6 +71,9 @@ type State struct {
 	OperationID      string        `json:"operationId,omitempty"`
 	OperationStarted int64         `json:"operationStartedUnix,omitempty"`
 	RecentLog        []string      `json:"recentLog,omitempty"`
+	Progress         float64       `json:"progress"`
+	StatusStep       string        `json:"statusStep,omitempty"`
+	CurrentItem      string        `json:"currentItem,omitempty"`
 	Error            *ErrorInfo    `json:"error,omitempty"`
 }
 

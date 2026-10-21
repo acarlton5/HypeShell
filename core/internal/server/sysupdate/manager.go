@@ -6,6 +6,8 @@ import (
 	"errors"
 	"fmt"
 	"os"
+	"regexp"
+	"strconv"
 	"strings"
 	"sync"
 	"sync/atomic"
@@ -329,6 +331,9 @@ func (m *Manager) runUpgrade(ctx context.Context, opts UpgradeOptions) {
 	m.state.OperationID = opID
 	m.state.OperationStarted = time.Now().Unix()
 	m.state.RecentLog = m.state.RecentLog[:0]
+	m.state.Progress = 5.0
+	m.state.StatusStep = "Preparing updates..."
+	m.state.CurrentItem = ""
 	m.state.Error = nil
 	m.mu.Unlock()
 	m.markDirty()
@@ -369,6 +374,9 @@ func (m *Manager) runCustomUpgrade(ctx context.Context, opts UpgradeOptions) {
 	m.state.OperationID = opID
 	m.state.OperationStarted = time.Now().Unix()
 	m.state.RecentLog = m.state.RecentLog[:0]
+	m.state.Progress = 5.0
+	m.state.StatusStep = "Running update..."
+	m.state.CurrentItem = ""
 	m.state.Error = nil
 	m.mu.Unlock()
 	m.markDirty()
@@ -401,6 +409,11 @@ func (m *Manager) runCustomUpgrade(ctx context.Context, opts UpgradeOptions) {
 
 func (m *Manager) finishSuccessfulUpgrade(clearPackages bool) {
 	m.appendLog("Upgrade complete.")
+	m.mu.Lock()
+	m.state.Progress = 100.0
+	m.state.StatusStep = "Update complete!"
+	m.mu.Unlock()
+	m.markDirty()
 
 	timer := time.NewTimer(postUpgradeCompleteDelay)
 	defer timer.Stop()
@@ -415,6 +428,9 @@ func (m *Manager) finishSuccessfulUpgrade(clearPackages bool) {
 	m.state.Phase = PhaseIdle
 	m.state.OperationID = ""
 	m.state.OperationStarted = 0
+	m.state.Progress = 0.0
+	m.state.StatusStep = ""
+	m.state.CurrentItem = ""
 	if clearPackages {
 		m.state.Packages = m.state.Packages[:0]
 		m.state.Count = 0
@@ -454,6 +470,11 @@ func appendUpgradeBackend(out []Backend, b Backend, opts UpgradeOptions) []Backe
 	return append(out, b)
 }
 
+var (
+	pacmanStepRegex = regexp.MustCompile(`\(([0-9]+)/([0-9]+)\)\s+(?:upgrading|installing|reinstalling)\s+(\S+)`)
+	pacmanHookRegex = regexp.MustCompile(`\(([0-9]+)/([0-9]+)\)\s+(?:Arming|Running|Updating)\s+(\S+)`)
+)
+
 func (m *Manager) appendLog(line string) {
 	m.mu.Lock()
 	if cap(m.state.RecentLog) == 0 {
@@ -464,8 +485,76 @@ func (m *Manager) appendLog(line string) {
 		m.state.RecentLog = m.state.RecentLog[:recentLogCapacity-1]
 	}
 	m.state.RecentLog = append(m.state.RecentLog, line)
+	m.updateProgressFromLineLocked(line)
 	m.mu.Unlock()
 	m.markDirty()
+}
+
+func (m *Manager) updateProgressFromLineLocked(line string) {
+	trimmed := strings.TrimSpace(line)
+	if m.state.Phase != PhaseUpgrading {
+		return
+	}
+
+	if match := pacmanStepRegex.FindStringSubmatch(trimmed); len(match) == 4 {
+		curr, _ := strconv.Atoi(match[1])
+		tot, _ := strconv.Atoi(match[2])
+		if tot > 0 {
+			pct := 15.0 + (float64(curr)/float64(tot))*75.0
+			if pct > m.state.Progress {
+				m.state.Progress = pct
+			}
+			m.state.StatusStep = fmt.Sprintf("Installing updates (%d/%d)", curr, tot)
+			m.state.CurrentItem = match[3]
+		}
+		return
+	}
+
+	if match := pacmanHookRegex.FindStringSubmatch(trimmed); len(match) == 4 {
+		curr, _ := strconv.Atoi(match[1])
+		tot, _ := strconv.Atoi(match[2])
+		if tot > 0 {
+			pct := 90.0 + (float64(curr)/float64(tot))*8.0
+			if pct > m.state.Progress {
+				m.state.Progress = pct
+			}
+			m.state.StatusStep = "Configuring system..."
+			m.state.CurrentItem = match[3]
+		}
+		return
+	}
+
+	switch {
+	case strings.Contains(trimmed, "Cloning HypeShell"):
+		m.state.Progress = 20.0
+		m.state.StatusStep = "Downloading HypeShell update..."
+		m.state.CurrentItem = "HypeShell"
+	case strings.Contains(trimmed, "Tidying Go modules"):
+		m.state.Progress = 45.0
+		m.state.StatusStep = "Preparing dependencies..."
+		m.state.CurrentItem = "HypeShell"
+	case strings.Contains(trimmed, "Building HypeShell") || strings.Contains(trimmed, "make -C"):
+		m.state.Progress = 65.0
+		m.state.StatusStep = "Compiling HypeShell..."
+		m.state.CurrentItem = "HypeShell"
+	case strings.Contains(trimmed, "Restarting hype.service"):
+		m.state.Progress = 95.0
+		m.state.StatusStep = "Restarting shell service..."
+		m.state.CurrentItem = "HypeShell"
+	case strings.Contains(trimmed, "Retrieving packages") || strings.HasPrefix(trimmed, "downloading "):
+		if m.state.Progress < 15.0 {
+			m.state.Progress = 15.0
+		}
+		m.state.StatusStep = "Downloading packages..."
+	case strings.Contains(trimmed, "Starting full system upgrade"):
+		if m.state.Progress < 10.0 {
+			m.state.Progress = 10.0
+		}
+		m.state.StatusStep = "Starting system upgrade..."
+	case strings.Contains(trimmed, "Upgrade complete"):
+		m.state.Progress = 100.0
+		m.state.StatusStep = "Upgrade complete!"
+	}
 }
 
 func (m *Manager) setError(code ErrorCode, msg string) {

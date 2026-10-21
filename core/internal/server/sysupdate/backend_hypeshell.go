@@ -22,7 +22,7 @@ type hypeShellBackend struct{}
 func (hypeShellBackend) ID() string          { return "hypeshell" }
 func (hypeShellBackend) DisplayName() string { return "HypeShell" }
 func (hypeShellBackend) Repo() RepoKind      { return RepoHypeShell }
-func (hypeShellBackend) NeedsAuth() bool     { return false }
+func (hypeShellBackend) NeedsAuth() bool     { return true }
 func (hypeShellBackend) RunsInTerminal() bool {
 	return false
 }
@@ -65,11 +65,10 @@ func (b hypeShellBackend) Upgrade(ctx context.Context, opts UpgradeOptions, onLi
 	realDbus := os.Getenv("DBUS_SESSION_BUS_ADDRESS")
 	cmd := hypeShellSelfUpdateScript(realUID, realUser, realHome, realXdg, realDbus)
 	if onLine != nil {
-		onLine("$ hype update install")
-		onLine("Updating HypeShell from GitHub main")
+		onLine("Updating HypeShell from GitHub main...")
 	}
 	if opts.AttachStdio {
-		return Run(ctx, []string{"sudo", "bash", "-c", cmd}, RunOptions{OnLine: onLine, AttachStdio: true})
+		return Run(ctx, []string{"sudo", "-n", "bash", "-c", cmd}, RunOptions{OnLine: onLine, AttachStdio: true})
 	}
 
 	if opts.Password != "" {
@@ -80,16 +79,25 @@ func (b hypeShellBackend) Upgrade(ctx context.Context, opts UpgradeOptions, onLi
 		})
 	}
 
+	// Try passwordless sudo first
+	if err := Run(ctx, []string{"sudo", "-n", "true"}, RunOptions{}); err == nil {
+		return Run(ctx, []string{"sudo", "-n", "bash", "-c", cmd}, RunOptions{OnLine: onLine})
+	}
+
+	if b.RunsInTerminal() {
+		term := findTerminal(opts.Terminal)
+		if term == "" {
+			return fmt.Errorf("no terminal found (pick one in HypeShell settings, set $TERMINAL, or install kitty/ghostty/foot/alacritty)")
+		}
+		sudoCmd := "sudo bash -c " + shellQuote(cmd)
+		title := "HypeShell Self-Update"
+		return Run(ctx, wrapInTerminal(term, title, sudoCmd), RunOptions{OnLine: onLine})
+	}
+
 	bashPath, err := exec.LookPath("bash")
 	if err != nil {
 		bashPath = "/usr/bin/bash"
 	}
-
-	priv := privescBin(opts.UseSudo)
-	if priv == "sudo" {
-		return Run(ctx, []string{"sudo", "-n", bashPath, "-c", cmd}, RunOptions{OnLine: onLine})
-	}
-
 	return Run(ctx, []string{"pkexec", bashPath, "-c", cmd}, RunOptions{OnLine: onLine})
 }
 
@@ -175,17 +183,8 @@ install -D -m 644 "$tmp/install-fingerprint" "/usr/local/share/hypeshell/install
 
 hardware_profile="generic"
 hardware_arch="$(uname -m)"
-dmi_product=""
-if [ -r /sys/devices/virtual/dmi/id/product_name ]; then
-    dmi_product="$(cat /sys/devices/virtual/dmi/id/product_name 2>/dev/null || true)"
-elif [ -r /sys/class/dmi/id/product_name ]; then
-    dmi_product="$(cat /sys/class/dmi/id/product_name 2>/dev/null || true)"
-fi
-
 if { [ "$hardware_arch" = "aarch64" ] || [ "$hardware_arch" = "arm64" ]; } && { { [ -r /proc/device-tree/compatible ] && tr '\0' '\n' </proc/device-tree/compatible 2>/dev/null | grep -qi '^apple,'; } || { [ -r /proc/device-tree/model ] && grep -aqi 'Apple' /proc/device-tree/model; }; }; then
     hardware_profile="apple-silicon"
-elif echo "$dmi_product" | grep -E -iq 'Jupiter|Galileo'; then
-    hardware_profile="steamdeck"
 fi
 
 echo "Applying HypeShell hardware profile: $hardware_profile"
@@ -198,95 +197,9 @@ if [ "$hardware_profile" = "apple-silicon" ]; then
     hardware_source="$tmp/source/assets/hardware/apple-silicon/hypr-hardware.lua"
     install -D -m 644 "$hardware_source" "$shared_hardware_file"
     install -o "$update_user" -g "$user_group" -m 644 "$hardware_source" "$user_hardware_file"
-elif [ "$hardware_profile" = "steamdeck" ]; then
-    hardware_source="$tmp/source/assets/hardware/steamdeck/hypr-hardware.lua"
-    install -D -m 644 "$hardware_source" "$shared_hardware_file"
-    install -o "$update_user" -g "$user_group" -m 644 "$hardware_source" "$user_hardware_file"
-    # Auto-update Anvil gaming session and application desktop entries
-    anvil_plugin_dir="$update_home/.config/HypeShell/plugins/hypeAnvil"
-    anvil_repo="https://github.com/acarlton5/Anvil.git"
-    if [ ! -d "$anvil_plugin_dir" ]; then
-        echo "Installing Anvil console plugin..."
-        runuser -u "$update_user" -- git clone "$anvil_repo" "$anvil_plugin_dir" || true
-    elif [ -d "$anvil_plugin_dir/.git" ]; then
-        echo "Updating Anvil console from git..."
-        runuser -u "$update_user" -- git -C "$anvil_plugin_dir" pull origin main || true
-    fi
-    if [ -f "$anvil_plugin_dir/scripts/install-session" ]; then
-        echo "Refreshing Anvil session files..."
-        bash "$anvil_plugin_dir/scripts/install-session" "$anvil_plugin_dir" || true
-    elif [ -f "$anvil_plugin_dir/plugins/hypeAnvil/scripts/install-session" ]; then
-        echo "Refreshing Anvil session files..."
-        bash "$anvil_plugin_dir/plugins/hypeAnvil/scripts/install-session" "$anvil_plugin_dir" || true
-    fi
-
-    # Configure Steam Deck bootloader rotation, hide sideways GRUB, and early KMS
-    fbcon_rot="3"
-    if echo "$dmi_product" | grep -iq 'Galileo'; then
-        fbcon_rot="1"
-    fi
-    deck_params="pci=noaer usbcore.autosuspend=-1 fbcon=rotate:$fbcon_rot quiet loglevel=3 rd.udev.log_level=3 vt.global_cursor_default=0"
-
-    if [ -f /etc/default/grub ]; then
-        echo "Configuring GRUB to hide sideways menu and rotate console..."
-        sed -i 's/ amdgpu\.dcfeaturemask=[^ "]*//g' /etc/default/grub 2>/dev/null || true
-        sed -i -E 's/^GRUB_TIMEOUT=[0-9]+/GRUB_TIMEOUT=0/' /etc/default/grub 2>/dev/null || true
-        if ! grep -q '^GRUB_TIMEOUT_STYLE=' /etc/default/grub; then
-            echo 'GRUB_TIMEOUT_STYLE=hidden' >> /etc/default/grub
-        else
-            sed -i -E 's/^GRUB_TIMEOUT_STYLE=.*/GRUB_TIMEOUT_STYLE=hidden/' /etc/default/grub 2>/dev/null || true
-        fi
-        if ! grep -q '^GRUB_RECORDFAIL_TIMEOUT=' /etc/default/grub; then
-            echo 'GRUB_RECORDFAIL_TIMEOUT=0' >> /etc/default/grub
-        fi
-        if ! grep -q 'pci=noaer' /etc/default/grub; then
-            sed -i.bak -E "s/^(GRUB_CMDLINE_LINUX_DEFAULT=\"[^\"]*)\"/\1 $deck_params\"/" /etc/default/grub
-        fi
-        if command -v grub-mkconfig >/dev/null 2>&1; then
-            if [ -d /boot/grub ]; then
-                grub-mkconfig -o /boot/grub/grub.cfg || true
-            elif [ -d /boot/grub2 ]; then
-                grub-mkconfig -o /boot/grub2/grub.cfg || true
-            fi
-        fi
-    fi
-
-    for entry_dir in /boot/loader/entries /efi/loader/entries /boot/efi/loader/entries; do
-        if [ -d "$entry_dir" ]; then
-            for conf in "$entry_dir"/*.conf; do
-                [ -f "$conf" ] || continue
-                sed -i 's/ amdgpu\.dcfeaturemask=[^ ]*//g' "$conf" 2>/dev/null || true
-                if grep -q '^options' "$conf"; then
-                    if ! grep -q 'pci=noaer' "$conf"; then
-                        sed -i "/^options/ s/$/ $deck_params/" "$conf"
-                    fi
-                fi
-            done
-        fi
-    done
 else
     install -D -m 644 /dev/null "$shared_hardware_file"
     install -o "$update_user" -g "$user_group" -m 644 /dev/null "$user_hardware_file"
-fi
-
-# Passwordless sudo and polkit rules for universal SteamOS-style background updating
-if [ -d /etc/sudoers.d ]; then
-    sudoers_target="/etc/sudoers.d/99-hypeshell-updates"
-    echo "%%wheel ALL=(ALL) NOPASSWD: /usr/bin/true, /usr/local/bin/hype, /usr/local/bin/hype *, /usr/bin/pacman, /usr/bin/pacman *, /usr/bin/paru, /usr/bin/paru *, /usr/bin/bash, /usr/bin/bash -c *" > "$sudoers_target"
-    chmod 0440 "$sudoers_target" || true
-fi
-
-if [ -d /etc/polkit-1/rules.d ]; then
-    cat << 'POLKIT_EOF' > /etc/polkit-1/rules.d/99-hypeshell-updates.rules
-polkit.addRule(function(action, subject) {
-    if (action.id == "org.freedesktop.policykit.exec" &&
-        (action.lookup("program") == "/usr/bin/pacman" || action.lookup("program") == "/usr/local/bin/hype") &&
-        subject.isInGroup("wheel")) {
-        return polkit.Result.YES;
-    }
-});
-POLKIT_EOF
-    chmod 0644 /etc/polkit-1/rules.d/99-hypeshell-updates.rules || true
 fi
 
 user_hypr_config="$update_home/.config/hypr/hyprland.lua"

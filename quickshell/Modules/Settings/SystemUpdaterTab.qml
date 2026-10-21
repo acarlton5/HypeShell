@@ -50,148 +50,108 @@ Column {
         return 1800;
     }
 
-    function formatLastCheck(unixSec) {
-        if (!unixSec || unixSec <= 0)
-            return I18n.tr("Never checked");
-        const diff = Math.floor(Date.now() / 1000 - unixSec);
-        if (diff < 60)
-            return I18n.tr("Just now");
-        if (diff < 3600)
-            return I18n.tr("%1 minutes ago").arg(Math.floor(diff / 60));
-        if (diff < 86400)
-            return I18n.tr("%1 hours ago").arg(Math.floor(diff / 3600));
-        return I18n.tr("%1 days ago").arg(Math.floor(diff / 86400));
-    }
-
-    // SteamOS Update Status Hero Card
     SettingsCard {
         width: parent.width
-        iconName: "system_update"
+        iconName: SystemUpdateService.isUpgrading ? "refresh" : (SystemUpdateService.updateCount > 0 ? "system_update_alt" : "check_circle")
         title: I18n.tr("Update Status")
-        settingKey: "systemUpdateStatus"
+        settingKey: "systemUpdaterStatus"
 
-        Rectangle {
+        Column {
             width: parent.width - Theme.spacingM * 2
             anchors.left: parent.left
             anchors.leftMargin: Theme.spacingM
-            height: 96
-            radius: Theme.cornerRadius
-            color: Theme.withAlpha(Theme.surfaceContainerHighest, 0.5)
-            border.color: Theme.withAlpha(Theme.outline, 0.12)
-            border.width: 1
+            spacing: Theme.spacingM
 
-            Row {
-                anchors.left: parent.left
-                anchors.right: actionButtonsRow.left
-                anchors.verticalCenter: parent.verticalCenter
-                anchors.leftMargin: Theme.spacingL
-                anchors.rightMargin: Theme.spacingM
-                spacing: Theme.spacingL
+            // Progress bar when updating
+            Column {
+                width: parent.width
+                spacing: Theme.spacingS
+                visible: SystemUpdateService.isUpgrading
 
-                Rectangle {
-                    width: 52
-                    height: 52
-                    radius: 26
-                    color: {
-                        if (SystemUpdateService.hasError)
-                            return Theme.withAlpha(Theme.error, 0.12);
-                        if (SystemUpdateService.isUpgrading)
-                            return Theme.withAlpha(Theme.primary, 0.16);
-                        if (SystemUpdateService.updateCount > 0)
-                            return Theme.withAlpha(Theme.primary, 0.12);
-                        return Theme.withAlpha(Theme.success, 0.12);
-                    }
-                    anchors.verticalCenter: parent.verticalCenter
-
-                    HypeIcon {
-                        anchors.centerIn: parent
-                        name: {
-                            if (SystemUpdateService.hasError)
-                                return "error";
-                            if (SystemUpdateService.isUpgrading)
-                                return "system_update";
-                            if (SystemUpdateService.updateCount > 0)
-                                return "system_update_alt";
-                            return "check_circle";
-                        }
-                        size: 28
-                        color: {
-                            if (SystemUpdateService.hasError)
-                                return Theme.error;
-                            if (SystemUpdateService.isUpgrading || SystemUpdateService.updateCount > 0)
-                                return Theme.primary;
-                            return Theme.success;
-                        }
-                    }
-                }
-
-                Column {
-                    anchors.verticalCenter: parent.verticalCenter
-                    width: parent.width - 52 - Theme.spacingL
-                    spacing: 4
-
+                Row {
+                    width: parent.width
                     StyledText {
-                        text: {
-                            if (SystemUpdateService.isUpgrading)
-                                return I18n.tr("Applying System Updates…");
-                            if (SystemUpdateService.isChecking)
-                                return I18n.tr("Checking for Updates…");
-                            if (SystemUpdateService.hasError)
-                                return I18n.tr("Update Error");
-                            if (SystemUpdateService.updateCount > 0)
-                                return I18n.tr("%1 Updates Available").arg(SystemUpdateService.updateCount);
-                            return I18n.tr("Your System is Up to Date");
-                        }
-                        font.pixelSize: Theme.fontSizeLarge
+                        width: parent.width - pctLabel.implicitWidth
+                        text: SystemUpdateService.statusStep || I18n.tr("Applying updates in background…")
+                        font.pixelSize: Theme.fontSizeMedium
                         font.weight: Font.DemiBold
                         color: Theme.surfaceText
                         elide: Text.ElideRight
-                        width: parent.width
                     }
-
                     StyledText {
-                        text: {
-                            if (SystemUpdateService.isUpgrading)
-                                return I18n.tr("Installing packages seamlessly in the background");
-                            return I18n.tr("Last checked: %1").arg(root.formatLastCheck(SystemUpdateService.lastCheckUnix));
-                        }
-                        font.pixelSize: Theme.fontSizeSmall
-                        color: Theme.surfaceVariantText
-                        elide: Text.ElideRight
-                        width: parent.width
+                        id: pctLabel
+                        text: `${SystemUpdateService.progressPercent}%`
+                        font.pixelSize: Theme.fontSizeMedium
+                        font.weight: Font.Bold
+                        color: Theme.primary
+                    }
+                }
+
+                Rectangle {
+                    width: parent.width
+                    height: 10
+                    radius: 5
+                    color: Theme.withAlpha(Theme.surfaceContainerLowest, 0.6)
+                    clip: true
+
+                    Rectangle {
+                        height: parent.height
+                        width: Math.max(10, parent.width * Math.min(1.0, Math.max(0.04, SystemUpdateService.progress)))
+                        radius: parent.radius
+                        color: Theme.primary
                     }
                 }
             }
 
+            // Status row when not updating
             Row {
-                id: actionButtonsRow
-                anchors.right: parent.right
-                anchors.rightMargin: Theme.spacingL
-                anchors.verticalCenter: parent.verticalCenter
+                width: parent.width
+                visible: !SystemUpdateService.isUpgrading
                 spacing: Theme.spacingM
 
-                HypeButton {
-                    height: 40
-                    text: I18n.tr("Check for Updates")
-                    iconName: "refresh"
-                    enabled: !SystemUpdateService.isChecking && !SystemUpdateService.isUpgrading
-                    onClicked: SystemUpdateService.checkForUpdates()
+                Column {
+                    width: parent.width - actionBtn.width - Theme.spacingM
+                    anchors.verticalCenter: parent.verticalCenter
+                    spacing: 2
+
+                    StyledText {
+                        text: {
+                            if (SystemUpdateService.isChecking)
+                                return I18n.tr("Checking for updates…");
+                            if (SystemUpdateService.hasError)
+                                return I18n.tr("Update error");
+                            if (SystemUpdateService.updateCount > 0)
+                                return I18n.tr("%1 updates available").arg(SystemUpdateService.updateCount);
+                            return I18n.tr("Your system is up to date");
+                        }
+                        font.pixelSize: Theme.fontSizeMedium
+                        font.weight: Font.Medium
+                        color: Theme.surfaceText
+                    }
+
+                    StyledText {
+                        text: {
+                            const names = (SystemUpdateService.backends || []).map(b => b.displayName).join(", ");
+                            return names.length > 0 ? I18n.tr("Detected: %1").arg(names) : "";
+                        }
+                        font.pixelSize: Theme.fontSizeSmall
+                        color: Theme.surfaceVariantText
+                    }
                 }
 
                 HypeButton {
-                    height: 40
-                    text: SystemUpdateService.isUpgrading ? I18n.tr("Cancel") : I18n.tr("Apply Updates")
-                    iconName: SystemUpdateService.isUpgrading ? "close" : "system_update_alt"
-                    visible: SystemUpdateService.isUpgrading || SystemUpdateService.updateCount > 0
-                    backgroundColor: Theme.primary
-                    textColor: Theme.primaryText
-                    enabled: !SystemUpdateService.isChecking
+                    id: actionBtn
+                    anchors.verticalCenter: parent.verticalCenter
+                    width: 130
+                    height: 36
+                    text: SystemUpdateService.updateCount > 0 ? I18n.tr("Update All") : I18n.tr("Check Now")
+                    iconName: SystemUpdateService.updateCount > 0 ? "system_update_alt" : "refresh"
                     onClicked: {
-                        if (SystemUpdateService.isUpgrading) {
-                            SystemUpdateService.cancelUpdates();
-                            return;
+                        if (SystemUpdateService.updateCount > 0) {
+                            SystemUpdateService.runUpdates();
+                        } else {
+                            SystemUpdateService.checkForUpdates();
                         }
-                        PopoutService.openSystemUpdateFromSettings();
                     }
                 }
             }

@@ -1,4 +1,4 @@
-﻿import QtQuick
+import QtQuick
 import qs.Common
 import qs.Modules.Plugins
 import qs.Services
@@ -11,7 +11,7 @@ BasePill {
     property bool isActive: false
 
     readonly property bool hasUpdates: SystemUpdateService.updateCount > 0
-    readonly property bool isChecking: SystemUpdateService.isChecking
+    readonly property bool isChecking: SystemUpdateService.isChecking || SystemUpdateService.isUpgrading
     readonly property bool isClean: SystemUpdateService.sysupdateAvailable && !hasUpdates && !isChecking && !SystemUpdateService.hasError
     readonly property bool hideWhenIdle: widgetData?.hideWhenIdle === true
     readonly property bool shouldHide: hideWhenIdle && isClean
@@ -57,7 +57,7 @@ BasePill {
                 visible: root.isVerticalOrientation
                 smoothTransform: root.isChecking
                 name: {
-                    if (root.isChecking)
+                    if (SystemUpdateService.isUpgrading || root.isChecking)
                         return "refresh";
                     if (SystemUpdateService.hasError)
                         return "error";
@@ -69,7 +69,7 @@ BasePill {
                 color: {
                     if (SystemUpdateService.hasError)
                         return Theme.error;
-                    if (root.hasUpdates)
+                    if (SystemUpdateService.isUpgrading || root.hasUpdates)
                         return Theme.primary;
                     return root.isActive ? Theme.primary : Theme.surfaceText;
                 }
@@ -93,12 +93,12 @@ BasePill {
                 width: 8
                 height: 8
                 radius: 4
-                color: Theme.error
+                color: SystemUpdateService.isUpgrading ? Theme.primary : Theme.error
                 anchors.right: parent.right
                 anchors.top: parent.top
                 anchors.rightMargin: (barConfig?.removeWidgetPadding ?? false) ? 0 : 6
                 anchors.topMargin: (barConfig?.removeWidgetPadding ?? false) ? 0 : 6
-                visible: root.isVerticalOrientation && root.hasUpdates && !root.isChecking
+                visible: root.isVerticalOrientation && (root.hasUpdates || SystemUpdateService.isUpgrading)
             }
 
             Row {
@@ -112,7 +112,7 @@ BasePill {
                     anchors.verticalCenter: parent.verticalCenter
                     smoothTransform: root.isChecking
                     name: {
-                        if (root.isChecking)
+                        if (SystemUpdateService.isUpgrading || root.isChecking)
                             return "refresh";
                         if (SystemUpdateService.hasError)
                             return "error";
@@ -124,7 +124,7 @@ BasePill {
                     color: {
                         if (SystemUpdateService.hasError)
                             return Theme.error;
-                        if (root.hasUpdates)
+                        if (SystemUpdateService.isUpgrading || root.hasUpdates)
                             return Theme.primary;
                         return root.isActive ? Theme.primary : Theme.surfaceText;
                     }
@@ -147,10 +147,15 @@ BasePill {
                 StyledText {
                     id: countText
                     anchors.verticalCenter: parent.verticalCenter
-                    text: SystemUpdateService.updateCount.toString()
+                    text: {
+                        if (SystemUpdateService.isUpgrading)
+                            return `${SystemUpdateService.progressPercent}%`;
+                        return SystemUpdateService.updateCount.toString();
+                    }
                     font.pixelSize: Theme.barTextSize(root.barThickness, root.barConfig?.fontScale, root.barConfig?.maximizeWidgetText)
-                    color: Theme.widgetTextColor
-                    visible: root.hasUpdates && !root.isChecking
+                    font.weight: SystemUpdateService.isUpgrading ? Font.DemiBold : Font.Normal
+                    color: SystemUpdateService.isUpgrading ? Theme.primary : Theme.widgetTextColor
+                    visible: SystemUpdateService.isUpgrading || (root.hasUpdates && !root.isChecking)
                 }
             }
         }

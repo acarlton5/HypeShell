@@ -15,9 +15,9 @@ import (
 )
 
 func init() {
-	RegisterSystemBackend(func() Backend { return &pacmanBackend{} })
 	RegisterSystemBackend(func() Backend { return &archHelperBackend{id: "paru"} })
 	RegisterSystemBackend(func() Backend { return &archHelperBackend{id: "yay"} })
+	RegisterSystemBackend(func() Backend { return &pacmanBackend{} })
 }
 
 var archUpdateLine = regexp.MustCompile(`^(\S+)\s+(\S+)\s+->\s+(\S+)`)
@@ -63,13 +63,7 @@ func (b archHelperBackend) NeedsAuth() bool { return true }
 func (b archHelperBackend) RunsInTerminal() bool {
 	return false
 }
-func (b archHelperBackend) IsAvailable(ctx context.Context) bool {
-	if !commandExists(b.id) {
-		return false
-	}
-	cmd := exec.CommandContext(ctx, b.id, "--version")
-	return cmd.Run() == nil
-}
+func (b archHelperBackend) IsAvailable(_ context.Context) bool { return commandExists(b.id) }
 
 func (b archHelperBackend) DisplayName() string {
 	switch b.id {
@@ -91,8 +85,7 @@ func (b archHelperBackend) CheckUpdates(ctx context.Context) ([]Package, error) 
 
 	aurOut, err := capturePermissive(ctx, b.id, "-Qua")
 	if err != nil {
-		log.Warnf("[sysupdate] %s -Qua failed (ignored): %v", b.id, err)
-		return pkgs, nil
+		return nil, err
 	}
 	pkgs = append(pkgs, parseArchUpdates(aurOut, b.id, RepoAUR)...)
 	return pkgs, nil
@@ -122,9 +115,6 @@ func (b archHelperBackend) Upgrade(ctx context.Context, opts UpgradeOptions, onL
 
 func archHelperUpgradeArgv(id string, includeAUR bool) []string {
 	argv := []string{id, "-Syu", "--noconfirm", "--needed"}
-	if id == "paru" {
-		argv = append(argv, "--sudoflags", "-n")
-	}
 	if !includeAUR {
 		argv = append(argv, "--repo")
 	}
@@ -154,8 +144,6 @@ func pacmanCheckViaFakeroot(ctx context.Context) (string, error) {
 	if err := seedPacmanDB(dir); err != nil {
 		return "", fmt.Errorf("seed sync db: %w", err)
 	}
-
-	_ = os.Remove(filepath.Join(dir, "db.lck"))
 
 	refresh := exec.CommandContext(ctx, "fakeroot", "--", "pacman", "-Sy", "--dbpath", dir, "--logfile", "/dev/null", "--disable-sandbox")
 	if out, err := refresh.CombinedOutput(); err != nil {

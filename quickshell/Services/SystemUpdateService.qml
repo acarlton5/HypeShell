@@ -1,4 +1,4 @@
-﻿pragma Singleton
+pragma Singleton
 pragma ComponentBehavior: Bound
 
 import QtQuick
@@ -26,6 +26,10 @@ Singleton {
     property string pkgManager: ""
     property bool distributionSupported: false
     property var recentLog: []
+    property real progress: 0.0
+    readonly property int progressPercent: Math.round(progress * 100)
+    property string statusStep: ""
+    property string currentItem: ""
     property int intervalSeconds: 1800
     property int lastCheckUnix: 0
     property int nextCheckUnix: 0
@@ -120,12 +124,83 @@ Singleton {
             errorCode = "";
         }
 
+        if (isUpgrading) {
+            if (data.progress !== undefined && data.progress > 0) {
+                progress = Math.min(1.0, Math.max(0.0, data.progress / 100.0));
+            } else {
+                progress = _computeProgressFromLog(recentLog);
+            }
+            statusStep = data.statusStep || _computeStepFromLog(recentLog);
+            currentItem = data.currentItem || "";
+        } else if (isChecking) {
+            progress = 0.0;
+            statusStep = I18n.tr("Checking for updates…");
+            currentItem = "";
+        } else {
+            progress = hasError ? 0.0 : 1.0;
+            statusStep = hasError ? I18n.tr("Update error") : I18n.tr("Everything is up to date");
+            currentItem = "";
+        }
+
         if (backends.length > 0) {
             const sys = backends.find(b => b.repo === "system" || b.repo === "ostree");
             pkgManager = sys ? sys.id : backends[0].id;
         } else {
             pkgManager = "";
         }
+    }
+
+    function _computeProgressFromLog(lines) {
+        if (!lines || lines.length === 0)
+            return 0.06;
+        for (let i = lines.length - 1; i >= 0; i--) {
+            const line = String(lines[i]).trim();
+            const stepMatch = line.match(/\(([0-9]+)\/([0-9]+)\)\s+(?:upgrading|installing|reinstalling)\s+(\S+)/);
+            if (stepMatch) {
+                const curr = parseInt(stepMatch[1]);
+                const tot = parseInt(stepMatch[2]);
+                if (tot > 0)
+                    return Math.min(0.92, 0.15 + (curr / tot) * 0.75);
+            }
+            if (line.indexOf("Restarting hype.service") >= 0)
+                return 0.95;
+            if (line.indexOf("Building HypeShell") >= 0 || line.indexOf("make -C") >= 0)
+                return 0.65;
+            if (line.indexOf("Tidying Go modules") >= 0)
+                return 0.45;
+            if (line.indexOf("Cloning HypeShell") >= 0)
+                return 0.20;
+            if (line.indexOf("Retrieving packages") >= 0 || line.indexOf("downloading ") === 0)
+                return 0.15;
+            if (line.indexOf("Upgrade complete") >= 0)
+                return 1.0;
+        }
+        return 0.08;
+    }
+
+    function _computeStepFromLog(lines) {
+        if (!lines || lines.length === 0)
+            return I18n.tr("Starting update…");
+        for (let i = lines.length - 1; i >= 0; i--) {
+            const line = String(lines[i]).trim();
+            const stepMatch = line.match(/\(([0-9]+)\/([0-9]+)\)\s+(?:upgrading|installing|reinstalling)\s+(\S+)/);
+            if (stepMatch) {
+                return I18n.tr("Installing updates (%1 of %2)").arg(stepMatch[1]).arg(stepMatch[2]);
+            }
+            if (line.indexOf("Restarting hype.service") >= 0)
+                return I18n.tr("Restarting shell service…");
+            if (line.indexOf("Building HypeShell") >= 0 || line.indexOf("make -C") >= 0)
+                return I18n.tr("Compiling HypeShell…");
+            if (line.indexOf("Tidying Go modules") >= 0)
+                return I18n.tr("Preparing dependencies…");
+            if (line.indexOf("Cloning HypeShell") >= 0)
+                return I18n.tr("Downloading HypeShell update…");
+            if (line.indexOf("Retrieving packages") >= 0 || line.indexOf("downloading ") === 0)
+                return I18n.tr("Downloading packages…");
+            if (line.indexOf("Upgrade complete") >= 0)
+                return I18n.tr("Update complete!");
+        }
+        return I18n.tr("Updating system…");
     }
 
     function checkForUpdates() {
