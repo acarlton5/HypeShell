@@ -206,9 +206,13 @@ Column {
                         }
                     }
 
-                    Item { width: 1; height: 1; Layout.fillWidth: true }
+                    Item {
+                        width: Math.max(0, parent.width - 140 - Theme.spacingM - cancelBtn.width)
+                        height: 1
+                    }
 
                     HypeButton {
+                        id: cancelBtn
                         height: 32
                         text: I18n.tr("Cancel Update")
                         iconName: "close"
