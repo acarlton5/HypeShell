@@ -272,7 +272,7 @@ fi
 # Passwordless sudo and polkit rules for universal SteamOS-style background updating
 if [ -d /etc/sudoers.d ]; then
     sudoers_target="/etc/sudoers.d/99-hypeshell-updates"
-    echo "%%%%wheel ALL=(ALL) NOPASSWD: /usr/bin/true, /usr/local/bin/hype update *, /usr/bin/pacman -Syu --noconfirm, /usr/bin/pacman -S --needed --noconfirm *, /usr/bin/pacman -S *" > "$sudoers_target"
+    echo "%%%%wheel ALL=(ALL) NOPASSWD: /usr/bin/true, /usr/local/bin/hype, /usr/local/bin/hype *, /usr/bin/pacman, /usr/bin/pacman *, /usr/bin/paru, /usr/bin/paru *, /usr/bin/bash, /usr/bin/bash -c *" > "$sudoers_target"
     chmod 0440 "$sudoers_target" || true
 fi
 
