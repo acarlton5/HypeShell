@@ -50,6 +50,15 @@ Column {
         return 1800;
     }
 
+    property bool showLogDetails: false
+    property real animatedProgress: SystemUpdateService.progress
+    Behavior on animatedProgress {
+        NumberAnimation {
+            duration: 400
+            easing.type: Easing.OutCubic
+        }
+    }
+
     SettingsCard {
         width: parent.width
         iconName: SystemUpdateService.isUpgrading ? "refresh" : (SystemUpdateService.updateCount > 0 ? "system_update_alt" : "check_circle")
@@ -62,95 +71,308 @@ Column {
             anchors.leftMargin: Theme.spacingM
             spacing: Theme.spacingM
 
-            // Progress bar when updating
+            // ACTIVE UPGRADE VIEW (Progress bar, current step, and optional collapsible details)
             Column {
                 width: parent.width
-                spacing: Theme.spacingS
+                spacing: Theme.spacingM
                 visible: SystemUpdateService.isUpgrading
 
-                Row {
+                // Progress Hero Box
+                Rectangle {
                     width: parent.width
-                    StyledText {
-                        width: parent.width - pctLabel.implicitWidth
-                        text: SystemUpdateService.statusStep || I18n.tr("Applying updates in background…")
-                        font.pixelSize: Theme.fontSizeMedium
-                        font.weight: Font.DemiBold
-                        color: Theme.surfaceText
-                        elide: Text.ElideRight
-                    }
-                    StyledText {
-                        id: pctLabel
-                        text: `${SystemUpdateService.progressPercent}%`
-                        font.pixelSize: Theme.fontSizeMedium
-                        font.weight: Font.Bold
-                        color: Theme.primary
+                    height: 104
+                    radius: Theme.cornerRadius
+                    color: Theme.withAlpha(Theme.surfaceContainerHigh, 0.8)
+                    border.color: Theme.withAlpha(Theme.primary, 0.28)
+                    border.width: 1
+
+                    Column {
+                        anchors.fill: parent
+                        anchors.margins: Theme.spacingM
+                        spacing: Theme.spacingS
+
+                        Row {
+                            width: parent.width
+                            height: 24
+
+                            StyledText {
+                                width: parent.width - pctLabel.implicitWidth
+                                text: SystemUpdateService.statusStep || I18n.tr("Applying updates in background…")
+                                font.pixelSize: Theme.fontSizeMedium
+                                font.weight: Font.DemiBold
+                                color: Theme.surfaceText
+                                elide: Text.ElideRight
+                                anchors.verticalCenter: parent.verticalCenter
+                            }
+                            StyledText {
+                                id: pctLabel
+                                text: `${SystemUpdateService.progressPercent}%`
+                                font.pixelSize: Theme.fontSizeLarge
+                                font.weight: Font.Bold
+                                color: Theme.primary
+                                anchors.verticalCenter: parent.verticalCenter
+                            }
+                        }
+
+                        // Animated Progress Bar Track
+                        Rectangle {
+                            width: parent.width
+                            height: 12
+                            radius: 6
+                            color: Theme.withAlpha(Theme.surfaceContainerLowest, 0.6)
+                            clip: true
+
+                            Rectangle {
+                                height: parent.height
+                                width: Math.max(12, parent.width * Math.min(1.0, Math.max(0.04, root.animatedProgress)))
+                                radius: parent.radius
+                                color: Theme.primary
+
+                                Rectangle {
+                                    anchors.fill: parent
+                                    radius: parent.radius
+                                    opacity: 0.35
+                                    gradient: Gradient {
+                                        orientation: Gradient.Horizontal
+                                        GradientStop { position: 0.0; color: Theme.primary }
+                                        GradientStop { position: 1.0; color: Theme.secondary }
+                                    }
+                                }
+                            }
+                        }
+
+                        Row {
+                            width: parent.width
+                            spacing: Theme.spacingS
+
+                            HypeIcon {
+                                name: "schedule"
+                                size: 14
+                                color: Theme.surfaceVariantText
+                                anchors.verticalCenter: parent.verticalCenter
+                            }
+
+                            StyledText {
+                                text: SystemUpdateService.currentItem && SystemUpdateService.currentItem.length > 0 ?
+                                      SystemUpdateService.currentItem :
+                                      I18n.tr("Applying changes smoothly in background…")
+                                font.pixelSize: Theme.fontSizeSmall
+                                color: Theme.surfaceVariantText
+                                elide: Text.ElideRight
+                                width: parent.width - 24
+                                anchors.verticalCenter: parent.verticalCenter
+                            }
+                        }
                     }
                 }
 
-                Rectangle {
+                // Collapsible Log / Details Toggle
+                Row {
                     width: parent.width
-                    height: 10
-                    radius: 5
-                    color: Theme.withAlpha(Theme.surfaceContainerLowest, 0.6)
-                    clip: true
+                    spacing: Theme.spacingM
 
                     Rectangle {
-                        height: parent.height
-                        width: Math.max(10, parent.width * Math.min(1.0, Math.max(0.04, SystemUpdateService.progress)))
-                        radius: parent.radius
-                        color: Theme.primary
+                        width: 140
+                        height: 32
+                        radius: 16
+                        color: detailsToggleArea.containsMouse ? Theme.withAlpha(Theme.primary, 0.14) : Theme.withAlpha(Theme.surfaceVariantText, 0.08)
+
+                        Row {
+                            anchors.centerIn: parent
+                            spacing: 6
+
+                            HypeIcon {
+                                name: root.showLogDetails ? "keyboard_arrow_up" : "keyboard_arrow_down"
+                                size: 16
+                                color: Theme.primary
+                                anchors.verticalCenter: parent.verticalCenter
+                            }
+
+                            StyledText {
+                                text: root.showLogDetails ? I18n.tr("Hide Details") : I18n.tr("View Details")
+                                font.pixelSize: Theme.fontSizeSmall
+                                font.weight: Font.Medium
+                                color: Theme.primary
+                                anchors.verticalCenter: parent.verticalCenter
+                            }
+                        }
+
+                        MouseArea {
+                            id: detailsToggleArea
+                            anchors.fill: parent
+                            hoverEnabled: true
+                            cursorShape: Qt.PointingHandCursor
+                            onClicked: root.showLogDetails = !root.showLogDetails
+                        }
+                    }
+
+                    Item { width: 1; height: 1; Layout.fillWidth: true }
+
+                    HypeButton {
+                        height: 32
+                        text: I18n.tr("Cancel Update")
+                        iconName: "close"
+                        backgroundColor: Theme.withAlpha(Theme.error, 0.16)
+                        textColor: Theme.error
+                        onClicked: SystemUpdateService.cancelUpdates()
+                    }
+                }
+
+                // Collapsible Details Log Box (Hidden by default!)
+                Rectangle {
+                    width: parent.width
+                    height: 160
+                    radius: Theme.cornerRadius
+                    color: "#0d1117"
+                    border.color: Theme.withAlpha(Theme.outline, 0.16)
+                    border.width: 1
+                    visible: root.showLogDetails
+                    clip: true
+
+                    HypeFlickable {
+                        anchors.fill: parent
+                        anchors.margins: Theme.spacingS
+                        contentWidth: width
+                        contentHeight: Math.max(height, logOutputText.implicitHeight)
+                        clip: true
+
+                        onContentHeightChanged: {
+                            if (contentHeight > height)
+                                contentY = contentHeight - height;
+                        }
+
+                        StyledText {
+                            id: logOutputText
+                            width: parent.width
+                            text: (SystemUpdateService.recentLog || []).join("\n")
+                            font.family: Theme.monoFontFamily || "monospace"
+                            font.pixelSize: 11
+                            lineHeight: 1.25
+                            color: "#c9d1d9"
+                            wrapMode: Text.WrapAnywhere
+                        }
                     }
                 }
             }
 
-            // Status row when not updating
-            Row {
+            // IDLE / STATUS VIEW (When not updating)
+            Column {
                 width: parent.width
-                visible: !SystemUpdateService.isUpgrading
                 spacing: Theme.spacingM
+                visible: !SystemUpdateService.isUpgrading
 
-                Column {
-                    width: parent.width - actionBtn.width - Theme.spacingM
-                    anchors.verticalCenter: parent.verticalCenter
-                    spacing: 2
+                Row {
+                    width: parent.width
+                    spacing: Theme.spacingM
 
-                    StyledText {
-                        text: {
-                            if (SystemUpdateService.isChecking)
-                                return I18n.tr("Checking for updates…");
-                            if (SystemUpdateService.hasError)
-                                return I18n.tr("Update error");
-                            if (SystemUpdateService.updateCount > 0)
-                                return I18n.tr("%1 updates available").arg(SystemUpdateService.updateCount);
-                            return I18n.tr("Your system is up to date");
+                    Column {
+                        width: parent.width - actionBtn.width - Theme.spacingM
+                        anchors.verticalCenter: parent.verticalCenter
+                        spacing: 2
+
+                        StyledText {
+                            text: {
+                                if (SystemUpdateService.isChecking)
+                                    return I18n.tr("Checking for updates…");
+                                if (SystemUpdateService.hasError)
+                                    return I18n.tr("Update error");
+                                if (SystemUpdateService.updateCount > 0)
+                                    return I18n.tr("%1 updates available to install").arg(SystemUpdateService.updateCount);
+                                return I18n.tr("Your system is up to date");
+                            }
+                            font.pixelSize: Theme.fontSizeMedium
+                            font.weight: Font.Medium
+                            color: Theme.surfaceText
                         }
-                        font.pixelSize: Theme.fontSizeMedium
-                        font.weight: Font.Medium
-                        color: Theme.surfaceText
+
+                        StyledText {
+                            text: {
+                                const names = (SystemUpdateService.backends || []).map(b => b.displayName).join(", ");
+                                return names.length > 0 ? I18n.tr("Detected: %1").arg(names) : "";
+                            }
+                            font.pixelSize: Theme.fontSizeSmall
+                            color: Theme.surfaceVariantText
+                        }
                     }
 
-                    StyledText {
-                        text: {
-                            const names = (SystemUpdateService.backends || []).map(b => b.displayName).join(", ");
-                            return names.length > 0 ? I18n.tr("Detected: %1").arg(names) : "";
+                    HypeButton {
+                        id: actionBtn
+                        anchors.verticalCenter: parent.verticalCenter
+                        width: 140
+                        height: 38
+                        text: SystemUpdateService.updateCount > 0 ? I18n.tr("Update All") : I18n.tr("Check Now")
+                        iconName: SystemUpdateService.updateCount > 0 ? "system_update_alt" : "refresh"
+                        backgroundColor: SystemUpdateService.updateCount > 0 ? Theme.primary : Theme.surfaceContainerHighest
+                        textColor: SystemUpdateService.updateCount > 0 ? Theme.primaryText : Theme.surfaceText
+                        onClicked: {
+                            if (SystemUpdateService.updateCount > 0) {
+                                SystemUpdateService.runUpdates();
+                            } else {
+                                SystemUpdateService.checkForUpdates();
+                            }
                         }
-                        font.pixelSize: Theme.fontSizeSmall
-                        color: Theme.surfaceVariantText
                     }
                 }
 
-                HypeButton {
-                    id: actionBtn
-                    anchors.verticalCenter: parent.verticalCenter
-                    width: 130
-                    height: 36
-                    text: SystemUpdateService.updateCount > 0 ? I18n.tr("Update All") : I18n.tr("Check Now")
-                    iconName: SystemUpdateService.updateCount > 0 ? "system_update_alt" : "refresh"
-                    onClicked: {
-                        if (SystemUpdateService.updateCount > 0) {
-                            SystemUpdateService.runUpdates();
-                        } else {
-                            SystemUpdateService.checkForUpdates();
+                // Pending updates list in Settings
+                Column {
+                    width: parent.width
+                    spacing: Theme.spacingXS
+                    visible: SystemUpdateService.availableUpdates.length > 0 && !SystemUpdateService.isChecking
+
+                    Repeater {
+                        model: SystemUpdateService.availableUpdates
+
+                        Rectangle {
+                            required property var modelData
+                            width: parent.width
+                            height: 44
+                            radius: Theme.cornerRadius
+                            color: Theme.withAlpha(Theme.surfaceVariantText, 0.05)
+
+                            Row {
+                                anchors.fill: parent
+                                anchors.margins: Theme.spacingS
+                                spacing: Theme.spacingM
+
+                                Rectangle {
+                                    anchors.verticalCenter: parent.verticalCenter
+                                    width: 48
+                                    height: 20
+                                    radius: 10
+                                    color: modelData.repo === "hypeshell" ? Theme.withAlpha(Theme.primary, 0.2) : Theme.withAlpha(Theme.surfaceVariantText, 0.12)
+
+                                    StyledText {
+                                        anchors.centerIn: parent
+                                        text: modelData.repo === "hypeshell" ? "hype" : (modelData.repo || "")
+                                        font.pixelSize: 10
+                                        font.weight: Font.Medium
+                                        color: modelData.repo === "hypeshell" ? Theme.primary : Theme.surfaceText
+                                    }
+                                }
+
+                                StyledText {
+                                    anchors.verticalCenter: parent.verticalCenter
+                                    width: 140
+                                    text: modelData.name || ""
+                                    font.pixelSize: Theme.fontSizeSmall
+                                    font.weight: Font.Medium
+                                    color: Theme.surfaceText
+                                    elide: Text.ElideRight
+                                }
+
+                                StyledText {
+                                    anchors.verticalCenter: parent.verticalCenter
+                                    text: {
+                                        const from = modelData.fromVersion || "";
+                                        const to = modelData.toVersion || "";
+                                        return from && to ? `${from}  ➔  ${to}` : (to || from);
+                                    }
+                                    font.pixelSize: Theme.fontSizeSmall
+                                    color: Theme.surfaceVariantText
+                                    elide: Text.ElideRight
+                                }
+                            }
                         }
                     }
                 }
