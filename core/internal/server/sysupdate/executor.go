@@ -111,7 +111,7 @@ func privescBin(useSudo bool) string {
 			return t.Name()
 		}
 	}
-	if exec.Command("sudo", "-n", "true").Run() == nil {
+	if exec.Command("sudo", "-n", "true").Run() == nil || exec.Command("sudo", "-n", "pacman", "-V").Run() == nil {
 		return "sudo"
 	}
 	return "pkexec"

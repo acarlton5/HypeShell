@@ -122,6 +122,9 @@ func (b archHelperBackend) Upgrade(ctx context.Context, opts UpgradeOptions, onL
 
 func archHelperUpgradeArgv(id string, includeAUR bool) []string {
 	argv := []string{id, "-Syu", "--noconfirm", "--needed"}
+	if id == "paru" {
+		argv = append(argv, "--sudoflags", "-n")
+	}
 	if !includeAUR {
 		argv = append(argv, "--repo")
 	}
