@@ -292,7 +292,7 @@ fi
 user_hypr_config="$update_home/.config/hypr/hyprland.lua"
 hardware_source_line='require("hype.hardware")'
 if [ -f "$user_hypr_config" ] && ! grep -Fqx "$hardware_source_line" "$user_hypr_config"; then
-    runuser -u "$update_user" -- sh -c 'printf "\n%s\n" "$1" >> "$2"' sh "$hardware_source_line" "$user_hypr_config"
+    runuser -u "$update_user" -- sh -c 'printf "\n%%s\n" "$1" >> "$2"' sh "$hardware_source_line" "$user_hypr_config"
 fi
 
 

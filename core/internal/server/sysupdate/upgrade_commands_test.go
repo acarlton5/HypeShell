@@ -2,6 +2,7 @@ package sysupdate
 
 import (
 	"reflect"
+	"strings"
 	"testing"
 )
 
@@ -62,8 +63,16 @@ func TestUpgradeCommandBuilders(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if !reflect.DeepEqual(tt.got, tt.want) {
-				t.Fatalf("argv = %#v, want %#v", tt.got, tt.want)
+			got := make([]string, len(tt.got))
+			copy(got, tt.got)
+			if len(got) > 1 && got[0] == "pkexec" {
+				// Normalize any resolved absolute path back to binary name for assertion
+				if idx := strings.LastIndex(got[1], "/"); idx >= 0 {
+					got[1] = got[1][idx+1:]
+				}
+			}
+			if !reflect.DeepEqual(got, tt.want) {
+				t.Fatalf("argv = %#v, want %#v", got, tt.want)
 			}
 		})
 	}
