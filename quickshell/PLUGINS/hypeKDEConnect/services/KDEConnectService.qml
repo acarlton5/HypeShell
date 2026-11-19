@@ -170,7 +170,28 @@ Singleton {
         if (data.path && data.path.includes("mpris")) {
             console.warn("[KDEConnect] MPRIS DBus Signal:", JSON.stringify(data));
         }
+        if (!available && data.path && data.path.startsWith(daemonPath)) {
+            checkAvailability();
+        }
         switch (data.member) {
+        case "NameOwnerChanged":
+            if (data.body?.[0] === service) {
+                const hasOwner = !!(data.body?.[2]);
+                if (hasOwner && !available) {
+                    available = true;
+                    if (!initialized)
+                        initialize();
+                    else
+                        refreshDevices();
+                } else if (!hasOwner && available) {
+                    available = false;
+                    initialized = false;
+                    deviceIds = [];
+                    devices = {};
+                    devicesListChanged();
+                }
+            }
+            break;
         case "deviceAdded":
             if (data.body?.[0]) {
                 const id = data.body[0];
@@ -293,7 +314,11 @@ Singleton {
     }
 
     function refreshDevices() {
-        if (!available || isRefreshing)
+        if (!available) {
+            checkAvailability();
+            return;
+        }
+        if (isRefreshing)
             return;
         isRefreshing = true;
         _dbusFinished = false;

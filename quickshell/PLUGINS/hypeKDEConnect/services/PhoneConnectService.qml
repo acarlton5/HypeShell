@@ -60,6 +60,8 @@ Singleton {
     }
 
     property var _backend: null
+    property bool _nameWatchSubscribed: false
+    property bool _activationAttempted: false
 
     signal devicesListChanged
     signal deviceUpdated(string deviceId)
@@ -69,16 +71,99 @@ Singleton {
     signal shareReceived(string deviceId, string url)
     signal backendChanged
 
+    function subscribeToNameOwnerChanges() {
+        if (_nameWatchSubscribed || !HYPEService.isConnected)
+            return;
+        _nameWatchSubscribed = true;
+        HYPEService.dbusSubscribe("session", "org.freedesktop.DBus", "/org/freedesktop/DBus", "org.freedesktop.DBus", "NameOwnerChanged", function(response) {
+            if (response.error) {
+                console.warn("[PhoneConnect] NameOwnerChanged subscription failed:", response.error);
+                _nameWatchSubscribed = false;
+            }
+        });
+    }
+
+    function tryActivateBackend() {
+        if (_activationAttempted || !HYPEService.isConnected)
+            return;
+        _activationAttempted = true;
+
+        HYPEService.dbusCall("session", "org.freedesktop.DBus", "/org/freedesktop/DBus", "org.freedesktop.DBus", "ListActivatableNames", [], function(response) {
+            if (response.error)
+                return;
+            const activatable = response.result?.values?.[0] || [];
+            const canKDE = activatable.includes("org.kde.kdeconnect");
+            const canValent = activatable.includes("ca.andyholmes.Valent");
+
+            let targetService = "";
+            if (preferredBackend === PhoneConnectService.Backend.KDEConnect && canKDE) {
+                targetService = "org.kde.kdeconnect";
+            } else if (preferredBackend === PhoneConnectService.Backend.Valent && canValent) {
+                targetService = "ca.andyholmes.Valent";
+            } else if (canKDE) {
+                targetService = "org.kde.kdeconnect";
+            } else if (canValent) {
+                targetService = "ca.andyholmes.Valent";
+            }
+
+            if (!targetService)
+                return;
+
+            HYPEService.dbusCall("session", "org.freedesktop.DBus", "/org/freedesktop/DBus", "org.freedesktop.DBus", "StartServiceByName", [targetService, 0], function(startResp) {
+                if (startResp.error) {
+                    console.warn("[PhoneConnect] Failed to DBus-activate", targetService, ":", startResp.error);
+                    return;
+                }
+                detectBackend();
+            });
+        });
+    }
+
     Component.onCompleted: {
         detectBackend();
+        subscribeToNameOwnerChanges();
         updateDeviceTypeMap();
     }
 
     Connections {
         target: HYPEService
         function onConnectionStateChanged() {
-            if (HYPEService.isConnected)
+            if (!HYPEService.isConnected) {
+                _nameWatchSubscribed = false;
+                _activationAttempted = false;
+                return;
+            }
+            subscribeToNameOwnerChanges();
+            detectBackend();
+        }
+
+        function onDbusSignalReceived(subId, data) {
+            if (data.member === "NameOwnerChanged") {
+                const name = data.body?.[0] || "";
+                if (name === "org.kde.kdeconnect" || name === "ca.andyholmes.Valent") {
+                    detectBackend();
+                }
+            }
+        }
+    }
+
+    Connections {
+        target: KDEConnectService
+        function onAvailableChanged() {
+            if ((KDEConnectService.available && activeBackend === PhoneConnectService.Backend.None) ||
+                (!KDEConnectService.available && activeBackend === PhoneConnectService.Backend.KDEConnect)) {
                 detectBackend();
+            }
+        }
+    }
+
+    Connections {
+        target: ValentService
+        function onAvailableChanged() {
+            if ((ValentService.available && activeBackend === PhoneConnectService.Backend.None) ||
+                (!ValentService.available && activeBackend === PhoneConnectService.Backend.Valent)) {
+                detectBackend();
+            }
         }
     }
 
@@ -104,10 +189,6 @@ Singleton {
         function onShareReceived(deviceId, url) {
             root.shareReceived(deviceId, url);
         }
-        function onAvailableChanged() {
-            if (!KDEConnectService.available && activeBackend === PhoneConnectService.Backend.KDEConnect)
-                detectBackend();
-        }
     }
 
     Connections {
@@ -131,10 +212,6 @@ Singleton {
         }
         function onShareReceived(deviceId, url) {
             root.shareReceived(deviceId, url);
-        }
-        function onAvailableChanged() {
-            if (!ValentService.available && activeBackend === PhoneConnectService.Backend.Valent)
-                detectBackend();
         }
     }
 
@@ -167,9 +244,13 @@ Singleton {
                 switch (activeBackend) {
                 case PhoneConnectService.Backend.KDEConnect:
                     _backend = KDEConnectService;
+                    if (!KDEConnectService.available)
+                        KDEConnectService.checkAvailability();
                     break;
                 case PhoneConnectService.Backend.Valent:
                     _backend = ValentService;
+                    if (!ValentService.available)
+                        ValentService.checkAvailability();
                     break;
                 default:
                     _backend = null;
@@ -177,11 +258,20 @@ Singleton {
                 backendChanged();
                 devicesListChanged();
             }
+
+            if (newBackend === PhoneConnectService.Backend.None && !_activationAttempted) {
+                tryActivateBackend();
+            }
         });
     }
 
     function refreshDevices() {
-        _backend?.refreshDevices();
+        if (!_backend) {
+            _activationAttempted = false;
+            detectBackend();
+            return;
+        }
+        _backend.refreshDevices();
     }
 
     function getDevice(deviceId) {
