@@ -357,7 +357,7 @@ var SPEC = {
     dockMaxVisibleRunningApps: { def: 0 },
     dockShowOverflowBadge: { def: true },
     dockShowTrash: { def: false },
-    dockTrashFileManager: { def: "thunar" },
+    dockTrashFileManager: { def: "dolphin" },
     dockTrashCustomCommand: { def: "" },
 
     notificationOverlayEnabled: { def: false },

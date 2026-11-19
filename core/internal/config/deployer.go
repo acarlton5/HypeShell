@@ -506,8 +506,8 @@ func (cd *ConfigDeployer) transformHyprlandConfigForNonSystemd(config, terminalC
 			result = append(result, "exec-once = hype run")
 			result = append(result, "env = QT_QPA_PLATFORM,wayland;xcb")
 			result = append(result, "env = ELECTRON_OZONE_PLATFORM_HINT,auto")
-			result = append(result, "env = QT_QPA_PLATFORMTHEME,gtk3")
-			result = append(result, "env = QT_QPA_PLATFORMTHEME_QT6,gtk3")
+			result = append(result, "env = QT_QPA_PLATFORMTHEME,qt6ct")
+			result = append(result, "env = QT_QPA_PLATFORMTHEME_QT6,qt6ct")
 			result = append(result, fmt.Sprintf("env = TERMINAL,%s", terminalCommand))
 			continue
 		}
@@ -521,8 +521,8 @@ func (cd *ConfigDeployer) transformHyprlandConfigForNonSystemd(config, terminalC
 					"exec-once = hype run",
 					"env = QT_QPA_PLATFORM,wayland;xcb",
 					"env = ELECTRON_OZONE_PLATFORM_HINT,auto",
-					"env = QT_QPA_PLATFORMTHEME,gtk3",
-					"env = QT_QPA_PLATFORMTHEME_QT6,gtk3",
+					"env = QT_QPA_PLATFORMTHEME,qt6ct",
+					"env = QT_QPA_PLATFORMTHEME_QT6,qt6ct",
 					fmt.Sprintf("env = TERMINAL,%s", terminalCommand),
 				}
 				result = append(result[:i+2], append(insertLines, result[i+2:]...)...)

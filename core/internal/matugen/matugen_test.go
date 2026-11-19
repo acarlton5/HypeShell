@@ -441,3 +441,63 @@ func TestBuildMergedConfigColorsOnly(t *testing.T) {
 	assert.NotContains(t, content, "[templates.gtk]")
 	assert.False(t, strings.Contains(content, "output_path = 'CONFIG_DIR/"), "colors-only config should not emit app template outputs")
 }
+
+func TestMergeKDEGlobals(t *testing.T) {
+	existing := `[General]
+ColorScheme=OldScheme
+TerminalApplication=kitty
+
+[KFileDialog Settings]
+Allow Expansion=false
+View Style=DetailTree
+
+[PreviewSettings]
+MaximumRemoteSize=0
+
+[Colors:Window]
+BackgroundNormal=1,2,3
+`
+
+	scheme := `[KDE]
+contrast=4
+
+[General]
+ColorScheme=DankMatugen
+Name=Dank Shell (matugen)
+
+[ColorEffects:Disabled]
+Color=10,20,30
+
+[Colors:Header][Inactive]
+BackgroundNormal=40,50,60
+
+[Colors:View]
+BackgroundNormal=11,22,33
+
+[Colors:Window]
+BackgroundNormal=44,55,66
+
+[WM]
+activeBackground=77,88,99
+`
+
+	merged := mergeKDEGlobals(existing, scheme, "Aretha-Dark-Icons")
+
+	assert.Contains(t, merged, "[KFileDialog Settings]\nAllow Expansion=false\nView Style=DetailTree")
+	assert.Contains(t, merged, "[PreviewSettings]\nMaximumRemoteSize=0")
+	assert.Contains(t, merged, "[General]\nColorScheme=DankMatugen\nTerminalApplication=kitty")
+	assert.Contains(t, merged, "[KDE]\ncontrast=4\nwidgetStyle=Breeze")
+	assert.Contains(t, merged, "[Icons]\nTheme=Aretha-Dark-Icons")
+	assert.Contains(t, merged, "[Colors:Window]\nBackgroundNormal=44,55,66")
+	assert.Contains(t, merged, "[Colors:View]\nBackgroundNormal=11,22,33")
+	assert.Contains(t, merged, "[Colors:Header][Inactive]\nBackgroundNormal=40,50,60")
+	assert.Contains(t, merged, "[ColorEffects:Disabled]\nColor=10,20,30")
+	assert.Contains(t, merged, "[WM]\nactiveBackground=77,88,99")
+	assert.NotContains(t, merged, "ColorScheme=OldScheme")
+	assert.NotContains(t, merged, "BackgroundNormal=1,2,3")
+
+	withExistingIcons := "[Icons]\nTheme=ExistingTheme\n"
+	assert.Contains(t, mergeKDEGlobals(withExistingIcons, scheme, ""), "[Icons]\nTheme=ExistingTheme")
+	assert.Contains(t, mergeKDEGlobals(withExistingIcons, scheme, "System Default"), "[Icons]\nTheme=ExistingTheme")
+	assert.NotContains(t, mergeKDEGlobals("", scheme, "System Default"), "[Icons]")
+}

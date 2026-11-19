@@ -778,41 +778,122 @@ install_power_profile_dependency() {
 }
 
 install_primary_file_manager() {
-    # HypeShell uses Thunar. Remove Dolphin and its now-unused dependency tree;
-    # package managers will retain anything still required by KDE Connect.
+    # HypeShell uses Dolphin (KDE file manager) with matugen/kcolorscheme + qt6ct/Breeze palette integration.
+    # Remove Thunar and its standalone volume/thumbnail daemons if installed.
+    local thunar_pkgs=(thunar-volman thunar tumbler)
+    local remove_pkgs=()
+    local pkg
+
     if have pacman; then
-        if pacman -Q dolphin >/dev/null 2>&1; then
-            sudo_run pacman -Rns --noconfirm dolphin
+        for pkg in "${thunar_pkgs[@]}"; do
+            if pacman -Q "$pkg" >/dev/null 2>&1; then
+                remove_pkgs+=("$pkg")
+            fi
+        done
+        if [ "${#remove_pkgs[@]}" -gt 0 ]; then
+            sudo_run pacman -Rns --noconfirm "${remove_pkgs[@]}"
         fi
-        sudo_run pacman -S --needed --noconfirm thunar gvfs thunar-volman tumbler ffmpegthumbnailer poppler-glib webp-pixbuf-loader
+        sudo_run pacman -S --needed --noconfirm dolphin kio-extras kio-fuse ffmpegthumbs kdegraphics-thumbnailers kimageformats breeze qt6ct archlinux-xdg-menu matugen udisks2
     elif have dnf; then
-        if rpm -q dolphin >/dev/null 2>&1; then
-            sudo_run dnf remove -y dolphin
+        for pkg in "${thunar_pkgs[@]}"; do
+            if rpm -q "$pkg" >/dev/null 2>&1; then
+                remove_pkgs+=("$pkg")
+            fi
+        done
+        if [ "${#remove_pkgs[@]}" -gt 0 ]; then
+            sudo_run dnf remove -y "${remove_pkgs[@]}"
         fi
-        sudo_run dnf install -y thunar gvfs thunar-volman tumbler ffmpegthumbnailer
+        sudo_run dnf install -y dolphin kio-extras kio-fuse ffmpegthumbs kdegraphics-thumbnailers kf6-kimageformats plasma-breeze qt6ct udisks2
+        install_package_if_available matugen || true
     elif have apt-get; then
-        if dpkg-query -W -f='${Status}' dolphin 2>/dev/null | grep -q 'install ok installed'; then
-            sudo_run apt-get purge -y dolphin
+        for pkg in "${thunar_pkgs[@]}"; do
+            if dpkg-query -W -f='${Status}' "$pkg" 2>/dev/null | grep -q 'install ok installed'; then
+                remove_pkgs+=("$pkg")
+            fi
+        done
+        if [ "${#remove_pkgs[@]}" -gt 0 ]; then
+            sudo_run apt-get purge -y "${remove_pkgs[@]}"
             sudo_run apt-get autoremove -y
         fi
         sudo_run apt-get update
-        sudo_run apt-get install -y thunar gvfs thunar-volman tumbler ffmpegthumbnailer
+        sudo_run env DEBIAN_FRONTEND=noninteractive apt-get install -y dolphin kio-extras kio-fuse ffmpegthumbs kdegraphics-thumbnailers qt6-image-formats-plugins breeze qt6ct udisks2
+        install_package_if_available matugen || true
     elif have zypper; then
-        if rpm -q dolphin >/dev/null 2>&1; then
-            sudo_run zypper --non-interactive remove --clean-deps dolphin
+        for pkg in "${thunar_pkgs[@]}"; do
+            if rpm -q "$pkg" >/dev/null 2>&1; then
+                remove_pkgs+=("$pkg")
+            fi
+        done
+        if [ "${#remove_pkgs[@]}" -gt 0 ]; then
+            sudo_run zypper --non-interactive remove --clean-deps "${remove_pkgs[@]}"
         fi
-        sudo_run zypper --non-interactive install thunar gvfs thunar-volman tumbler ffmpegthumbnailer
+        sudo_run zypper --non-interactive install dolphin kio-extras kio-fuse ffmpegthumbs kdegraphics-thumbnailers breeze6 qt6ct udisks2
+        install_package_if_available matugen || true
     fi
 
     if have xdg-mime; then
-        xdg-mime default thunar.desktop inode/directory || echo "Warning: could not set Thunar as the default file manager." >&2
+        run xdg-mime default org.kde.dolphin.desktop inode/directory || echo "Warning: could not set Dolphin as the default file manager." >&2
+        run xdg-mime default org.kde.dolphin.desktop x-scheme-handler/kdeconnect || true
     fi
 
-    gtk3_dir="${XDG_CONFIG_HOME:-$HOME/.config}/gtk-3.0"
+    local config_home="${XDG_CONFIG_HOME:-$HOME/.config}"
+    local env_dir="$config_home/environment.d"
+    local env_file="$env_dir/60-hypeshell-qt.conf"
+    if [ "$YES" -eq 1 ]; then
+        mkdir -p "$env_dir"
+        {
+            printf 'QT_QPA_PLATFORMTHEME=qt6ct\n'
+            printf 'QT_QPA_PLATFORMTHEME_QT6=qt6ct\n'
+            if [ -f /etc/xdg/menus/arch-applications.menu ]; then
+                printf 'XDG_MENU_PREFIX=arch-\n'
+            fi
+        } >"$env_file"
+    else
+        echo "[dry-run] write $env_file with QT_QPA_PLATFORMTHEME=qt6ct"
+    fi
+
+    local qt6ct_dir="$config_home/qt6ct"
+    local qt6ct_conf="$qt6ct_dir/qt6ct.conf"
+    local qt6ct_scheme="$qt6ct_dir/colors/matugen.conf"
+    if [ "$YES" -eq 1 ]; then
+        mkdir -p "$qt6ct_dir"
+        local existing_icon_theme=""
+        if [ -f "$qt6ct_conf" ]; then
+            existing_icon_theme="$(sed -n 's/^icon_theme=//p' "$qt6ct_conf" | head -n 1)"
+        fi
+        if [ -f "$qt6ct_conf" ] && grep -q '^\[Appearance\]' "$qt6ct_conf"; then
+            for kv in "style=Breeze" "custom_palette=true" "color_scheme_path=$qt6ct_scheme"; do
+                local key="${kv%%=*}"
+                if grep -q "^${key}=" "$qt6ct_conf"; then
+                    sed -i "s|^${key}=.*|${kv}|" "$qt6ct_conf"
+                else
+                    sed -i "/^\[Appearance\]/a ${kv}" "$qt6ct_conf"
+                fi
+            done
+        else
+            {
+                printf '[Appearance]\n'
+                printf 'color_scheme_path=%s\n' "$qt6ct_scheme"
+                printf 'custom_palette=true\n'
+                if [ -n "$existing_icon_theme" ]; then
+                    printf 'icon_theme=%s\n' "$existing_icon_theme"
+                fi
+                printf 'style=Breeze\n'
+            } >"$qt6ct_conf"
+        fi
+    else
+        echo "[dry-run] configure $qt6ct_conf with Breeze + matugen palette"
+    fi
+
+    if have kbuildsycoca6; then
+        run env XDG_MENU_PREFIX="${XDG_MENU_PREFIX:-arch-}" kbuildsycoca6 --noincremental || true
+    fi
+
+    gtk3_dir="$config_home/gtk-3.0"
     gtk3_css="$gtk3_dir/gtk.css"
     if [ ! -e "$gtk3_css" ] && [ ! -L "$gtk3_css" ]; then
-        mkdir -p "$gtk3_dir"
-        ln -s hype-colors.css "$gtk3_css"
+        run mkdir -p "$gtk3_dir"
+        run ln -s hype-colors.css "$gtk3_css"
     fi
 }
 

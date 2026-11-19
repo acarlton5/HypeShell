@@ -42,6 +42,32 @@ func getProcessExitCode(state *os.ProcessState) int {
 
 var isSessionManaged bool
 
+func defaultQtPlatformTheme() string {
+	if _, err := exec.LookPath("qt6ct"); err == nil {
+		return "qt6ct"
+	}
+	return "gtk3"
+}
+
+func appendQtSessionEnv(env []string) []string {
+	platformTheme := defaultQtPlatformTheme()
+	if os.Getenv("QT_QPA_PLATFORMTHEME") == "" {
+		env = append(env, "QT_QPA_PLATFORMTHEME="+platformTheme)
+	}
+	if os.Getenv("QT_QPA_PLATFORMTHEME_QT6") == "" {
+		env = append(env, "QT_QPA_PLATFORMTHEME_QT6="+platformTheme)
+	}
+	if os.Getenv("QT_QPA_PLATFORM") == "" {
+		env = append(env, "QT_QPA_PLATFORM=wayland;xcb")
+	}
+	if os.Getenv("XDG_MENU_PREFIX") == "" {
+		if _, err := os.Stat("/etc/xdg/menus/arch-applications.menu"); err == nil {
+			env = append(env, "XDG_MENU_PREFIX=arch-")
+		}
+	}
+	return env
+}
+
 func execDetachedRestart(targetPID int) {
 	selfPath, err := os.Executable()
 	if err != nil {
@@ -238,15 +264,7 @@ func runShellInteractive(session bool) {
 		}
 	}
 
-	if os.Getenv("QT_QPA_PLATFORMTHEME") == "" {
-		cmd.Env = append(cmd.Env, "QT_QPA_PLATFORMTHEME=gtk3")
-	}
-	if os.Getenv("QT_QPA_PLATFORMTHEME_QT6") == "" {
-		cmd.Env = append(cmd.Env, "QT_QPA_PLATFORMTHEME_QT6=gtk3")
-	}
-	if os.Getenv("QT_QPA_PLATFORM") == "" {
-		cmd.Env = append(cmd.Env, "QT_QPA_PLATFORM=wayland;xcb")
-	}
+	cmd.Env = appendQtSessionEnv(cmd.Env)
 
 	cmd.Env = appendLogEnv(cmd.Env)
 
@@ -489,15 +507,7 @@ func runShellDaemon(session bool) {
 		}
 	}
 
-	if os.Getenv("QT_QPA_PLATFORMTHEME") == "" {
-		cmd.Env = append(cmd.Env, "QT_QPA_PLATFORMTHEME=gtk3")
-	}
-	if os.Getenv("QT_QPA_PLATFORMTHEME_QT6") == "" {
-		cmd.Env = append(cmd.Env, "QT_QPA_PLATFORMTHEME_QT6=gtk3")
-	}
-	if os.Getenv("QT_QPA_PLATFORM") == "" {
-		cmd.Env = append(cmd.Env, "QT_QPA_PLATFORM=wayland;xcb")
-	}
+	cmd.Env = appendQtSessionEnv(cmd.Env)
 
 	cmd.Env = appendLogEnv(cmd.Env)
 

@@ -629,7 +629,7 @@ Singleton {
     property int dockMaxVisibleRunningApps: 0
     property bool dockShowOverflowBadge: true
     property bool dockShowTrash: false
-    property string dockTrashFileManager: "thunar"
+    property string dockTrashFileManager: "dolphin"
     property string dockTrashCustomCommand: ""
 
     property bool notificationOverlayEnabled: false
@@ -1310,7 +1310,8 @@ Singleton {
         fi
         }
         update_qt_icon_theme ${_configDir}/qt5ct/qt5ct.conf '${qtThemeNameEscaped}'
-        update_qt_icon_theme ${_configDir}/qt6ct/qt6ct.conf '${qtThemeNameEscaped}'`;
+        update_qt_icon_theme ${_configDir}/qt6ct/qt6ct.conf '${qtThemeNameEscaped}'
+        command -v kwriteconfig6 >/dev/null 2>&1 && kwriteconfig6 --file kdeglobals --group Icons --key Theme '${qtThemeNameEscaped}' --notify 2>/dev/null || true`;
 
         Quickshell.execDetached(["sh", "-lc", script]);
     }

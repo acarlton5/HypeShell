@@ -72,17 +72,32 @@ seed_config "$DEFAULT_DIR/hype/hardware.lua" "$HYPE_DIR/hardware.lua"
 repair_config_placeholders "$CONFIG_FILE"
 repair_config_placeholders "$HYPE_DIR/binds.lua"
 
-if command -v dbus-update-activation-environment >/dev/null 2>&1; then
-    dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP XDG_SESSION_DESKTOP XDG_SESSION_TYPE || true
-fi
-
-if command -v systemctl >/dev/null 2>&1; then
-    systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP XDG_SESSION_DESKTOP XDG_SESSION_TYPE || true
-fi
-
 export XDG_CURRENT_DESKTOP="${XDG_CURRENT_DESKTOP:-Hyprland}"
 export XDG_SESSION_DESKTOP="${XDG_SESSION_DESKTOP:-hypeshell-hyprland}"
 export XDG_SESSION_TYPE="${XDG_SESSION_TYPE:-wayland}"
+
+if [ -z "${QT_QPA_PLATFORMTHEME:-}" ]; then
+    if command -v qt6ct >/dev/null 2>&1; then
+        export QT_QPA_PLATFORMTHEME="qt6ct"
+    else
+        export QT_QPA_PLATFORMTHEME="gtk3"
+    fi
+else
+    export QT_QPA_PLATFORMTHEME
+fi
+export QT_QPA_PLATFORMTHEME_QT6="${QT_QPA_PLATFORMTHEME_QT6:-$QT_QPA_PLATFORMTHEME}"
+
+if [ -z "${XDG_MENU_PREFIX:-}" ] && [ -f /etc/xdg/menus/arch-applications.menu ]; then
+    export XDG_MENU_PREFIX="arch-"
+fi
+
+if command -v dbus-update-activation-environment >/dev/null 2>&1; then
+    dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP XDG_SESSION_DESKTOP XDG_SESSION_TYPE QT_QPA_PLATFORMTHEME QT_QPA_PLATFORMTHEME_QT6 ${XDG_MENU_PREFIX:+XDG_MENU_PREFIX} || true
+fi
+
+if command -v systemctl >/dev/null 2>&1; then
+    systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP XDG_SESSION_DESKTOP XDG_SESSION_TYPE QT_QPA_PLATFORMTHEME QT_QPA_PLATFORMTHEME_QT6 ${XDG_MENU_PREFIX:+XDG_MENU_PREFIX} || true
+fi
 
 if command -v start-hyprland >/dev/null 2>&1; then
     exec start-hyprland -- --config "$CONFIG_FILE"

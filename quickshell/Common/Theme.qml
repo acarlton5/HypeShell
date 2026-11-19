@@ -181,6 +181,8 @@ Singleton {
                     const themeData = isLight ? lightTheme : darkTheme;
                     setDesiredTheme("hex", themeData.primary, isLight, iconTheme, themeData.matugen_type, stockColors);
                 }
+            } else if (currentTheme === "custom" && (customThemeRawData || customThemeData)) {
+                generateSystemThemesFromCurrentTheme();
             }
         }, 0);
         if (typeof SessionData !== "undefined") {

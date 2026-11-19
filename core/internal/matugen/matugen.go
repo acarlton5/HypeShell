@@ -274,6 +274,12 @@ func buildOnce(opts *Options) (bool, error) {
 
 	newColors, _ := os.ReadFile(opts.ColorsOutput())
 	if bytes.Equal(oldColors, newColors) && len(oldColors) > 0 {
+		if !opts.ColorsOnly && !opts.ShouldSkipTemplate("kcolorscheme") {
+			kdeGlobalsPath := filepath.Join(opts.ConfigDir, "kdeglobals")
+			if existingKDE, err := os.ReadFile(kdeGlobalsPath); err != nil || !strings.Contains(string(existingKDE), "[Colors:Window]") {
+				syncKDEGlobals(opts)
+			}
+		}
 		return false, nil
 	}
 
@@ -290,6 +296,10 @@ func buildOnce(opts *Options) (bool, error) {
 		}
 		refreshGTK(opts.Mode)
 		refreshGTK4()
+	}
+
+	if !opts.ShouldSkipTemplate("kcolorscheme") {
+		syncKDEGlobals(opts)
 	}
 
 	if !opts.ShouldSkipTemplate("qt6ct") && appExists(opts.AppChecker, []string{"qt6ct"}, nil) {
@@ -829,6 +839,190 @@ func refreshQt6ct() {
 	now := time.Now()
 	if err := os.Chtimes(confPath, now, now); err != nil {
 		log.Warnf("Failed to touch qt6ct.conf: %v", err)
+	}
+}
+
+type iniSection struct {
+	name  string
+	lines []string
+}
+
+func parseINI(content string) []iniSection {
+	normalized := strings.ReplaceAll(content, "\r\n", "\n")
+	rawLines := strings.Split(normalized, "\n")
+	var sections []iniSection
+	current := iniSection{name: ""}
+	hasContent := false
+
+	for _, line := range rawLines {
+		trimmed := strings.TrimSpace(line)
+		if strings.HasPrefix(trimmed, "[") && strings.HasSuffix(trimmed, "]") && len(trimmed) >= 2 {
+			if hasContent || current.name != "" {
+				sections = append(sections, current)
+			}
+			current = iniSection{name: trimmed[1 : len(trimmed)-1]}
+			hasContent = true
+			continue
+		}
+		if trimmed != "" || hasContent {
+			current.lines = append(current.lines, line)
+			if trimmed != "" {
+				hasContent = true
+			}
+		}
+	}
+	if hasContent || current.name != "" {
+		sections = append(sections, current)
+	}
+	return sections
+}
+
+func trimTrailingEmptyLines(lines []string) []string {
+	end := len(lines)
+	for end > 0 && strings.TrimSpace(lines[end-1]) == "" {
+		end--
+	}
+	out := make([]string, end)
+	copy(out, lines[:end])
+	return out
+}
+
+func setINISectionKey(sec *iniSection, key, value string) {
+	newLine := key + "=" + value
+	for i, line := range sec.lines {
+		trimmed := strings.TrimSpace(line)
+		if trimmed == "" || strings.HasPrefix(trimmed, "#") || strings.HasPrefix(trimmed, ";") {
+			continue
+		}
+		if eqIdx := strings.IndexByte(line, '='); eqIdx != -1 {
+			if strings.TrimSpace(line[:eqIdx]) == key {
+				sec.lines[i] = newLine
+				return
+			}
+		}
+	}
+	sec.lines = append(trimTrailingEmptyLines(sec.lines), newLine)
+}
+
+func findOrCreateSection(sections *[]iniSection, name string) *iniSection {
+	for i := range *sections {
+		if (*sections)[i].name == name {
+			return &(*sections)[i]
+		}
+	}
+	*sections = append(*sections, iniSection{name: name})
+	return &(*sections)[len(*sections)-1]
+}
+
+func isKDEPaletteSection(name string) bool {
+	return strings.HasPrefix(name, "ColorEffects:") || strings.HasPrefix(name, "Colors:") || name == "WM"
+}
+
+func mergeKDEGlobals(existingContent, schemeContent, iconTheme string) string {
+	sections := parseINI(existingContent)
+	schemeSections := parseINI(schemeContent)
+
+	for _, s := range schemeSections {
+		if !isKDEPaletteSection(s.name) {
+			continue
+		}
+		target := findOrCreateSection(&sections, s.name)
+		target.lines = trimTrailingEmptyLines(s.lines)
+	}
+
+	general := findOrCreateSection(&sections, "General")
+	setINISectionKey(general, "ColorScheme", "DankMatugen")
+
+	kde := findOrCreateSection(&sections, "KDE")
+	setINISectionKey(kde, "contrast", "4")
+	setINISectionKey(kde, "widgetStyle", "Breeze")
+
+	if iconTheme != "" && iconTheme != "System Default" {
+		icons := findOrCreateSection(&sections, "Icons")
+		setINISectionKey(icons, "Theme", iconTheme)
+	}
+
+	var b strings.Builder
+	wroteSection := false
+	for _, sec := range sections {
+		body := trimTrailingEmptyLines(sec.lines)
+		if sec.name == "" && len(body) == 0 {
+			continue
+		}
+		if wroteSection {
+			b.WriteByte('\n')
+		}
+		if sec.name != "" {
+			b.WriteByte('[')
+			b.WriteString(sec.name)
+			b.WriteString("]\n")
+		}
+		for _, line := range body {
+			b.WriteString(line)
+			b.WriteByte('\n')
+		}
+		wroteSection = true
+	}
+	return b.String()
+}
+
+func syncKDEGlobals(opts *Options) {
+	schemePath := filepath.Join(utils.XDGDataHome(), "color-schemes", "DankMatugen.colors")
+	schemeData, err := os.ReadFile(schemePath)
+	if err != nil {
+		return
+	}
+
+	kdeGlobalsPath := filepath.Join(opts.ConfigDir, "kdeglobals")
+	existingData, err := os.ReadFile(kdeGlobalsPath)
+	if err != nil && !os.IsNotExist(err) {
+		log.Warnf("Failed to read kdeglobals: %v", err)
+		return
+	}
+
+	merged := mergeKDEGlobals(string(existingData), string(schemeData), opts.IconTheme)
+	if merged == string(existingData) {
+		return
+	}
+
+	if err := os.MkdirAll(opts.ConfigDir, 0o755); err != nil {
+		log.Warnf("Failed to create config dir for kdeglobals: %v", err)
+		return
+	}
+
+	tmpFile, err := os.CreateTemp(opts.ConfigDir, ".kdeglobals-*")
+	if err != nil {
+		log.Warnf("Failed to create temp file for kdeglobals: %v", err)
+		return
+	}
+	tmpPath := tmpFile.Name()
+	if _, err := tmpFile.WriteString(merged); err != nil {
+		tmpFile.Close()
+		os.Remove(tmpPath)
+		log.Warnf("Failed to write temp kdeglobals: %v", err)
+		return
+	}
+	if err := tmpFile.Chmod(0o600); err != nil {
+		tmpFile.Close()
+		os.Remove(tmpPath)
+		log.Warnf("Failed to chmod temp kdeglobals: %v", err)
+		return
+	}
+	if err := tmpFile.Close(); err != nil {
+		os.Remove(tmpPath)
+		log.Warnf("Failed to close temp kdeglobals: %v", err)
+		return
+	}
+	if err := os.Rename(tmpPath, kdeGlobalsPath); err != nil {
+		os.Remove(tmpPath)
+		log.Warnf("Failed to replace kdeglobals: %v", err)
+		return
+	}
+
+	if kwritePath, err := exec.LookPath("kwriteconfig6"); err == nil {
+		if err := exec.Command(kwritePath, "--file", "kdeglobals", "--group", "General", "--key", "ColorScheme", "DankMatugen", "--notify").Run(); err != nil {
+			log.Warnf("Failed to notify KDE config change: %v", err)
+		}
 	}
 }
 
